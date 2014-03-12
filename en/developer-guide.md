@@ -1,7 +1,7 @@
 ---
 layout: base
 lang: en
-id: specification
+id: developer-guide
 title: "Developer Guide - Bitcoin"
 ---
 
