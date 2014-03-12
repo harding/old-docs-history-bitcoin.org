@@ -5,79 +5,78 @@ id: specification
 title: "Developer Guide - Bitcoin"
 ---
 
-<h1>Bitcoin Developer Guide</h1>
+# Bitcoin Developer Guide
 
-<p class="summary">Find detailed information about the Bitcoin protocol and related specifications.</p>
+Find detailed information about the Bitcoin protocol and related
+specifications.
 
-<ul class="index">
-<li><a href="#the_bitcoin_blockchain">Block Chain</a></li>
-<ul>
-  <li><a href="#blockchain_overview">Overview</a></li>
-  <li><a href="#proof_of_work">Proof Of Work</a></li>
-  <li><a href="#block_height_and_forking">Block Height And Forking</a></li>
-  <li><a href="#double_spend_risk_analysis">Double Spend Risk Analysis</a></li>
-  <li><a href="#nonprotocol_double_spend_risk_analysis">Non-Protocol Double Spend Risk Analysis</a></li>
-  <li><a href="#implementation_details_block_contents">Block Contents</a></li>
-  <li><a href="#block_header">Block Header</a></li>
-  <li><a href="#transaction_data">Example Block And Generation Transaction</a></li>
-  <li><a href="#examples">Examples</a></li>
-</ul>
-<li><a href="#transactions">Transactions</a></li>
-<ul>
-  <li><a href="#">Change addresses</a></li>
-  <li><a href="#">Complex contracts</a></li>
-  <li><a href="#">Transaction fees</a></li>
-</ul>
-<li><a href="#wallets">Wallets</a></li>
-<ul>
-  <li><a href="#">Private keys formats</a></li>
-  <li><a href="#">Deterministic wallets formats</a></li>
-  <li><a href="#">JBOK (just a bunch of keys) wallets format (Bitcoin-Qt, deprecated)</a></li>
-</ul>
-<li><a href="#payment-requests">Payment requests</a></li>
-<ul>
-  <li><a href="#">Payment request API</a></li>
-  <li><a href="#">Scannable QR codes</a></li>
-  <li><a href="#">Clickable bitcoin: links</a></li>
-</ul>
-<li><a href="#operating-modes">Operating modes</a></li>
-<ul>
-  <li><a href="#">Full node</a></li>
-  <li><a href="#">SPV - Simple Payment Verification</a></li>
-  <li><a href="#">UOT - Unspent Output Tree</a></li>
-</ul>
-<li><a href="#p2p-network">P2P Network</a></li>
-<ul>
-  <li><a href="#">Blocks broadcasting</a></li>
-  <li><a href="#">Transactions broadcasting</a></li>
-  <li><a href="#">Alerts</a></li>
-</ul>
-<li><a href="#mining">Mining</a></li>
-<ul>
-  <li><a href="#">getblocktemplate</a></li>
-</ul>
-</ul>
+* [Block Chain](#the_bitcoin_blockchain)
+
+    *   [Overview](#blockchain_overview)
+    *   [Proof Of Work](#proof_of_work)
+    *   [Block Height And Forking](#block_height_and_forking)
+    *   [Double Spend Risk Analysis](#double_spend_risk_analysis)
+    *   [Non-Protocol Double Spend Risk
+        Analysis](#nonprotocol_double_spend_risk_analysis)
+    *   [Block Contents](#implementation_details_block_contents)
+    *   [Block Header](#block_header)
+    *   [Example Block And Generation Transaction](#transaction_data)
+    *   [Examples](#examples)
+
+* [Transactions](#transactions)
+
+    *   [Change addresses](#)
+    *   [Complex contracts](#)
+    *   [Transaction fees](#)
+
+* [Wallets](#wallets)
+
+    *   [Private keys formats](#)
+    *   [Deterministic wallets formats](#)
+    *   [JBOK (just a bunch of keys) wallets format (Bitcoin-Qt,
+        deprecated)](#)
+
+* [Payment requests](#payment-requests)
+
+    *   [Payment request API](#)
+    *   [Scannable QR codes](#)
+    *   [Clickable bitcoin: links](#)
+
+* [Operating modes](#operating-modes)
+
+    *   [Full node](#)
+    *   [SPV - Simple Payment Verification](#)
+    *   [UOT - Unspent Output Tree](#)
+
+* [P2P Network](#p2p-network)
+
+    *   [Blocks broadcasting](#)
+    *   [Transactions broadcasting](#)
+    *   [Alerts](#)
+
+* [Mining](#mining)
+
+    *   [getblocktemplate](#)
 
 
-## The Bitcoin Blockchain
 
-<!-- test edit -DAH -->
+## The Bitcoin Block Chain
 
-The blockchain provides Bitcoin's ledger, a timestamped record of all
+The block chain provides Bitcoin's ledger, a timestamped record of all
 confirmed transactions.  Under normal conditions, a new block of
-transactions is added to the blockchain approximately every 10 minutes
+transactions is added to the block chain approximately every 10 minutes
 and historic blocks are left unchanged.
 
 This document will describe for developers this normal operating
 condition and then describe both common and uncommon non-normal
-operating conditions where recent blockchain history becomes mutable.
-Tools for retrieving and using blockchain data are provided throughout.
+operating conditions where recent block chain history becomes mutable.
+Tools for retrieving and using block chain data are provided throughout.
 
-### Blockchain Overview
+### Block Chain Overview
 
-![Blockchain Overview](/img/dev/blockchain-overview.png)
+![Block Chain Overview](/img/dev/blockchain-overview.png)
 
-Figure 1 shows a simplified version of a three-block blockchain.
+Figure 1 shows a simplified version of a three-block block chain.
 Each **block** of transactions is hashed to create a **Merkle root**, which is
 stored in the **block header**.  Each block then stores the hash of the
 previous block's header, chaining the blocks together.  This ensures a
@@ -96,7 +95,7 @@ previous transaction.
 A single transaction can spend bitcoins to multiple outputs, as would be
 the case when sending bitcoins to multiple addresses, but each output of
 a particular transaction can only be used as an input once in the
-blockchain. Any subsequent reference is a forbidden **double
+block chain. Any subsequent reference is a forbidden **double
 spend**---an attempt to spend the same bitcoins twice.
 
 Outputs are not the same as Bitcoin addresses. You can use the same
@@ -105,7 +104,7 @@ Outputs are tied to **transaction identifiers (TXIDs)**, which are the hashes
 of complete transactions.
 
 Because each output of a particular transaction can only be spent once,
-all transactions included in the blockchain can be categorized as either
+all transactions included in the block chain can be categorized as either
 **Unspent Transaction Outputs (UTXOs)** or spent transaction outputs. For a
 payment to be valid, it must only use UTXOs as inputs.
 
@@ -123,14 +122,14 @@ Although chaining blocks together makes it impossible to modify
 transactions included in any block without modifying all following block
 headers, the cost of modification is only two hashes for the first block
 modified plus one hash for every subsequent block until the current end
-of the blockchain.
+of the block chain.
 
-Since the blockchain is collaboratively maintained on a peer-to-peer
+Since the block chain is collaboratively maintained on a peer-to-peer
 network which may contain untrustworthy peers, Bitcoin requires each
 block prove a significant amount of work was invested in its creation so
 that untrustworthy peers who want to modify past blocks have to work harder
 than trustworthy peers who only want to add new blocks to the
-blockchain.
+block chain.
 
 The **proof of work** used in Bitcoin takes advantage of the apparently
 random output of cryptographic hashes. A good cryptographic hash
@@ -141,9 +140,10 @@ input data to make the hash number predictable.
 
 To prove you did some extra work to create a block, you must create a
 hash of the block header which does not exceed a certain value. For
-example, if the maximum possible hash value is $2^{256}-1$, you can
-prove that you tried up to two combinations by producing a hash value
-less than $2^{256}-1$.
+example, if the maximum possible hash value is <span
+class="math">2<sup>256</sup> − 1</span>, you can prove that you
+tried up to two combinations by producing a hash value less than <span
+class="math">2<sup>256</sup> − 1</span>.
 
 In the example given above, you will almost certainly produce a
 successful hash on your first try. You can even estimate the probability
@@ -153,7 +153,7 @@ simply assumes that the lower it makes the target threshold, the more
 hash attempts, on average, will need to be tried.
 
 Each block can set its own target, but new blocks will only be added to
-the blockchain if their target is at least as challenging as a
+the block chain if their target is at least as challenging as a
 **difficulty** value expected by the peer-to-peer network. Every 2,016
 blocks, the network uses timestamps stored in each block header to
 calculate the number of seconds elapsed between generation of the first
@@ -191,19 +191,19 @@ down hashing with extra I/O.
 #### Block Height And Forking
 
 Any Bitcoin miner who successfully hashes a block header to a value
-below the target can add the entire block to the blockchain.
+below the target can add the entire block to the block chain.
 (Assuming the block is otherwise valid.) These blocks are commonly addressed
 by their **block height**---the number of blocks between them and the first Bitcoin
 block (block 0, most commonly known as the **genesis block**). For example,
 block 2016 is where difficulty could have been first adjusted.
 
-![Common And Uncommon Blockchain Forks](/img/dev/blockchain-fork.png)
+![Common And Uncommon Block Chain Forks](/img/dev/blockchain-fork.png)
 
 Multiple blocks can all have the same block height, as is common when
 two or more miners each produce a block at roughly the same time.  This
-creates an apparent **fork** in the blockchain, as shown in figure 3.
+creates an apparent **fork** in the block chain, as shown in figure 3.
 
-When miners produce simultaneous blocks at the end of the blockchain, each
+When miners produce simultaneous blocks at the end of the block chain, each
 peer individually chooses which block to trust.  (In the absence of
 other considerations, discussed below, peers usually trust the first
 block they see.)
@@ -212,7 +212,7 @@ Eventually miners produce another block which attaches to only one of
 the competing simultaneously-mined blocks. This makes that side of
 the fork longer than the other side. Assuming a fork only contains
 valid blocks, normal peers always follow the longest fork to the end
-of the blockchain and throw away (**orphan**) blocks belonging to
+of the block chain and throw away (**orphan**) blocks belonging to
 shorter forks.
 
 (Technically peers follow whichever fork would be the most difficult to
@@ -220,13 +220,13 @@ recreate. In practice, the most difficult to recreate fork is almost
 always the longest fork.)
 
 Long-term forks are possible if different miners work at cross-purposes,
-such as some miners diligently working to extend the blockchain at the
+such as some miners diligently working to extend the block chain at the
 same time other miners are attempting a 51 percent attack to revise
 transaction history.
 
 #### Double Spend Risk Analysis
 
-The properties of the blockchain described above ensure that transaction
+The properties of the block chain described above ensure that transaction
 history is more difficult to modify the older it gets. But your programs
 will likely be used to automatically provide valuable and
 irrevocable services based on recent transactions where transaction
@@ -384,7 +384,7 @@ because this hash must be below the target threshold, there exists an
 increased (but still minuscule) chance of eventual hash collision.
 
 Blocks can also be referenced by their block height, but multiple blocks
-can have the same height during a blockchain fork, so block height
+can have the same height during a block chain fork, so block height
 should not be used as a globally unique identifier. In version 2 blocks,
 each block must place its height as the first parameter in the coinbase
 field of the generation transaction (described below), so block height
@@ -394,14 +394,58 @@ can be determined without access to previous blocks.
 
 The 80-byte block header contains the following six fields:
 
-Field               Bytes       Format
-------------------  --------    ---------------------------
-1. Version          4           Unsigned Int
-2. hashPrevBlock    32          Unsigned Int (SHA256 Hash)
-3. hashMerkleRoot   32          Unsigned Int (SHA256 Hash)
-4. Time             4           Unsigned Int (Epoch Time)
-5. Bits             4           Internal Bitcoin Target Format
-6. Nonce            4           (Arbitrary Data)
+<!-- Orginal pandoc-format table.
+-- Field               Bytes       Format
+-- ------------------  --------    ---------------------------
+-- 1. Version          4           Unsigned Int
+-- 2. hashPrevBlock    32          Unsigned Int (SHA256 Hash)
+-- 3. hashMerkleRoot   32          Unsigned Int (SHA256 Hash)
+-- 4. Time             4           Unsigned Int (Epoch Time)
+-- 5. Bits             4           Internal Bitcoin Target Format
+-- 6. Nonce            4           (Arbitrary Data)
+-->
+
+<table>
+<thead>
+<tr class="header">
+<th align="left">Field</th>
+<th align="left">Bytes</th>
+<th align="left">Format</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Version</td>
+<td align="left">4</td>
+<td align="left">Unsigned Int</td>
+</tr>
+<tr class="even">
+<td align="left">hashPrevBlock</td>
+<td align="left">32</td>
+<td align="left">Unsigned Int (SHA256 Hash)</td>
+</tr>
+<tr class="odd">
+<td align="left">hashMerkleRoot</td>
+<td align="left">32</td>
+<td align="left">Unsigned Int (SHA256 Hash)</td>
+</tr>
+<tr class="even">
+<td align="left">Time</td>
+<td align="left">4</td>
+<td align="left">Unsigned Int (Epoch Time)</td>
+</tr>
+<tr class="odd">
+<td align="left">Bits</td>
+<td align="left">4</td>
+<td align="left">Internal Bitcoin Target Format</td>
+</tr>
+<tr class="even">
+<td align="left">Nonce</td>
+<td align="left">4</td>
+<td align="left">(Arbitrary Data)</td>
+</tr>
+</tbody>
+</table>
 
 
 1. The *version* number indicates which set of block validation rules
@@ -410,7 +454,7 @@ Field               Bytes       Format
    2.
 
 2. The *hash of the previous block header* puts this block on the
-   blockchain and ensures no previous block can be changed without also
+   block chain and ensures no previous block can be changed without also
    changing this block's header.
 
 3. The *Merkle root* is a hash of all the transactions included
@@ -507,7 +551,7 @@ are computed.
 The first transaction identifier (txid) listed in the tx array is, in
 this case, the generation transaction. The txid is a hash of the raw
 transaction. We can get the actual raw transaction in hexadecimal format
-from the blockchain using the `getrawtransaction` RPC with the txid:
+from the block chain using the `getrawtransaction` RPC with the txid:
 
     > getrawtransaction b1fea52486ce0c62bb442b530a3f0132b826c74e473d1f2c220bfa78111c5082
     01000000...00000000  ### 130 bytes elided for readability
