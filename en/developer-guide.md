@@ -7,56 +7,46 @@ title: "Developer Guide - Bitcoin"
 
 # Bitcoin Developer Guide
 
-Find detailed information about the Bitcoin protocol and related
-specifications.
+<p class="summary">Find detailed information about the Bitcoin protocol and related specifications.</p>
+
+<div markdown="1" class="index">
 
 * [Block Chain](#the_bitcoin_blockchain)
-
-    *   [Overview](#blockchain_overview)
-    *   [Proof Of Work](#proof_of_work)
-    *   [Block Height And Forking](#block_height_and_forking)
-    *   [Double Spend Risk Analysis](#double_spend_risk_analysis)
-    *   [Non-Protocol Double Spend Risk
-        Analysis](#nonprotocol_double_spend_risk_analysis)
-    *   [Block Contents](#implementation_details_block_contents)
-    *   [Block Header](#block_header)
-    *   [Example Block And Generation Transaction](#transaction_data)
-    *   [Examples](#examples)
-
+  * [Overview](#blockchain_overview)
+  * [Proof Of Work](#proof_of_work)
+  * [Block Height And Forking](#block_height_and_forking)
+  * [Double Spend Risk Analysis](#double_spend_risk_analysis)
+  * [Non-Protocol Double Spend Risk
+    Analysis](#nonprotocol_double_spend_risk_analysis)
+  * [Block Contents](#implementation_details_block_contents)
+  * [Block Header](#block_header)
+  * [Example Block And Generation Transaction](#transaction_data)
 * [Transactions](#transactions)
-
-    *   [Change addresses](#)
-    *   [Complex contracts](#)
-    *   [Transaction fees](#)
-
+  * [Change addresses](#)
+  * [Complex contracts](#)
+  * [Transaction fees](#)
 * [Wallets](#wallets)
-
-    *   [Private keys formats](#)
-    *   [Deterministic wallets formats](#)
-    *   [JBOK (just a bunch of keys) wallets format (Bitcoin-Qt,
-        deprecated)](#)
-
+  * [Private keys formats](#)
+  * [Deterministic wallets formats](#)
+  * [JBOK (just a bunch of keys) wallets format (Bitcoin-Qt,
+    deprecated)](#)
 * [Payment requests](#payment-requests)
-
-    *   [Payment request API](#)
-    *   [Scannable QR codes](#)
-    *   [Clickable bitcoin: links](#)
-
+  * [Payment request API](#)
+  * [Scannable QR codes](#)
+  * [Clickable bitcoin: links](#)
 * [Operating modes](#operating-modes)
-
-    *   [Full node](#)
-    *   [SPV - Simple Payment Verification](#)
-    *   [UOT - Unspent Output Tree](#)
-
+  * [Full node](#)
+  * [SPV - Simple Payment Verification](#)
+  * [UOT - Unspent Output Tree](#)
 * [P2P Network](#p2p-network)
-
-    *   [Blocks broadcasting](#)
-    *   [Transactions broadcasting](#)
-    *   [Alerts](#)
-
+  * [Blocks broadcasting](#)
+  * [Transactions broadcasting](#)
+  * [Alerts](#)
 * [Mining](#mining)
+  * [getblocktemplate](#)
+  * [blank](#)
 
-    *   [getblocktemplate](#)
+</div>
 
 
 
