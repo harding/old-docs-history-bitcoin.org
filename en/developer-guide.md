@@ -394,17 +394,6 @@ can be determined without access to previous blocks.
 
 The 80-byte block header contains the following six fields:
 
-<!-- Orginal pandoc-format table.
--- Field               Bytes       Format
--- ------------------  --------    ---------------------------
--- 1. Version          4           Unsigned Int
--- 2. hashPrevBlock    32          Unsigned Int (SHA256 Hash)
--- 3. hashMerkleRoot   32          Unsigned Int (SHA256 Hash)
--- 4. Time             4           Unsigned Int (Epoch Time)
--- 5. Bits             4           Internal Bitcoin Target Format
--- 6. Nonce            4           (Arbitrary Data)
--->
-
 <table>
 <thead>
 <tr class="header">
