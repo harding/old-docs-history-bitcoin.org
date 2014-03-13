@@ -11,8 +11,8 @@ title: "Developer Guide - Bitcoin"
 
 <div markdown="1" class="index">
 
-* [Block Chain](#the_bitcoin_blockchain)
-  * [Overview](#blockchain_overview)
+* [Block Chain](#the_bitcoin_block_chain)
+  * [Overview](#block_chain_overview)
   * [Proof Of Work](#proof_of_work)
   * [Block Height And Forking](#block_height_and_forking)
   * [Double Spend Risk Analysis](#double_spend_risk_analysis)
@@ -20,7 +20,8 @@ title: "Developer Guide - Bitcoin"
     Analysis](#nonprotocol_double_spend_risk_analysis)
   * [Block Contents](#implementation_details_block_contents)
   * [Block Header](#block_header)
-  * [Example Block And Generation Transaction](#transaction_data)
+  * [Transaction Data](#transaction_data)
+  * [Example Block And Generation Transaction](#example_block_and_generation_transaction)
 * [Transactions](#transactions)
   * [Change addresses](#)
   * [Complex contracts](#)
