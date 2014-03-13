@@ -72,7 +72,9 @@ transaction's inputs and outputs is given as a **transaction fee** to
 the Bitcoin **miner** who creates the block containing that transaction. 
 For example, in Figure 2 each transaction spends 10 millibits fewer than 
 it receives from its combined inputs, effectively paying a 10 millibit 
-transaction fee. The spenders propose a transaction fee with each 
+transaction fee. 
+
+The spenders propose a transaction fee with each 
 transaction; miners decide whether the amount proposed is adequate,
 and only accept transactions that pass their threshold. Therefore,
 transactions with a higher proposed transaction fee are likely to be
