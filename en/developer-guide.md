@@ -210,7 +210,7 @@ double-spend protection.
 New transactions start with zero confirmations because they are not
 included in any blocks. A double spender who knows that your software
 performs an action in response to an unconfirmed transaction can create
-one transaction that pays you, wait for you to see the payment (and return an item of value), and then
+one transaction that pays you, wait for you to see the payment (and send an item of value), and then
 create a double spend with a higher transaction fee that pays the same
 UTXO back to himself. Profit-motivated miners will attempt to put the
 transaction with the higher fee in a block, confirming it and leaving
