@@ -12,40 +12,8 @@ title: "Developer Guide - Bitcoin"
 <div markdown="1" class="index">
 <!-- DAH TODO/saivann; use {:toc} or fix markdown -->
 
-* [Block Chain](#the_bitcoin_blockchain)
-  * [Overview](#blockchain_overview)
-  * [Proof Of Work](#proof_of_work)
-  * [Block Height And Forking](#block_height_and_forking)
-  * [Double Spend Risk Analysis](#double_spend_risk_analysis)
-  * [Non-Protocol Double Spend Risk
-    Analysis](#nonprotocol_double_spend_risk_analysis)
-  * [Block Contents](#implementation_details_block_contents)
-  * [Block Header](#block_header)
-  * [Example Block And Generation Transaction](#transaction_data)
-* [Transactions](#transactions)
-  * [Change addresses](#)
-  * [Complex contracts](#)
-  * [Transaction fees](#)
-* [Wallets](#wallets)
-  * [Private keys formats](#)
-  * [Deterministic wallets formats](#)
-  * [JBOK (just a bunch of keys) wallets format (Bitcoin-Qt,
-    deprecated)](#)
-* [Payment requests](#payment-requests)
-  * [Payment request API](#)
-  * [Scannable QR codes](#)
-  * [Clickable bitcoin: links](#)
-* [Operating modes](#operating-modes)
-  * [Full node](#)
-  * [SPV - Simple Payment Verification](#)
-  * [UOT - Unspent Output Tree](#)
-* [P2P Network](#p2p-network)
-  * [Blocks broadcasting](#)
-  * [Transactions broadcasting](#)
-  * [Alerts](#)
-* [Mining](#mining)
-  * [getblocktemplate](#)
-  * [blank](#)
+* Table of content
+{:toc}
 
 </div>
 
@@ -584,15 +552,50 @@ Note the vin (input) array includes a single transaction shown with a
 coinbase parameter and the vout (output) spends the block reward of 50
 bitcoins to a public key (not a standard hashed Bitcoin address).
 
-#### Block Validation
+## Transactions
 
-Full block validation is best left to the Bitcoin Core software as any
-failure by your program to validate blocks could make it reject blocks
-accepted by the rest of the network, which may prevent your program from
-detecting double spends---and that means your program may accept double
-spends as valid payment.
+### Basics
 
-Simplified Payment Verification (SPV) is a much simplified form of
-verification which can be reliably implemented by third-party Bitcoin
-software because it operates mainly on block headers. It will be
-described elsewhere in this guide.
+### Change addresses
+
+### Complex contrats
+
+### Transaction fees
+
+## Wallets
+
+### Private keys format
+
+### Deterministic wallets formats
+
+### JBOK (Just a bunch of keys) wallets formats (deprecated)
+
+## Payment requests
+
+### Payment request API
+
+### Scannable QR codes
+
+### Clickable bitcoin: links
+
+## Operating modes
+
+### Full node
+
+### SPV
+
+### UOT (short overview?)
+
+## P2P Network
+
+### Blocks broadcasting
+
+### Transactions broadcasting
+
+### Alerts
+
+## Mining
+
+### getblocktemplate
+
+### getwork (deprecated, worth mentionning?)
