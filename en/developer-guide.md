@@ -10,7 +10,6 @@ title: "Developer Guide - Bitcoin"
 <p class="summary">Find detailed information about the Bitcoin protocol and related specifications.</p>
 
 <div markdown="1" class="index">
-<!-- DAH TODO/saivann; use {:toc} or fix markdown -->
 
 * Table of content
 {:toc}
@@ -26,17 +25,14 @@ confirmed transactions. Under normal conditions, a new block of
 transactions is added to the block chain approximately every 10 minutes
 and historic blocks are left unchanged.
 
-<!-- DAH TODO/tgeller: remove quotes around mutable -->
-
 This document describes this normal operating condition, along with conditions 
-that can cause recent block chain history to become "mutable" (changeable), 
+that can cause recent block chain history to become mutable (changeable), 
 and provides tools for retrieving and using block chain data.
 
 ### Block Chain Overview
 
 ![Block Chain Overview](/img/dev/blockchain-overview.png)
 
-<!-- DAH TODO/tgeller typical case can be elided -->
 <!-- DAH TODO provide merkle tree description; see mikehearn email -->
 
 Figure 1 shows a simplified version of a three-block block chain.
@@ -72,14 +68,15 @@ all transactions included in the block chain can be categorized as either
 **Unspent Transaction Outputs (UTXOs)** or spent transaction outputs. For a
 payment to be valid, it must only use UTXOs as inputs.
 
-<!-- DAH TODO/tgeller: first two sentence phrasing seems off; last two sentences confuse issue. -->
 Bitcoins cannot be left in a UTXO after a transaction: they will be
 irretrievably lost. So any difference between the number of bitcoins in a
 transaction's inputs and outputs is given as a **transaction fee** to 
 the Bitcoin **miner** who creates the block containing that transaction. 
 For example, in Figure 2 each transaction spends 10 millibits fewer than 
 it receives from its combined inputs, effectively paying a 10 millibit 
-transaction fee. The spenders propose a transaction fee with each 
+transaction fee. 
+
+The spenders propose a transaction fee with each 
 transaction; miners decide whether the amount proposed is adequate,
 and only accept transactions that pass their threshold. Therefore,
 transactions with a higher proposed transaction fee are likely to be
@@ -217,7 +214,7 @@ double-spend protection.
 New transactions start with zero confirmations because they are not
 included in any blocks. A double spender who knows that your software
 performs an action in response to an unconfirmed transaction can create
-one transaction that pays you, wait for you to see the payment (and return an item of value), and then
+one transaction that pays you, wait for you to see the payment (and send an item of value), and then
 create a double spend with a higher transaction fee that pays the same
 UTXO back to himself. Profit-motivated miners will attempt to put the
 transaction with the higher fee in a block, confirming it and leaving
@@ -297,7 +294,7 @@ Another source of double-spend risk analysis can be acquired from
 third-party services which aggregate information about the current
 operation of the Bitcoin network, such as the website BlockChain.info.
 
-<!-- DAH TODO: another another source: bitcoinj -->
+<!-- DAH TODO: yet another source: bitcoinj -->
 
 These third-party services connect to large numbers of Bitcoin peers and
 track how they differ from each other. For example, they can detect a
@@ -449,14 +446,14 @@ Every block must include one or more transactions. Exactly one of these
 transactions must be a coinbase transaction which should collect and
 spend any transaction fees paid by transactions included in this block.
 All blocks with a block height less than 6,930,000 are entitled to
-receive a block reward of at least one newly-created satoshi, which also
-should be spent in the coinbase transaction. A coinbase transaction
-is invalid if it tries to spend more satoshis than are available from
-the transaction fees and block reward.
+receive a block reward of newly created bitcoin value, which also
+should be spent in the generation transaction. (The block reward started
+at 50 bitcoins and is being halved approximately every four years: as of
+March 2014, it's 25 bitcoins.) A generation transaction is invalid if it 
+tries to spend more value than is available from the transaction 
+fees and block reward.
 
-<!-- DAH TODO/tgeller suggests adding: (The block reward started at 50 bitcoins and is being halved approximately every four years: as of March 2014, it's 25 bitcoins.) -->
-
-The coinbase transaction has the same basic format as any other
+The generation transaction has the same basic format as any other
 transaction, but it references a single non-existent UTXO and a special
 coinbase field replaces the field that would normally hold a script and
 signature. In version 2 blocks, the coinbase parameter must begin with
@@ -601,6 +598,7 @@ bitcoins to a public key (not a standard hashed Bitcoin address).
 ### getblocktemplate
 
 ### getwork (deprecated, worth mentionning?)
+
 Full block validation is best left to the Bitcoin Core software as any
 failure by your program to validate blocks could make it reject blocks
 accepted by the rest of the network, which may prevent your program from
