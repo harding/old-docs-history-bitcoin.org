@@ -162,7 +162,7 @@ down hashing with extra I/O.
 Any Bitcoin miner who successfully hashes a block header to a value
 below the target can add the entire block to the block chain.
 (Assuming the block is otherwise valid.) These blocks are commonly addressed
-by their **block height**---the number of blocks between them and the first Bitcoin
+by their **block height** -- the number of blocks between them and the first Bitcoin
 block (block 0, most commonly known as the **genesis block**). For example,
 block 2016 is where difficulty could have been first adjusted.
 
@@ -193,7 +193,7 @@ such as some miners diligently working to extend the block chain at the
 same time other miners are attempting a 51 percent attack to revise
 transaction history.
 
-#### Double Spend Risk Analysis
+#### Double-Spend Risk Analysis
 
 The properties of the block chain described above ensure that transaction
 history is more difficult to modify the older it gets. But your programs
@@ -210,14 +210,14 @@ confidence score based on the number of blocks which would need to be
 modified to create a double spend. For each block that would need to be
 modified, the transaction gains one **confirmation.** Since modifying
 blocks is quite difficult, higher confirmation scores indicate greater
-double spend protection.
+double-spend protection.
 
 <!-- DAH TODO: rewrite to avoid fee-based replacement --> 
 
 New transactions start with zero confirmations because they are not
 included in any blocks. A double spender who knows that your software
 performs an action in response to an unconfirmed transaction can create
-one transaction that pays you, wait for you to see the payment, and then
+one transaction that pays you, wait for you to see the payment (and return an item of value), and then
 create a double spend with a higher transaction fee that pays the same
 UTXO back to himself. Profit-motivated miners will attempt to put the
 transaction with the higher fee in a block, confirming it and leaving
@@ -231,14 +231,14 @@ performing a costly action, you may try one of the methods described in
 the next section to acquire information about transaction reliability
 from outside the Bitcoin protocol.
 
-Double spend risk decreases dramatically once the transaction is
+Double-spend risk decreases dramatically once the transaction is
 included in a block:
 
 * One confirmation indicates the transaction was included in the most
   recent block. As explained in the forking section above, the most
-  recent block gets replaced fairly often by accident, so a one
-  confirmation double spend is still a real possibility, although
-  a serial double spender would probably fail much more often than he
+  recent block gets replaced fairly often by accident, so a 
+  one-confirmation double spend is still a real possibility, although
+  serial double spenders would probably fail much more often than they
   would succeed.
 
 * Two confirmations indicates the most recent block was chained to the
@@ -253,18 +253,18 @@ included in a block:
   total network hashing power to replace six blocks. Although the number
   six is somewhat arbitrary, we recommend that software handling
   high-value transactions, or otherwise at risk for fraud, wait for at
-  least six confirmations before marking a payment as accepted.
+  least six confirmations before treating a payment as accepted.
 
 Bitcoin Core provides several RPCs which can provide your program
 with the confirmation score for transactions in your wallet or arbitrary
 transactions. For example, the `listunspent` RPC provides an array of
 every bitcoin you can spend along with its confirmation score.
 
-#### Non-Protocol Double Spend Risk Analysis
+#### Non-Protocol Double-Spend Risk Analysis
 
-Although the Bitcoin protocol provides excellent double spend protection
+Although the Bitcoin protocol provides excellent double-spend protection
 most of the time, there are at least two situations where programs may
-want to look outside the protocol for special double spend risk analysis:
+want to look outside the protocol for special double-spend risk analysis:
 
 1. In the case of an implementation bug or prolonged attack against
    Bitcoin which makes the system less reliable than expected.
@@ -272,7 +272,7 @@ want to look outside the protocol for special double spend risk analysis:
 2. In the case when the program or its user wants to accept zero confirmation
    payments.
 
-The best source for double spend protection outside Bitcoin is human
+The best source for double-spend protection outside Bitcoin is human
 intelligence. 
 
 In the case of a bug or attack, bad news about Bitcoin spreads fast, so
@@ -283,7 +283,7 @@ results to get currently active alerts for their specific version of
 Bitcoin Core.
 
 In the case of zero confirmation payments, fraudsters may act
-differently than legitimate customers, letting savvy merchants manually
+differently from legitimate customers, letting savvy merchants manually
 flag them as high risk before accepting payment.
 
 To take advantage of human intelligence, your program should provide an
@@ -293,7 +293,7 @@ type of safety switches found in dangerous factories, you may want to
 make the option easy to enable even by relatively unprivileged users of
 your program.
 
-Another source of double spend risk analysis can be acquired from
+Another source of double-spend risk analysis can be acquired from
 third-party services which aggregate information about the current
 operation of the Bitcoin network, such as the website BlockChain.info.
 
@@ -301,13 +301,13 @@ operation of the Bitcoin network, such as the website BlockChain.info.
 
 These third-party services connect to large numbers of Bitcoin peers and
 track how they differ from each other. For example, they can detect a
-fork when different peers report a different block header hash at the
+fork when multiple peers report differing block header hashes at the
 same block height; if the fork extends for more than one or two blocks,
 indicating a possible attack, your program can go into a safe mode. 
 
 The service can also compare unconfirmed transactions among all
 connected peers to see if any UTXO is used in multiple unconfirmed
-transactions, indicating a double spend attempt; if a double spend
+transactions, indicating a double-spend attempt; if a double-spend
 attempt is detected, your program can refuse acceptance of the payment
 until it is confirmed.
 
@@ -432,7 +432,7 @@ The 80-byte block header contains the following six fields:
    time currently more than two hours in the future according to the
    peer's clock.
 
-5. *Bits* translates into the target threshold value---the maximum allowed value
+5. *Bits* translates into the target threshold value -- the maximum allowed value
    for this block's hash. The bit value must be at least as challenging
    as the network difficulty at the time the block was mined.
 
@@ -454,9 +454,11 @@ should be spent in the coinbase transaction. A coinbase transaction
 is invalid if it tries to spend more satoshis than are available from
 the transaction fees and block reward.
 
+<!-- DAH TODO/tgeller suggests adding: (The block reward started at 50 bitcoins and is being halved approximately every four years: as of March 2014, it's 25 bitcoins.) -->
+
 The coinbase transaction has the same basic format as any other
 transaction, but it references a single non-existent UTXO and a special
-coinbase field replaces the field which would normally hold a script and
+coinbase field replaces the field that would normally hold a script and
 signature. In version 2 blocks, the coinbase parameter must begin with
 the current block's block height and may contain additional arbitrary
 data or a script up to a maximum total of 100 bytes.
@@ -599,3 +601,13 @@ bitcoins to a public key (not a standard hashed Bitcoin address).
 ### getblocktemplate
 
 ### getwork (deprecated, worth mentionning?)
+Full block validation is best left to the Bitcoin Core software as any
+failure by your program to validate blocks could make it reject blocks
+accepted by the rest of the network, which may prevent your program from
+detecting double spends -- and that means your program may accept double
+spends as valid payment.
+
+Simplified Payment Verification (SPV) is a greatly simplified form of
+verification which can be reliably implemented by third-party Bitcoin
+software because it operates mainly on block headers. It will be
+described elsewhere in this guide.
