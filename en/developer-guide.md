@@ -472,7 +472,7 @@ receive a block reward of newly created bitcoin value, which also
 should be spent in the generation transaction. (The block reward started
 at 50 bitcoins and is being halved approximately every four years: as of
 March 2014, it's 25 bitcoins.) A generation transaction is invalid if it 
-tries to spend more satoshis than are available from the transaction 
+tries to spend more value than is available from the transaction 
 fees and block reward.
 
 The generation transaction has the same basic format as any other
