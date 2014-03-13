@@ -53,14 +53,13 @@ title: "Developer Guide - Bitcoin"
 ## The Bitcoin Block Chain
 
 The block chain provides Bitcoin's ledger, a timestamped record of all
-confirmed transactions.  Under normal conditions, a new block of
+confirmed transactions. Under normal conditions, a new block of
 transactions is added to the block chain approximately every 10 minutes
 and historic blocks are left unchanged.
 
-This document will describe for developers this normal operating
-condition and then describe both common and uncommon non-normal
-operating conditions where recent block chain history becomes mutable.
-Tools for retrieving and using block chain data are provided throughout.
+This document describes this normal operating condition, along with conditions 
+that can cause recent block chain history to become "mutable" (changeable), 
+and provides tools for retrieving and using block chain data.
 
 ### Block Chain Overview
 
@@ -68,8 +67,8 @@ Tools for retrieving and using block chain data are provided throughout.
 
 Figure 1 shows a simplified version of a three-block block chain.
 Each **block** of transactions is hashed to create a **Merkle root**, which is
-stored in the **block header**.  Each block then stores the hash of the
-previous block's header, chaining the blocks together.  This ensures a
+stored in the **block header**. Each block then stores the hash of the
+previous block's header, chaining the blocks together. This ensures a
 transaction cannot be modified without modifying the block that records
 it and all following blocks.
 
@@ -190,11 +189,11 @@ block 2016 is where difficulty could have been first adjusted.
 ![Common And Uncommon Block Chain Forks](/img/dev/blockchain-fork.png)
 
 Multiple blocks can all have the same block height, as is common when
-two or more miners each produce a block at roughly the same time.  This
+two or more miners each produce a block at roughly the same time. This
 creates an apparent **fork** in the block chain, as shown in figure 3.
 
 When miners produce simultaneous blocks at the end of the block chain, each
-peer individually chooses which block to trust.  (In the absence of
+peer individually chooses which block to trust. (In the absence of
 other considerations, discussed below, peers usually trust the first
 block they see.)
 
@@ -305,7 +304,7 @@ flag them as high risk before accepting payment.
 
 To take advantage of human intelligence, your program should provide an
 easy to trigger safe mode which stops automatic payment acceptance on a
-global basis, a per-customer basis, or both.  Like the big-red-button
+global basis, a per-customer basis, or both. Like the big-red-button
 type of safety switches found in dangerous factories, you may want to
 make the option easy to enable even by relatively unprivileged users of
 your program.
@@ -429,7 +428,7 @@ The 80-byte block header contains the following six fields:
 
 1. The *version* number indicates which set of block validation rules
    to follow so Bitcoin Core developers can add features or
-   fix bugs.  As of block height 227,836, all blocks use version number
+   fix bugs. As of block height 227,836, all blocks use version number
    2.
 
 2. The *hash of the previous block header* puts this block on the
@@ -453,7 +452,7 @@ The 80-byte block header contains the following six fields:
 
 6. The *nonce* is an arbitrary input that miners can change to test different
    hash values for the header until they find a hash value less than or
-   equal to the target threshold.  If all values within the nonce's four
+   equal to the target threshold. If all values within the nonce's four
    bytes are tested, the time can be changed by one second or the
    generation transaction (described below) can be changed and the Merkle
    root updated.
@@ -480,7 +479,7 @@ Because they contain the special coinbase field, generation transactions
 are commonly called coinbase transactions.
 
 The UTXO of a generation transaction has the special condition that it
-cannot be spent (used as an input) for at least 100 blocks.  This
+cannot be spent (used as an input) for at least 100 blocks. This
 helps prevent a miner from spending the transaction fees and block
 reward from a block that will later be orphaned (destroyed) after a
 block fork.
