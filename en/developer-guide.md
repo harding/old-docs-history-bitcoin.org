@@ -538,19 +538,6 @@ Note the vin (input) array includes a single transaction shown with a
 coinbase parameter and the vout (output) spends the block reward of 50
 bitcoins to a public key (not a standard hashed Bitcoin address).
 
-#### Block Validation
-
-Full block validation is best left to the Bitcoin Core software as any
-failure by your program to validate blocks could make it reject blocks
-accepted by the rest of the network, which may prevent your program from
-detecting double spends---and that means your program may accept double
-spends as valid payment.
-
-Simplified Payment Verification (SPV) is a much simplified form of
-verification which can be reliably implemented by third-party Bitcoin
-software because it operates mainly on block headers. It will be
-described elsewhere in this guide.
-
 ## Transactions
 
 ### Basics
