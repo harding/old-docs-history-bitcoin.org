@@ -66,8 +66,9 @@ and provides tools for retrieving and using block chain data.
 ![Block Chain Overview](/img/dev/blockchain-overview.png)
 
 Figure 1 shows a simplified version of a three-block block chain.
-Each **block** of transactions is hashed to create a **Merkle root**, which is
-stored in the **block header**. Each block then stores the hash of the
+Each **block** , which is typically a few thousand transactions,
+is hashed to create a **Merkle root** -- essentially, a hash of hashes.
+This is stored in the **block header**. Each block then stores the hash of the
 previous block's header, chaining the blocks together. This ensures a
 transaction cannot be modified without modifying the block that records
 it and all following blocks.
@@ -85,7 +86,7 @@ A single transaction can spend bitcoins to multiple outputs, as would be
 the case when sending bitcoins to multiple addresses, but each output of
 a particular transaction can only be used as an input once in the
 block chain. Any subsequent reference is a forbidden **double
-spend**---an attempt to spend the same bitcoins twice.
+spend** -- an attempt to spend the same bitcoins twice.
 
 Outputs are not the same as Bitcoin addresses. You can use the same
 address in multiple transactions, but you can only use each output once.
@@ -97,13 +98,17 @@ all transactions included in the block chain can be categorized as either
 **Unspent Transaction Outputs (UTXOs)** or spent transaction outputs. For a
 payment to be valid, it must only use UTXOs as inputs.
 
-Bitcoins cannot be left in a UTXO after it is spent or they will be
-irretrievably lost, so any difference between the number of bitcoins in a
-transaction's inputs and outputs is given as a
-**transaction fee** to the Bitcoin **miner** who creates the block
-containing that transaction. For example, in Figure 2 each transaction
-spends 10 millibits fewer than it receives from its combined inputs,
-effectively paying a 10 millibit transaction fee.
+Bitcoins cannot be left in a UTXO after a transaction: they will be
+irretrievably lost. So any difference between the number of bitcoins in a
+transaction's inputs and outputs is given as a **transaction fee** to 
+the Bitcoin **miner** who creates the block containing that transaction. 
+For example, in Figure 2 each transaction spends 10 millibits fewer than 
+it receives from its combined inputs, effectively paying a 10 millibit 
+transaction fee. The spenders propose a transaction fee with each 
+transaction; miners decide whether the amount proposed is adequate,
+and only accept transactions that pass their threshold. Therefore,
+transactions with a higher proposed transaction fee are likely to be
+processed faster.
 
 #### Proof Of Work
 
