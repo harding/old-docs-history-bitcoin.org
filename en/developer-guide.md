@@ -26,7 +26,7 @@ transactions is added to the block chain approximately every 10 minutes
 and historic blocks are left unchanged.
 
 This document describes this normal operating condition, along with conditions 
-that can cause recent block chain history to become "mutable" (changeable), 
+that can cause recent block chain history to become mutable (changeable), 
 and provides tools for retrieving and using block chain data.
 
 ### Block Chain Overview
