@@ -11,41 +11,8 @@ title: "Developer Guide - Bitcoin"
 
 <div markdown="1" class="index">
 
-* [Block Chain](#the_bitcoin_block_chain)
-  * [Overview](#block_chain_overview)
-  * [Proof Of Work](#proof_of_work)
-  * [Block Height And Forking](#block_height_and_forking)
-  * [Double Spend Risk Analysis](#double_spend_risk_analysis)
-  * [Non-Protocol Double Spend Risk
-    Analysis](#nonprotocol_double_spend_risk_analysis)
-  * [Block Contents](#implementation_details_block_contents)
-  * [Block Header](#block_header)
-  * [Transaction Data](#transaction_data)
-  * [Example Block And Generation Transaction](#example_block_and_generation_transaction)
-* [Transactions](#transactions)
-  * [Change addresses](#)
-  * [Complex contracts](#)
-  * [Transaction fees](#)
-* [Wallets](#wallets)
-  * [Private keys formats](#)
-  * [Deterministic wallets formats](#)
-  * [JBOK (just a bunch of keys) wallets format (Bitcoin-Qt,
-    deprecated)](#)
-* [Payment requests](#payment-requests)
-  * [Payment request API](#)
-  * [Scannable QR codes](#)
-  * [Clickable bitcoin: links](#)
-* [Operating modes](#operating-modes)
-  * [Full node](#)
-  * [SPV - Simple Payment Verification](#)
-  * [UOT - Unspent Output Tree](#)
-* [P2P Network](#p2p-network)
-  * [Blocks broadcasting](#)
-  * [Transactions broadcasting](#)
-  * [Alerts](#)
-* [Mining](#mining)
-  * [getblocktemplate](#)
-  * [blank](#)
+* Table of content
+{:toc}
 
 </div>
 
@@ -583,3 +550,51 @@ Simplified Payment Verification (SPV) is a much simplified form of
 verification which can be reliably implemented by third-party Bitcoin
 software because it operates mainly on block headers. It will be
 described elsewhere in this guide.
+
+## Transactions
+
+### Basics
+
+### Change addresses
+
+### Complex contrats
+
+### Transaction fees
+
+## Wallets
+
+### Private keys format
+
+### Deterministic wallets formats
+
+### JBOK (Just a bunch of keys) wallets formats (deprecated)
+
+## Payment requests
+
+### Payment request API
+
+### Scannable QR codes
+
+### Clickable bitcoin: links
+
+## Operating modes
+
+### Full node
+
+### SPV
+
+### UOT (short overview?)
+
+## P2P Network
+
+### Blocks broadcasting
+
+### Transactions broadcasting
+
+### Alerts
+
+## Mining
+
+### getblocktemplate
+
+### getwork (deprecated, worth mentionning?)
