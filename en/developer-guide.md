@@ -21,23 +21,23 @@ title: "Developer Guide - Bitcoin"
 ## The Bitcoin Block Chain
 
 The block chain provides Bitcoin's ledger, a timestamped record of all
-confirmed transactions.  Under normal conditions, a new block of
+confirmed transactions. Under normal conditions, a new block of
 transactions is added to the block chain approximately every 10 minutes
 and historic blocks are left unchanged.
 
-This document will describe for developers this normal operating
-condition and then describe both common and uncommon non-normal
-operating conditions where recent block chain history becomes mutable.
-Tools for retrieving and using block chain data are provided throughout.
+This document describes this normal operating condition, along with conditions 
+that can cause recent block chain history to become mutable (changeable), 
+and provides tools for retrieving and using block chain data.
 
 ### Block Chain Overview
 
 ![Block Chain Overview](/img/dev/blockchain-overview.png)
 
 Figure 1 shows a simplified version of a three-block block chain.
-Each **block** of transactions is hashed to create a **Merkle root**, which is
-stored in the **block header**.  Each block then stores the hash of the
-previous block's header, chaining the blocks together.  This ensures a
+Each **block** , which is typically a few thousand transactions,
+is hashed to create a **Merkle root** -- essentially, a hash of hashes.
+This is stored in the **block header**. Each block then stores the hash of the
+previous block's header, chaining the blocks together. This ensures a
 transaction cannot be modified without modifying the block that records
 it and all following blocks.
 
@@ -54,7 +54,7 @@ A single transaction can spend bitcoins to multiple outputs, as would be
 the case when sending bitcoins to multiple addresses, but each output of
 a particular transaction can only be used as an input once in the
 block chain. Any subsequent reference is a forbidden **double
-spend**---an attempt to spend the same bitcoins twice.
+spend** -- an attempt to spend the same bitcoins twice.
 
 Outputs are not the same as Bitcoin addresses. You can use the same
 address in multiple transactions, but you can only use each output once.
@@ -66,13 +66,19 @@ all transactions included in the block chain can be categorized as either
 **Unspent Transaction Outputs (UTXOs)** or spent transaction outputs. For a
 payment to be valid, it must only use UTXOs as inputs.
 
-Bitcoins cannot be left in a UTXO after it is spent or they will be
-irretrievably lost, so any difference between the number of bitcoins in a
-transaction's inputs and outputs is given as a
-**transaction fee** to the Bitcoin **miner** who creates the block
-containing that transaction. For example, in Figure 2 each transaction
-spends 10 millibits fewer than it receives from its combined inputs,
-effectively paying a 10 millibit transaction fee.
+Bitcoins cannot be left in a UTXO after a transaction: they will be
+irretrievably lost. So any difference between the number of bitcoins in a
+transaction's inputs and outputs is given as a **transaction fee** to 
+the Bitcoin **miner** who creates the block containing that transaction. 
+For example, in Figure 2 each transaction spends 10 millibits fewer than 
+it receives from its combined inputs, effectively paying a 10 millibit 
+transaction fee. 
+
+The spenders propose a transaction fee with each 
+transaction; miners decide whether the amount proposed is adequate,
+and only accept transactions that pass their threshold. Therefore,
+transactions with a higher proposed transaction fee are likely to be
+processed faster.
 
 #### Proof Of Work
 
@@ -151,18 +157,18 @@ down hashing with extra I/O.
 Any Bitcoin miner who successfully hashes a block header to a value
 below the target can add the entire block to the block chain.
 (Assuming the block is otherwise valid.) These blocks are commonly addressed
-by their **block height**---the number of blocks between them and the first Bitcoin
+by their **block height** -- the number of blocks between them and the first Bitcoin
 block (block 0, most commonly known as the **genesis block**). For example,
 block 2016 is where difficulty could have been first adjusted.
 
 ![Common And Uncommon Block Chain Forks](/img/dev/blockchain-fork.png)
 
 Multiple blocks can all have the same block height, as is common when
-two or more miners each produce a block at roughly the same time.  This
+two or more miners each produce a block at roughly the same time. This
 creates an apparent **fork** in the block chain, as shown in figure 3.
 
 When miners produce simultaneous blocks at the end of the block chain, each
-peer individually chooses which block to trust.  (In the absence of
+peer individually chooses which block to trust. (In the absence of
 other considerations, discussed below, peers usually trust the first
 block they see.)
 
@@ -182,7 +188,7 @@ such as some miners diligently working to extend the block chain at the
 same time other miners are attempting a 51 percent attack to revise
 transaction history.
 
-#### Double Spend Risk Analysis
+#### Double-Spend Risk Analysis
 
 The properties of the block chain described above ensure that transaction
 history is more difficult to modify the older it gets. But your programs
@@ -199,12 +205,12 @@ confidence score based on the number of blocks which would need to be
 modified to create a double spend. For each block that would need to be
 modified, the transaction gains one **confirmation.** Since modifying
 blocks is quite difficult, higher confirmation scores indicate greater
-double spend protection.
+double-spend protection.
 
 New transactions start with zero confirmations because they are not
 included in any blocks. A double spender who knows that your software
 performs an action in response to an unconfirmed transaction can create
-one transaction that pays you, wait for you to see the payment, and then
+one transaction that pays you, wait for you to see the payment (and send an item of value), and then
 create a double spend with a higher transaction fee that pays the same
 UTXO back to himself. Profit-motivated miners will attempt to put the
 transaction with the higher fee in a block, confirming it and leaving
@@ -216,14 +222,14 @@ performing a costly action, you may try one of the methods described in
 the next section to acquire information about transaction reliability
 from outside the Bitcoin protocol.
 
-Double spend risk decreases dramatically once the transaction is
+Double-spend risk decreases dramatically once the transaction is
 included in a block:
 
 * One confirmation indicates the transaction was included in the most
   recent block. As explained in the forking section above, the most
-  recent block gets replaced fairly often by accident, so a one
-  confirmation double spend is still a real possibility, although
-  a serial double spender would probably fail much more often than he
+  recent block gets replaced fairly often by accident, so a 
+  one-confirmation double spend is still a real possibility, although
+  serial double spenders would probably fail much more often than they
   would succeed.
 
 * Two confirmations indicates the most recent block was chained to the
@@ -238,18 +244,18 @@ included in a block:
   total network hashing power to replace six blocks. Although the number
   six is somewhat arbitrary, we recommend that software handling
   high-value transactions, or otherwise at risk for fraud, wait for at
-  least six confirmations before marking a payment as accepted.
+  least six confirmations before treating a payment as accepted.
 
 Bitcoin Core provides several RPCs which can provide your program
 with the confirmation score for transactions in your wallet or arbitrary
 transactions. For example, the `listunspent` RPC provides an array of
 every bitcoin you can spend along with its confirmation score.
 
-#### Non-Protocol Double Spend Risk Analysis
+#### Non-Protocol Double-Spend Risk Analysis
 
-Although the Bitcoin protocol provides excellent double spend protection
+Although the Bitcoin protocol provides excellent double-spend protection
 most of the time, there are at least two situations where programs may
-want to look outside the protocol for special double spend risk analysis:
+want to look outside the protocol for special double-spend risk analysis:
 
 1. In the case of an implementation bug or prolonged attack against
    Bitcoin which makes the system less reliable than expected.
@@ -257,7 +263,7 @@ want to look outside the protocol for special double spend risk analysis:
 2. In the case when the program or its user wants to accept zero confirmation
    payments.
 
-The best source for double spend protection outside Bitcoin is human
+The best source for double-spend protection outside Bitcoin is human
 intelligence. 
 
 In the case of a bug or attack, bad news about Bitcoin spreads fast, so
@@ -268,29 +274,29 @@ results to get currently active alerts for their specific version of
 Bitcoin Core.
 
 In the case of zero confirmation payments, fraudsters may act
-differently than legitimate customers, letting savvy merchants manually
+differently from legitimate customers, letting savvy merchants manually
 flag them as high risk before accepting payment.
 
 To take advantage of human intelligence, your program should provide an
 easy to trigger safe mode which stops automatic payment acceptance on a
-global basis, a per-customer basis, or both.  Like the big-red-button
+global basis, a per-customer basis, or both. Like the big-red-button
 type of safety switches found in dangerous factories, you may want to
 make the option easy to enable even by relatively unprivileged users of
 your program.
 
-Another source of double spend risk analysis can be acquired from
+Another source of double-spend risk analysis can be acquired from
 third-party services which aggregate information about the current
 operation of the Bitcoin network, such as the website BlockChain.info.
 
 These third-party services connect to large numbers of Bitcoin peers and
 track how they differ from each other. For example, they can detect a
-fork when different peers report a different block header hash at the
+fork when multiple peers report differing block header hashes at the
 same block height; if the fork extends for more than one or two blocks,
 indicating a possible attack, your program can go into a safe mode. 
 
 The service can also compare unconfirmed transactions among all
 connected peers to see if any UTXO is used in multiple unconfirmed
-transactions, indicating a double spend attempt; if a double spend
+transactions, indicating a double-spend attempt; if a double-spend
 attempt is detected, your program can refuse acceptance of the payment
 until it is confirmed.
 
@@ -397,7 +403,7 @@ The 80-byte block header contains the following six fields:
 
 1. The *version* number indicates which set of block validation rules
    to follow so Bitcoin Core developers can add features or
-   fix bugs.  As of block height 227,836, all blocks use version number
+   fix bugs. As of block height 227,836, all blocks use version number
    2.
 
 2. The *hash of the previous block header* puts this block on the
@@ -415,13 +421,13 @@ The 80-byte block header contains the following six fields:
    time currently more than two hours in the future according to the
    peer's clock.
 
-5. *Bits* translates into the target threshold value---the maximum allowed value
+5. *Bits* translates into the target threshold value -- the maximum allowed value
    for this block's hash. The bit value must be at least as challenging
    as the network difficulty at the time the block was mined.
 
 6. The *nonce* is an arbitrary input that miners can change to test different
    hash values for the header until they find a hash value less than or
-   equal to the target threshold.  If all values within the nonce's four
+   equal to the target threshold. If all values within the nonce's four
    bytes are tested, the time can be changed by one second or the
    generation transaction (described below) can be changed and the Merkle
    root updated.
@@ -432,23 +438,26 @@ Every block must include one or more transactions. Exactly one of these
 transactions must be a generation transaction which should collect and
 spend any transaction fees paid by transactions included in this block.
 All blocks with a block height less than 6,930,000 are entitled to
-receive a block reward of at least one newly-created satoshi, which also
-should be spent in the generation transaction. A generation transaction
-is invalid if it tries to spend more satoshis than are available from
-the transaction fees and block reward.
+receive a block reward of newly created bitcoin value, which also
+should be spent in the generation transaction. (The block reward started
+at 50 bitcoins and is being halved approximately every four years: as of
+March 2014, it's 25 bitcoins.) A generation transaction is invalid if it 
+tries to spend more value than is available from the transaction 
+fees and block reward.
 
 The generation transaction has the same basic format as any other
 transaction, but it references a single non-existent UTXO and a special
-coinbase field replaces the field which would normally hold a script and
+coinbase field replaces the field that would normally hold a script and
 signature. In version 2 blocks, the coinbase parameter must begin with
 the current block's block height and may contain additional arbitrary
 data or a script up to a maximum total of 100 bytes.
 
 Because they contain the special coinbase field, generation transactions
-are commonly called coinbase transactions.
+are commonly called coinbase transactions. (Not to be confused by 
+transactions by the company of the same name.)
 
 The UTXO of a generation transaction has the special condition that it
-cannot be spent (used as an input) for at least 100 blocks.  This
+cannot be spent (used as an input) for at least 100 blocks. This
 helps prevent a miner from spending the transaction fees and block
 reward from a block that will later be orphaned (destroyed) after a
 block fork.
