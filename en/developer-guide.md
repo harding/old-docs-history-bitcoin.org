@@ -553,6 +553,16 @@ bitcoins to a public key (not a standard hashed Bitcoin address).
 
 ## Transactions
 
+TODO, Relevant links:
+
+* [https://en.bitcoin.it/wiki/Transactions](https://en.bitcoin.it/wiki/Transactions)
+* [https://en.bitcoin.it/wiki/Technical_background_of_Bitcoin_addresses](https://en.bitcoin.it/wiki/Technical_background_of_Bitcoin_addresses)
+* [https://en.bitcoin.it/wiki/Script](https://en.bitcoin.it/wiki/Script)
+* [https://en.bitcoin.it/wiki/Contracts](https://en.bitcoin.it/wiki/Contracts)
+* [https://github.com/bitcoin/bips/blob/master/bip-0011.mediawiki (n of m transactions)](https://github.com/bitcoin/bips/blob/master/bip-0011.mediawiki)
+* [https://github.com/bitcoin/bips/blob/master/bip-0013.mediawiki (P2SH)](https://github.com/bitcoin/bips/blob/master/bip-0013.mediawiki)
+* [https://github.com/bitcoin/bips/blob/master/bip-0016.mediawiki (P2SH)](https://github.com/bitcoin/bips/blob/master/bip-0016.mediawiki)
+
 ### Basics
 
 ### Change addresses
@@ -563,6 +573,13 @@ bitcoins to a public key (not a standard hashed Bitcoin address).
 
 ## Wallets
 
+TODO, Relevant links:
+
+* [https://en.bitcoin.it/wiki/Wallet](https://en.bitcoin.it/wiki/Wallet)
+* [https://en.bitcoin.it/wiki/Wallet_import_format (private keys import format)](https://en.bitcoin.it/wiki/Wallet_import_format)
+* [https://en.bitcoin.it/wiki/Private_key](https://en.bitcoin.it/wiki/Private_key)
+* [https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki (HD / Deterministic wallets)](https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki)
+
 ### Private keys format
 
 ### Deterministic wallets formats
@@ -570,6 +587,11 @@ bitcoins to a public key (not a standard hashed Bitcoin address).
 ### JBOK (Just a bunch of keys) wallets formats (deprecated)
 
 ## Payment requests
+
+TODO, Relevant links:
+
+* [https://github.com/bitcoin/bips/blob/master/bip-0070.mediawiki (payment protocol)](https://github.com/bitcoin/bips/blob/master/bip-0070.mediawiki)
+* [https://github.com/bitcoin/bips/blob/master/bip-0071.mediawiki (payment protocol MIME types)](https://github.com/bitcoin/bips/blob/master/bip-0071.mediawiki)
 
 ### Payment request API
 
@@ -579,6 +601,11 @@ bitcoins to a public key (not a standard hashed Bitcoin address).
 
 ## Operating modes
 
+TODO, Relevant links:
+
+* [https://en.bitcoin.it/wiki/Thin_Client_Security (SPV / Simple Payment Verification)](https://en.bitcoin.it/wiki/Thin_Client_Security)
+* [https://bitcointalk.org/index.php?topic=88208.0 (OUT / Unspent output tree)](https://bitcointalk.org/index.php?topic=88208.0)
+
 ### Full node
 
 ### SPV
@@ -587,6 +614,11 @@ bitcoins to a public key (not a standard hashed Bitcoin address).
 
 ## P2P Network
 
+TODO, Relevant links:
+
+* [https://en.bitcoin.it/wiki/Network](https://en.bitcoin.it/wiki/Network)
+* [https://github.com/bitcoin/bips/blob/master/bip-0037.mediawiki (Bloom filters)](https://github.com/bitcoin/bips/blob/master/bip-0037.mediawiki)
+
 ### Blocks broadcasting
 
 ### Transactions broadcasting
@@ -594,6 +626,12 @@ bitcoins to a public key (not a standard hashed Bitcoin address).
 ### Alerts
 
 ## Mining
+
+TODO, Relevant links:
+
+* [https://en.bitcoin.it/wiki/Getwork](https://en.bitcoin.it/wiki/Getwork)
+* [https://github.com/bitcoin/bips/blob/master/bip-0022.mediawiki (getblocktemplate)](https://github.com/bitcoin/bips/blob/master/bip-0022.mediawiki)
+* [https://github.com/bitcoin/bips/blob/master/bip-0023.mediawiki (getblocktemplate)](https://github.com/bitcoin/bips/blob/master/bip-0023.mediawiki)
 
 ### getblocktemplate
 
