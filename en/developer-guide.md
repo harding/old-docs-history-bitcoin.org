@@ -33,8 +33,10 @@ and provides tools for retrieving and using block chain data.
 
 ![Block Chain Overview](/img/dev/blockchain-overview.png)
 
+<!-- DAH TODO provide merkle tree description; see mikehearn email -->
+
 Figure 1 shows a simplified version of a three-block block chain.
-Each **block** , which is typically a few thousand transactions,
+Each **block**, which is typically a few thousand transactions,
 is hashed to create a **Merkle root** -- essentially, a hash of hashes.
 This is stored in the **block header**. Each block then stores the hash of the
 previous block's header, chaining the blocks together. This ensures a
@@ -207,6 +209,8 @@ modified, the transaction gains one **confirmation.** Since modifying
 blocks is quite difficult, higher confirmation scores indicate greater
 double-spend protection.
 
+<!-- DAH TODO: rewrite to avoid fee-based replacement --> 
+
 New transactions start with zero confirmations because they are not
 included in any blocks. A double spender who knows that your software
 performs an action in response to an unconfirmed transaction can create
@@ -215,6 +219,8 @@ create a double spend with a higher transaction fee that pays the same
 UTXO back to himself. Profit-motivated miners will attempt to put the
 transaction with the higher fee in a block, confirming it and leaving
 you without the bitcoins you thought you received.
+
+<!-- DAH TODO: soften advice -->
 
 We do not recommend that naïve programs trust **zero confirmation
 transactions.** If you cannot wait for the next block to be mined before
@@ -288,6 +294,8 @@ Another source of double-spend risk analysis can be acquired from
 third-party services which aggregate information about the current
 operation of the Bitcoin network, such as the website BlockChain.info.
 
+<!-- DAH TODO: yet another source: bitcoinj -->
+
 These third-party services connect to large numbers of Bitcoin peers and
 track how they differ from each other. For example, they can detect a
 fork when multiple peers report differing block header hashes at the
@@ -351,7 +359,7 @@ Blocks can also be referenced by their block height, but multiple blocks
 can have the same height during a block chain fork, so block height
 should not be used as a globally unique identifier. In version 2 blocks,
 each block must place its height as the first parameter in the coinbase
-field of the generation transaction (described below), so block height
+field of the coinbase transaction (described below), so block height
 can be determined without access to previous blocks.
 
 #### Block Header
@@ -429,13 +437,13 @@ The 80-byte block header contains the following six fields:
    hash values for the header until they find a hash value less than or
    equal to the target threshold. If all values within the nonce's four
    bytes are tested, the time can be changed by one second or the
-   generation transaction (described below) can be changed and the Merkle
+   coinbase transaction (described below) can be changed and the Merkle
    root updated.
 
 #### Transaction Data
 
 Every block must include one or more transactions. Exactly one of these
-transactions must be a generation transaction which should collect and
+transactions must be a coinbase transaction which should collect and
 spend any transaction fees paid by transactions included in this block.
 All blocks with a block height less than 6,930,000 are entitled to
 receive a block reward of newly created bitcoin value, which also
@@ -452,21 +460,17 @@ signature. In version 2 blocks, the coinbase parameter must begin with
 the current block's block height and may contain additional arbitrary
 data or a script up to a maximum total of 100 bytes.
 
-Because they contain the special coinbase field, generation transactions
-are commonly called coinbase transactions. (Not to be confused by 
-transactions by the company of the same name.)
-
-The UTXO of a generation transaction has the special condition that it
+The UTXO of a coinbase transaction has the special condition that it
 cannot be spent (used as an input) for at least 100 blocks. This
 helps prevent a miner from spending the transaction fees and block
 reward from a block that will later be orphaned (destroyed) after a
 block fork.
 
-Blocks are not required to include any non-generation transactions, but
+Blocks are not required to include any non-coinbase transactions, but
 miners almost always do include additional transactions in order to
 collect their transaction fees.
 
-All transactions, including the generation transaction, are encoded into
+All transactions, including the coinbase transaction, are encoded into
 blocks in binary rawtransaction format prefixed by a block transaction
 sequence number.
 
@@ -594,3 +598,14 @@ bitcoins to a public key (not a standard hashed Bitcoin address).
 ### getblocktemplate
 
 ### getwork (deprecated, worth mentionning?)
+
+Full block validation is best left to the Bitcoin Core software as any
+failure by your program to validate blocks could make it reject blocks
+accepted by the rest of the network, which may prevent your program from
+detecting double spends -- and that means your program may accept double
+spends as valid payment.
+
+Simplified Payment Verification (SPV) is a greatly simplified form of
+verification which can be reliably implemented by third-party Bitcoin
+software because it operates mainly on block headers. It will be
+described elsewhere in this guide.
