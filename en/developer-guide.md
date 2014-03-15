@@ -23,8 +23,8 @@ To make this document easier to read, text inside code blocks has
 been modified as follows:
 
 1. Inside a string, bracket-elipse-bracket indicate a range of
-   consecutive non-whitespace characters were omited. For example, "The
-   hash of an empty string is `e3b0[...]b855`."
+   consecutive non-whitespace characters were omited. For example, the
+   hash of an empty string is `e3b0[...]b855`.
 
 2. On a line by itself, bracket-elipse-bracket indicates a range of
    consecutive lines were omitted. For example:
@@ -34,6 +34,21 @@ been modified as follows:
         2
         [...]
         5
+
+3. When long strings are shown in their entirity, backslash-newline
+   indicates a single string has been printed across multiple lines. For
+   example, this is the full version of the first standard transaction
+   ever made:
+
+        0100000001c997a5e56e104102fa209c6a852dd90660a20b2d9c352423edce25\
+        857fcd3704000000004847304402204e45e16932b8af514961a1d3a1a25fdf3f\
+        4f7732e9d624c6c61548ab5fb8cd410220181522ec8eca07de4860a4acdd1290\
+        9d831cc56cbbac4622082221a8768d1d0901ffffffff0200ca9a3b0000000043\
+        4104ae1a62fe09c5f51b13905f07f06b99a2f7159b2225f374cd378d71302fa2\
+        8414e7aab37397f554a7df5f142c21c1b7303b8a0626f1baded5c72a704f7e6c\
+        d84cac00286bee0000000043410411db93e1dcdb8a016b49840f8c53bc1eb68a\
+        382e97b1482ecad7b148a6909a5cb2e0eaddfb84ccf9744464f82e160bfa9b8b\
+        64f9d4c03f999b8643f656b412a3ac00000000
 
 
 <div markdown="1" class="toccontent">
@@ -341,9 +356,9 @@ the current block version number, find the current block height by
 checking the blocks field of the `getinfo` RPC results:
 
     > getinfo
-    ...
+    [...]
     "blocks" : 289802,
-    ...
+    [...]
 
 Then get the hash of that block using the `getblockhash` RPC:
 
@@ -353,9 +368,9 @@ Then get the hash of that block using the `getblockhash` RPC:
 Finally check the version field of that block using the `getblock` RPC:
 
     > getblock 0000000000000000fbff61fa45f4b218db7745c4d89990725c35dbdaa446bacb
-    ...
+    [...]
     "version" : 2,
-    ...
+    [...]
 
 As of version 2 blocks, each block consists of four root elements:
 
@@ -504,24 +519,24 @@ We can get the hash of block 170's header with the `getblockhash` RPC:
 
 We can then get a decoded version of that block with the `getblock` RPC:
 
-    > getblock 00000000d1145790a8694403d4063f323d499e655c83426834d4ce2f8dd4a2ee
+    > getblock 0000[...]a2ee
     {
-        "hash" : "00000000d1145790a8694403d4063f323d499e655c83426834d4ce2f8dd4a2ee",
+        "hash" : "0000[...]a2ee",
         "confirmations" : 289424,
         "size" : 490,
         "height" : 170,
         "version" : 1,
-        "merkleroot" : "7dac2c5666815c17a3b36427de37bb9d2e2c5ccec3f8633eb91a4205cb4c10ff",
+        "merkleroot" : "7dac[...]10ff",
         "tx" : [
-            "b1fea52486ce0c62bb442b530a3f0132b826c74e473d1f2c220bfa78111c5082",
-            "f4184fc596403b9d638783cf57adfe4c75c605f6356fbc91338530e9831e9e16"
+            "b1fe[...]5082",
+            "f418[...]9e16"
         ],
         "time" : 1231731025,
         "nonce" : 1889418792,
         "bits" : "1d00ffff",
         "difficulty" : 1.00000000,
-        "previousblockhash" : "000000002a22cfee1f2c846adbd12b3e183d4f97683f85dad08a79780a84bd55",
-        "nextblockhash" : "00000000c9ec538cab7f38ef9c67a95742f56ab07b0a37c5be6b02808dbfb4e0"
+        "previousblockhash" : "0000[...]bd55",
+        "nextblockhash" : "0000[...]b4e0"
     }
 
 Note: the only values above which are actually part of the block are size,
@@ -533,15 +548,15 @@ this case, the generation transaction. The txid is a hash of the raw
 transaction. We can get the actual raw transaction in hexadecimal format
 from the block chain using the `getrawtransaction` RPC with the txid:
 
-    > getrawtransaction b1fea52486ce0c62bb442b530a3f0132b826c74e473d1f2c220bfa78111c5082
-    01000000...00000000  ### 130 bytes elided for readability
+    > getrawtransaction b1fe[...]5082
+    01000000[...]00000000
 
 We can expand the raw transaction hex into a human-readable format by
 passing the raw transaction to the `decoderawtransaction` RPC:
 
-    > decoderawtransaction 01000000...00000000  ### 130 bytes elided
+    > decoderawtransaction 01000000[...]00000000
     {
-        "txid" : "b1fea52486ce0c62bb442b530a3f0132b826c74e473d1f2c220bfa78111c5082",
+        "txid" : "b1fea[...]5082",
         "version" : 1,
         "locktime" : 0,
         "vin" : [
@@ -555,8 +570,8 @@ passing the raw transaction to the `decoderawtransaction` RPC:
                 "value" : 50.00000000,
                 "n" : 0,
                 "scriptPubKey" : {
-                    "asm" : "04d46c4968bde02899d2aa0963367c7a6ce34eec332b32e42e5f3407e052d64ac625da6f0718e7b302140434bd725706957c092db53805b821a85b23a7ac61725b OP_CHECKSIG",
-                    "hex" : "4104d46c4968bde02899d2aa0963367c7a6ce34eec332b32e42e5f3407e052d64ac625da6f0718e7b302140434bd725706957c092db53805b821a85b23a7ac61725bac",
+                    "asm" : "04d4[...]725b OP_CHECKSIG",
+                    "hex" : "4104[...]5bac",
                     "reqSigs" : 1,
                     "type" : "pubkey",
                     "addresses" : [
