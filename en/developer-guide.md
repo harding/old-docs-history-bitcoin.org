@@ -58,6 +58,27 @@ specifications.
 
     *   [getblocktemplate](#)
 
+## Conventions Used In This Guide
+
+<!-- DAH TODO: no table of contents entry -->
+
+To make this document easier to read, text inside code blocks has
+been modified as follows:
+
+1. Inside a string, bracket-elipse-bracket indicate a range of
+   consecutive non-whitespace characters were omited. For example, "The
+   hash of an empty string is `e3b0[...]b855`."
+
+2. On a line by itself, bracket-elipse-bracket indicates a range of
+   consecutive lines were omitted. For example:
+
+        $ seq 1 5
+        1
+        2
+        [...]
+        5
+
+
 
 
 ## The Bitcoin Block Chain
