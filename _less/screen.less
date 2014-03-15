@@ -622,6 +622,13 @@ li p{
 	padding-top:40px;
 	margin-top:-40px;
 }
+.toc div{
+	overflow-y:auto;
+	overflow-x:hidden;
+}
+.toc div.scroll{
+	position:fixed;
+}
 .toc ul,
 .toc li{
 	list-style:none;
@@ -633,12 +640,7 @@ li p{
 	border-right:1px solid #e0e0e0;
 	padding:0 20px 0 0;
 }
-.toc.scroll ul{
-	position:fixed;
-	top:20px;
-}
-.toc ul li ul,
-.toc.scroll ul li ul{
+.toc ul li ul{
 	position:relative;
 	top:0;
 	padding:10px 0 0 0;
@@ -1484,15 +1486,16 @@ h2 .rssicon{
 		border:2px dashed #4892b2;
 		display:inline-block;
 	}
+	.toc div.scroll{
+		position:static;
+	}
 	.toc ul,
 	.toc.scroll ul{
-		position:static;
 		width:auto;
 		padding:0;
 		border:0;
 	}
-	.toc ul li ul,
-	.toc.scroll ul li ul{
+	.toc ul li ul{
 		display:block;
 	}
 	.toc ul li a{

@@ -9,11 +9,12 @@ title: "Developer Guide - Bitcoin"
 
 <p class="summary">Find detailed information about the Bitcoin protocol and related specifications.</p>
 
-<div markdown="1" id="toc" class="toc">
+<div markdown="1" id="toc" class="toc"><div markdown="1">
 
 * Table of contents
 {:toc}
-</div>
+
+</div></div>
 
 ## Conventions Used In This Guide
 
