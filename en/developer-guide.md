@@ -17,12 +17,10 @@ title: "Developer Guide - Bitcoin"
 
 ## Conventions Used In This Guide
 
-<!-- DAH TODO: no table of contents entry -->
-
 To make this document easier to read, text inside code blocks has
 been modified as follows:
 
-1. Inside a string, bracket-elipse-bracket indicate a range of
+1. Inside a string, bracket-elipse-bracket indicates a range of
    consecutive non-whitespace characters were omited. For example, the
    hash of an empty string is `e3b0[...]b855`.
 
