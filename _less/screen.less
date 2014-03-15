@@ -600,10 +600,10 @@ li p{
 .index ul{
 	padding:10px 0;
 }
-.index li{
+.index li a{
 	font-weight:bold;
 }
-.index ul li{
+.index ul ul li a{
 	font-weight:normal;
 }
 .index a,
@@ -613,6 +613,73 @@ li p{
 	display:block;
 	text-decoration:none;
 	line-height:1.5em;
+}
+
+.toc{
+	position:absolute;
+	left:20px;
+	text-align:left;
+	padding-top:40px;
+	margin-top:-40px;
+}
+.toc ul,
+.toc li{
+	list-style:none;
+	padding:0;
+	margin:0;
+}
+.toc ul{
+	width:220px;
+	border-right:1px solid #e0e0e0;
+	padding:0 20px 0 0;
+}
+.toc.scroll ul{
+	position:fixed;
+	top:20px;
+}
+.toc ul li ul,
+.toc.scroll ul li ul{
+	position:relative;
+	top:0;
+	padding:10px 0 0 0;
+	border:0;
+	display:none;
+}
+.toc ul li:hover ul,
+.toc ul li.active ul{
+	display:block;
+}
+.toc ul li{
+	padding:0 0 10px 0;
+}
+.toc ul li ul li{
+	padding:0 0 4px 0;
+}
+.toc ul li a{
+	padding-left:20px;
+	font-weight:bold;
+}
+.toc ul li ul li a{
+	font-weight:normal;
+}
+.toc ul li ul li a:hover:before,
+.toc ul li ul li a.active:before{
+	content:">";
+	position:absolute;
+	font-weight:bold;
+	left:0px;
+}
+.toc a,
+.toc a:link,
+.toc a:active,
+.toc a:visited{
+	display:block;
+	text-decoration:none;
+	line-height:1.5em;
+}
+.toccontent{
+	width:600px;
+	margin:auto 0 auto auto;
 }
 
 .box{
@@ -1409,6 +1476,34 @@ h2 .rssicon{
 	}
 	.index li{
 		padding:3px 0;
+	}
+	.toc{
+		position:static;
+		margin-top:0px;
+		padding:10px;
+		border:2px dashed #4892b2;
+		display:inline-block;
+	}
+	.toc ul,
+	.toc.scroll ul{
+		position:static;
+		width:auto;
+		padding:0;
+		border:0;
+	}
+	.toc ul li ul,
+	.toc.scroll ul li ul{
+		display:block;
+	}
+	.toc ul li a{
+		padding:0;
+	}
+	.toccontent{
+		width:auto;
+	}
+	.toc ul li ul li a:hover:before,
+	.toc ul li ul li a.active:before{
+		content:"";
 	}
 	.contributors{
 		width:auto;
