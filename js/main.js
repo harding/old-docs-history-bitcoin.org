@@ -57,6 +57,32 @@ for(var i=0;i<4;i++){
 return Math.max(0,a.offsetHeight-p[0]-p[2]);
 }
 
+function getLeft(a){
+//Return the integer value of the computed distance between given node and the browser window.
+//Ex. getLeft(node);
+var b=a.offsetLeft;
+while(a.offsetParent){a=a.offsetParent;b+=a.offsetLeft;}
+return b;
+}
+
+function getTop(a){
+//Return the integer value of the computed distance between given node and the browser window.
+//Ex. getTop(node);
+var b=a.offsetTop;
+while(a.offsetParent){a=a.offsetParent;b+=a.offsetTop;}
+return b;
+}
+
+function getPageYOffset(){
+//Return the integer value for the vertical position of the scroll bar.
+return (window.pageYOffset)?window.pageYOffset:document.documentElement.scrollTop;
+}
+
+function getPageXOffset(){
+//Return the integer value for the horizontal position of the scroll bar.
+return (window.pageXOffset)?window.pageXOffset:document.documentElement.scrollLeft;
+}
+
 function supportsSVG(){
 //Return true if the browser supports SVG.
 //Ex. if(!supportsSVG()){..apply png fallback..}
@@ -231,6 +257,47 @@ for(var i=0,nds=document.getElementsByTagName('DIV'),n=nds.length;i<n;i++){
 	nds[i].style.opacity=0;nds[i].style.display='none';}
 }
 removeEvent(window,'scroll',mobileWHide);
+}
+
+function updateToc(){
+//Update table of content style on scroll.
+var update=function(){
+	var toc=document.getElementById('toc');
+	var offset=getPageYOffset();
+	if(offset>getTop(toc))toc.className='toc scroll';
+	else toc.className='toc';
+	var fallback=document.getElementsByTagName('H2')[0];
+	var first=[fallback,getTop(fallback)];
+	var closer=[fallback,getTop(fallback)];
+	var nodes=[];
+	for(var i=0,t=document.getElementsByTagName('H2'),n=t.length;i<n;i++)nodes.push(t[i]);
+	for(var i=0,t=document.getElementsByTagName('H3'),n=t.length;i<n;i++)nodes.push(t[i]);
+	for(var i=0,t=document.getElementsByTagName('H4'),n=t.length;i<n;i++)nodes.push(t[i]);
+	for(var i=0,n=nodes.length;i<n;i++){
+		if(!nodes[i].id)continue;
+		var top=getTop(nodes[i]);
+		if(top<first[1])first=[nodes[i],top];
+		if(top<offset+10&&top>closer[1])closer=[nodes[i],top];
+	}
+	if(offset<first[1])closer=[first[0],first[1]];
+	var a=false;
+	for(var i=0,t=toc.getElementsByTagName('*'),n=t.length;i<n;i++){
+		if(t[i].className&&t[i].className.indexOf('active')!==-1)t[i].className='';
+		if(t[i].nodeName=='A'&&t[i].getAttribute('href')=='#'+closer[0].id)a=t[i];
+	}
+	if(a===false)return;
+	while(a.parentNode.nodeName=='LI'||a.parentNode.nodeName=='UL'){
+		a.className='active';
+		a=a.parentNode;
+	}
+}
+var timeout=function(){
+	var toc=document.getElementById('toc');
+	clearTimeout(toc.getAttribute('timeout'));
+	toc.setAttribute('timeout',setTimeout(update,1));
+}
+addEvent(window,'scroll',timeout);
+update();
 }
 
 function makeEditable(e){

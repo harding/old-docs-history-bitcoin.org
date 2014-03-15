@@ -9,14 +9,14 @@ title: "Developer Guide - Bitcoin"
 
 <p class="summary">Find detailed information about the Bitcoin protocol and related specifications.</p>
 
-<div markdown="1" class="index">
+<div markdown="1" id="toc" class="toc">
 
 * Table of content
 {:toc}
 
 </div>
 
-
+<div markdown="1" class="toccontent">
 
 ## The Bitcoin Block Chain
 
@@ -647,3 +647,7 @@ Simplified Payment Verification (SPV) is a greatly simplified form of
 verification which can be reliably implemented by third-party Bitcoin
 software because it operates mainly on block headers. It will be
 described elsewhere in this guide.
+
+</div>
+
+<script>updateToc();</script>
