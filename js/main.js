@@ -83,6 +83,16 @@ function getPageXOffset(){
 return (window.pageXOffset)?window.pageXOffset:document.documentElement.scrollLeft;
 }
 
+function getWindowY(){
+//Return the integer value for the browser window height.
+return (window.innerHeight)?window.innerHeight:document.documentElement.clientHeight;
+}
+
+function getWindowX(){
+//Return the integer value for the browser window width.
+return (window.innerWidth)?window.innerWidth:document.documentElement.clientWidth;
+}
+
 function supportsSVG(){
 //Return true if the browser supports SVG.
 //Ex. if(!supportsSVG()){..apply png fallback..}
@@ -263,9 +273,15 @@ function updateToc(){
 //Update table of content style on scroll.
 var update=function(){
 	var toc=document.getElementById('toc');
+	var div=toc.getElementsByTagName('DIV')[0];
 	var offset=getPageYOffset();
-	if(offset>getTop(toc))toc.className='toc scroll';
-	else toc.className='toc';
+	var windowy=getWindowY();
+	if(offset>getTop(toc)){
+		div.className='scroll';
+		div.style.top='20px';
+		div.style.bottom=Math.max((offset+windowy)-(getHeight(toc.parentNode)+getTop(toc.parentNode)),20)+'px';
+	}
+	else div.className='';
 	var fallback=document.getElementsByTagName('H2')[0];
 	var first=[fallback,getTop(fallback)];
 	var closer=[fallback,getTop(fallback)];
