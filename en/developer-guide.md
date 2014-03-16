@@ -429,8 +429,9 @@ The 80-byte block header contains the following six fields:
    time currently more than two hours in the future according to the
    peer's clock.
 
-5. *Bits* translates into the target threshold value -- the maximum allowed value
-   for this block's hash. The bits value must be exact.
+5. *Bits* translates into the target threshold value -- the maximum allowed
+   value for this block's hash. The bits value must match the network
+   difficulty at the time the block was mined.
 
 6. The *nonce* is an arbitrary input that miners can change to test different
    hash values for the header until they find a hash value less than or
