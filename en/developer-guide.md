@@ -415,8 +415,7 @@ The 80-byte block header contains the following six fields:
 
 2. The *hash of the previous block header* puts this block on the
    block chain and ensures no previous block can be changed without also
-   changing this block's header. The hash value must be below the target
-   value defined by bits.
+   changing this block's header.
 
 3. The *Merkle root* is a hash of all the transactions included
    in this block. It ensures no transactions can be modified in this
