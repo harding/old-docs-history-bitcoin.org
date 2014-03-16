@@ -518,7 +518,8 @@ We can get the hash of block 170's header with the `getblockhash` RPC:
 
 We can then get a decoded version of that block with the `getblock` RPC:
 
-    > getblock 0000[...]a2ee
+    > getblock 00000000d1145790a8694403d4063f323d499e655c83\
+      426834d4ce2f8dd4a2ee
     {
         "hash" : "0000[...]a2ee",
         "confirmations" : 289424,
@@ -547,13 +548,20 @@ this case, the generation transaction. The txid is a hash of the raw
 transaction. We can get the actual raw transaction in hexadecimal format
 from the block chain using the `getrawtransaction` RPC with the txid:
 
-    > getrawtransaction b1fe[...]5082
+    > getrawtransaction b1fea52486ce0c62bb442b530a3f0132b82\
+      6c74e473d1f2c220bfa78111c5082
     01000000[...]00000000
 
 We can expand the raw transaction hex into a human-readable format by
 passing the raw transaction to the `decoderawtransaction` RPC:
 
-    > decoderawtransaction 01000000[...]00000000
+    > decoderawtransaction 01000000010000000000000000000000\
+      000000000000000000000000000000000000000000ffffffff070\
+      4ffff001d0102ffffffff0100f2052a01000000434104d46c4968\
+      bde02899d2aa0963367c7a6ce34eec332b32e42e5f3407e052d64\
+      ac625da6f0718e7b302140434bd725706957c092db53805b821a8\
+      5b23a7ac61725bac00000000
+
     {
         "txid" : "b1fea[...]5082",
         "version" : 1,
