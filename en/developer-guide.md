@@ -50,7 +50,7 @@ been modified as follows:
         64f9d4c03f999b8643f656b412a3ac00000000
 
 
-<div markdown="1" class="toccontent">
+<!--#md#<div markdown="1" class="toccontent">#md#-->
 
 ## The Bitcoin Block Chain
 
@@ -682,6 +682,6 @@ verification which can be reliably implemented by third-party Bitcoin
 software because it operates mainly on block headers. It will be
 described elsewhere in this guide.
 
-</div>
+<!--#md#</div>#md#-->
 
 <script>updateToc();</script>

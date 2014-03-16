@@ -319,6 +319,7 @@ update();
 function makeEditable(e){
 //An easter egg that makes the page editable when user click on the page and hold their mouse button for one second.
 //This trick allows translators and writers to preview their work.
+return;//FIXME makeEditable shouldn't be triggered when using scrollbars displayed on the page.
 if(!e)var e=window.event;
 switch(e.type){
 case 'mousedown':
