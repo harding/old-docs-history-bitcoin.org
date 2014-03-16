@@ -152,13 +152,12 @@ threshold. Bitcoin itself does not track probabilities but instead
 simply assumes that the lower it makes the target threshold, the more
 hash attempts, on average, will need to be tried.
 
-Each block can set its own target, but new blocks will only be added to
-the block chain if their target is at least as challenging as a
-**difficulty** value expected by the peer-to-peer network. Every 2,016
-blocks, the network uses timestamps stored in each block header to
-calculate the number of seconds elapsed between generation of the first
-and last of those last 2,016 blocks. The ideal value is 1,209,600
-seconds (two weeks).
+New blocks will only be added to the block chain if their hash is at
+least as challenging as a **difficulty** value expected by the peer-to-peer
+network. Every 2,016 blocks, the network uses timestamps stored in each
+block header to calculate the number of seconds elapsed between generation
+of the first and last of those last 2,016 blocks. The ideal value is
+1,209,600 seconds (two weeks).
 
 * If it took fewer than two weeks to generate the 2,016 blocks,
   the expected difficulty value is increased proportionally (by as much
@@ -463,9 +462,9 @@ The 80-byte block header contains the following six fields:
    time currently more than two hours in the future according to the
    peer's clock.
 
-5. *Bits* translates into the target threshold value -- the maximum allowed value
-   for this block's hash. The bit value must be at least as challenging
-   as the network difficulty at the time the block was mined.
+5. *Bits* translates into the target threshold value -- the maximum allowed
+   value for this block's hash. The bits value must match the network
+   difficulty at the time the block was mined.
 
 6. The *nonce* is an arbitrary input that miners can change to test different
    hash values for the header until they find a hash value less than or
