@@ -19,41 +19,10 @@ please [open an issue](https://github.com/saivann/bitcoin.org/issues).)
 
 </div></div>
 
-## Conventions Used In This Guide
-
-To make this document easier to read, text inside code blocks has
-been modified as follows:
-
-1. Inside a string, bracket-elipse-bracket indicates a range of
-   consecutive non-whitespace characters were omited. For example, the
-   hash of an empty string is `e3b0[...]b855`.
-
-2. On a line by itself, bracket-elipse-bracket indicates a range of
-   consecutive lines were omitted. For example:
-
-        $ seq 1 5
-        1
-        2
-        [...]
-        5
-
-3. When long strings are shown in their entirity, backslash-newline
-   indicates a single string has been printed across multiple lines. For
-   example, this is the full version of the first standard transaction
-   ever made:
-
-        0100000001c997a5e56e104102fa209c6a852dd90660a20b2d9c352423edce25\
-        857fcd3704000000004847304402204e45e16932b8af514961a1d3a1a25fdf3f\
-        4f7732e9d624c6c61548ab5fb8cd410220181522ec8eca07de4860a4acdd1290\
-        9d831cc56cbbac4622082221a8768d1d0901ffffffff0200ca9a3b0000000043\
-        4104ae1a62fe09c5f51b13905f07f06b99a2f7159b2225f374cd378d71302fa2\
-        8414e7aab37397f554a7df5f142c21c1b7303b8a0626f1baded5c72a704f7e6c\
-        d84cac00286bee0000000043410411db93e1dcdb8a016b49840f8c53bc1eb68a\
-        382e97b1482ecad7b148a6909a5cb2e0eaddfb84ccf9744464f82e160bfa9b8b\
-        64f9d4c03f999b8643f656b412a3ac00000000
-
 
 <!--#md#<div markdown="1" class="toccontent">#md#-->
+
+**Note**: Some strings are shortened or wrapped: "[...]" indicates extra data was removed, and lines ending in a single backslash "\\" are continued below.
 
 ## The Bitcoin Block Chain
 
@@ -357,6 +326,7 @@ the current block version number, find the current block height by
 checking the blocks field of the `getinfo` RPC results:
 
     > getinfo
+
     [...]
     "blocks" : 289802,
     [...]
@@ -364,11 +334,14 @@ checking the blocks field of the `getinfo` RPC results:
 Then get the hash of that block using the `getblockhash` RPC:
 
     > getblockhash 289802
+
     0000000000000000fbff61fa45f4b218db7745c4d89990725c35dbdaa446bacb
 
 Finally check the version field of that block using the `getblock` RPC:
 
-    > getblock 0000000000000000fbff61fa45f4b218db7745c4d89990725c35dbdaa446bacb
+    > getblock 0000000000000000fbff61fa45f4b218db7745c4d899\
+    90725c35dbdaa446bacb
+
     [...]
     "version" : 2,
     [...]
@@ -516,12 +489,14 @@ The first block with more than one transaction is at block height 170.
 We can get the hash of block 170's header with the `getblockhash` RPC:
 
     > getblockhash 170
+
     00000000d1145790a8694403d4063f323d499e655c83426834d4ce2f8dd4a2ee
 
 We can then get a decoded version of that block with the `getblock` RPC:
 
     > getblock 00000000d1145790a8694403d4063f323d499e655c83\
       426834d4ce2f8dd4a2ee
+
     {
         "hash" : "0000[...]a2ee",
         "confirmations" : 289424,
@@ -552,6 +527,7 @@ from the block chain using the `getrawtransaction` RPC with the txid:
 
     > getrawtransaction b1fea52486ce0c62bb442b530a3f0132b82\
       6c74e473d1f2c220bfa78111c5082
+
     01000000[...]00000000
 
 We can expand the raw transaction hex into a human-readable format by
