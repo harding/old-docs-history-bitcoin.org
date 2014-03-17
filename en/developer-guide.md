@@ -19,39 +19,7 @@ title: "Developer Guide - Bitcoin"
 
 <!--#md#<div markdown="1" class="toccontent">#md#-->
 
-## Conventions Used In This Guide
-{:.no_toc}
-
-To make this document easier to read, text inside code blocks has
-been modified as follows:
-
-1. Inside a string, bracket-elipse-bracket indicates a range of
-   consecutive non-whitespace characters were omited. For example, the
-   hash of an empty string is `e3b0[...]b855`.
-
-2. On a line by itself, bracket-elipse-bracket indicates a range of
-   consecutive lines were omitted. For example:
-
-        $ seq 1 5
-        1
-        2
-        [...]
-        5
-
-3. When long strings are shown in their entirity, backslash-newline
-   indicates a single string has been printed across multiple lines. For
-   example, this is the full version of the first standard transaction
-   ever made:
-
-        0100000001c997a5e56e104102fa209c6a852dd90660a20b2d9c352423edce25\
-        857fcd3704000000004847304402204e45e16932b8af514961a1d3a1a25fdf3f\
-        4f7732e9d624c6c61548ab5fb8cd410220181522ec8eca07de4860a4acdd1290\
-        9d831cc56cbbac4622082221a8768d1d0901ffffffff0200ca9a3b0000000043\
-        4104ae1a62fe09c5f51b13905f07f06b99a2f7159b2225f374cd378d71302fa2\
-        8414e7aab37397f554a7df5f142c21c1b7303b8a0626f1baded5c72a704f7e6c\
-        d84cac00286bee0000000043410411db93e1dcdb8a016b49840f8c53bc1eb68a\
-        382e97b1482ecad7b148a6909a5cb2e0eaddfb84ccf9744464f82e160bfa9b8b\
-        64f9d4c03f999b8643f656b412a3ac00000000
+**Note**: Some strings are shortened or wrapped: "[...]" indicates extra data was removed, and lines ending in a single backslash "\\" are continued below.
 
 ## The Bitcoin Block Chain
 
