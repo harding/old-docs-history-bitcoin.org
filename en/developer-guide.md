@@ -19,6 +19,13 @@ title: "Developer Guide - Bitcoin"
 
 <!--#md#<div markdown="1" class="toccontent">#md#-->
 
+(This document is still being written; if you find a mistake, please
+[open an issue](https://github.com/saivann/bitcoin.org/issues). If you
+want to write or edit a section, please send us a message on our [forum
+thread](https://bitcointalk.org/index.php?topic=511876) or [sign up for
+our mailing
+list](https://groups.google.com/forum/?hl=en#!forum/bitcoin-documentation).)
+
 **Note**: Some strings are shortened or wrapped: "[...]" indicates extra data was removed, and lines ending in a single backslash "\\" are continued below.
 
 ## The Bitcoin Block Chain
@@ -39,7 +46,7 @@ and provides tools for retrieving and using block chain data.
 <!-- DAH TODO provide merkle tree description; see mikehearn email -->
 
 Figure 1 shows a simplified version of a three-block block chain.
-Each **block**, which is typically a few thousand transactions,
+Each **block**, which is typically a few hundred transactions,
 is hashed to create a **Merkle root** -- essentially, a hash of hashes.
 This is stored in the **block header**. Each block then stores the hash of the
 previous block's header, chaining the blocks together. This ensures a
