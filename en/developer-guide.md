@@ -355,6 +355,7 @@ the current block version number, find the current block height by
 checking the blocks field of the `getinfo` RPC results:
 
     > getinfo
+
     [...]
     "blocks" : 289802,
     [...]
@@ -362,11 +363,14 @@ checking the blocks field of the `getinfo` RPC results:
 Then get the hash of that block using the `getblockhash` RPC:
 
     > getblockhash 289802
+
     0000000000000000fbff61fa45f4b218db7745c4d89990725c35dbdaa446bacb
 
 Finally check the version field of that block using the `getblock` RPC:
 
-    > getblock 0000000000000000fbff61fa45f4b218db7745c4d89990725c35dbdaa446bacb
+    > getblock 0000000000000000fbff61fa45f4b218db7745c4d899\
+    90725c35dbdaa446bacb
+
     [...]
     "version" : 2,
     [...]
@@ -514,12 +518,14 @@ The first block with more than one transaction is at block height 170.
 We can get the hash of block 170's header with the `getblockhash` RPC:
 
     > getblockhash 170
+
     00000000d1145790a8694403d4063f323d499e655c83426834d4ce2f8dd4a2ee
 
 We can then get a decoded version of that block with the `getblock` RPC:
 
     > getblock 00000000d1145790a8694403d4063f323d499e655c83\
       426834d4ce2f8dd4a2ee
+
     {
         "hash" : "0000[...]a2ee",
         "confirmations" : 289424,
@@ -550,6 +556,7 @@ from the block chain using the `getrawtransaction` RPC with the txid:
 
     > getrawtransaction b1fea52486ce0c62bb442b530a3f0132b82\
       6c74e473d1f2c220bfa78111c5082
+
     01000000[...]00000000
 
 We can expand the raw transaction hex into a human-readable format by
