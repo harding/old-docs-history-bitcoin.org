@@ -9,9 +9,6 @@ title: "Developer Guide - Bitcoin"
 
 <p class="summary">Find detailed information about the Bitcoin protocol and related specifications.</p>
 
-(Note: this document is still being written.  If you find a mistake,
-please [open an issue](https://github.com/saivann/bitcoin.org/issues).)
-
 <div markdown="1" id="toc" class="toc"><div markdown="1">
 
 * Table of contents
@@ -21,6 +18,13 @@ please [open an issue](https://github.com/saivann/bitcoin.org/issues).)
 
 
 <!--#md#<div markdown="1" class="toccontent">#md#-->
+
+(This document is still being written; if you find a mistake, please
+[open an issue](https://github.com/saivann/bitcoin.org/issues). If you
+want to write or edit a section, please send us a message on our [forum
+thread](https://bitcointalk.org/index.php?topic=511876) or [sign up for
+our mailing
+list](https://groups.google.com/forum/?hl=en#!forum/bitcoin-documentation).)
 
 **Note**: Some strings are shortened or wrapped: "[...]" indicates extra data was removed, and lines ending in a single backslash "\\" are continued below.
 
