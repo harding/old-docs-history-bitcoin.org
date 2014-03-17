@@ -9,6 +9,9 @@ title: "Developer Guide - Bitcoin"
 
 <p class="summary">Find detailed information about the Bitcoin protocol and related specifications.</p>
 
+(Note: this document is still being written.  If you find a mistake,
+please [open an issue](https://github.com/saivann/bitcoin.org/issues).)
+
 <div markdown="1" id="toc" class="toc"><div markdown="1">
 
 * Table of contents
@@ -70,7 +73,7 @@ and provides tools for retrieving and using block chain data.
 <!-- DAH TODO provide merkle tree description; see mikehearn email -->
 
 Figure 1 shows a simplified version of a three-block block chain.
-Each **block**, which is typically a few thousand transactions,
+Each **block**, which is typically a few hundred transactions,
 is hashed to create a **Merkle root** -- essentially, a hash of hashes.
 This is stored in the **block header**. Each block then stores the hash of the
 previous block's header, chaining the blocks together. This ensures a
