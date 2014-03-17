@@ -19,12 +19,8 @@ title: "Developer Guide - Bitcoin"
 
 <!--#md#<div markdown="1" class="toccontent">#md#-->
 
-(This document is still being written; if you find a mistake, please
-[open an issue](https://github.com/saivann/bitcoin.org/issues). If you
-want to write or edit a section, please send us a message on our [forum
-thread](https://bitcointalk.org/index.php?topic=511876) or [sign up for
-our mailing
-list](https://groups.google.com/forum/?hl=en#!forum/bitcoin-documentation).)
+<p style="padding:10px;background-color:rgb(255, 242, 202);"><b>Contribute</b>: This document is still being written; if you find a mistake, please
+<a href="https://github.com/saivann/bitcoin.org/issues">open an issue</a>. If you want to write or edit a section, please read and comment on our <a href="https://bitcointalk.org/index.php?topic=511876">forum thread</a> or sign up for our <a href="https://groups.google.com/forum/?hl=en#!forum/bitcoin-documentation">mailing list</a>.</p>
 
 **Note**: Some strings are shortened or wrapped: "[...]" indicates extra data was removed, and lines ending in a single backslash "\\" are continued below.
 
