@@ -573,6 +573,1128 @@ bitcoins to a public key (not a standard hashed Bitcoin address).
 
 ## Transactions
 
+<!-- reference tx (made by Satoshi in block 170): 
+    bitcoind decoderawtransaction $( bitcoind getrawtransaction f4184fc596403b9d638783cf57adfe4c75c605f6356fbc91338530e9831e9e16 )
+-->
+
+<!-- SOMEDAY: we need more terms than just output/input to denote the
+various ways the outputs/inputs are used, such as "prevout", "nextout",
+"curout", "curin", "nextin".  (Is there any use for "previn"?)  Someday,
+when I'm terribly bored, I should rewrite this whole transaction section
+to use those terms and then get feedback to see if it actually helps. -harding -->
+
+Transactions let users send bitcoins. Each transaction is constructed
+out of several parts which enable both simple direct payments and
+multiperson collaborations. This section will describe each part and
+demonstrate how to use them to build complete transactions.
+
+To keep things simple, this section pretends coinbase transactions do
+not exist. Coinbase transactions can only be created by Bitcoin miners
+and they're an exception to many of the rules listed below. Instead of
+pointing out the coinbase exception to each rule, we invite you to read
+about coinbase transactions in the block chain section of this guide.
+
+![The Parts Of A Transaction](/img/dev/en-tx-overview.svg)
+
+The figure above shows the core parts of a Bitcoin transaction. Each
+transaction has at least one input and one output. Each input spends the
+bitcoins paid to a previous output. Each output then waits as an Unspent
+Transaction Output (UTXO) until a later input spends it. When your
+Bitcoin wallet tells you that you have a 100 millibit balance, it really
+means that you have 100 millibits waiting in one or more UTXOs.
+
+Each transaction is prefixed by a four-byte version number which tells
+Bitcoin peers and miners which set of rules to use to validate it.  This
+lets developers create new rules for future transactions without
+invalidating previous transactions.
+
+The figure below helps illustrate the other transaction features by
+showing the workflow Alice uses to send Bob a transaction and which Bob
+later uses to spend that transaction. Both Alice and Bob will use the
+most common form of the standard Pay-To-Pubkey-Hash (P2PH) transaction
+type. P2PH lets Alice spend millibits to a typical Bitcoin address,
+and then lets Bob further spend those millibits using a simple
+cryptographic key pair.
+
+![P2PH Transaction Workflow](/img/dev/en-p2ph-workflow.svg)
+
+Bob must generate a private/public key pair before Alice can create the
+first transaction. Standard Bitcoin private keys are 256 bits of random
+data. A copy of that data is deterministically transformed into a public
+key. Because the transformation can be reliably repeated later, the
+public key does not need to be stored.
+
+The public key is then cryptographically hashed. This pubkey hash can
+also be reliably repeated later, so it also does not need to be stored.
+The hash obfuscates the public key, providing security against
+unanticipated problems which might allow reconstruction of private keys
+from public key data at some later point.
+
+
+<!-- Editors: from here on I will typically use the terms "pubkey hash"
+and "full public key" to provide quick differentiation between the
+different states of a public key and to help the text better match the
+space-constrained diagrams where "public-key hash" wouldn't fit. -harding -->
+
+
+Bob provides the pubkey hash to Alice. Pubkey hashes are almost always
+sent encoded as Bitcoin addresses, which are base-58 encoded strings
+containing an address version number, the hash, and an error-correction
+checksum to ensure accurate transmission. The address can be transmitted
+through any medium, including one-way mediums which prevent the spender
+from communicating with the recipient, and it can be further encoded
+into another format, such as a QR code.
+
+Once Alice has the address and decodes it back into a standard hash, she
+can create the first transaction. She creates a standard P2PH
+transaction output containing instructions which allow anyone to spend that
+output if they can prove they control the private key corresponding to
+Bob's hashed public key. These instructions are called the script.
+
+Alice transmits the transaction and it is added to the block chain.
+It becomes, for a time, an Unspent Transaction Output (UTXO) displayed
+in the recipient's Bitcoin wallet software as a spendable balance.
+
+When, some time later, Bob decides to spend the UTXO, he must create an
+input which references the transaction Alice created by its hash, called
+a Transaction Identifier (txid), and the specific output she used by its
+index number (output index).  He must then create a scriptSig which
+satisfies the conditions Alice placed in the previous output's script.
+
+Bob does not need to communicate with Alice to do this; he must simply
+prove to the Bitcoin peer-to-peer network that he can satisfy the
+script's conditions.  For a P2PH-style output, Bob's scriptSig will
+contain the following two pieces of data:
+
+1. His full (unhashed) public key, so the script can check that it
+   hashes to the same value as the hashed pubkey provided by Alice.
+
+2. Data signed by his private key, called a signature, so the script can
+   verify that Bob owns the private key which created the public key.
+
+Bob's signature doesn't just prove Bob controls his private key; it also
+makes the rest of his transaction tamper-proof so Bob can safely
+transmit it over the peer-to-peer network.
+
+<!-- Editors: please keep "amount of bitcoins" (instead of "number of
+bitcoins") in the text below to match the text in the figure above.  -harding -->
+
+As illustrated in the figure above, the data Bob signs includes the
+txid and output index of the previous transaction, the previous
+output's script, the script Bob creates which will let the next
+recipient spend this transaction's output, and the amount of millibits to
+spend to the next recipient. In essence, the entire transaction is
+signed except for the scriptSig, which holds the full public key and the
+signature itself.
+
+After putting his signature and public key in the scriptSig, Bob
+transmits the transaction to Bitcoin miners through the peer-to-peer
+network. Each peer and miner independently validates the transaction
+before relaying it further or attempting to include it in a new block of
+transactions.
+
+### P2PH Script Validation
+
+The validation procedure requires evaluation of the script.  In a P2PH
+script, the script is:
+
+    OP_DUP OP_HASH160 <PubkeyHash> OP_EQUALVERIFY OP_CHECKSIG
+
+The spender's input scriptSig is prefixed to the beginning of the
+script. In a P2PH transaction, the scriptSig contains a signature (sig)
+and full public key (pubkey), creating the following concatenation:
+
+    <Sig> <PubKey> OP_DUP OP_HASH160 <PubkeyHash> OP_EQUALVERIFY OP_CHECKSIG
+
+The script language is a
+[Forth-derived](https://en.wikipedia.org/wiki/Forth_%28programming_language%29)
+stack-based language deliberately designed to be stateless and not
+Turing complete. Statelessness ensures that once a transaction is added
+to the block chain, there is no condition which renders it permanently
+unspendable. Turing-incompleteness (specifically, a lack of loops or
+gotos) makes the script language less flexible and more predictable,
+greatly simplifying the security model.
+
+<!-- Editors: please do not substitute for the words push or pop in
+sections about stacks. These are programming terms. Also "above",
+"below", "top", and "bottom" are commonly used relative directions or
+locations in stack descriptions. -harding -->
+
+To test whether the transaction is valid, scriptSig and script arguments
+are pushed to the stack one item at a time, starting with Bob's scriptSig
+and continuing to the end of Alice's script. The figure below shows the
+evaluation of a standard P2PH script; below the figure is a description
+of the process.
+
+![P2PH Stack Evaluation](/img/dev/en-p2ph-stack.svg)
+
+* The signature (from Bob's scriptSig) is added (pushed) to an empty stack.
+  Because it's just data, nothing is done except adding it to the stack.
+  The public key (also from the scriptSig) is pushed on top of the signature.
+
+* From Alice's script, the `OP_DUP` operation is pushed. `OP_DUP` replaces
+  itself with a copy of the data from one level below it---in this
+  case creating a copy of the public key Bob provided.
+
+* The operation pushed next, `OP_HASH160`, replaces itself with a hash
+  of the data from one level below it---in this case, Bob's public key.
+  This creates a hash of Bob's public key.
+
+* Alice's script then pushes the pubkey hash that Bob gave her for the
+  first transaction.  At this point, there should be two copies of Bob's
+  pubkey hash at the top of the stack.
+
+* Now it gets interesting: Alice's script adds `OP_EQUALVERIFY` to the
+  stack. `OP_EQUALVERIFY` expands to `OP_EQUAL` and `OP_VERIFY` (not shown).
+
+    `OP_EQUAL` (not shown) checks the two values below it; in this
+    case, it checks whether the pubkey hash generated from the full
+    public key Bob provided equals the pubkey hash Alice provided when
+    she created transaction #1. `OP_EQUAL` then replaces itself and
+    the two values it compared with the result of that comparison:
+    zero (*false*) or one (*true*).
+
+    `OP_VERIFY` (not shown) checks the value immediately below it. If
+    the value is *false* it immediately terminates stack evaluation and
+    the transaction validation fails. Otherwise it pops both itself and
+    the *true* value off the stack.
+
+* Finally, Alice's script pushes `OP_CHECKSIG`, which checks the
+  signature Bob provided against the now-authenticated public key he
+  also provided. If the signature matches the public key and was
+  generated using all of the data required to be signed, `OP_CHECKSIG`
+  replaces itself with *true.*
+
+If *true* is at the top of the stack after the script has been
+evaluated, the transaction is valid (provided there are no other
+problems with it).
+
+### Signature Hash Types
+
+`OP_CHECKSIG` extracts a non-stack argument from each signature it
+evaluates, allowing the signer to decide which parts of the transaction
+to sign. Since the signature protects those parts of the transaction
+from modification, this lets signers selectively choose to let other
+people modify their transactions.
+
+Because signatures are hashes, the various options for what to sign are
+called signature hash types. There are three base SIGHASH types
+currently available:
+
+* `SIGHASH_ALL`, the default, signs all the inputs and outputs,
+  protecting everything except the scriptSig against modification.
+
+* `SIGHASH_NONE` signs all of the inputs but none of the outputs,
+  allowing signers of other inputs to change where the bitcoins
+  are going.
+
+* `SIGHASH_SINGLE` signs only this input and only one corresponding
+  output, ensuring nobody can change your part of the transaction but
+  allowing other signers to change their part of the transaction.
+
+The base types can be modified with the SIGHASH_ANYONECANPAY (anyone can
+pay) flag, creating three new combined types:
+
+* `SIGHASH_ALL|SIGHASH_ANYONECANPAY` signs all of the outputs but only
+  this one input, and it also allows anyone to add or remove other
+  inputs, so anyone can contribute additional payments but they cannot
+  change how many millibits are sent nor where they go.
+
+* `SIGHASH_NONE|SIGHASH_ANYONECANPAY` signs only this one input and
+  allows anyone to add or remove other inputs or outputs, so anyone who
+  gets a copy of this input can spend it however they'd like.
+
+* `SIGHASH_SINGLE|SIGHASH_ANYONECANPAY` signs only this input and only
+  one corresponding output, but it also allows anyone to add or remove
+  other inputs.
+
+Because each input is signed, a transaction with multiple inputs can
+have multiple hash types signing different parts of the transaction. For
+example, a single-input transaction signed with `NONE` could have its
+output changed by the miner who adds it to the block chain. On the other
+hand, if a two-input transaction has one input signed with `NONE` and
+one input signed with `ALL`, the `ALL` signer can choose where to spend
+the bitcoins without consulting the `NONE` signer---but nobody else can
+modify the transaction.
+
+<!-- TODO: describe useful combinations maybe using a 3x3 grid;
+do something similar for the multisig section with different hashtypes
+between different sigs -->
+
+<!-- TODO: add to the technical section details about what the different
+hash types sign, including the procedure for inserting the subscript -->
+
+### Locktime And Sequence Number
+
+One thing all signature hash types sign is the transaction's locktime.
+The locktime indicates the earliest time a transaction can be added to
+the block chain.  
+
+Locktime allows signers to create time-locked transactions which will
+only become valid in the future, giving the signers a chance to change
+their minds.
+
+If any of the signers change their mind, they can create a new
+non-locktime transaction. The new transaction will use, as one of
+its inputs, one of the same outputs which was used as an input to
+the locktime transaction. This makes the locktime transaction
+invalid if the new transaction is added to the block chain before
+the time lock expires.
+
+Care must be taken near the expiry time of a time lock. The peer-to-peer
+network allows times on the block chain to be up to two hours ahead of
+real time, so a locktime transaction can be added to the block chain up
+to two hours before its time lock officially expires. Also, blocks are
+not created at guaranteed intervals, so any attempt to cancel a valuable
+transaction should be made a few hours before the time lock expires.
+
+Previous versions of Bitcoin Core provided a feature which prevented
+transaction signers from using the method described above to cancel a
+time-locked transaction, but a necessary part of this feature was
+disabled to prevent DOS attacks. A legacy of this system are four-byte
+sequence numbers in every input. Sequence numbers were meant to allow
+multiple signers to agree to update a transaction; when they finished
+updating the transaction, they could agree to set every input's
+sequence number to the four-byte unsigned maximum (0xffffffff),
+allowing the transaction to be added to a block even if its time lock
+had not expired.
+
+Even today, setting all sequence numbers to 0xffffffff (the default in
+Bitcoin Core) can still disable the time lock, so if you want to use
+locktime, at least one input must have a sequence number below the
+maximum. Since sequence numbers are not used by the network for any
+other purpose, setting any sequence number to zero is sufficient to
+enable locktime.
+
+Locktime itself is an unsigned 4-byte number which can be parsed two ways:
+
+* If less than 500 million, locktime is parsed as a block height. The
+  transaction can be added to any block which has this height or higher.
+
+* If greater than or equal to 500 million, locktime is parsed using the
+  Unix epoch time format (the number of seconds elapsed since
+  1970-01-01T00:00 UTC---currently over 1.395 billion). The transaction
+  can be added to any block whose block header's *time* field is greater
+  than the locktime.
+
+### Multisig And Pay-To-Script-Hash (P2SH)
+
+Outputs can use their script to require signatures from more than one
+private key, called multi-signature or multisig.  A multisig script
+provides a list of public keys and indicates how many of those public keys 
+must match signatures in the input's scriptSig.  
+
+A standard multisig transaction looks similar to the pay-to-pubkey-hash
+shown above, except that full public keys (not hashes) are provided and
+`OP_CHECKMULTISIG` is used instead plain checksig.
+`OP_CHECKMULTISIG` takes multiple public keys and multiple
+signatures, so it's necessary to tell it how many public keys are
+being provided (n) and how many signatures are required (m). See the
+prototype script below for an example:
+
+    m [pubkey] [pubkey...] n OP_CHECKMULTISIG
+
+The values m and n would be replaced with numbers, such as 2 and 2 for
+an output which could only be spent if two key pairs were used, or 2
+and 3 for an output which requires signatures from only two of the
+public keys listed. For example, a 2-of-3 script:
+
+    2 [pubkey] [pubkey] [pubkey] 3 OP_CHECKMULTISIG
+
+Recipients who want their bitcoins to be secured with multiple
+signatures outputs must get the spender to create a multisig script.
+This creates several problems:
+
+1. The spender must collect each of the full public keys to be used,
+   which is more complicated than collecting a single Bitcoin address.
+   Almost none of the existing add-on Bitcoin payment tools, such as QR
+   encoded addresses, currently work with multisig.
+
+2. The spender must pay the transaction fee, which is partly based on
+   the number of bytes in a transaction.  Each additional public key in
+   a multisig script increases the size of that transaction by at least 65 bytes,
+   possibly costing the spender more millibits but providing all the
+   benefit to the recipient.
+
+3. Including full public keys in a script is not as secure as including
+   public keys protected by a hash. As mentioned earlier, the hash
+   obfuscates the public key, providing security against unanticipated
+   problems which might allow reconstruction of private keys from public
+   key data at some later point.
+
+To solve these problems, pay-to-script-hash (P2SH) transactions were
+created in 2012 to let a spender create an output script containing a
+hash of a second script, the redeemScript. This solves each of the
+problems quite handily:
+
+1. The hash of the redeemScript is identical to a pubkey hash---so it
+   can be transformed into the standard Bitcoin address format with only
+   one small change to differentiate it from a standard address. This
+   makes collecting a P2SH-style address as simple as collecting a
+   P2PH-style address.
+
+2. The hash of the redeemScript is the exact same size as a pubkey
+   hash, so the spender won't need to increase the transaction fee no
+   matter how many public keys are required.
+
+3. The hash of the redeemScript obfuscates the public keys, so
+   P2SH scripts are as secure as P2PH scripts.
+
+The basic P2SH workflow, illustrated below, looks almost identical to
+the P2PH workflow.  Bob no longer provides a pubkey hash to Alice;
+instead he embeds his public key in a redeemScript, hashes
+the redeemScript, and provides the redeemScript hash to Alice.  Alice creates
+a P2SH-style output containing Bob's redeemScript hash.
+
+![P2SH Transaction Workflow](/img/dev/en-p2sh-workflow.svg)
+
+When Bob wants to spend the output, he provides the full redeemScript
+along with his signature in the normal input scriptSig. The
+peer-to-peer network ensures the full redeemScript hashes to the
+same value as the script hash Alice put in her output; it then processes the
+redeemScript exactly as it would if it were the primary script, letting
+Bob spend the output if the redeemScript returns true.
+
+The extra steps seen in the example above don't really help Bob when he
+could just create a P2PH script instead. But when Bob's business
+partner, Charlie, decides he wants all of their business income to
+require two signatures to spend, P2SH-style outputs become quite handy.
+
+As seen in the figure below, Bob and Charlie each create separate
+private and public keys on their own computers, and Charlie gives a copy
+of his public key to Bob. Bob then creates a multisig redeemScript
+using the both his and Charlie's public keys.  When Alice, one their
+clients, wants to pay an invoice, Bob gives her a hash of the redeemScript.
+
+![P2SH 2-of-2 Multisig Transaction Workflow](/img/dev/en-p2sh-multisig-workflow.svg)
+
+Because it's just a hash, Alice can't see what the script says.  But she
+doesn't care---she just knows that Bob and Charlie will mark her invoice
+as paid if she pays to that hash.
+
+When Bob and Charlie want to spend Alice's output, Bob creates
+transaction #2. He fills in the output details and creates a scriptSig
+containing his signature, a placeholder byte, and the redeemScript. Bob
+gives this incomplete transaction to Charlie, who checks the output
+details and replaces the placeholder byte with his own signature,
+completing the signature. Either Bob or Charlie can transmit this
+fully-signed transaction to the peer-to-peer network.
+
+Previous P2PH and P2SH illustrations showed Bob signing using the
+`SIGHASH_ALL` procedure, but this multisig P2SH figure does not
+illustrate any particular hash type procedure. Bob and Charlie can each
+independently choose their own signature types. For example, if the
+output created by Alice contains only a few millibits and Charlie
+doesn't care how Bob spends it, Charlie can sign the second
+transaction's input with `SIGHASH_NONE` and give it back to Bob. Bob can
+now change the output script to anything he wants without further
+consulting Charlie.
+
+A lone NONE hash type would usually allow unscrupulous miners to modify
+the output to pay themselves.  But because the multisig input requires
+both Charlie and Bob's signatures, Bob can sign his signature with
+`SIGHASH_ALL` to fully protect the transaction.
+
+### Standard Transactions
+
+Although you can put any output script inside a redeemScript and
+then pay millibits to the corresponding redeeemScript hash, care must be
+taken to avoid non-standard output scripts. As of Bitcoin Core 0.9, the
+standard output script types are:
+
+* Pubkey
+* Pubkey hash (P2PH)
+* Script hash (P2SH)
+* Multisig
+* Null Data
+
+Pubkey scripts are a simplified form of the P2PH script; they're used in
+all coinbase transactions, but they aren't as secure as P2PH, so they
+generally aren't used elsewhere.  Null data scripts let you add
+a small amount of arbitrary data to the block chain in exchange for
+paying a transaction fee, but doing so is officially discouraged by the
+Bitcoin Core Developers.  (Null data is a standard script type only
+because some people were adding data to the block chain in more harmful
+ways.)
+
+If you use anything besides a standard script in an output, peers
+and miners using the default Bitcoin Core settings will neither
+accept, relay, nor mine your transaction. When you try to transmit
+your transaction to a peer running the default settings, you will
+receive an error.
+
+<!-- TODO: I've received errors when I tried to do something stupid, but
+are there any cases where default peers accept a non-standard tx and then
+silently drop it? -harding -->
+
+But if you create a non-standard redeemScript, hash it, and use the hash
+in a P2SH output, the network sees only the hash, so it will accept the
+output as valid no matter what the redeemScript says. When you go to
+spend that output, however, peers and miners using the default settings
+will see the non-standard redeemScript and reject it. It will be
+impossible to spend that output until you find a miner who disables the
+default settings.
+
+As of Bitcoin 0.9, standard transactions must also meet the following
+conditions:
+
+* The transaction must be finalized: either its locktime must be in the
+  past (or equal to the current block height), or all of its sequence
+  numbers must be 0xffffffff.
+
+* The transaction must be smaller than 100,000 bytes. That's around 200
+  times larger than a typical single-input, single-output P2PH
+  transaction.
+
+* Each of the transaction's inputs must be smaller than 500 bytes.
+  That's large enough to allow 3-of-3 multisig transactions in P2SH.
+  Multisig transactions which require more than 3 key pairs are
+  currently non-standard.
+
+* The transaction's scriptSig must only push data to the script
+  evaluation stack. It cannot push new OP codes, with the exception of
+  OP codes which solely push data to the stack.
+
+<!-- what's a canonical push?  It's forbidden:
+https://github.com/bitcoin/bitcoin/blob/acfe60677c9bb4e75cf2e139b2dee4b642ee6a0c/src/main.cpp#L527
+-->
+
+<!-- I don't understand what this is testing:
+https://github.com/bitcoin/bitcoin/blob/acfe60677c9bb4e75cf2e139b2dee4b642ee6a0c/src/main.cpp#L536
+-->
+
+* If any of the transaction's outputs spend less than a minimal value
+  (currently 5,430 satoshis---0.05 millibits), the transaction must pay
+  a minimum transaction fee (currently 0.1 millibits).
+
+### Transaction Fees And Change
+
+Transactions typically pay transaction fees based on the total byte size
+of the signed transaction.  The transaction fee is given to the
+Bitcoin miner, as explained in the block chain section, and so it is
+ultimately up to each miner to choose the minimum transaction fee they
+will accept.
+
+<!-- TODO: check: 50 KB or 50 KiB?  Not that transactors care... -->
+
+By default, miners reserve 50 KB of each block for high-priority
+transactions which spend millibits that haven't been spent for a long
+time.  The remaining space in each block is allocated to transactions
+based on their fee per byte, with higher-paying transactions being added
+in sequence until all of the available space is filled.
+
+As of Bitcoin Core 0.9, transactions which do not count as high priority
+need to pay a minimum fee of 0.01 millibits to be relayed across the
+network.  Any transaction paying the minimum fee should be prepared to
+wait a long time before there's enough spare space in a block to include
+it.  Please see the block chain section about confirmations for why this
+could be important.
+
+Since each transaction spends Unspent Transaction Outputs (UTXOs) and
+because a UTXO can only be spent once, the full value of the included
+UTXOs must be spent or given to a miner as a transaction fee.  Few
+people will have UTXOs that exactly match the amount they want to pay,
+so most transactions include a change output.
+
+Change outputs are regular outputs which spend the surplus millibits
+from the UTXOs back to the spender.  They can reuse the same P2PH pubkey hash
+or P2SH script hash as was used in the UTXO, but for the reasons
+described in the next section, it is highly recommended that change be
+sent to a new P2PH or P2SH address.
+
+### Key Pair Reuse
+
+When possible, you should avoid signing more than one transaction with
+the same private key. Although the theory behind the signing system
+Bitcoin uses, ECDSA, has been widely peer reviewed without any
+real-world problems being found, actual implementations (such as
+the one used by Bitcoin Core) are occasionally found vulnerable to
+various attacks.
+
+Bitcoin was designed to anticipate these possible vulnerabilities by
+letting you obfuscate ECDSA public keys with a SHA256 hash in either the
+P2PH or P2SH transaction types. SHA256 has been as widely peer reviewed
+as ECDSA and is based on different principles, nearly eliminating the
+chance of both ECDSA and SHA256 becoming vulnerable at the same time.
+
+However, when you sign a transaction, you reveal your full public key
+without any SHA256 protection.  Worse, you provide a signature made by
+running data known to the attacker (the signed parts of the transaction)
+through your ECDSA implementation along with your private key, which
+could leak information about your private key.
+
+According to the ECDSA theory, this doesn't matter much. But in a world
+where researchers occasionally find flaws in ECDSA implementations and
+the random number generators used to produce private keys, signing a
+transaction puts you in a more exposed position than before you created
+the signature.
+
+Again, Bitcoin was designed to anticipate this situation.  There is no
+technical reason you should ever need to use the same private key in
+more than one transaction.  Creating a new private key costs you nothing
+but some bits from your computer's pool of randomness.
+
+There is, however, one major non-technical reason which may drive you
+into using the same private key more than once: reusable Bitcoin
+addresses. As explained previously, each Bitcoin address is the hash of
+a public key derived from your private key. If you paste your address
+on your website, give it to your clients, or put it in a QR code
+printed on your shirt, you will likely end up using your private key
+multiple times.
+
+Millibits sent to those previously-spent addresses are less safe than
+millibits sent to a brand new address, so we encourage you to build your
+applications to avoid address reuse and, when possible, to discourage
+users from reusing addresses. If your application needs to provide a
+fixed URI to which payments should be sent, please see Bitcoin
+Improvement Protocol (BIP) #72, the [URI Extensions For Payment
+Protocol](https://github.com/bitcoin/bips/blob/master/bip-0072.mediawiki)
+(still in draft as of this writing).
+
+<!-- TODO: stealth addresses should be mentioned somewhere too. -->
+
+### Contracts
+
+By making the system hard to understand, the complexity of transactions
+has so far worked against you. That changes with contracts. Contracts are
+transactions built out of the tools described above which use the
+decentralized Bitcoin system to enforce financial agreements.
+
+In the multisig section, you saw an example of a contract. Bob and
+Charlie received millibits to an output which required both of their
+signatures to spend. Spending those millibits without both Bob and
+Charlie's private keys is impossible.
+
+Bitcoin contracts can often be crafted to minimize dependency on outside
+agents, such as the court system, which significantly decreases the risk
+of dealing with unknown entities in financial transactions. For example,
+Bob and Charlie might only know each other casually over the Internet;
+they would never open a checking account together---one of them could
+pass bad checks, leaving the other on the hook. But with Bitcoin
+contracts, they can nearly eliminate the risk from their relationship
+and start a business even though they hardly know each other.
+
+The following subsections will describe a variety of Bitcoin contracts
+already in use. Because contracts deal with real people, not just
+transactions, they are framed in story format.
+
+Besides the contract types described below, many other contract types
+have been proposed. Several of them are collected on the [Contracts
+page](https://en.bitcoin.it/wiki/Contracts) of the Bitcoin Wiki.
+
+#### Escrow And Arbitration Contracts
+
+Bob and Charlie have a nasty falling out and want to terminate their
+business, but they can't agree how to split their saved millibits, which
+are stored in 2-of-2 multisig outputs. They both trust Alice The Arbitrator
+to sort the issue out---but they're each worried that the other person
+won't abide by any ruling Alice makes. The losing party might even
+delete his private key out of spite so the millibits are lost forever.
+
+The common escrow contract fixes this mess. Alice creates a new 2-of-3
+multisig redeemScript and sends it to both Bob and Charlie for
+examination. The redeemScript requires Alice, Bob, and Charlie each
+provide a public key, with signatures from any two of those public keys
+satisfying the redeemScript conditions.
+
+Bob and Charlie each understands the implication: Alice will be able to
+sign a transaction which will be valid if either Bob or Charlie also
+signs it. Alice can't steal their millibits, so there's no new risk, but she
+can give the winning party the ability to enforce her ruling.
+
+All three of them then give their public keys to each other and
+independently hash the redeemScript, creating a P2SH address. Then Bob
+and Charlie together sign a transaction spending all of their shared
+millibits to that P2SH address.
+
+Alice looks at the business's books and makes a ruling. She creates and
+signs a transaction that spends 60% of the millibits to Bob's public key
+and 40% to Charlie's public key. 
+
+Either Bob and Charlie can sign the transaction and transmit it to the
+peer-to-peer network, actually spending the millibits, or they can both
+decide they don't like Alice's ruling, find a new arbitrator, and
+repeat the procedure.
+
+Merchants can use the 2-of-3 escrow contract to get customers to trust
+them. Customers choose what they want to buy, but instead of paying
+the merchant directly, they spend their millibits to a 2-of-3 P2SH
+multisig output using one public key each from the customer, the
+merchant, and an arbitrator both the customer and merchant trust.
+
+If the product or service is provided as expected, the customer and the
+merchant work together to release the payment to the merchant.  If the
+merchant needs to offer a refund, he and the customer work together to
+release the payment to the customer.  If there's a dispute, the
+arbitrator makes a ruling and either the customer or the merchant signs
+it to release the payment according to the ruling.
+
+**Resource:** [BitRated](https://www.bitrated.com/) provides a multisig arbitration
+service interface using HTML/JavaScript on a GNU AGPL-licensed website.
+
+
+#### Micropayment Channel Contracts
+
+Alice also works part-time moderating forum posts for Bob. Every time
+someone posts to Bob's busy forum, Alice skims the post to make sure it
+isn't offensive or spam. Alas, Bob often forgets to pay her, so Alice
+demands to be paid immediately after each post she approves or rejects.
+Bob says he can't do that because hundreds of small payments will cost
+him dozens of millibits in transaction fees, so Alice suggests they use a
+micropayment channel.
+
+Bob asks Alice for her public key and then creates two transactions.
+The first transaction pays 100 millibits to a P2SH output whose
+2-of-2 multisig redeemScript requires signatures from both Alice and Bob.
+Broadcasting this transaction would let Alice hold the millibits
+hostage, so Bob keeps this transaction private for now and creates a
+second transaction.
+
+The second transaction spends all of the first transaction's millibits
+(minus a transaction fee) back to Bob after a 24 hour delay enforced
+by locktime. Bob can't sign the transaction by himself, so he gives
+the second transaction to Alice to sign, as shown in the
+illustration below.
+
+![Micropayment Channel Example](/img/dev/en-micropayment-channel.svg)
+
+Alice checks that the second transaction's locktime is 24 hours in the
+future, signs it, and gives a copy of it back to Bob. She then asks Bob
+for the first transaction and checks that the second transaction spends
+the output of the first transaction. She can now broadcast the first
+transaction to the network to ensure Bob has to wait for the time lock
+to expire before further spending his millibits. Bob hasn't actually
+spent anything so far, except possibly a small transaction fee, and
+he'll be able to broadcast the second transaction in 24 hours for a
+full refund.
+
+Now, when Alice does some work worth 1 millibit, she asks Bob to create
+and sign a new version of the second transaction.  Version two of the
+transaction spends 1 millibit to Alice and the other 99 back to Bob; it does
+not have a locktime, so Alice can sign it and spend it whenever she
+wants.  (But she doesn't do that immediately.)
+
+Alice and Bob repeat these work-and-pay steps until Alice finishes for
+the day, or until the time lock is about to expire.  Alice signs the
+final version of the second transaction and broadcasts it, paying
+herself and refunding any remaining balance to Bob.  The next day, when
+Alice starts work, they create a new micropayment channel.
+
+If Alice fails to broadcast a version of the second transaction before
+its time lock expires, Bob can broadcast the first version and receive a
+full refund. This is one reason micropayment channels are best suited to
+small payments---if Alice's Internet service goes out for a few hours
+near the time lock expiry, she could be cheated out of her payment.
+
+Transaction malleability, discussed below in the Payment Security section,
+is another reason to limit the value of micropayment channels.
+If someone uses transaction malleability to break the link between the
+two payments, Alice could hold Bob's 100 millibits hostage even if she
+hadn't done any work.
+
+For larger payments, Bitcoin transaction fees are very low as a
+percentage of the total transaction value, so it makes more sense to
+protect payments with immediately-broadcast separate transactions.
+
+**Resource:** The [bitcoinj](https://code.google.com/p/bitcoinj/) Java library
+provides a complete set of micropayment functions, an example
+implementation, and [a
+tutorial](https://code.google.com/p/bitcoinj/wiki/WorkingWithMicropayments)
+all under an Apache license.
+
+#### CoinJoin Contracts 
+
+Alice is concerned about her privacy.  She knows every transaction gets
+added to the public block chain, so when Bob and Charlie pay her, they
+can each easily track those millibits to learn what Bitcoin
+addresses she pays, how much she pays them, and possibly how many
+millibits she has left.
+
+Because Alice isn't a criminal, she doesn't want to use some shady
+Bitcoin laundering service; she just wants plausible deniability about
+where she has spent her bitcoins and how many she has left, so she
+starts up the Tor anonymity service on her computer and logs into an
+IRC chatroom as "AnonGirl."
+
+Also in the chatroom are "Nemo" and "Neminem."  They collectively
+agree to transfer millibits between each other so no one besides them
+can reliably determine who controls which millibits.  But they're faced
+with a dilemma: who transfers their millibits to one of the other two
+pseudonymous persons first? The CoinJoin-style contract, shown in the
+illustration below, makes this decision easy: they create a single
+transaction which does all of the spending simultaneously, ensuring none
+of them can steal the others' millibits.
+
+![Example CoinJoin Transaction](/img/dev/en-coinjoin.svg)
+
+Each contributor looks through their collection of Unspent Transaction
+Outputs (UTXOs) for 100 millibits they can spend. They then each generate
+a brand new public key and give UTXO details and pubkey hashes to the
+facilitator.  In this case, the facilitator is AnonGirl; she creates
+a transaction spending each of the UTXOs to three equally-sized outputs.
+One output goes to each of the contributors' pubkey hashes.
+
+AnonGirl then signs her inputs using `SIGHASH_ALL` to ensure nobody can
+change the input or output details.  She gives the partially-signed
+transaction to Nemo who signs his inputs the same way and passes it
+to Neminem, who also signs it the same way.  Neminem then broadcasts
+the transaction to the peer-to-peer network, mixing all of the millibits in
+a single transaction.
+
+As you can see in the illustration, there's no way for anyone besides
+AnonGirl, Nemo, and Neminem to confidently determine who received
+which output, so they can each spend their output with plausible
+deniability.
+
+Now when Bob or Charlie try to track Alice's transactions through the
+block chain, they'll also see transactions made by Nemo and
+Neminem.  If Alice does a few more CoinJoins, Bob and Charlie might
+have to guess which transactions made by dozens or hundreds of people
+were actually made by Alice.
+
+The complete history of Alice's millibits is still in the block chain,
+so a determined investigator could talk to the people AnonGirl
+CoinJoined with to find out the ultimate origin of her millibits and
+possibly reveal AnonGirl as Alice. But against anyone casually browsing
+block chain history, Alice gains plausible deniability.
+
+The CoinJoin technique described above costs the participants a small
+amount of millibits to pay the transaction fee.  An alternative
+technique, purchaser CoinJoin, can actually save them millibits and
+improve their privacy at the same time.
+
+AnonGirl waits in the IRC chatroom until she wants to make a purchase.
+She announces her intention to spend millibits and waits until someone
+else wants to make a purchase, likely from a different merchant. Then
+they combine their inputs the same way as before but set the outputs
+to the separate merchant addresses so nobody will be able to figure
+out solely from block chain history which one of them bought what from
+the merchant.
+
+Since they would've had to pay a transaction fee to make their purchases
+anyway, AnonGirl and her co-spenders don't pay anything extra---but
+because they reduced overhead by combining multiple transactions, saving
+bytes, they may be able to pay a smaller aggregate transaction fee,
+saving each one of them a tiny amount of millibits.
+
+**Resource:** An alpha-quality (as of this writing) implementation of decentralized
+CoinJoin is [CoinMux](http://coinmux.com/), available under the Apache
+license. A centralized version of purchaser CoinJoin is available at the
+[SharedCoin](https://sharedcoin.com/) website (part of Blockchain.info),
+whose [implementation](https://github.com/blockchain/Sharedcoin) is
+available under the 4-clause BSD license.
+
+
+### Transaction Malleability
+
+Some contracts are especially susceptible to transaction malleability,
+the ability to modify a transaction without making it invalid. The
+issue also affects block-chain-based accounting systems which need to
+track payments.
+
+None of Bitcoin's signature hash types protect the scriptSig. The
+scriptSig contains the signature, which can't sign itself. This allows
+attackers to make non-functional modifications to a transaction without
+rendering it invalid. For example, an attacker can add some data to the
+scriptSig which will be dropped before the previous output script is
+processed.
+
+Although the modifications are non-functional---so they do not change
+what inputs the transaction uses nor what outputs it pays---they do
+change the computed hash of the transaction. Since each transaction
+links to previous transactions using hashes as a transaction
+identifier (txid), a modified transaction will not have the txid its
+creator expected.
+
+This isn't a problem for most Bitcoin transactions which are designed to
+be added to the block chain immediately. But it does become a problem
+for multi-transaction contracts, such as the micropayment channel
+contract, which depend on transactions that have not yet been added to
+the block chain.
+
+Bitcoin developers have been working to reduce transaction malleability
+among standard transaction types, and improvements incorporated in
+Bitcoin Core 0.9 should make malleability only a minor concern. At
+present, contracts should be designed to minimize malleability risk, and
+high-value (or otherwise high-risk) agreements should not use
+multi-transaction contracts.
+
+Transaction malleability also affects payment tracking.  Bitcoin Core's
+RPC interface lets you track transactions by their txid---but if that
+txid changes because the transaction was modified, it may appear that
+the transaction has disappeared from the network.
+
+Current best practices for transaction tracking dictate that a
+transaction should be tracked by the transaction outputs (UTXOs) it
+spends as inputs, as they cannot be changed without invalidating the
+transaction.
+
+<!-- TODO/harding: The paragraph above needs practical advice about how
+to do that. I'll need to find some time to look at somebody's wallet
+code. -harding -->
+
+Best practices further dictate that if a transaction does seem to
+disappear from the network and needs to be reissued, that it be reissued
+in a way that invalidates the lost transaction. One method which will
+always work is to ensure the reissued payment spends all of the same
+outputs that the lost transaction used as inputs.
+
+### Transaction Reference
+
+The following subsections briefly document core transaction details.
+
+#### Standard Transactions
+
+The standard transactions use the following scripts and scriptSigs.  Each of the
+standard scripts can also be used inside a P2SH redeemScript, but in practice
+only the multisig script makes sense inside P2SH until more transactions
+types are made standard.
+
+* Pay To PubKey (used in coinbase transactions):
+
+        script: <pubkey> OP_CHECKSIG
+        scriptSig: <sig>
+
+* Pay To PubKey Hash (P2PH):
+
+        script: OP_DUP OP_HASH160 <PubKeyHash> OP_EQUALVERIFY OP_CHECKSIG
+        scriptSig: <sig> <pubkey> 
+
+* Pay To Script Hash (P2SH)
+
+        script: OP_HASH160 <redeemscripthash> OP_EQUAL
+        scriptSig: <sig> [sig] [sig...] <redeemscript>
+
+* Multisig (*m* is the number of pubkeys which must match a signature;
+  *n* is how many pubkeys are being provided)
+
+        script: <m> <pubkey> [pubkey] [pubkey...] <n> OP_CHECKMULTISIG
+        scriptSig: OP_0 <sig> [sig] [sig...]
+
+* Null data
+
+        script: OP_RETURN <data>
+        (Null data scripts cannot be spent, so there's no scriptSig)
+
+Although it's not a separate transaction type, this is a P2SH multisig
+with 2-of-3:
+
+        script: OP_HASH160 <redeemscripthash> OP_EQUAL
+        scriptSig: <sig> <sig> <redeemscript>
+        redeemScript: OP_0 <2> <pubkey> <pubkey> <pubkey> <3> OP_CHECKMULTISIG
+
+**OP Codes**
+
+The op codes used in standard transactions are,
+
+* Various data pushing op codes from 0x00 to 0x60 (1--96). These haven't
+  been shown in the examples above, but they must be used to push
+  signatures and pubkeys onto the stack. See the link below this list
+  for a description.
+
+* `OP_CHECKSIG` consumes a signature and a full public key, and
+  returns true if they were both made by the same ECDSA private key.
+  Otherwise, it returns false.
+
+* `OP_DUP` returns a copy of the item on the stack below it.
+
+* `OP_HASH160` consumes the item on the stack below it and returns with
+  a RIPEMD-160(SHA256()) hash of that item.
+
+* `OP_EQUAL` consumes the two items on the stack below it and returns
+  true if they are the same.  Otherwise, it returns false.
+
+* `OP_VERIFY` consumes one value and returns nothing, but it will
+  terminate the script in failure if the value consumed is zero (false).
+
+* `OP_EQUALVERIFY` runs `OP_EQUAL` and then `OP_VERIFY` in sequence.
+
+* `OP_CHECKMULTISIG` consumes the value (n) at the top of the stack,
+  consumes that many of the next stack levels (public keys), consumes
+  the value (m) now at the top of the stack, and consumes that many of
+  the next values (signatures) plus one extra value. Then it compares
+  each of public keys against each of the signatures looking for ECDSA
+  matches; if n of the public keys match signatures, it returns true.
+  Otherwise, it returns false.
+
+    The "one extra value" it consumes is the result of an off-by-one
+    error in the implementation. This value is not used, so standard
+    scriptSigs prefix the signatures with a single OP_0 (0x00, an empty
+    array of bytes).
+
+* `OP_RETURN` terminates the script in failure. However, this will not
+  invalidate a null-data-type transaction which contains no more than 40
+  bytes following `OP_RETURN` no more than once per transaction.
+
+A complete list of OP codes can be found on the Bitcoin Wiki [Script
+Page](https://en.bitcoin.it/wiki/Script), with an authoritative list in the `opcodetype` enum of the
+Bitcoin Core [script header
+file](https://github.com/bitcoin/bitcoin/blob/master/src/script.h).
+
+#### Conversion Of Hashes To Addresses And Vice-Versa
+
+The hashes used in P2PH and P2SH outputs are commonly encoded as Bitcoin
+addresses.  This is the procedure to encode those hashes and decode the
+addresses.
+
+First, get your hash.  For P2PH, you RIPEMD-160(SHA256()) hash a ECDSA
+public key derived from your 256-bit ECDSA private key (random data).
+For P2SH, you RIPEMD-160(SHA256()) hash a redeemScript serialized in the
+format used in raw transactions (described in a following
+sub-section).  Taking the resulting hash:
+
+1. Add an address version byte in front of the hash.  The version
+bytes commonly used by Bitcoin are:
+
+    * 0x00 for P2PH addresses on the main Bitcoin network (mainnet)
+
+    * 0x6f for P2PH addresses on the Bitcoin testing network (testnet)
+
+    * 0x05 for P2SH addresses on mainnet
+
+    * 0xc4 for P2SH addresses on testnet
+
+2. Create a copy of the version and hash; then hash that twice with SHA256: `SHA256(SHA256(version . hash))`
+
+3. Extract the four most significant bytes from the double-hashed copy.
+   These are used as a checksum to ensure the base hash gets transmitted
+   correctly.
+
+4. Append the checksum to the version and hash, and encode it as a base58
+   string: `BASE58(version . hash . checksum)`
+ 
+Bitcoin's base58 encoding may not match other implementations. Tier
+Nolan provided the following example encoding algorithm to the Bitcoin
+Wiki [Base58Check
+encoding](https://en.bitcoin.it/wiki/Base58Check_encoding) page:
+
+
+    code_string = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"
+    x = convert_bytes_to_big_integer(hash_result)
+
+    output_string = ""
+
+    while(x > 0) 
+       {
+           (x, remainder) = divide(x, 58)
+           output_string.append(code_string[remainder])
+       }
+
+    repeat(number_of_leading_zero_bytes_in_hash)
+       {
+       output_string.append(code_string[0]);
+       }
+
+    output_string.reverse();
+
+Bitcoin's own code can be traced using the [base58 header
+file](https://github.com/bitcoin/bitcoin/blob/master/src/base58.h).
+
+To convert addresses back into hashes, reverse the base58 encoding, extract
+the checksum, repeat the steps to create the checksum and compare it
+against the extracted checksum, and then remove the version byte.
+
+#### Raw Transaction Format
+
+Bitcoin transactions are transmitted between peers and stored in the
+block chain in a serialized byte format, called raw format. Bitcoin Core
+and many other tools print and accept raw transactions encoded as hex.
+
+A sample raw transaction is the first non-coinbase transaction, made in
+block 170.  To get the transaction, use the `getrawtransaction` RPC with
+that transaction's txid (provided below):
+
+    > getrawtransaction \
+      f4184fc596403b9d638783cf57adfe4c75c605f6356fbc91338530e9831e9e16
+
+    0100000001c997a5e56e104102fa209c6a852dd90660a20b2d9c352423e\
+    dce25857fcd3704000000004847304402204e45e16932b8af514961a1d3\
+    a1a25fdf3f4f7732e9d624c6c61548ab5fb8cd410220181522ec8eca07d\
+    e4860a4acdd12909d831cc56cbbac4622082221a8768d1d0901ffffffff\
+    0200ca9a3b00000000434104ae1a62fe09c5f51b13905f07f06b99a2f71\
+    59b2225f374cd378d71302fa28414e7aab37397f554a7df5f142c21c1b7\
+    303b8a0626f1baded5c72a704f7e6cd84cac00286bee000000004341041\
+    1db93e1dcdb8a016b49840f8c53bc1eb68a382e97b1482ecad7b148a690\
+    9a5cb2e0eaddfb84ccf9744464f82e160bfa9b8b64f9d4c03f999b8643f\
+    656b412a3ac00000000
+
+A byte-by-byte analysis by Amir Taaki (Genjix) of this transaction is
+provided below.  (Originally from the Bitcoin Wiki
+[OP_CHECKSIG page](https://en.bitcoin.it/wiki/OP_CHECKSIG); Genjix's
+text has been updated to use the terms used in this document.)
+
+    01 00 00 00              version number
+    01                       number of inputs (var_uint)
+
+    input 0:
+    c9 97 a5 e5 6e 10 41 02  previous tx hash (txid)
+    fa 20 9c 6a 85 2d d9 06 
+    60 a2 0b 2d 9c 35 24 23 
+    ed ce 25 85 7f cd 37 04
+    00 00 00 00              previous output index
+
+    48                       size of script (var_uint)
+    47                       push 71 bytes to stack
+    30 44 02 20 4e 45 e1 69
+    32 b8 af 51 49 61 a1 d3
+    a1 a2 5f df 3f 4f 77 32
+    e9 d6 24 c6 c6 15 48 ab
+    5f b8 cd 41 02 20 18 15
+    22 ec 8e ca 07 de 48 60
+    a4 ac dd 12 90 9d 83 1c
+    c5 6c bb ac 46 22 08 22
+    21 a8 76 8d 1d 09 01
+    ff ff ff ff              sequence number
+
+    02                       number of outputs (var_uint)
+
+    output 0:
+    00 ca 9a 3b 00 00 00 00  amount = 10.00000000 BTC
+    43                       size of script (var_uint)
+    script for output 0:
+    41                       push 65 bytes to stack
+    04 ae 1a 62 fe 09 c5 f5 
+    1b 13 90 5f 07 f0 6b 99 
+    a2 f7 15 9b 22 25 f3 74 
+    cd 37 8d 71 30 2f a2 84 
+    14 e7 aa b3 73 97 f5 54 
+    a7 df 5f 14 2c 21 c1 b7 
+    30 3b 8a 06 26 f1 ba de 
+    d5 c7 2a 70 4f 7e 6c d8 
+    4c 
+    ac                       OP_CHECKSIG
+
+    output 1:
+    00 28 6b ee 00 00 00 00  amount = 40.00000000 BTC
+    43                       size of script (var_uint)
+    script for output 1:
+    41                       push 65 bytes to stack
+    04 11 db 93 e1 dc db 8a  
+    01 6b 49 84 0f 8c 53 bc 
+    1e b6 8a 38 2e 97 b1 48 
+    2e ca d7 b1 48 a6 90 9a
+    5c b2 e0 ea dd fb 84 cc 
+    f9 74 44 64 f8 2e 16 0b 
+    fa 9b 8b 64 f9 d4 c0 3f 
+    99 9b 86 43 f6 56 b4 12 
+    a3                       
+    ac                       OP_CHECKSIG
+
+    00 00 00 00              locktime
+
+#### Generating Transactions
+
+Bitcoin Core's RPC interface provides a number of tools which help you
+generate and sign transactions.  
+
+TODO: this really needs to be it's own section (h2) which walks the developer
+through creating basic wallet transactions, then creating raw P2PH txes
+and P2SH multisig txes, then signing raw txes (including with
+alternative hash types), then creating txes based on unbroadcast txes
+for contracts, and then (finally) broadcasting raw txes and dealing with
+possible errors.
+
+<!--
 TODO, Relevant links:
 
 * [https://en.bitcoin.it/wiki/Transactions](https://en.bitcoin.it/wiki/Transactions)
@@ -582,6 +1704,7 @@ TODO, Relevant links:
 * [https://github.com/bitcoin/bips/blob/master/bip-0011.mediawiki (n of m transactions)](https://github.com/bitcoin/bips/blob/master/bip-0011.mediawiki)
 * [https://github.com/bitcoin/bips/blob/master/bip-0013.mediawiki (P2SH)](https://github.com/bitcoin/bips/blob/master/bip-0013.mediawiki)
 * [https://github.com/bitcoin/bips/blob/master/bip-0016.mediawiki (P2SH)](https://github.com/bitcoin/bips/blob/master/bip-0016.mediawiki)
+-->
 
 ### Basics
 
