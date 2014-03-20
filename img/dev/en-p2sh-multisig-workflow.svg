@@ -12,9 +12,9 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="479pt"
+   width="447pt"
    height="480pt"
-   viewBox="0.00 0.00 479.36 480.00"
+   viewBox="0.00 0.00 447.31 480.00"
    id="svg2"
    version="1.1"
    inkscape:version="0.48.3.1 r9886"
@@ -27,6 +27,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -40,36 +41,10 @@
        id="Arrow2Lstart"
        style="overflow:visible">
       <path
-         id="path4284"
+         id="path4394"
          style="fill-rule:evenodd;stroke-width:0.62500000;stroke-linejoin:round"
          d="M 8.7185878,4.0337352 L -2.2072895,0.016013256 L 8.7185884,-4.0017078 C 6.9730900,-1.6296469 6.9831476,1.6157441 8.7185878,4.0337352 z "
          transform="scale(1.1) translate(1,0)" />
-    </marker>
-    <marker
-       inkscape:stockid="Arrow1Lstart"
-       orient="auto"
-       refY="0.0"
-       refX="0.0"
-       id="Arrow1Lstart"
-       style="overflow:visible">
-      <path
-         id="path4266"
-         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
-         style="fill-rule:evenodd;stroke:#000000;stroke-width:1.0pt"
-         transform="scale(0.8) translate(12.5,0)" />
-    </marker>
-    <marker
-       inkscape:stockid="Arrow1Lend"
-       orient="auto"
-       refY="0.0"
-       refX="0.0"
-       id="Arrow1Lend"
-       style="overflow:visible;">
-      <path
-         id="path4269"
-         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
-         style="fill-rule:evenodd;stroke:#000000;stroke-width:1.0pt;"
-         transform="scale(0.8) rotate(180) translate(12.5,0)" />
     </marker>
   </defs>
   <sodipodi:namedview
@@ -85,9 +60,9 @@
      inkscape:window-height="762"
      id="namedview248"
      showgrid="false"
-     inkscape:zoom="0.78666667"
-     inkscape:cx="299.375"
-     inkscape:cy="340.20967"
+     inkscape:zoom="1.1125147"
+     inkscape:cx="279.375"
+     inkscape:cy="300"
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="0"
@@ -95,14 +70,14 @@
   <polygon
      style="fill:#ffffff;stroke:#ffffff"
      id="polygon7"
-     points="685.08,-685 685.08,5 -4,5 -4,5 -4,-685 "
+     points="639.08,-685 639.08,5 -4,5 -4,5 -4,-685 "
      transform="matrix(0.696662,0,0,0.696662,2.786648,477.21347)" />
   <text
      style="font-size:9.75326824px;text-anchor:middle;font-family:'Times Roman,serif'"
      id="text9"
      font-size="14.00"
      y="471.36151"
-     x="239.6796">Multisig Pay-To-Script-Hash (P2SH) Bitcoin Transaction</text>
+     x="223.65637">Multisig Pay-To-Script-Hash (P2SH) Bitcoin Transaction</text>
   <g
      class="cluster"
      id="graph2"
@@ -112,13 +87,13 @@
     <polygon
        style="fill:none;stroke:#000000"
        id="polygon14"
-       points="218.08,-483 218.08,-190 16.0796,-190 16.0796,-190 16.0796,-483 " />
+       points="204.08,-483 204.08,-190 16.0796,-190 16.0796,-190 16.0796,-483 " />
     <text
        style="font-size:14px;text-anchor:middle;font-family:'Times Roman,serif'"
        id="text16"
        font-size="14.00"
        y="-466.39999"
-       x="117.08">Bob's Computer</text>
+       x="110.08">Bob's Computer</text>
   </g>
   <g
      class="cluster"
@@ -129,13 +104,13 @@
     <polygon
        style="fill:none;stroke:#000000"
        id="polygon21"
-       points="211.08,-182 211.08,-33 23.0796,-33 23.0796,-33 23.0796,-182 " />
+       points="204.08,-182 204.08,-33 16.0796,-33 16.0796,-33 16.0796,-182 " />
     <text
        style="font-size:14px;text-anchor:middle;font-family:'Times Roman,serif'"
        id="text23"
        font-size="14.00"
        y="-165.39999"
-       x="117.08">Charlie's Computer</text>
+       x="110.08">Charlie's Computer</text>
   </g>
   <g
      class="cluster"
@@ -146,13 +121,13 @@
     <polygon
        style="fill:none;stroke:#000000"
        id="polygon28"
-       points="191.08,-591 191.08,-514 43.0796,-514 43.0796,-514 43.0796,-591 " />
+       points="184.08,-591 184.08,-514 36.0796,-514 36.0796,-514 36.0796,-591 " />
     <text
        style="font-size:14px;text-anchor:middle;font-family:'Times Roman,serif'"
        id="text30"
        font-size="14.00"
        y="-574.40002"
-       x="117.08">Alice's Computer</text>
+       x="110.08">Alice's Computer</text>
   </g>
   <g
      class="cluster"
@@ -163,13 +138,13 @@
     <polygon
        style="fill:none;stroke:#000000"
        id="polygon35"
-       points="672.08,-408 672.08,-115 454.08,-115 454.08,-115 454.08,-408 " />
+       points="626.08,-408 626.08,-115 440.08,-115 440.08,-115 440.08,-408 " />
     <text
        style="font-size:14px;text-anchor:middle;font-family:'Times Roman,serif'"
        id="text37"
        font-size="14.00"
        y="-391.39999"
-       x="563.08002">Transaction 2</text>
+       x="533.08002">Transaction 2</text>
   </g>
   <g
      class="cluster"
@@ -180,13 +155,13 @@
     <polygon
        style="fill:none;stroke:#000000"
        id="polygon42"
-       points="664.08,-375 664.08,-172 462.08,-172 462.08,-172 462.08,-375 " />
+       points="618.08,-375 618.08,-172 448.08,-172 448.08,-172 448.08,-375 " />
     <text
        style="font-size:14px;text-anchor:middle;font-family:'Times Roman,serif'"
        id="text44"
        font-size="14.00"
        y="-358.39999"
-       x="563.08002">Input</text>
+       x="533.08002">Input</text>
   </g>
   <g
      class="cluster"
@@ -197,13 +172,13 @@
     <polygon
        style="fill:none;stroke:#000000"
        id="polygon49"
-       points="596.08,-164 596.08,-123 530.08,-123 530.08,-123 530.08,-164 " />
+       points="566.08,-164 566.08,-123 500.08,-123 500.08,-123 500.08,-164 " />
     <text
        style="font-size:14px;text-anchor:middle;font-family:'Times Roman,serif'"
        id="text51"
        font-size="14.00"
        y="-147.39999"
-       x="563.08002">Output</text>
+       x="533.08002">Output</text>
   </g>
   <g
      class="cluster"
@@ -214,13 +189,13 @@
     <polygon
        style="fill:none;stroke:#000000"
        id="polygon56"
-       points="645.08,-673 645.08,-416 481.08,-416 481.08,-416 481.08,-673 " />
+       points="615.08,-673 615.08,-416 451.08,-416 451.08,-416 451.08,-673 " />
     <text
        style="font-size:14px;text-anchor:middle;font-family:'Times Roman,serif'"
        id="text58"
        font-size="14.00"
        y="-656.40002"
-       x="563.08002">Transaction 1</text>
+       x="533.08002">Transaction 1</text>
   </g>
   <g
      class="cluster"
@@ -231,13 +206,13 @@
     <polygon
        style="fill:none;stroke:#000000"
        id="polygon63"
-       points="590.08,-640 590.08,-599 537.08,-599 537.08,-599 537.08,-640 " />
+       points="560.08,-640 560.08,-599 507.08,-599 507.08,-599 507.08,-640 " />
     <text
        style="font-size:14px;text-anchor:middle;font-family:'Times Roman,serif'"
        id="text65"
        font-size="14.00"
        y="-623.40002"
-       x="563.58002">Input</text>
+       x="533.58002">Input</text>
   </g>
   <g
      class="cluster"
@@ -248,13 +223,13 @@
     <polygon
        style="fill:none;stroke:#000000"
        id="polygon70"
-       points="637.08,-591 637.08,-424 489.08,-424 489.08,-424 489.08,-591 " />
+       points="607.08,-591 607.08,-424 459.08,-424 459.08,-424 459.08,-591 " />
     <text
        style="font-size:14px;text-anchor:middle;font-family:'Times Roman,serif'"
        id="text72"
        font-size="14.00"
        y="-574.40002"
-       x="563.08002">Output</text>
+       x="533.08002">Output</text>
   </g>
   <g
      class="node"
@@ -267,19 +242,19 @@
        sodipodi:ry="18"
        sodipodi:rx="66.013802"
        sodipodi:cy="-432"
-       sodipodi:cx="117.08"
-       d="m 183.0938,-432 c 0,9.94113 -29.55538,18 -66.0138,18 -36.458414,0 -66.0138,-8.05887 -66.0138,-18 0,-9.94113 29.555386,-18 66.0138,-18 36.45842,0 66.0138,8.05887 66.0138,18 z"
+       sodipodi:cx="110.08"
+       d="m 176.0938,-432 c 0,9.94113 -29.55538,18 -66.0138,18 -36.458414,0 -66.0138,-8.05887 -66.0138,-18 0,-9.94113 29.555386,-18 66.0138,-18 36.45842,0 66.0138,8.05887 66.0138,18 z"
        id="ellipse77"
        ry="18"
        rx="66.013802"
        cy="-432"
-       cx="117.08" />
+       cx="110.08" />
     <text
        style="font-size:14px;text-anchor:middle;font-family:'Times Roman,serif'"
        id="text79"
        font-size="14.00"
        y="-427.89999"
-       x="117.08">Script Hash</text>
+       x="110.08">Script Hash</text>
   </g>
   <g
      class="node"
@@ -292,19 +267,19 @@
        sodipodi:ry="18"
        sodipodi:rx="66.013802"
        sodipodi:cy="-540"
-       sodipodi:cx="117.08"
-       d="m 183.0938,-540 c 0,9.94113 -29.55538,18 -66.0138,18 -36.458414,0 -66.0138,-8.05887 -66.0138,-18 0,-9.94113 29.555386,-18 66.0138,-18 36.45842,0 66.0138,8.05887 66.0138,18 z"
+       sodipodi:cx="110.08"
+       d="m 176.0938,-540 c 0,9.94113 -29.55538,18 -66.0138,18 -36.458414,0 -66.0138,-8.05887 -66.0138,-18 0,-9.94113 29.555386,-18 66.0138,-18 36.45842,0 66.0138,8.05887 66.0138,18 z"
        id="ellipse84"
        ry="18"
        rx="66.013802"
        cy="-540"
-       cx="117.08" />
+       cx="110.08" />
     <text
        style="font-size:14px;text-anchor:middle;font-family:'Times Roman,serif'"
        id="text86"
        font-size="14.00"
        y="-535.90002"
-       x="117.08">Script Hash</text>
+       x="110.08">Script Hash</text>
   </g>
   <g
      class="node"
@@ -315,21 +290,21 @@
     <ellipse
        style="fill:none;stroke:#000000"
        sodipodi:ry="18"
-       sodipodi:rx="91.9198"
+       sodipodi:rx="77.131897"
        sodipodi:cy="-360"
-       sodipodi:cx="117.08"
-       d="m 208.9998,-360 c 0,9.94113 -41.15389,18 -91.9198,18 -50.765902,0 -91.919798,-8.05887 -91.919798,-18 0,-9.94113 41.153896,-18 91.919798,-18 50.76591,0 91.9198,8.05887 91.9198,18 z"
+       sodipodi:cx="110.08"
+       d="m 187.2119,-360 c 0,9.94113 -34.53313,18 -77.1319,18 -42.598769,0 -77.131895,-8.05887 -77.131895,-18 0,-9.94113 34.533126,-18 77.131895,-18 42.59877,0 77.1319,8.05887 77.1319,18 z"
        id="ellipse102"
        ry="18"
-       rx="91.9198"
+       rx="77.131897"
        cy="-360"
-       cx="117.08" />
+       cx="110.08" />
     <text
        style="font-size:14px;text-anchor:middle;font-family:'Times Roman,serif'"
        id="text104"
        font-size="14.00"
        y="-355.89999"
-       x="117.08">Secondary Script</text>
+       x="110.08">RedeemScript</text>
   </g>
   <g
      class="edge"
@@ -341,11 +316,11 @@
        style="fill:none;stroke:#000000;stroke-dasharray:5, 2"
        inkscape:connector-curvature="0"
        id="path109"
-       d="m 117.08,-378 c 0,-8.591 0,-17.183 0,-25.774" />
+       d="m 110.08,-378 c 0,-8.591 0,-17.183 0,-25.774" />
     <polygon
        style="fill:#000000;stroke:#000000"
        id="polygon111"
-       points="120.58,-403.859 113.58,-403.859 113.58,-403.859 117.08,-413.859 " />
+       points="113.58,-403.859 106.58,-403.859 106.58,-403.859 110.08,-413.859 " />
   </g>
   <g
      class="node"
@@ -356,21 +331,21 @@
     <ellipse
        style="fill:none;stroke:#000000"
        sodipodi:ry="18"
-       sodipodi:rx="91.9198"
+       sodipodi:rx="77.131897"
        sodipodi:cy="-270"
-       sodipodi:cx="563.08002"
-       d="m 654.99982,-270 c 0,9.94113 -41.1539,18 -91.9198,18 -50.76591,0 -91.9198,-8.05887 -91.9198,-18 0,-9.94113 41.15389,-18 91.9198,-18 50.7659,0 91.9198,8.05887 91.9198,18 z"
+       sodipodi:cx="533.08002"
+       d="m 610.21191,-270 c 0,9.94113 -34.53312,18 -77.13189,18 -42.59877,0 -77.1319,-8.05887 -77.1319,-18 0,-9.94113 34.53313,-18 77.1319,-18 42.59877,0 77.13189,8.05887 77.13189,18 z"
        id="ellipse116"
        ry="18"
-       rx="91.9198"
+       rx="77.131897"
        cy="-270"
-       cx="563.08002" />
+       cx="533.08002" />
     <text
        style="font-size:14px;text-anchor:middle;font-family:'Times Roman,serif'"
        id="text118"
        font-size="14.00"
        y="-265.89999"
-       x="563.08002">Secondary Script</text>
+       x="533.08002">RedeemScript</text>
   </g>
   <g
      class="edge"
@@ -382,11 +357,11 @@
        style="fill:none;stroke:#000000"
        inkscape:connector-curvature="0"
        id="path123"
-       d="m 181.456,-347.009 c 81.447,16.435 221.428,44.682 307.326,62.016" />
+       d="m 167.127,-347.862 c 77.609,16.512 216.223,46.005 298.769,63.568" />
     <polygon
        style="fill:#000000;stroke:#000000"
        id="polygon125"
-       points="488.228,-281.534 489.613,-288.396 489.613,-288.396 498.723,-282.987 " />
+       points="465.414,-280.819 466.871,-287.665 466.871,-287.665 475.924,-282.161 " />
   </g>
   <g
      class="node"
@@ -399,19 +374,19 @@
        sodipodi:ry="18"
        sodipodi:rx="79.911499"
        sodipodi:cy="-288"
-       sodipodi:cx="117.08"
-       d="m 196.9915,-288 c 0,9.94113 -35.7776,18 -79.9115,18 -44.1339,0 -79.911497,-8.05887 -79.911497,-18 0,-9.94113 35.777597,-18 79.911497,-18 44.1339,0 79.9115,8.05887 79.9115,18 z"
+       sodipodi:cx="110.08"
+       d="m 189.9915,-288 c 0,9.94113 -35.7776,18 -79.9115,18 -44.1339,0 -79.911497,-8.05887 -79.911497,-18 0,-9.94113 35.777597,-18 79.911497,-18 44.1339,0 79.9115,8.05887 79.9115,18 z"
        id="ellipse130"
        ry="18"
        rx="79.911499"
        cy="-288"
-       cx="117.08" />
+       cx="110.08" />
     <text
        style="font-size:14px;text-anchor:middle;font-family:'Times Roman,serif'"
        id="text132"
        font-size="14.00"
        y="-283.89999"
-       x="117.08">Full Public Key</text>
+       x="110.08">Full Public Key</text>
   </g>
   <g
      class="edge"
@@ -423,11 +398,11 @@
        style="fill:none;stroke:#000000;stroke-dasharray:5, 2"
        inkscape:connector-curvature="0"
        id="path137"
-       d="m 117.08,-306 c 0,-8.591 0,-17.183 0,-25.774" />
+       d="m 110.08,-306 c 0,-8.591 0,-17.183 0,-25.774" />
     <polygon
        style="fill:#000000;stroke:#000000"
        id="polygon139"
-       points="120.58,-331.859 113.58,-331.859 113.58,-331.859 117.08,-341.859 " />
+       points="113.58,-331.859 106.58,-331.859 106.58,-331.859 110.08,-341.859 " />
   </g>
   <g
      class="node"
@@ -440,19 +415,19 @@
        sodipodi:ry="18"
        sodipodi:rx="86.165398"
        sodipodi:cy="-216"
-       sodipodi:cx="117.08"
-       d="m 203.2454,-216 c 0,9.94113 -38.57756,18 -86.1654,18 -47.587833,0 -86.165396,-8.05887 -86.165396,-18 0,-9.94113 38.577563,-18 86.165396,-18 47.58784,0 86.1654,8.05887 86.1654,18 z"
+       sodipodi:cx="110.08"
+       d="m 196.2454,-216 c 0,9.94113 -38.57756,18 -86.1654,18 -47.587833,0 -86.165396,-8.05887 -86.165396,-18 0,-9.94113 38.577563,-18 86.165396,-18 47.58784,0 86.1654,8.05887 86.1654,18 z"
        id="ellipse144"
        ry="18"
        rx="86.165398"
        cy="-216"
-       cx="117.08" />
+       cx="110.08" />
     <text
        style="font-size:14px;text-anchor:middle;font-family:'Times Roman,serif'"
        id="text146"
        font-size="14.00"
        y="-211.89999"
-       x="117.08">Full Private Key</text>
+       x="110.08">Full Private Key</text>
   </g>
   <g
      class="edge"
@@ -464,11 +439,11 @@
        style="fill:none;stroke:#000000;stroke-dasharray:5, 2"
        inkscape:connector-curvature="0"
        id="path151"
-       d="m 117.08,-234 c 0,-8.591 0,-17.183 0,-25.774" />
+       d="m 110.08,-234 c 0,-8.591 0,-17.183 0,-25.774" />
     <polygon
        style="fill:#000000;stroke:#000000"
        id="polygon153"
-       points="120.58,-259.859 113.58,-259.859 113.58,-259.859 117.08,-269.859 " />
+       points="113.58,-259.859 106.58,-259.859 106.58,-259.859 110.08,-269.859 " />
   </g>
   <g
      class="node"
@@ -481,19 +456,19 @@
        sodipodi:ry="18"
        sodipodi:rx="57.871201"
        sodipodi:cy="-216"
-       sodipodi:cx="563.08002"
-       d="m 620.95122,-216 c 0,9.94113 -25.90982,18 -57.8712,18 -31.96138,0 -57.8712,-8.05887 -57.8712,-18 0,-9.94113 25.90982,-18 57.8712,-18 31.96138,0 57.8712,8.05887 57.8712,18 z"
+       sodipodi:cx="533.08002"
+       d="m 590.95122,-216 c 0,9.94113 -25.90982,18 -57.8712,18 -31.96138,0 -57.8712,-8.05887 -57.8712,-18 0,-9.94113 25.90982,-18 57.8712,-18 31.96138,0 57.8712,8.05887 57.8712,18 z"
        id="ellipse158"
        ry="18"
        rx="57.871201"
        cy="-216"
-       cx="563.08002" />
+       cx="533.08002" />
     <text
        style="font-size:14px;text-anchor:middle;font-family:'Times Roman,serif'"
        id="text160"
        font-size="14.00"
        y="-211.89999"
-       x="563.08002">Signature</text>
+       x="533.08002">Signature</text>
   </g>
   <g
      class="edge"
@@ -505,11 +480,11 @@
        style="fill:none;stroke:#000000;stroke-dasharray:5, 2"
        inkscape:connector-curvature="0"
        id="path165"
-       d="m 203.337,-216 c 84.821,0 212.63,0 290.876,0" />
+       d="m 196.19,-216 c 79.133,0 194.919,0 268.059,0" />
     <polygon
        style="fill:#000000;stroke:#000000"
        id="polygon167"
-       points="494.444,-212.5 494.444,-219.5 494.444,-219.5 504.444,-216 " />
+       points="464.278,-212.5 464.278,-219.5 464.278,-219.5 474.278,-216 " />
   </g>
   <g
      class="node"
@@ -522,19 +497,19 @@
        sodipodi:ry="18"
        sodipodi:rx="79.911499"
        sodipodi:cy="-131"
-       sodipodi:cx="117.08"
-       d="m 196.9915,-131 c 0,9.94113 -35.7776,18 -79.9115,18 -44.1339,0 -79.911497,-8.05887 -79.911497,-18 0,-9.94113 35.777597,-18 79.911497,-18 44.1339,0 79.9115,8.05887 79.9115,18 z"
+       sodipodi:cx="110.08"
+       d="m 189.9915,-131 c 0,9.94113 -35.7776,18 -79.9115,18 -44.1339,0 -79.911497,-8.05887 -79.911497,-18 0,-9.94113 35.777597,-18 79.911497,-18 44.1339,0 79.9115,8.05887 79.9115,18 z"
        id="ellipse172"
        ry="18"
        rx="79.911499"
        cy="-131"
-       cx="117.08" />
+       cx="110.08" />
     <text
        style="font-size:14px;text-anchor:middle;font-family:'Times Roman,serif'"
        id="text174"
        font-size="14.00"
        y="-126.9"
-       x="117.08">Full Public Key</text>
+       x="110.08">Full Public Key</text>
   </g>
   <g
      class="edge"
@@ -546,11 +521,11 @@
        style="fill:none;stroke:#000000;stroke-dasharray:5, 2"
        inkscape:connector-curvature="0"
        id="path179"
-       d="M 66.1077,-145.017 C 42.4443,-154.652 17.3104,-170.301 7.07964,-195 c -9.43952,-22.789 -9.43952,-88.211 0,-111 7.00666,-16.915 21.73426,-28.561 38.19966,-36.567" />
+       d="M 63.3141,-145.623 C 40.9577,-155.495 16.9489,-171.173 7.07964,-195 c -9.43952,-22.789 -9.43952,-88.211 0,-111 7.10606,-17.155 22.39976,-28.954 39.08126,-37.03" />
     <polygon
        style="fill:#000000;stroke:#000000"
        id="polygon181"
-       points="46.8222,-339.422 44.0046,-345.83 44.0046,-345.83 54.5675,-346.651 " />
+       points="47.7797,-339.919 44.9646,-346.328 44.9646,-346.328 55.5279,-347.145 " />
   </g>
   <g
      class="node"
@@ -563,19 +538,19 @@
        sodipodi:ry="18"
        sodipodi:rx="86.165398"
        sodipodi:cy="-59"
-       sodipodi:cx="117.08"
-       d="m 203.2454,-59 c 0,9.941125 -38.57756,18 -86.1654,18 -47.587833,0 -86.165396,-8.058875 -86.165396,-18 0,-9.941125 38.577563,-18 86.165396,-18 47.58784,0 86.1654,8.058875 86.1654,18 z"
+       sodipodi:cx="110.08"
+       d="m 196.2454,-59 c 0,9.941125 -38.57756,18 -86.1654,18 -47.587833,0 -86.165396,-8.058875 -86.165396,-18 0,-9.941125 38.577563,-18 86.165396,-18 47.58784,0 86.1654,8.058875 86.1654,18 z"
        id="ellipse186"
        ry="18"
        rx="86.165398"
        cy="-59"
-       cx="117.08" />
+       cx="110.08" />
     <text
        style="font-size:14px;text-anchor:middle;font-family:'Times Roman,serif'"
        id="text188"
        font-size="14.00"
        y="-54.900002"
-       x="117.08">Full Private Key</text>
+       x="110.08">Full Private Key</text>
   </g>
   <g
      class="edge"
@@ -587,11 +562,11 @@
        style="fill:none;stroke:#000000;stroke-dasharray:5, 2"
        inkscape:connector-curvature="0"
        id="path193"
-       d="m 117.08,-77 c 0,-8.5913 0,-17.1826 0,-25.774" />
+       d="m 110.08,-77 c 0,-8.5913 0,-17.1826 0,-25.774" />
     <polygon
        style="fill:#000000;stroke:#000000"
        id="polygon195"
-       points="120.58,-102.859 113.58,-102.859 113.58,-102.859 117.08,-112.859 " />
+       points="113.58,-102.859 106.58,-102.859 106.58,-102.859 110.08,-112.859 " />
   </g>
   <g
      class="edge"
@@ -603,17 +578,17 @@
        style="fill:none;stroke:#000000;stroke-dasharray:5, 2"
        inkscape:connector-curvature="0"
        id="path200"
-       d="M 154.936,-75.4003 C 216.717,-101.756 343.439,-154.108 454.08,-189 c 16.398,-5.171 34.434,-9.984 51.034,-14.072" />
+       d="M 148.261,-75.3804 C 209.285,-101.255 332.852,-152.402 440.08,-189 c 12.552,-4.284 26.2,-8.492 39.076,-12.264" />
     <polygon
        style="fill:#000000;stroke:#000000"
        id="polygon202"
-       points="506.339,-199.767 504.694,-206.571 504.694,-206.571 515.236,-205.52 " />
+       points="480.186,-197.918 478.242,-204.643 478.242,-204.643 488.821,-204.057 " />
     <text
        style="font-size:14px;text-anchor:middle;font-family:'Times Roman,serif'"
        id="text204"
        font-size="14.00"
-       y="-191.39999"
-       x="337.07999">B &amp; C's signatures of ins &amp; outs</text>
+       y="-190.39999"
+       x="323.07999">B &amp; C's signatures of ins &amp; outs</text>
   </g>
   <g
      class="node"
@@ -626,19 +601,19 @@
        sodipodi:ry="18"
        sodipodi:rx="66.013802"
        sodipodi:cy="-540"
-       sodipodi:cx="563.08002"
-       d="m 629.09382,-540 c 0,9.94113 -29.55539,18 -66.0138,18 -36.45842,0 -66.0138,-8.05887 -66.0138,-18 0,-9.94113 29.55538,-18 66.0138,-18 36.45841,0 66.0138,8.05887 66.0138,18 z"
+       sodipodi:cx="533.08002"
+       d="m 599.09382,-540 c 0,9.94113 -29.55539,18 -66.0138,18 -36.45842,0 -66.0138,-8.05887 -66.0138,-18 0,-9.94113 29.55538,-18 66.0138,-18 36.45841,0 66.0138,8.05887 66.0138,18 z"
        id="ellipse209"
        ry="18"
        rx="66.013802"
        cy="-540"
-       cx="563.08002" />
+       cx="533.08002" />
     <text
        style="font-size:14px;text-anchor:middle;font-family:'Times Roman,serif'"
        id="text211"
        font-size="14.00"
        y="-535.90002"
-       x="563.08002">Script Hash</text>
+       x="533.08002">Script Hash</text>
   </g>
   <g
      class="edge"
@@ -650,11 +625,11 @@
        style="fill:none;stroke:#000000"
        inkscape:connector-curvature="0"
        id="path216"
-       d="m 183.369,-540 c 81.03,0 217.88,0 303.271,0" />
+       d="m 176.173,-540 c 75.986,0 200.502,0 280.56,0" />
     <polygon
        style="fill:#000000;stroke:#000000"
        id="polygon218"
-       points="486.791,-536.5 486.791,-543.5 486.791,-543.5 496.791,-540 " />
+       points="456.753,-536.5 456.753,-543.5 456.753,-543.5 466.753,-540 " />
   </g>
   <g
      class="node"
@@ -667,19 +642,19 @@
        sodipodi:ry="18"
        sodipodi:rx="73.853401"
        sodipodi:cy="-324"
-       sodipodi:cx="563.08002"
-       d="m 636.93342,-324 c 0,9.94113 -33.0653,18 -73.8534,18 -40.78811,0 -73.8534,-8.05887 -73.8534,-18 0,-9.94113 33.06529,-18 73.8534,-18 40.7881,0 73.8534,8.05887 73.8534,18 z"
+       sodipodi:cx="533.08002"
+       d="m 606.93342,-324 c 0,9.94113 -33.0653,18 -73.8534,18 -40.78811,0 -73.8534,-8.05887 -73.8534,-18 0,-9.94113 33.06529,-18 73.8534,-18 40.7881,0 73.8534,8.05887 73.8534,18 z"
        id="ellipse223"
        ry="18"
        rx="73.853401"
        cy="-324"
-       cx="563.08002" />
+       cx="533.08002" />
     <text
        style="font-size:14px;text-anchor:middle;font-family:'Times Roman,serif'"
        id="text225"
        font-size="14.00"
        y="-319.89999"
-       x="563.08002">TxID &amp; Out#</text>
+       x="533.08002">TxID &amp; Out#</text>
   </g>
   <g
      class="node"
@@ -692,19 +667,19 @@
        sodipodi:ry="18"
        sodipodi:rx="38.913399"
        sodipodi:cy="-468"
-       sodipodi:cx="563.08002"
-       d="m 601.99342,-468 c 0,9.94113 -17.42213,18 -38.9134,18 -21.49128,0 -38.9134,-8.05887 -38.9134,-18 0,-9.94113 17.42212,-18 38.9134,-18 21.49127,0 38.9134,8.05887 38.9134,18 z"
+       sodipodi:cx="533.08002"
+       d="m 571.99342,-468 c 0,9.94113 -17.42213,18 -38.9134,18 -21.49128,0 -38.9134,-8.05887 -38.9134,-18 0,-9.94113 17.42212,-18 38.9134,-18 21.49127,0 38.9134,8.05887 38.9134,18 z"
        id="ellipse230"
        ry="18"
        rx="38.913399"
        cy="-468"
-       cx="563.08002" />
+       cx="533.08002" />
     <text
        style="font-size:14px;text-anchor:middle;font-family:'Times Roman,serif'"
        id="text232"
        font-size="14.00"
        y="-463.89999"
-       x="563.08002">Script</text>
+       x="533.08002">Script</text>
   </g>
   <g
      class="edge"
@@ -716,11 +691,11 @@
        style="fill:none;stroke:#000000;stroke-dasharray:1, 5"
        inkscape:connector-curvature="0"
        id="path237"
-       d="m 563.08,-521.859 c 0,8.591 0,17.182 0,25.774" />
+       d="m 533.08,-521.859 c 0,8.591 0,17.182 0,25.774" />
     <polygon
        style="fill:#000000;stroke:#000000"
        id="polygon239"
-       points="559.58,-496 566.58,-496 566.58,-496 563.08,-486 " />
+       points="529.58,-496 536.58,-496 536.58,-496 533.08,-486 " />
   </g>
   <g
      class="edge"
@@ -732,21 +707,21 @@
        style="fill:none;stroke:#000000;stroke-dasharray:5, 2"
        inkscape:connector-curvature="0"
        id="path244"
-       d="m 563.08,-431.298 c 0,26.353 0,52.705 0,79.058" />
+       d="m 533.08,-431.298 c 0,26.353 0,52.705 0,79.058" />
     <polygon
        style="fill:#000000;stroke:#000000"
        id="polygon246"
-       points="559.58,-352.141 566.58,-352.141 566.58,-352.141 563.08,-342.141 " />
+       points="529.58,-352.141 536.58,-352.141 536.58,-352.141 533.08,-342.141 " />
   </g>
   <path
-     style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:none;marker-start:url(#Arrow2Lstart)"
-     d="m 105.36061,142.06358 0,62.6525"
-     id="path4260"
+     style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#Arrow2Lstart)"
+     d="m 99.275154,142.05442 0,62.65613"
+     id="path5104"
      inkscape:connector-type="polyline"
      inkscape:connector-curvature="0"
      inkscape:connection-start="#node10"
      inkscape:connection-start-point="d4"
      inkscape:connection-end="#node2"
      inkscape:connection-end-point="d4"
-     transform="matrix(0.80060125,0,0,0.80060125,0,-0.18037578)" />
+     transform="matrix(0.80055481,0,0,0.80055481,0,-0.16644295)" />
 </svg>
