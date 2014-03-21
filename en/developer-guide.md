@@ -26,10 +26,10 @@ title: "Developer Guide - Bitcoin"
 
 ## The Bitcoin Block Chain
 
-The block chain provides Bitcoin’s public ledger, a timestamped record
-of all confirmed transactions. This system is designed to create a
-decentralized consensus using proof of works to prevent frauds like double
-spending or chargebacks.
+The block chain provides Bitcoin's public ledger, a timestamped record
+of all confirmed transactions. This system is used to protect against double
+spending and modification of previous transaction records, using proofs of
+work verified by the peer-to-peer network to maintain a global consensus.
 
 This document provides detailed explanations about the functionning of
 this system along with security advices for risk assessment and tools for
