@@ -586,7 +586,7 @@ to use those terms and then get feedback to see if it actually helps. -harding -
 Transactions let users send bitcoins. Each transaction is constructed
 out of several parts which enable both simple direct payments and
 multiperson collaborations. This section will describe each part and
-demonstrate how to use them to build complete transactions.
+demonstrate how to use them together to build complete transactions.
 
 To keep things simple, this section pretends coinbase transactions do
 not exist. Coinbase transactions can only be created by Bitcoin miners
@@ -1705,14 +1705,6 @@ TODO, Relevant links:
 * [https://github.com/bitcoin/bips/blob/master/bip-0013.mediawiki (P2SH)](https://github.com/bitcoin/bips/blob/master/bip-0013.mediawiki)
 * [https://github.com/bitcoin/bips/blob/master/bip-0016.mediawiki (P2SH)](https://github.com/bitcoin/bips/blob/master/bip-0016.mediawiki)
 -->
-
-### Basics
-
-### Change addresses
-
-### Complex contrats
-
-### Transaction fees
 
 ## Wallets
 
