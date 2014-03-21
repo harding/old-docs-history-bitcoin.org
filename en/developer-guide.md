@@ -26,14 +26,14 @@ title: "Developer Guide - Bitcoin"
 
 ## The Bitcoin Block Chain
 
-The block chain provides Bitcoin's ledger, a timestamped record of all
-confirmed transactions. Under normal conditions, a new block of
-transactions is added to the block chain approximately every 10 minutes
-and historic blocks are left unchanged.
+The block chain provides Bitcoin's public ledger, a timestamped record
+of all confirmed transactions. This system is used to protect against double
+spending and modification of previous transaction records, using proofs of
+work verified by the peer-to-peer network to maintain a global consensus.
 
-This document describes this normal operating condition, along with conditions 
-that can cause recent block chain history to become mutable (changeable), 
-and provides tools for retrieving and using block chain data.
+This document provides detailed explanations about the functionning of
+this system along with security advices for risk assessment and tools for
+using block chain data.
 
 ### Block Chain Overview
 
