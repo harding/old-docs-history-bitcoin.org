@@ -1725,6 +1725,8 @@ In order to make copying of private keys less prone to error, Wallet Import Form
 6. Add the 4 checksum bytes from point 5 at the end of the extended key from point 2.
 7. Convert the result from a byte string into a base58 string using Base58Check encoding.
 
+The process is easily reversible, using the Base58 decoding function, and removing the padding.
+
 #### Mini Private Key Format
 Mini private key format is a method for encoding a private key in under 30 characters, enabling keys to be embedded in a small physical space, such as physical bitcoin tokens, and more damage-resistant QR codes. 
 
@@ -1735,7 +1737,7 @@ Mini private key format is a method for encoding a private key in under 30 chara
 
 Many implementations disallow the character '1' in the mini private key due to its visual similarity to 'l'.
 
-Resource: A common tool to create and redeem these keys is the [Casascius Bitcoin Address Utility](https://github.com/casascius/Bitcoin-Address-Utility).
+**Resource:** A common tool to create and redeem these keys is the [Casascius Bitcoin Address Utility](https://github.com/casascius/Bitcoin-Address-Utility).
 
 ### Deterministic wallets formats
 Deterministic wallets are the recommended method of generating and storing private keys, as they allow simple backing of wallets via mnemonic pass-phrase.
