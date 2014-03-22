@@ -456,13 +456,13 @@ transactions must be a coinbase transaction which should collect and
 spend any transaction fees paid by transactions included in this block.
 All blocks with a block height less than 6,930,000 are entitled to
 receive a block reward of newly created bitcoin value, which also
-should be spent in the generation transaction. (The block reward started
+should be spent in the coinbase transaction. (The block reward started
 at 50 bitcoins and is being halved approximately every four years: as of
-March 2014, it's 25 bitcoins.) A generation transaction is invalid if it 
+March 2014, it's 25 bitcoins.) A coinbase transaction is invalid if it 
 tries to spend more value than is available from the transaction 
 fees and block reward.
 
-The generation transaction has the same basic format as any other
+The coinbase transaction has the same basic format as any other
 transaction, but it references a single non-existent UTXO and a special
 coinbase field replaces the field that would normally hold a script and
 signature. In version 2 blocks, the coinbase parameter must begin with
@@ -483,7 +483,7 @@ All transactions, including the coinbase transaction, are encoded into
 blocks in binary rawtransaction format prefixed by a block transaction
 sequence number.
 
-#### Example Block And Generation Transaction
+#### Example Block And Coinbase Transaction
 
 The first block with more than one transaction is at block height 170.
 We can get the hash of block 170's header with the `getblockhash` RPC:
@@ -521,7 +521,7 @@ version, merkleroot, time, nonce, and bits. All other values shown
 are computed.
 
 The first transaction identifier (txid) listed in the tx array is, in
-this case, the generation transaction. The txid is a hash of the raw
+this case, the coinbase transaction. The txid is a hash of the raw
 transaction. We can get the actual raw transaction in hexadecimal format
 from the block chain using the `getrawtransaction` RPC with the txid:
 
