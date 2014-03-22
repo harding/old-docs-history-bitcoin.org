@@ -1710,25 +1710,41 @@ TODO, Relevant links:
 
 Bitcoin wallets at their core are a collection of private keys. These collections are stored digitally in a file, or can even be physically stored on pieces of paper. 
 
-### Private keys format
-Private keys are what are used to unlock bitcoin from a particular address. In Bitcoin, a private key is simply a 256-bit number, between the values:
-0x1 and 0xFFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFE BAAE DCE6 AF48 A03B BFD2 5E8C D036 4141
-effectively representing the entire range of 2<sup256-1</sup> values. The range is governed by the secp256k1 ECDSA encryption standard used by Bitcoin. 
+### Private key formats
+Private keys are what are used to unlock bitcoin from a particular address. In Bitcoin, a private key in standard format is simply a 256-bit number, between the values:
+0x1 and 0xFFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFE BAAE DCE6 AF48 A03B BFD2 5E8C D036 4141, effectively representing the entire range of 2<sup>256</sup>-1 values. The range is governed by the [secp256k1](http://www.secg.org/index.php?action=secg,docs_secg) ECDSA encryption standard used by Bitcoin. 
 
-### Wallet Import Format (WIF)
-In order to make copying of private keys less prone to error, Wallet Import Format (WIF) may be utilized. WIF uses base58Check encoding on an extended private key, which among other steps shortens the key, removes easy-to-mistake characters such as 'O/0’ and 'l/I', and appends a 4-byte checksum onto the end of the key.
+#### Wallet Import Format (WIF)
+In order to make copying of private keys less prone to error, Wallet Import Format may be utilized. WIF uses base58Check encoding on an extended private key, greatly decreasing the chance of copying error, much like standard Bitcoin addresses.
 
-### Mini Private Key Format
-Mini private key format is a method for encoding a private key in under 30 characters, enabling keys to be embedded in a small physical space, such as physical bitcoin tokens, and more damage-resistant QR codes. The first character of mini keys is 'S'. In order to determine if a mini private key is well-formatted:, a question mark is added to the private key, then the SHA256 hash calculated. If the first byte output is a `00’, it is well-formatted. This key restriction acts as a typo-checking mechanism. A user brute forces the process using random numbers until a well-formatted mini private key is output. In order to derive the full private key, the user simply takes a single SHA256 hash of the mini private key. A common tool to create and redeem these keys is the Casascius Bitcoin Address Utility.
+1. Take a private key.
+2. Add a 0x80 byte in front of it for mainnet addresses or 0xef for testnet addresses.
+3. Perform a SHA-256 hash on the extended key.
+4. Performa SHA-256 hash on result of SHA-256 hash.
+5. Take the first 4 bytes of the second SHA-256 hash; this is the checksum.
+6. Add the 4 checksum bytes from point 5 at the end of the extended key from point 2.
+7. Convert the result from a byte string into a base58 string using Base58Check encoding.
+
+#### Mini Private Key Format
+Mini private key format is a method for encoding a private key in under 30 characters, enabling keys to be embedded in a small physical space, such as physical bitcoin tokens, and more damage-resistant QR codes. 
+
+1. The first character of mini keys is 'S'. 
+2. In order to determine if a mini private key is well-formatted, a question mark is added to the private key.
+3. The SHA256 hash calculated. If the first byte output is a `00’, it is well-formatted. This key restriction acts as a typo-checking mechanism. A user brute forces the process using random numbers until a well-formatted mini private key is output. 
+4. In order to derive the full private key, the user simply takes a single SHA256 hash of the original mini private key. This process is one-way: it is intractible to compute the mini private key format from the derived key.
+
+Many implementations disallow the character '1' in the mini private key due to its visual similarity to 'l'.
+
+Resource: A common tool to create and redeem these keys is the [Casascius Bitcoin Address Utility](https://github.com/casascius/Bitcoin-Address-Utility).
 
 ### Deterministic wallets formats
-Deterministic wallets are the recommended method of generating and storing private keys, as they allow simple backing of wallets via mnemonic passphrase.
+Deterministic wallets are the recommended method of generating and storing private keys, as they allow simple backing of wallets via mnemonic pass-phrase.
 
 #### Type 1: Single Chain Wallets
 Type 1 deterministic wallets are the simpler of the two, which can create a single series of keys from a single seed. A primary weakness is that if the master seed is leaked, all funds are compromised, and wallet sharing is extremely limited.
 
 #### Type 2: Hierarchical Deterministic (HD) Wallets
-Type 2 wallets are detailed in BIP0032, are the currently favored format for generating, storing and managing public/private key pairs. Hierarchical deterministic wallets allow such selective sharing by supporting multiple keypair chains, derived from a single root. This selective sharing enables many much more advanced arrangements. Another goal of the BIP0032 standard is to encourage interoperability between wallet software using the same wallet format, rather than having to manually convert wallet types. The suggested minimal interoperability is the ability to import extended public and private keys, to give access to the descendants as wallet keys. 
+Type 2 wallets, specified in [BIP0032](https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki), are the currently favored format for generating, storing and managing private keys. Hierarchical deterministic wallets allow selective sharing by supporting multiple key-pair chains in a tree structure, derived from a single root. This selective sharing enables many advanced arrangements. An additional goal of the BIP0032 standard is to encourage interoperability between wallet software using the same wallet format, rather than having to manually convert wallet types. The suggested minimal interoperability is the ability to import extended public and private keys, to give access to the descendants as wallet keys. 
 
 Here are a select number of use cases:
 
@@ -1736,10 +1752,12 @@ Here are a select number of use cases:
 2. When a business has several independent offices, they can all use wallets derived from a single master. This will allow the headquarters to maintain a super-wallet that sees all incoming and outgoing transactions of all offices, and even permit moving money between the offices.
 3. In case two business partners often transfer money, one can use the extended public key for the external chain of a specific account as a sort of "super address", allowing frequent transactions that cannot (easily) be associated, but without needing to request a new address for each payment. Such a mechanism could also be used by mining pool operators as variable payout address.
 
-With any number more of arrangements possible.
+With many more arrangements possible. The following section is an in-depth technical discussion of HD wallets.
+
+<!-- BEGIN The following text largely taken from the BIP0032 specification --> 
 
 #### Conventions
-In the rest of this text we will assume the public key cryptography used in Bitcoin, namely elliptic curve cryptography using the field and curve parameters defined by secp256k1 (http://www.secg.org/index.php?action=secg,docs_secg). Variables below are either:
+In the rest of this text we will assume the public key cryptography used in Bitcoin, namely elliptic curve cryptography using the field and curve parameters defined by [secp256k1](http://www.secg.org/index.php?action=secg,docs_secg). Variables below are either:
 * Integers modulo the order of the curve (referred to as n).
 * Coordinates of points on the curve.
 * Byte sequences.
@@ -1872,6 +1890,7 @@ Somewhat more care must be taken regarding extended keys, as these correspond to
 One weakness that may not be immediately obvious, is that knowledge of the extended public key + any non-hardened private key descending from it is equivalent to knowing the extended private key (and thus every private and public key descending from it). This means that extended public keys must be treated more carefully than regular public keys.
 It is also the reason for the existence of hardened keys, and why they are used for the account level in the tree. This way, a leak of account-specific (or below) private key never risks compromising the master or other accounts.
 
+<!-- END extended quote from BIP0032 spec --> 
 
 Please refer to [BIP0032](https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki) for the full HD Wallet specification.
 
