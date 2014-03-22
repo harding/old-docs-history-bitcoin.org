@@ -669,8 +669,10 @@ contain the following two pieces of data:
 1. His full (unhashed) public key, so the script can check that it
    hashes to the same value as the hashed pubkey provided by Alice.
 
-2. Data signed by his private key, called a signature, so the script can
-   verify that Bob owns the private key which created the public key.
+2. A signature made by using the ECDSA cryptographic formula to combine
+   certain transaction data (described below) with Bob's private key.
+   This lets the script verify that Bob owns the private key which
+   created the public key.
 
 Bob's signature doesn't just prove Bob controls his private key; it also
 makes the rest of his transaction tamper-proof so Bob can safely
@@ -892,14 +894,15 @@ signatures, so it's necessary to tell it how many public keys are
 being provided (n) and how many signatures are required (m). See the
 prototype script below for an example:
 
-    m [pubkey] [pubkey...] n OP_CHECKMULTISIG
+    <m> [pubkey] [pubkey...] <n> OP_CHECKMULTISIG
 
-The values m and n would be replaced with numbers, such as 2 and 2 for
-an output which could only be spent if two key pairs were used, or 2
-and 3 for an output which requires signatures from only two of the
+The values m and n would be replaced with op codes which push the
+corresponding number to the stack, such as `OP_2` and `OP_2` for an
+output which could only be spent if two key pairs were used, or `OP_2`
+and `OP_3` for an output which requires signatures from only two of the
 public keys listed. For example, a 2-of-3 script:
 
-    2 [pubkey] [pubkey] [pubkey] 3 OP_CHECKMULTISIG
+    OP_2 [pubkey] [pubkey] [pubkey] OP_3 OP_CHECKMULTISIG
 
 Recipients who want their bitcoins to be secured with multiple
 signatures outputs must get the spender to create a multisig script.
@@ -1023,10 +1026,6 @@ accept, relay, nor mine your transaction. When you try to transmit
 your transaction to a peer running the default settings, you will
 receive an error.
 
-<!-- TODO: I've received errors when I tried to do something stupid, but
-are there any cases where default peers accept a non-standard tx and then
-silently drop it? -harding -->
-
 But if you create a non-standard redeemScript, hash it, and use the hash
 in a P2SH output, the network sees only the hash, so it will accept the
 output as valid no matter what the redeemScript says. When you go to
@@ -1059,12 +1058,8 @@ conditions:
 https://github.com/bitcoin/bitcoin/blob/acfe60677c9bb4e75cf2e139b2dee4b642ee6a0c/src/main.cpp#L527
 -->
 
-<!-- I don't understand what this is testing:
-https://github.com/bitcoin/bitcoin/blob/acfe60677c9bb4e75cf2e139b2dee4b642ee6a0c/src/main.cpp#L536
--->
-
 * If any of the transaction's outputs spend less than a minimal value
-  (currently 5,430 satoshis---0.05 millibits), the transaction must pay
+  (currently 546 satoshis---0.005 millibits), the transaction must pay
   a minimum transaction fee (currently 0.1 millibits).
 
 ### Transaction Fees And Change
@@ -1084,11 +1079,11 @@ based on their fee per byte, with higher-paying transactions being added
 in sequence until all of the available space is filled.
 
 As of Bitcoin Core 0.9, transactions which do not count as high priority
-need to pay a minimum fee of 0.01 millibits to be relayed across the
-network.  Any transaction paying the minimum fee should be prepared to
-wait a long time before there's enough spare space in a block to include
-it.  Please see the block chain section about confirmations for why this
-could be important.
+need to pay a minimum fee of 1,000 satoshis (0.01 millibits) to be
+relayed across the network. Any transaction paying the minimum fee
+should be prepared to wait a long time before there's enough spare space
+in a block to include it. Please see the block chain section about
+confirmations for why this could be important.
 
 Since each transaction spends Unspent Transaction Outputs (UTXOs) and
 because a UTXO can only be spent once, the full value of the included
@@ -1151,8 +1146,6 @@ Improvement Protocol (BIP) #72, the [URI Extensions For Payment
 Protocol](https://github.com/bitcoin/bips/blob/master/bip-0072.mediawiki)
 (still in draft as of this writing).
 
-<!-- TODO: stealth addresses should be mentioned somewhere too. -->
-
 ### Contracts
 
 By making the system hard to understand, the complexity of transactions
@@ -1212,9 +1205,10 @@ signs a transaction that spends 60% of the millibits to Bob's public key
 and 40% to Charlie's public key. 
 
 Either Bob and Charlie can sign the transaction and transmit it to the
-peer-to-peer network, actually spending the millibits, or they can both
-decide they don't like Alice's ruling, find a new arbitrator, and
-repeat the procedure.
+peer-to-peer network, actually spending the millibits. If Alice creates
+and signs a transaction neither of them will agree to, such as spending
+all the millibits to herself, they can find a new arbitrator and repeat
+the procedure.
 
 Merchants can use the 2-of-3 escrow contract to get customers to trust
 them. Customers choose what they want to buy, but instead of paying
@@ -1234,6 +1228,9 @@ service interface using HTML/JavaScript on a GNU AGPL-licensed website.
 
 
 #### Micropayment Channel Contracts
+
+<!-- SOMEDAY: try to rewrite using a more likely real-world example without
+making the text or illustration more complicated --> 
 
 Alice also works part-time moderating forum posts for Bob. Every time
 someone posts to Bob's busy forum, Alice skims the post to make sure it
@@ -1413,11 +1410,10 @@ contract, which depend on transactions that have not yet been added to
 the block chain.
 
 Bitcoin developers have been working to reduce transaction malleability
-among standard transaction types, and improvements incorporated in
-Bitcoin Core 0.9 should make malleability only a minor concern. At
-present, contracts should be designed to minimize malleability risk, and
-high-value (or otherwise high-risk) agreements should not use
-multi-transaction contracts.
+among standard transaction types, but a complete fix is still only in
+the planning stages. At present, contracts should be designed to
+minimize malleability risk, and high-value (or otherwise high-risk)
+agreements should not use multi-transaction contracts.
 
 Transaction malleability also affects payment tracking.  Bitcoin Core's
 RPC interface lets you track transactions by their txid---but if that
@@ -1466,7 +1462,9 @@ types are made standard.
         scriptSig: <sig> [sig] [sig...] <redeemscript>
 
 * Multisig (*m* is the number of pubkeys which must match a signature;
-  *n* is how many pubkeys are being provided)
+  *n* is how many pubkeys are being provided.  Both *m* and *n* should
+  be opcodes `OP_1` through `OP_16`, corresponding to the number
+  desired.)
 
         script: <m> <pubkey> [pubkey] [pubkey...] <n> OP_CHECKMULTISIG
         scriptSig: OP_0 <sig> [sig] [sig...]
@@ -1481,20 +1479,25 @@ with 2-of-3:
 
         script: OP_HASH160 <redeemscripthash> OP_EQUAL
         scriptSig: <sig> <sig> <redeemscript>
-        redeemScript: OP_0 <2> <pubkey> <pubkey> <pubkey> <3> OP_CHECKMULTISIG
+        redeemScript: OP_0 <OP_2> <pubkey> <pubkey> <pubkey> <OP_3> OP_CHECKMULTISIG
 
 **OP Codes**
 
 The op codes used in standard transactions are,
 
-* Various data pushing op codes from 0x00 to 0x60 (1--96). These haven't
+* Various data pushing op codes from 0x00 to 0x4e (1--78). These haven't
   been shown in the examples above, but they must be used to push
   signatures and pubkeys onto the stack. See the link below this list
   for a description.
 
-* `OP_CHECKSIG` consumes a signature and a full public key, and
-  returns true if they were both made by the same ECDSA private key.
-  Otherwise, it returns false.
+* `OP_1NEGATE` (0x4f), `OP_TRUE`/`OP_1` (0x51), and `OP_2` through
+  `OP_16` (0x52--0x60), which (respectively) push the values -1, 1, and
+  2--16 to the stack.
+
+* `OP_CHECKSIG` consumes a signature and a full public key, and returns
+  true if the the transaction data specified by the SIGHASH flag was
+  converted into the signature using the same ECDSA private key that
+  generated the public key.  Otherwise, it returns false.
 
 * `OP_DUP` returns a copy of the item on the stack below it.
 
