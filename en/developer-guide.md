@@ -1723,7 +1723,7 @@ In order to make copying of private keys less prone to error, Wallet Import Form
 4. Performa SHA-256 hash on result of SHA-256 hash.
 5. Take the first 4 bytes of the second SHA-256 hash; this is the checksum.
 6. Add the 4 checksum bytes from point 5 at the end of the extended key from point 2.
-7. Convert the result from a byte string into a base58 string using Base58Check encoding.
+7. Convert the result from a byte string into a Base58 string using Base58Check encoding.
 
 The process is easily reversible, using the Base58 decoding function, and removing the padding.
 
@@ -1740,13 +1740,15 @@ Many implementations disallow the character '1' in the mini private key due to i
 **Resource:** A common tool to create and redeem these keys is the [Casascius Bitcoin Address Utility](https://github.com/casascius/Bitcoin-Address-Utility).
 
 ### Deterministic wallets formats
-Deterministic wallets are the recommended method of generating and storing private keys, as they allow simple backing of wallets via mnemonic pass-phrase.
+Deterministic wallets are the recommended method of generating and storing private keys, as they allow simple backing of wallets via mnemonic pass-phrase of a number of short, common English words.
 
 #### Type 1: Single Chain Wallets
 Type 1 deterministic wallets are the simpler of the two, which can create a single series of keys from a single seed. A primary weakness is that if the master seed is leaked, all funds are compromised, and wallet sharing is extremely limited.
 
 #### Type 2: Hierarchical Deterministic (HD) Wallets
 Type 2 wallets, specified in [BIP0032](https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki), are the currently favored format for generating, storing and managing private keys. Hierarchical deterministic wallets allow selective sharing by supporting multiple key-pair chains in a tree structure, derived from a single root. This selective sharing enables many advanced arrangements. An additional goal of the BIP0032 standard is to encourage interoperability between wallet software using the same wallet format, rather than having to manually convert wallet types. The suggested minimal interoperability is the ability to import extended public and private keys, to give access to the descendants as wallet keys. 
+
+<!-- BEGIN The following text largely taken from the BIP0032 specification --> 
 
 Here are a select number of use cases:
 
@@ -1755,8 +1757,6 @@ Here are a select number of use cases:
 3. In case two business partners often transfer money, one can use the extended public key for the external chain of a specific account as a sort of "super address", allowing frequent transactions that cannot (easily) be associated, but without needing to request a new address for each payment. Such a mechanism could also be used by mining pool operators as variable payout address.
 
 With many more arrangements possible. The following section is an in-depth technical discussion of HD wallets.
-
-<!-- BEGIN The following text largely taken from the BIP0032 specification --> 
 
 #### Conventions
 In the rest of this text we will assume the public key cryptography used in Bitcoin, namely elliptic curve cryptography using the field and curve parameters defined by [secp256k1](http://www.secg.org/index.php?action=secg,docs_secg). Variables below are either:
@@ -1824,7 +1824,7 @@ The fact that they are equivalent is what makes non-hardened keys useful (one ca
 
 ##### Public parent key &rarr; private child key
 
-This is not possible.
+This is not possible, as is expected.
 
 #### The key tree
 
@@ -1885,16 +1885,22 @@ Each account is composed of two keypair chains: an internal and an external one.
 
 #### Security Considerations
 
-Private and public keys must be kept safe as usual. Leaking a private key means access to coins - leaking a public key can mean loss of privacy.
+Most of the standard security guarantees afforded the standard key setups such as Type 1 wallets are still in place. 
 
-Somewhat more care must be taken regarding extended keys, as these correspond to an entire (sub)tree of keys.
+Note however that the following properties does not exist:
+* Given a parent extended public key (K<sub>par</sub>,c<sub>par</sub>) and a child public key (K<sub>i</sub>), it is hard to find child key index (i).
+* Given a parent extended public key (K<sub>par</sub>,c<sub>par</sub>) and a non-hardened child private key (k<sub>i</sub>), it is hard to find the parent private key (k<sub>par</sub>).
 
-One weakness that may not be immediately obvious, is that knowledge of the extended public key + any non-hardened private key descending from it is equivalent to knowing the extended private key (and thus every private and public key descending from it). This means that extended public keys must be treated more carefully than regular public keys.
-It is also the reason for the existence of hardened keys, and why they are used for the account level in the tree. This way, a leak of account-specific (or below) private key never risks compromising the master or other accounts.
+Consequently:
+
+1. Private and public keys must be kept safe as usual. Leaking a private key means access to coins - leaking a public key can mean loss of privacy.
+2. Somewhat more care must be taken regarding extended keys, as these correspond to an entire (sub)tree of keys.
+3. One weakness that may not be immediately obvious, is that knowledge of the extended public key + any non-hardened private key descending from it is equivalent to knowing the extended private key (and thus every private and public key descending from it). This means that extended public keys must be treated more carefully than regular public keys.
+*It is also the reason for the existence of hardened keys, and why they are used for the account level in the tree. This way, a leak of account-specific (or below) private key never risks compromising the master or other accounts.*
 
 <!-- END extended quote from BIP0032 spec --> 
 
-Please refer to [BIP0032](https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki) for the full HD Wallet specification.
+**Resources:** Refer to [BIP0032](https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki) for the full HD Wallet specification.
 
 ### JBOK (Just a bunch of keys) wallets formats (deprecated)
 
