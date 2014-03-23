@@ -216,23 +216,22 @@ a transaction. For each block, the transaction gains one **confirmation**. Since
 modifying blocks is quite difficult, higher confirmation scores indicate 
 greater protection.
 
-**0 confirmation**: The transaction has been broadcast but is still not 
+**0 confirmations**: The transaction has been broadcast but is still not 
 included in any block. Zero confirmation transactions should generally not be 
 trusted without risk analysis. Although miners usually confirm the first 
-transaction they receive, fraudsters can influence the priority of their 
-transactions by using insufficient or high transaction fees, therefore 
-increasing the risk of a successful double spend.
+transaction they receive, fraudsters may be able to manipulate the
+network into including their version of a transaction.
 
 **1 confirmation**: The transaction is included in the latest block and 
-double-spend risk decreases dramatically. Transactions need 10 minutes on 
-average to receive one confirmation unless they have insufficient transaction 
-fees. The most recent block gets replaced fairly often by accident, so a 
-double spend is still a real possibility.
+double-spend risk decreases dramatically. Transactions which pay
+sufficient transaction fees need 10 minutes on average to receive one
+confirmation. However, the most recent block gets replaced fairly often by
+accident, so a double spend is still a real possibility.
 
 **2 confirmations**: The most recent block was chained to the block which 
 includes the transaction. As of March 2014, two block replacements were 
 exceedingly rare, and a two block replacement attack was unpractical without 
-expensive equipment.
+expensive mining equipment.
 
 **6 confirmations**: The network has spent about an hour working to protect 
 your transaction against double spends and the transaction is buried under six 
@@ -244,7 +243,7 @@ payment as accepted.
 
 Bitcoin Core provides several RPCs which can provide your program with the 
 confirmation score for transactions in your wallet or arbitrary transactions. 
-For example, the ``listunspent`` RPC provides an array of every bitcoin you can 
+For example, the `listunspent` RPC provides an array of every bitcoin you can 
 spend along with its confirmation score.
 
 Although confirmations provide excellent double-spend protection most of the 
@@ -268,11 +267,11 @@ type of service.
 For example, unconfirmed transactions can be compared among all connected peers 
 to see if any UTXO is used in multiple unconfirmed transactions, indicating a 
 double-spend attempt, in which case the payment can be refused until it is 
-confirmed. Transactions can also be verified to be spending sufficient 
-transaction fees.
+confirmed. Transactions can also be ranked by their transaction fee to
+estimate the amount of time until they're added to a block.
 
 Another example could be to detect a fork when multiple peers report differing 
-block header hashes at the same block height and trigger a safe mode if the 
+block header hashes at the same block height. Your program can go into a safe mode if the 
 fork extends for more than two blocks, indicating a possible problem with the 
 block chain.
 
@@ -287,30 +286,9 @@ basis.
 This section describes version 2 blocks, which are any blocks with a
 block height greater than 227,835. (Version 1 and version 2 blocks were
 intermingled for some time before that point.) Future block versions may
-break compatibility with the information in this section; to determine
-the current block version number, find the current block height by
-checking the blocks field of the `getinfo` RPC results:
-
-    > getinfo
-
-    [...]
-    "blocks" : 289802,
-    [...]
-
-Then get the hash of that block using the `getblockhash` RPC:
-
-    > getblockhash 289802
-
-    0000000000000000fbff61fa45f4b218db7745c4d89990725c35dbdaa446bacb
-
-Finally check the version field of that block using the `getblock` RPC:
-
-    > getblock 0000000000000000fbff61fa45f4b218db7745c4d899\
-    90725c35dbdaa446bacb
-
-    [...]
-    "version" : 2,
-    [...]
+break compatibility with the information in this section. You can determine
+the version of any block by checking its ``version`` field using
+[bitcoind RPC calls](#example-block-and-coinbase-transaction).
 
 As of version 2 blocks, each block consists of four root elements:
 
@@ -422,13 +400,13 @@ transactions must be a coinbase transaction which should collect and
 spend any transaction fees paid by transactions included in this block.
 All blocks with a block height less than 6,930,000 are entitled to
 receive a block reward of newly created bitcoin value, which also
-should be spent in the generation transaction. (The block reward started
+should be spent in the coinbase transaction. (The block reward started
 at 50 bitcoins and is being halved approximately every four years: as of
-March 2014, it's 25 bitcoins.) A generation transaction is invalid if it 
+March 2014, it's 25 bitcoins.) A coinbase transaction is invalid if it 
 tries to spend more value than is available from the transaction 
 fees and block reward.
 
-The generation transaction has the same basic format as any other
+The coinbase transaction has the same basic format as any other
 transaction, but it references a single non-existent UTXO and a special
 coinbase field replaces the field that would normally hold a script and
 signature. In version 2 blocks, the coinbase parameter must begin with
@@ -449,7 +427,7 @@ All transactions, including the coinbase transaction, are encoded into
 blocks in binary rawtransaction format prefixed by a block transaction
 sequence number.
 
-#### Example Block And Generation Transaction
+#### Example Block And Coinbase Transaction
 
 The first block with more than one transaction is at block height 170.
 We can get the hash of block 170's header with the `getblockhash` RPC:
@@ -487,7 +465,7 @@ version, merkleroot, time, nonce, and bits. All other values shown
 are computed.
 
 The first transaction identifier (txid) listed in the tx array is, in
-this case, the generation transaction. The txid is a hash of the raw
+this case, the coinbase transaction. The txid is a hash of the raw
 transaction. We can get the actual raw transaction in hexadecimal format
 from the block chain using the `getrawtransaction` RPC with the txid:
 
