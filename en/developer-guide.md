@@ -323,7 +323,7 @@ block height greater than 227,835. (Version 1 and version 2 blocks were
 intermingled for some time before that point.) Future block versions may
 break compatibility with the information in this section. You can determine
 the version of any block by checking its ``version`` field using
-[bitcoind RPC calls](#example-block-and-generation-transaction).
+[bitcoind RPC calls](#example-block-and-coinbase-transaction).
 
 As of version 2 blocks, each block consists of four root elements:
 
