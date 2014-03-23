@@ -1102,14 +1102,44 @@ or P2SH script hash as was used in the UTXO, but for the reasons
 described in the next section, it is highly recommended that change be
 sent to a new P2PH or P2SH address.
 
-### Key Pair Reuse
+### Avoiding Key Reuse
 
-When possible, you should avoid signing more than one transaction with
-the same private key. Although the theory behind the signing system
-Bitcoin uses, ECDSA, has been widely peer reviewed without any
-real-world problems being found, actual implementations (such as
-the one used by Bitcoin Core) are occasionally found vulnerable to
-various attacks.
+The block chain, Bitcoin's ledger, is public information, so anyone can
+look up the aggregate balance of all outputs sent to a particular public
+key, pubkey hash, or script hash. Every time you pay or are paid by
+someone, you give them one of these three pieces of information,
+allowing them to look up the corresponding balance of millibits on the
+the block chain.
+
+Most people prefer not to reveal how many millibits they have to
+everyone with whom they transact. A solution which provides a
+reasonable degree of financial privacy is easy to implement: when
+someone wants to pay you, give them a never-before-used pubkey hash as
+a P2PH or P2SH address.
+
+The new address will not be linked to any of your previous addresses, so
+the payer cannot see how many millibits you have at the time of payment.
+He will, of course, know how many millibits he pays you, and if he
+watches the block chain closely as you spend his payment, he may be able
+to figure out how much you haven't spent yet.
+
+If you combine his payment, or a transaction descended from it, with a
+payment someone else gave you, he may be able to track the millibits
+from that second payment too. But as long as you consistently use a new
+public key (in some form) for every incoming payment, no one will ever
+be able to determine from block chain data exactly how many millibits
+you control.
+
+#### Private Key Reuse Security Considerations
+
+In addition to enhancing your financial privacy, avoiding key reuse can
+enhance your security in the event of a serious, but not fatal, flaw in
+the cryptographic signing system used by Bitcoin.
+
+The theory behind the signing system Bitcoin uses, ECDSA, has been
+widely peer reviewed without any real-world problems being discovered,
+but actual implementations (such as the one used by Bitcoin Core) are
+occasionally found vulnerable to various attacks.
 
 Bitcoin was designed to anticipate these possible vulnerabilities by
 letting you obfuscate ECDSA public keys with a SHA256 hash in either the
@@ -1124,27 +1154,30 @@ through your ECDSA implementation along with your private key, which
 could leak information about your private key.
 
 According to the ECDSA theory, this doesn't matter much. But in a world
-where researchers occasionally find flaws in ECDSA implementations and
-the random number generators used to produce private keys, signing a
-transaction puts you in a more exposed position than before you created
-the signature.
+where researchers occasionally find flaws in cryptographic theories and
+implementations, signing a transaction puts you in a more exposed
+position than before you created the signature.
 
 Again, Bitcoin was designed to anticipate this situation.  There is no
 technical reason you should ever need to use the same private key in
-more than one transaction.  Creating a new private key costs you nothing
-but some bits from your computer's pool of randomness.
+more than one transaction.  Creating a new private/public key pair costs
+you nothing but some bits from your computer's pool of randomness, and it
+increases both the financial privacy and security your applications can
+provide.
 
 There is, however, one major non-technical reason which may drive you
-into using the same private key more than once: reusable Bitcoin
-addresses. As explained previously, each Bitcoin address is the hash of
-a public key derived from your private key. If you paste your address
-on your website, give it to your clients, or put it in a QR code
-printed on your shirt, you will likely end up using your private key
-multiple times.
+and your users into using the same private/public key pair more than
+once: reusable Bitcoin addresses.
 
+As explained previously, each Bitcoin address is the hash of a public
+key derived from your private key. If you paste your address on your
+website, give it to your clients, or put it in a QR code printed on your
+shirt, you will likely end up using your private key multiple times.
 Millibits sent to those previously-spent addresses are less safe than
-millibits sent to a brand new address, so we encourage you to build your
-applications to avoid address reuse and, when possible, to discourage
+millibits sent to a brand new address. 
+
+The increases in privacy and security make it highly advisable to build
+your applications to avoid address reuse and, when possible, to discourage
 users from reusing addresses. If your application needs to provide a
 fixed URI to which payments should be sent, please see Bitcoin
 Improvement Protocol (BIP) #72, the [URI Extensions For Payment
