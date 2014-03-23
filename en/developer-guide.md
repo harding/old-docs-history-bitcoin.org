@@ -208,7 +208,7 @@ and a second one that pays the same UTXO back to himself. This is commonly
 referred to as a **double spend**. In this example, only one of these transactions 
 can be included in the block chain, and once included in a block, the cost of 
 replacing a transaction is to modify the block and all following blocks until 
-the end of the block chain.
+the current end of the block chain.
 
 The Bitcoin protocol can give each of your transactions an updating confidence 
 score based on the number of blocks which would need to be modified to replace 
@@ -258,7 +258,7 @@ transactions and cannot wait for at least six confirmations or more.
 which makes the system less reliable than expected.
 
 An interesting source of double-spend risk analysis can be acquired by 
-connecting to large numbers of Bitcoin peers and track how transactions and 
+connecting to large numbers of Bitcoin peers to track how transactions and 
 blocks differ from each other. Some third-party APIs can provide you with this 
 type of service.
 
