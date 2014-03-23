@@ -321,30 +321,9 @@ service's API documentation.
 This section describes version 2 blocks, which are any blocks with a
 block height greater than 227,835. (Version 1 and version 2 blocks were
 intermingled for some time before that point.) Future block versions may
-break compatibility with the information in this section; to determine
-the current block version number, find the current block height by
-checking the blocks field of the `getinfo` RPC results:
-
-    > getinfo
-
-    [...]
-    "blocks" : 289802,
-    [...]
-
-Then get the hash of that block using the `getblockhash` RPC:
-
-    > getblockhash 289802
-
-    0000000000000000fbff61fa45f4b218db7745c4d89990725c35dbdaa446bacb
-
-Finally check the version field of that block using the `getblock` RPC:
-
-    > getblock 0000000000000000fbff61fa45f4b218db7745c4d899\
-    90725c35dbdaa446bacb
-
-    [...]
-    "version" : 2,
-    [...]
+break compatibility with the information in this section. You can determine
+the version of any block by checking its ``version`` field using
+[bitcoind RPC calls](#example-block-and-generation-transaction).
 
 As of version 2 blocks, each block consists of four root elements:
 
