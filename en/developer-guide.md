@@ -216,23 +216,22 @@ a transaction. For each block, the transaction gains one **confirmation**. Since
 modifying blocks is quite difficult, higher confirmation scores indicate 
 greater protection.
 
-**0 confirmation**: The transaction has been broadcast but is still not 
+**0 confirmations**: The transaction has been broadcast but is still not 
 included in any block. Zero confirmation transactions should generally not be 
 trusted without risk analysis. Although miners usually confirm the first 
-transaction they receive, fraudsters can influence the priority of their 
-transactions by using insufficient or high transaction fees, therefore 
-increasing the risk of a successful double spend.
+transaction they receive, fraudsters may be able to manipulate the
+network into including their version of a transaction.
 
 **1 confirmation**: The transaction is included in the latest block and 
-double-spend risk decreases dramatically. Transactions need 10 minutes on 
-average to receive one confirmation unless they have insufficient transaction 
-fees. The most recent block gets replaced fairly often by accident, so a 
-double spend is still a real possibility.
+double-spend risk decreases dramatically. Transactions which pay
+sufficient transaction fees need 10 minutes on average to receive one
+confirmation. However, the most recent block gets replaced fairly often by
+accident, so a double spend is still a real possibility.
 
 **2 confirmations**: The most recent block was chained to the block which 
 includes the transaction. As of March 2014, two block replacements were 
 exceedingly rare, and a two block replacement attack was unpractical without 
-expensive equipment.
+expensive mining equipment.
 
 **6 confirmations**: The network has spent about an hour working to protect 
 your transaction against double spends and the transaction is buried under six 
@@ -244,7 +243,7 @@ payment as accepted.
 
 Bitcoin Core provides several RPCs which can provide your program with the 
 confirmation score for transactions in your wallet or arbitrary transactions. 
-For example, the ``listunspent`` RPC provides an array of every bitcoin you can 
+For example, the `listunspent` RPC provides an array of every bitcoin you can 
 spend along with its confirmation score.
 
 Although confirmations provide excellent double-spend protection most of the 
@@ -268,11 +267,11 @@ type of service.
 For example, unconfirmed transactions can be compared among all connected peers 
 to see if any UTXO is used in multiple unconfirmed transactions, indicating a 
 double-spend attempt, in which case the payment can be refused until it is 
-confirmed. Transactions can also be verified to be spending sufficient 
-transaction fees.
+confirmed. Transactions can also be ranked by their transaction fee to
+estimate the amount of time until they're added to a block.
 
 Another example could be to detect a fork when multiple peers report differing 
-block header hashes at the same block height and trigger a safe mode if the 
+block header hashes at the same block height. Your program can go into a safe mode if the 
 fork extends for more than two blocks, indicating a possible problem with the 
 block chain.
 
