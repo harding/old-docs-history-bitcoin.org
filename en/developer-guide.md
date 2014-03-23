@@ -197,124 +197,90 @@ transaction history.
 
 #### Double-Spend Risk Analysis
 
-The properties of the block chain described above ensure that transaction
-history is more difficult to modify the older it gets. But your programs
-will likely be used to automatically provide valuable and
-irrevocable services based on recent transactions where transaction
-history is more malleable.
+The properties of the block chain ensure that transaction history is more 
+difficult to modify the older it gets. For the very same reason, recent 
+transactions cannot be considered irreversible and often require additional 
+risk analysis. Your programs should be designed to discourage or avoid 
+performing any costly actions as long as a payment can potentially be reversed.
 
-In particular, your programs should protect against attackers who get
-your program to perform a costly action but who then use a double spend
-to avoid paying for the value received.
+More specifically, an attacker can create one transaction that pays a merchant 
+and a second one that pays the same UTXO back to himself. This is commonly 
+referred to as a **double spend**. In this example, only one of these transactions 
+can be included in the block chain, and once included in a block, the cost of 
+replacing a transaction is to modify the block and all following blocks until 
+the end of the block chain.
 
-The Bitcoin protocol can give each of your transactions an updating
-confidence score based on the number of blocks which would need to be
-modified to create a double spend. For each block that would need to be
-modified, the transaction gains one **confirmation.** Since modifying
-blocks is quite difficult, higher confirmation scores indicate greater
-double-spend protection.
+The Bitcoin protocol can give each of your transactions an updating confidence 
+score based on the number of blocks which would need to be modified to replace 
+a transaction. For each block, the transaction gains one **confirmation**. Since 
+modifying blocks is quite difficult, higher confirmation scores indicate 
+greater protection.
 
-<!-- DAH TODO: rewrite to avoid fee-based replacement --> 
+**0 confirmation**: The transaction has been broadcast but is still not 
+included in any block. Zero confirmation transactions should generally not be 
+trusted without risk analysis. Although miners usually confirm the first 
+transaction they receive, fraudsters can influence the priority of their 
+transactions by using insufficient or high transaction fees, therefore 
+increasing the risk of a successful double spend.
 
-New transactions start with zero confirmations because they are not
-included in any blocks. A double spender who knows that your software
-performs an action in response to an unconfirmed transaction can create
-one transaction that pays you, wait for you to see the payment (and send an item of value), and then
-create a double spend with a higher transaction fee that pays the same
-UTXO back to himself. Profit-motivated miners will attempt to put the
-transaction with the higher fee in a block, confirming it and leaving
-you without the bitcoins you thought you received.
+**1 confirmation**: The transaction is included in the latest block and 
+double-spend risk decreases dramatically. Transactions need 10 minutes on 
+average to receive one confirmation unless they have insufficient transaction 
+fees. The most recent block gets replaced fairly often by accident, so a 
+double spend is still a real possibility.
 
-<!-- DAH TODO: soften advice -->
+**2 confirmations**: The most recent block was chained to the block which 
+includes the transaction. As of March 2014, two block replacements were 
+exceedingly rare, and a two block replacement attack was unpractical without 
+expensive equipment.
 
-We do not recommend that naïve programs trust **zero confirmation
-transactions.** If you cannot wait for the next block to be mined before
-performing a costly action, you may try one of the methods described in
-the next section to acquire information about transaction reliability
-from outside the Bitcoin protocol.
+**6 confirmations**: The network has spent about an hour working to protect 
+your transaction against double spends and the transaction is buried under six 
+blocks. Even a reasonably lucky attacker would require a large percentage of 
+the total network hashing power to replace six blocks. Although this number is 
+somewhat arbitrary, software handling high-value transactions, or otherwise at 
+risk for fraud, should wait for at least six confirmations before treating a 
+payment as accepted.
 
-Double-spend risk decreases dramatically once the transaction is
-included in a block:
+Bitcoin Core provides several RPCs which can provide your program with the 
+confirmation score for transactions in your wallet or arbitrary transactions. 
+For example, the ``listunspent`` RPC provides an array of every bitcoin you can 
+spend along with its confirmation score.
 
-* One confirmation indicates the transaction was included in the most
-  recent block. As explained in the forking section above, the most
-  recent block gets replaced fairly often by accident, so a 
-  one-confirmation double spend is still a real possibility, although
-  serial double spenders would probably fail much more often than they
-  would succeed.
+Although confirmations provide excellent double-spend protection most of the 
+time, there are at least three cases where double-spend risk analysis can be 
+required:
 
-* Two confirmations indicates the most recent block was chained to the
-  block which includes the transaction. As of March 2014, accidental
-  two block replacements were exceedingly rare, and a purposeful two
-  block replacement attack would require very expensive equipment and a
-  lot of luck.
+1. In the case when the program or its user cannot wait for a confirmation and 
+wants to accept zero confirmation payments.
+2. In the case when the program or its user is accepting high value 
+transactions and cannot wait for at least six confirmations or more.
+3. In the case of an implementation bug or prolonged attack against Bitcoin 
+which makes the system less reliable than expected.
 
-* Six confirmations indicates the network has spent about an hour
-  working to protect your transaction against double spends. Even a
-  reasonably lucky attacker would require a large percentage of the
-  total network hashing power to replace six blocks. Although the number
-  six is somewhat arbitrary, we recommend that software handling
-  high-value transactions, or otherwise at risk for fraud, wait for at
-  least six confirmations before treating a payment as accepted.
+An interesting source of double-spend risk analysis can be acquired by 
+connecting to large numbers of Bitcoin peers and track how transactions and 
+blocks differ from each other. Some third-party APIs can provide you with this 
+type of service.
 
-Bitcoin Core provides several RPCs which can provide your program
-with the confirmation score for transactions in your wallet or arbitrary
-transactions. For example, the `listunspent` RPC provides an array of
-every bitcoin you can spend along with its confirmation score.
+<!-- TODO Example of double spend risk analysis using bitcoinj, eventually? -->
 
-#### Non-Protocol Double-Spend Risk Analysis
+For example, unconfirmed transactions can be compared among all connected peers 
+to see if any UTXO is used in multiple unconfirmed transactions, indicating a 
+double-spend attempt, in which case the payment can be refused until it is 
+confirmed. Transactions can also be verified to be spending sufficient 
+transaction fees.
 
-Although the Bitcoin protocol provides excellent double-spend protection
-most of the time, there are at least two situations where programs may
-want to look outside the protocol for special double-spend risk analysis:
+Another example could be to detect a fork when multiple peers report differing 
+block header hashes at the same block height and trigger a safe mode if the 
+fork extends for more than two blocks, indicating a possible problem with the 
+block chain.
 
-1. In the case of an implementation bug or prolonged attack against
-   Bitcoin which makes the system less reliable than expected.
-
-2. In the case when the program or its user wants to accept zero confirmation
-   payments.
-
-The best source for double-spend protection outside Bitcoin is human
-intelligence. 
-
-In the case of a bug or attack, bad news about Bitcoin spreads fast, so
-merchants may hear about problems. The Bitcoin Foundation provides a
-[Bitcoin alert service](https://bitcoin.org/en/alerts) with an RSS feed
-and users of Bitcoin Core can check the error field of the `getinfo` RPC
-results to get currently active alerts for their specific version of
-Bitcoin Core.
-
-In the case of zero confirmation payments, fraudsters may act
-differently from legitimate customers, letting savvy merchants manually
-flag them as high risk before accepting payment.
-
-To take advantage of human intelligence, your program should provide an
-easy to trigger safe mode which stops automatic payment acceptance on a
-global basis, a per-customer basis, or both. Like the big-red-button
-type of safety switches found in dangerous factories, you may want to
-make the option easy to enable even by relatively unprivileged users of
-your program.
-
-Another source of double-spend risk analysis can be acquired from
-third-party services which aggregate information about the current
-operation of the Bitcoin network, such as the website BlockChain.info.
-
-<!-- DAH TODO: yet another source: bitcoinj -->
-
-These third-party services connect to large numbers of Bitcoin peers and
-track how they differ from each other. For example, they can detect a
-fork when multiple peers report differing block header hashes at the
-same block height; if the fork extends for more than one or two blocks,
-indicating a possible attack, your program can go into a safe mode. 
-
-The service can also compare unconfirmed transactions among all
-connected peers to see if any UTXO is used in multiple unconfirmed
-transactions, indicating a double-spend attempt; if a double-spend
-attempt is detected, your program can refuse acceptance of the payment
-until it is confirmed.
-
-To use a third-party service for additional risk analysis, check the
-service's API documentation.
+Another good source of double-spend protection can be human intelligence. For 
+example, fraudsters may act differently from legitimate customers, letting 
+savvy merchants manually flag them as high risk. Your program can provide a 
+safe mode which stops automatic payment acceptance on a global or per-customer 
+basis.
 
 ### Implementation Details: Block Contents
 
@@ -1732,6 +1698,19 @@ TODO, Relevant links:
 
 * [https://en.bitcoin.it/wiki/Network](https://en.bitcoin.it/wiki/Network)
 * [https://github.com/bitcoin/bips/blob/master/bip-0037.mediawiki (Bloom filters)](https://github.com/bitcoin/bips/blob/master/bip-0037.mediawiki)
+
+<!--
+
+TODO, re-use relevant parts of this text
+
+In the case of a bug or attack, bad news about Bitcoin spreads fast, so
+merchants may hear about problems. The Bitcoin Foundation provides a
+[Bitcoin alert service](https://bitcoin.org/en/alerts) with an RSS feed
+and users of Bitcoin Core can check the error field of the `getinfo` RPC
+results to get currently active alerts for their specific version of
+Bitcoin Core.
+
+-->
 
 ### Blocks broadcasting
 
