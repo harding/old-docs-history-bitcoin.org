@@ -684,7 +684,7 @@ script, the script is:
 
     OP_DUP OP_HASH160 <PubkeyHash> OP_EQUALVERIFY OP_CHECKSIG
 
-The spender's scriptSig is sanitized and prefixed to the beginning of the
+The spender's scriptSig is [sanitized](#sigscript-sanitization) and prefixed to the beginning of the
 script. In a P2PH transaction, the scriptSig contains a signature (sig)
 and full public key (pubkey), creating the following concatenation:
 
@@ -1519,7 +1519,7 @@ Page](https://en.bitcoin.it/wiki/Script), with an authoritative list in the `opc
 Bitcoin Core [script header
 file](https://github.com/bitcoin/bitcoin/blob/master/src/script.h).
 
-Note: non-standard transactions can add non-data-pushing op codes to
+<span id="scriptsig-sanitization">Note:</span> non-standard transactions can add non-data-pushing op codes to
 their scriptSig, but scriptSig is run separately from the script (with a
 shared stack), so scriptSig can't use arguments such as `OP_RETURN` to
 prevent the script from working as expected.
