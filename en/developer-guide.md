@@ -1099,8 +1099,8 @@ so most transactions include a change output.
 Change outputs are regular outputs which spend the surplus millibits
 from the UTXOs back to the spender.  They can reuse the same P2PH pubkey hash
 or P2SH script hash as was used in the UTXO, but for the reasons
-described in the next section, it is highly recommended that change be
-sent to a new P2PH or P2SH address.
+described in the next section, it is highly recommended that change
+outputs be sent to a new P2PH or P2SH address.
 
 ### Avoiding Key Reuse
 
@@ -1112,10 +1112,9 @@ allowing them to look up the corresponding balance of millibits on the
 the block chain.
 
 Most people prefer not to reveal how many millibits they have to
-everyone with whom they transact. A solution which provides a
-reasonable degree of financial privacy is easy to implement: when
-someone wants to pay you, give them a never-before-used pubkey hash as
-a P2PH or P2SH address.
+everyone with whom they transact, so we highly recommended the use of
+never-before-used public keys (in address form) for each incoming
+payment.  This includes using new public keys when creating change outputs.
 
 The new address will not be linked to any of your previous addresses, so
 the payer cannot see how many millibits you have at the time of payment.
@@ -1127,7 +1126,7 @@ If you combine his payment, or a transaction descended from it, with a
 payment someone else gave you, he may be able to track the millibits
 from that second payment too. But as long as you consistently use a new
 public key (in some form) for every incoming payment, no one will ever
-be able to determine from block chain data exactly how many millibits
+be able to determine from block chain data the maximum number of millibits
 you control.
 
 #### Private Key Reuse Security Considerations
