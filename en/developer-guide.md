@@ -605,7 +605,8 @@ public key does not need to be stored.
 
 The public key is then cryptographically hashed. This pubkey hash can
 also be reliably repeated later, so it also does not need to be stored.
-The hash obfuscates the public key, providing security against
+The hash shortens and obfuscates the public key, making manual
+transcription easier and providing security against
 unanticipated problems which might allow reconstruction of private keys
 from public key data at some later point.
 
@@ -618,11 +619,12 @@ space-constrained diagrams where "public-key hash" wouldn't fit. -harding -->
 
 Bob provides the pubkey hash to Alice. Pubkey hashes are almost always
 sent encoded as Bitcoin addresses, which are base-58 encoded strings
-containing an address version number, the hash, and an error-correction
-checksum to ensure accurate transmission. The address can be transmitted
+containing an address version number, the hash, and an error-detection
+checksum to catch typos. The address can be transmitted
 through any medium, including one-way mediums which prevent the spender
 from communicating with the recipient, and it can be further encoded
-into another format, such as a QR code.
+into another format, such as a QR code [containg a bitcoin:
+URI](https://github.com/bitcoin/bips/blob/master/bip-0021.mediawiki).
 
 Once Alice has the address and decodes it back into a standard hash, she
 can create the first transaction. She creates a standard P2PH
@@ -630,15 +632,16 @@ transaction output containing instructions which allow anyone to spend that
 output if they can prove they control the private key corresponding to
 Bob's hashed public key. These instructions are called the script.
 
-Alice transmits the transaction and it is added to the block chain.
-It becomes, for a time, an Unspent Transaction Output (UTXO) displayed
-in the recipient's Bitcoin wallet software as a spendable balance.
+Alice broadcasts the transaction and it is added to the block chain.
+The network categorizes it as an Unspent Transaction Output (UTXO), and Bob's
+wallet software displays it as a spendable balance.
 
 When, some time later, Bob decides to spend the UTXO, he must create an
 input which references the transaction Alice created by its hash, called
 a Transaction Identifier (txid), and the specific output she used by its
-index number (output index).  He must then create a scriptSig which
-satisfies the conditions Alice placed in the previous output's script.
+index number (output index). He must then create a scriptSig---a
+collection of data parameters which satisfy the conditions Alice placed
+in the previous output's script.
 
 Bob does not need to communicate with Alice to do this; he must simply
 prove to the Bitcoin peer-to-peer network that he can satisfy the
@@ -655,7 +658,7 @@ contain the following two pieces of data:
 
 Bob's signature doesn't just prove Bob controls his private key; it also
 makes the rest of his transaction tamper-proof so Bob can safely
-transmit it over the peer-to-peer network.
+broadcast it over the peer-to-peer network.
 
 <!-- Editors: please keep "amount of bitcoins" (instead of "number of
 bitcoins") in the text below to match the text in the figure above.  -harding -->
@@ -665,11 +668,11 @@ txid and output index of the previous transaction, the previous
 output's script, the script Bob creates which will let the next
 recipient spend this transaction's output, and the amount of millibits to
 spend to the next recipient. In essence, the entire transaction is
-signed except for the scriptSig, which holds the full public key and the
-signature itself.
+signed except for any scriptSigs, which hold the full public keys and
+signatures.
 
 After putting his signature and public key in the scriptSig, Bob
-transmits the transaction to Bitcoin miners through the peer-to-peer
+broadcast the transaction to Bitcoin miners through the peer-to-peer
 network. Each peer and miner independently validates the transaction
 before relaying it further or attempting to include it in a new block of
 transactions.
@@ -681,14 +684,14 @@ script, the script is:
 
     OP_DUP OP_HASH160 <PubkeyHash> OP_EQUALVERIFY OP_CHECKSIG
 
-The spender's input scriptSig is prefixed to the beginning of the
+The spender's scriptSig is sanitized and prefixed to the beginning of the
 script. In a P2PH transaction, the scriptSig contains a signature (sig)
 and full public key (pubkey), creating the following concatenation:
 
     <Sig> <PubKey> OP_DUP OP_HASH160 <PubkeyHash> OP_EQUALVERIFY OP_CHECKSIG
 
 The script language is a
-[Forth-derived](https://en.wikipedia.org/wiki/Forth_%28programming_language%29)
+[Forth-like](https://en.wikipedia.org/wiki/Forth_%28programming_language%29)
 stack-based language deliberately designed to be stateless and not
 Turing complete. Statelessness ensures that once a transaction is added
 to the block chain, there is no condition which renders it permanently
@@ -758,20 +761,23 @@ to sign. Since the signature protects those parts of the transaction
 from modification, this lets signers selectively choose to let other
 people modify their transactions.
 
-Because signatures are hashes, the various options for what to sign are
+The various options for what to sign are
 called signature hash types. There are three base SIGHASH types
 currently available:
 
 * `SIGHASH_ALL`, the default, signs all the inputs and outputs,
-  protecting everything except the scriptSig against modification.
+  protecting everything except the scriptSigs against modification.
 
 * `SIGHASH_NONE` signs all of the inputs but none of the outputs,
-  allowing signers of other inputs to change where the bitcoins
-  are going.
+  allowing anyone to change where the bitcoins are going unless other
+  signatures using other hash flags protect the outputs.
 
 * `SIGHASH_SINGLE` signs only this input and only one corresponding
-  output, ensuring nobody can change your part of the transaction but
-  allowing other signers to change their part of the transaction.
+  output (the output with the same index number as the input), ensuring
+  nobody can change your part of the transaction but allowing other
+  signers to change their part of the transaction. The corresponding
+  output must exist or the value "1" will be signed, breaking the security
+  scheme.
 
 The base types can be modified with the SIGHASH_ANYONECANPAY (anyone can
 pay) flag, creating three new combined types:
@@ -959,7 +965,7 @@ transaction #2. He fills in the output details and creates a scriptSig
 containing his signature, a placeholder byte, and the redeemScript. Bob
 gives this incomplete transaction to Charlie, who checks the output
 details and replaces the placeholder byte with his own signature,
-completing the signature. Either Bob or Charlie can transmit this
+completing the signature. Either Bob or Charlie can broadcast this
 fully-signed transaction to the peer-to-peer network.
 
 Previous P2PH and P2SH illustrations showed Bob signing using the
@@ -1001,7 +1007,7 @@ ways.)
 
 If you use anything besides a standard script in an output, peers
 and miners using the default Bitcoin Core settings will neither
-accept, relay, nor mine your transaction. When you try to transmit
+accept, relay, nor mine your transaction. When you try to broadcast
 your transaction to a peer running the default settings, you will
 receive an error.
 
@@ -1183,7 +1189,7 @@ Alice looks at the business's books and makes a ruling. She creates and
 signs a transaction that spends 60% of the millibits to Bob's public key
 and 40% to Charlie's public key. 
 
-Either Bob and Charlie can sign the transaction and transmit it to the
+Either Bob and Charlie can sign the transaction and broadcast it to the
 peer-to-peer network, actually spending the millibits. If Alice creates
 and signs a transaction neither of them will agree to, such as spending
 all the millibits to herself, they can find a new arbitrator and repeat
@@ -1513,6 +1519,11 @@ Page](https://en.bitcoin.it/wiki/Script), with an authoritative list in the `opc
 Bitcoin Core [script header
 file](https://github.com/bitcoin/bitcoin/blob/master/src/script.h).
 
+Note: non-standard transactions can add non-data-pushing op codes to
+their scriptSig, but scriptSig is run separately from the script (with a
+shared stack), so scriptSig can't use arguments such as `OP_RETURN` to
+prevent the script from working as expected.
+
 #### Conversion Of Hashes To Addresses And Vice-Versa
 
 The hashes used in P2PH and P2SH outputs are commonly encoded as Bitcoin
@@ -1578,7 +1589,7 @@ against the extracted checksum, and then remove the version byte.
 
 #### Raw Transaction Format
 
-Bitcoin transactions are transmitted between peers and stored in the
+Bitcoin transactions are broadcast between peers and stored in the
 block chain in a serialized byte format, called raw format. Bitcoin Core
 and many other tools print and accept raw transactions encoded as hex.
 
