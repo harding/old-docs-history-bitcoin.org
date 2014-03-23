@@ -1869,7 +1869,7 @@ The total number of possible extended keypairs is almost 2<sup>512</sup>, but th
 * Use parse<sub>256</sub>(I<sub>L</sub>) as master secret key, and I<sub>R</sub> as master chain code.
 In case I<sub>L</sub> is 0 or ≥n, the master key is invalid.
 
-<img src=bip-0032/derivation.png></img>
+<img src=img/dev/derivation.png></img>
 
 #### Specification: Wallet structure
 
