@@ -1730,7 +1730,7 @@ Many implementations disallow the character '1' in the mini private key due to i
 **Resource:** A common tool to create and redeem these keys is the [Casascius Bitcoin Address Utility](https://github.com/casascius/Bitcoin-Address-Utility).
 
 ### Deterministic wallets formats
-Deterministic wallets are the recommended method of generating and storing private keys, as they allow simple backing of wallets via mnemonic pass-phrase of a number of short, common English words.
+Deterministic wallets are the recommended method of generating and storing private keys, as they allow a simple one-time backup of wallets via mnemonic pass-phrase of a number of short, common English words.
 
 #### Type 1: Single Chain Wallets
 Type 1 deterministic wallets are the simpler of the two, which can create a single series of keys from a single seed. A primary weakness is that if the master seed is leaked, all funds are compromised, and wallet sharing is extremely limited.
