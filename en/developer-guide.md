@@ -39,12 +39,15 @@ using block chain data.
 
 ![Block Chain Overview](/img/dev/blockchain-overview.png)
 
-<!-- DAH TODO provide merkle tree description; see mikehearn email -->
-
 Figure 1 shows a simplified version of a three-block block chain.
-Each **block**, which is typically a few hundred transactions,
-is hashed to create a **Merkle root** -- essentially, a hash of hashes.
-This is stored in the **block header**. Each block then stores the hash of the
+A **block** of new transactions, which can vary from one transaction to
+over a thousand, is collected into the transaction data part of a block.
+Copies of each transaction are hashed, and the hashes are then paired,
+hashed, paired again, and hashed again until a single hash remains, the
+**Merkle root** of a [Merkle tree](#term-merkle-tree).
+
+The Merkle root is stored in the **block header**. Each block also
+stores the hash of the
 previous block's header, chaining the blocks together. This ensures a
 transaction cannot be modified without modifying the block that records
 it and all following blocks.
@@ -426,6 +429,45 @@ collect their transaction fees.
 All transactions, including the coinbase transaction, are encoded into
 blocks in binary rawtransaction format prefixed by a block transaction
 sequence number.
+
+The rawtransaction format is hashed to create the transaction
+identifier (txid). From these txids, the <span
+id="term-merkle-tree">Merkle tree</span> is constructed by pairing each
+txid with one other txid and then hashing them together. If there are
+an odd number of txids, the txid without a partner is hashed with a
+copy of itself.
+
+The resulting hashes themselves are each paired with one other hash and
+hashed together. Any hash without a partner is hashed with itself. The
+process repeats until only one hash remains, the Merkle root.
+
+For example, if transactions were merely combined (not hashed), a
+five-transaction Merkle would look like the following text diagram:
+
+       ABCDEEEE .......Merkle root
+      /       \
+   ABCD        EEEE
+  /   \       /
+ AB    CD    EE .......E is paired with itself
+/  \  /  \  /
+A  B  C  D  E .........Transactions
+
+As discussed in the Simplified Payment Verification (SPV) subsection,
+<!-- not written yet --> the Merkle tree allows clients to verify for
+themselves that a transaction was included in a block by obtaining the
+Merkle root from a block header and a list of the intermediate hashes
+from a full peer. The full peer does not need to be trusted: it is
+expensive to fake blocks and the intermediate hashes cannot be faked or
+the verification will fail.
+
+For example, a peer who wants to verify transaction D was added to the
+block only needs a copy of the C, AB, and EEEE hashes in addition to the
+Merkle root; the peer doesn't need to know anything about any of the
+other transactions. If the five transactions in this block were all at
+the maximum size, downloading the entire block would require over
+500,000 bytes---but downloading three hashes plus the block header
+requires only 140 bytes.
+
 
 #### Example Block And Coinbase Transaction
 
