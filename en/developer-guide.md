@@ -1898,7 +1898,7 @@ JBOK-style wallets are a deprecated form of wallet that originated from the refe
 
 This wallet type is being actively phased out and strongly discouraged from being used to store significant amounts of bitcoin due to the security and backup difficulty.
 
-## Payment requests
+## Payment processing
 
 TODO, Relevant links:
 
