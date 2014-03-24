@@ -444,13 +444,13 @@ process repeats until only one hash remains, the Merkle root.
 For example, if transactions were merely combined (not hashed), a
 five-transaction Merkle would look like the following text diagram:
 
-       ABCDEEEE .......Merkle root
-      /       \
-   ABCD        EEEE
-  /   \       /
- AB    CD    EE .......E is paired with itself
-/  \  /  \  /
-A  B  C  D  E .........Transactions
+           ABCDEEEE .......Merkle root
+          /       \
+       ABCD        EEEE
+      /   \       /
+     AB    CD    EE .......E is paired with itself
+    /  \  /  \  /
+    A  B  C  D  E .........Transactions
 
 As discussed in the Simplified Payment Verification (SPV) subsection,
 <!-- not written yet --> the Merkle tree allows clients to verify for
