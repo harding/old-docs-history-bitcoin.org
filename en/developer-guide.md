@@ -31,7 +31,7 @@ of all confirmed transactions. This system is used to protect against double
 spending and modification of previous transaction records, using proofs of
 work verified by the peer-to-peer network to maintain a global consensus.
 
-This document provides detailed explanations about the functionning of
+This document provides detailed explanations about the functioning of
 this system along with security advices for risk assessment and tools for
 using block chain data.
 
