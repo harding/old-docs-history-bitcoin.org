@@ -1694,6 +1694,8 @@ Type 1 deterministic wallets are the simpler of the two, which can create a sing
 #### Type 2: Hierarchical Deterministic (HD) Wallets
 Type 2 wallets, specified in [BIP0032](https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki), are the currently favored format for generating, storing and managing private keys. Hierarchical deterministic wallets allow selective sharing by supporting multiple key-pair chains in a tree structure, derived from a single root. This selective sharing enables many advanced arrangements. An additional goal of the BIP0032 standard is to encourage interoperability between wallet software using the same wallet format, rather than having to manually convert wallet types. The suggested minimal interoperability is the ability to import extended public and private keys, to give access to the descendants as wallet keys. 
 
+_Seamless interoperability is still a work in progress. It is possible for another implementation to not see non-zero valued addresses, depending on wallet parameters. For safe recovery of wallets, it is recommended to use the same wallet software. Another concern is the saving of HD wallet meta-data such as transaction notes and labels, which has not been standardized._  
+
 <!-- BEGIN The following text largely taken from the BIP0032 specification --> 
 
 Here are a select number of use cases:
