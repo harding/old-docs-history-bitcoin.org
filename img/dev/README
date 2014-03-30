@@ -1,0 +1,6 @@
+The images are generated using dot from the graphviz package.
+
+The following examples generate a .png or .svg file from a .dot file:
+
+dot -T svg file.dot -o file.svg
+dot -T png file.dot -o file.png

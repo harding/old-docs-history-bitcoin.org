@@ -1,0 +1,84 @@
+digraph blockchain {
+
+//splines = "ortho";
+rankdir=LR;
+//size=6.25;
+
+subgraph cluster_block0 {
+
+    subgraph cluster_block0header {
+        hashMerkleRoot0 [label = "Merkle Root"];
+        _blockHeader0 [ style = "invis", label = "", width = 0, height = 0 ];
+
+        label = "Block Header"
+    }
+
+    subgraph cluster_transactions0 {
+        tx01 [ label = "Transaction"];
+        tx00 [ label = "Transaction"];
+        _transactions0 [ style = "invis", label = "", width = 0, height = 0 ];
+
+        label = "Transaction Data"
+    }
+
+
+    //_block0 [ style = "invis", label = "", width = 0, height = 0 ];
+    // hashMerkleRoot0 -> _block0 [color = "transparent"];
+
+    label = "Block 0";
+}
+
+subgraph cluster_block1 {
+    subgraph cluster_block1header {
+        hashMerkleRoot1 [label = "Merkle Root"];
+        hashBlock0 [label = "Hash Of Previous Block Header", shape = box];
+        _blockHeader1 [ style = "invis", label = "", width = 0, height = 0 ];
+        label = "Block Header"
+    }
+
+    subgraph cluster_transactions1 {
+        tx10 [label = "Transaction"];
+        _transactions1 [ style = "invis", label = "", width = 0, height = 0 ];
+        tx11 [label = "Transaction", sep = 100 ];
+        label = "Transaction Data"
+    }
+
+    //_block1 [ style = "invis", label = "", width = 0, height = 0 ];
+    // hashMerkleRoot1 -> _block1 [color = "transparent"];
+
+    label = "Block 1";
+}
+
+subgraph cluster_block2 {
+    _block2 [ style = "invis", label = "", width = 0, height = 0 ];
+    subgraph cluster_block2header {
+        hashMerkleRoot2 [label = "Merkle Root"];
+        hashBlock1 [label = "Hash Of Previous Block Header", shape = box];
+        label = "Block Header"
+    }
+
+    subgraph cluster_transactions2 {
+        tx21 [label = "Transaction"];
+        _transactions2 [ style = "invis", label = "", width = 0, height = 0 ];
+        tx20 [label = "Transaction"];
+        label = "Transaction Data"
+    }
+
+    label = "Block 2";
+}
+
+_blockHeader0 -> hashBlock0;
+_blockHeader1 -> hashBlock1;
+
+
+_transactions0 -> hashMerkleRoot0 [minlen=3];
+_transactions1 -> hashMerkleRoot1;
+_transactions2 -> hashMerkleRoot2;
+
+
+
+
+tx00 -> tx20 [ style = dashed ];
+
+label = "Simplified Bitcoin Block Chain";
+}
