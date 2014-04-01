@@ -37,7 +37,7 @@ using block chain data.
 
 ### Block Chain Overview
 
-![Block Chain Overview](/img/dev/blockchain-overview.png)
+![Block Chain Overview](/img/dev/en-blockchain-overview.svg)
 
 Figure 1 shows a simplified version of a three-block block chain.
 A **block** of new transactions, which can vary from one transaction to
@@ -59,7 +59,7 @@ transaction spends the bitcoins previously spent in one or more earlier
 transactions, so the **input** of one transaction is the **output** of a
 previous transaction.
 
-![Transaction Propagation](/img/dev/transaction-propagation.png)
+![Transaction Propagation](/img/dev/en-transaction-propagation.svg)
 
 A single transaction can spend bitcoins to multiple outputs, as would be
 the case when sending bitcoins to multiple addresses, but each output of
@@ -171,7 +171,7 @@ by their **block height** -- the number of blocks between them and the first Bit
 block (block 0, most commonly known as the **genesis block**). For example,
 block 2016 is where difficulty could have been first adjusted.
 
-![Common And Uncommon Block Chain Forks](/img/dev/blockchain-fork.png)
+![Common And Uncommon Block Chain Forks](/img/dev/en-blockchain-fork.svg)
 
 Multiple blocks can all have the same block height, as is common when
 two or more miners each produce a block at roughly the same time. This

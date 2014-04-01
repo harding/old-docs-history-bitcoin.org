@@ -1,6 +1,6 @@
 digraph blockchain {
 
-//size=6.25;
+size=6.66;
 
 //splines = "ortho";
 rankdir=LR;
