@@ -2,7 +2,7 @@ digraph blockchain {
 
 //splines = "ortho";
 rankdir=LR;
-//size=6.25;
+size=6.66;
 
 subgraph cluster_block0 {
 
@@ -31,7 +31,7 @@ subgraph cluster_block0 {
 subgraph cluster_block1 {
     subgraph cluster_block1header {
         hashMerkleRoot1 [label = "Merkle Root"];
-        hashBlock0 [label = "Hash Of Previous Block Header", shape = box];
+        hashBlock0 [label = "Hash Of Previous\nBlock Header", shape = box];
         _blockHeader1 [ style = "invis", label = "", width = 0, height = 0 ];
         label = "Block Header"
     }
@@ -53,7 +53,7 @@ subgraph cluster_block2 {
     _block2 [ style = "invis", label = "", width = 0, height = 0 ];
     subgraph cluster_block2header {
         hashMerkleRoot2 [label = "Merkle Root"];
-        hashBlock1 [label = "Hash Of Previous Block Header", shape = box];
+        hashBlock1 [label = "Hash Of Previous\nBlock Header", shape = box];
         label = "Block Header"
     }
 

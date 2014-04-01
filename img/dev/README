@@ -4,3 +4,9 @@ The following examples generate a .png or .svg file from a .dot file:
 
 dot -T svg file.dot -o file.svg
 dot -T png file.dot -o file.png
+
+You can change a .circo or .neato file into a .png or .svg using
+corresponding commands:
+
+circo -T svg file.circo -o file.svg
+neato -T png file.neato -o file.png

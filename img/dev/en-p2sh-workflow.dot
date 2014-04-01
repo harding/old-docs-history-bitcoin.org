@@ -1,0 +1,77 @@
+digraph blockchain {
+
+size=6.66;
+
+//splines = "false";
+rankdir=LR;
+//ranksep=0.1;
+//splines=ortho;
+
+//node [ shape = box ];
+
+subgraph cluster_receipient {
+    label = "Bob's Computer";
+    receipient [style = invis, label="", width=0, height=0 ];
+
+    scripthash0 [ label = "Script Hash" ];
+    script [ label = "RedeemScript" ];
+    pub [ label = "Full Public Key" ];
+    priv [ label = "Full Private Key" ];
+
+
+}
+subgraph cluster_spender {
+    label = "Alice's Computer";
+    spender [style = invis, label="", width=0, height=0 ];
+    scripthash1 [ label = "Script Hash" ];
+}
+
+subgraph cluster_tx1 {
+    label = "Transaction 2"
+    subgraph cluster_tx1_input {
+        label = Input;
+        tx1_input [style = unfilled, label="TxID & Out#" ];
+        script_tx1 [ label = "RedeemScript" ];
+        signature [label = "Signature" ];
+        tx1_inputB [style = invis, label="", width=0, height=0 ];
+    }
+    subgraph cluster_tx1_output {
+        label = Output;
+        tx1_output [style = invis, label="", width=0, height=0 ];
+        script1 [ label = "Script" ];
+        amount [ label = "Amount (BTC)"];
+    }
+}
+
+subgraph cluster_tx0 {
+    label = "Transaction 1"
+    subgraph cluster_tx0_input {
+        label = Input;
+        tx0_input [ style = invis, label="", width=0, height=0 ];
+    }
+    subgraph cluster_tx0_output {
+        label = Output;
+        scripthash2 [ label = "Script Hash" ];
+        script0 [ label = "Script" ];
+        tx0_output [ style = invis, label="", width=0, height=0 ];
+    }
+}
+
+tx1_inputB -> priv [ label = "« TxID, Out#, Script From TX1", style = dashed, constraint = false ];
+
+tx1_output -> priv [ label = "« Amount & Output Script", style = dashed ];
+priv -> signature [ label = "Signature Of Signed Data »", style = dashed, weight = 100 ];
+
+scripthash0 -> scripthash1 [constraint=false ];
+scripthash1 -> scripthash2;
+script  -> script_tx1;
+
+tx0_output -> tx1_input [ style = dashed, constraint=false ];
+pub -> script [constraint = false, style = dashed ];
+script -> scripthash0 [ constraint = false, style = dashed ];
+priv -> pub [ constraint = false, style = dashed ];
+
+scripthash2 -> script0 [ style = dotted, constraint=false ];
+
+label = "Simple Pay-To-Script-Hash (P2SH) Bitcoin Transaction"
+}
