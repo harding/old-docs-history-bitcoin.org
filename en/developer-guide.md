@@ -1874,7 +1874,7 @@ Bitcoin payment processing is being actively developed at the moment, so
 each subsection below attempts to describe what's widely deployed now,
 what's new, and what might be coming before the end of 2014.
 
-![Bitcoin Payment Processing](img/dev/en-payment-processing.svg)
+![Bitcoin Payment Processing](/img/dev/en-payment-processing.svg)
 
 The figure above illustrates payment processing using Bitcoin from a
 receiver's perspective, starting with a new order. The following
@@ -2100,7 +2100,7 @@ parameters---and any other optional parameters---but they were
 omitted here to keep the QR code small and easy to scan with unsteady
 or low-resolution mobile cameras.
 
-![Bitcoin QR Codes](img/dev/en-qr-code.svg)
+![Bitcoin QR Codes](/img/dev/en-qr-code.svg)
 
 QR encoders offer four possible levels of error correction: 
 
@@ -2187,7 +2187,7 @@ not used in this script.)
 The full sequence of events is illustrated below, starting with the
 spender clicking a `bitcoin:` URI or scanning a `bitcoin:` QR code.
 
-![BIP70 Payment Protocol](img/dev/en-payment-protocol.svg)
+![BIP70 Payment Protocol](/img/dev/en-payment-protocol.svg)
 
 For the script to use the protocol buffer, you will need a copy of
 Google's Protocol Buffer compiler (`protoc`), which is available in most
@@ -2321,7 +2321,7 @@ www.bitcoin.org X.509 certificate and how each certificate (except the
 root certificate) would be loaded into the X509Certificates protocol
 buffer message.
 
-![X509Certificates Loading Order](img/dev/en-cert-order.svg)
+![X509Certificates Loading Order](/img/dev/en-cert-order.svg)
 
 To be specific, the first certificate provided must be the DER-formatted
 X.509 certificate corresponding to the private key which will make the
@@ -2485,7 +2485,7 @@ file.write(stdout, request.SerializeToString())
 The following screenshot shows how the authenticated PaymentDetails
 created by the script above appears in the GUI from Bitcoin Core 0.9.
 
-![Bitcoin Core Showing Validated Payment Request](img/dev/en-btcc-payment-request.png)
+![Bitcoin Core Showing Validated Payment Request](/img/dev/en-btcc-payment-request.png)
 
 
 
