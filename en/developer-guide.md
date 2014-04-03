@@ -907,7 +907,7 @@ both Charlie and Bob's signatures, Bob can sign his signature with
 ### Standard Transactions
 
 Although you can put any output script inside a redeemScript and
-then pay millibits to the corresponding redeeemScript hash, care must be
+then pay millibits to the corresponding redeemScript hash, care must be
 taken to avoid non-standard output scripts. As of Bitcoin Core 0.9, the
 standard output script types are:
 
