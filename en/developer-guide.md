@@ -363,24 +363,26 @@ We can then get a decoded version of that block with the `getblock` RPC:
     > getblock 00000000d1145790a8694403d4063f323d499e655c83\
       426834d4ce2f8dd4a2ee
 
-    {
-        "hash" : "0000[...]a2ee",
-        "confirmations" : 289424,
-        "size" : 490,
-        "height" : 170,
-        "version" : 1,
-        "merkleroot" : "7dac[...]10ff",
-        "tx" : [
-            "b1fe[...]5082",
-            "f418[...]9e16"
-        ],
-        "time" : 1231731025,
-        "nonce" : 1889418792,
-        "bits" : "1d00ffff",
-        "difficulty" : 1.00000000,
-        "previousblockhash" : "0000[...]bd55",
-        "nextblockhash" : "0000[...]b4e0"
-    }
+{% highlight json %}
+{
+    "hash" : "0000[...]a2ee",
+    "confirmations" : 289424,
+    "size" : 490,
+    "height" : 170,
+    "version" : 1,
+    "merkleroot" : "7dac[...]10ff",
+    "tx" : [
+        "b1fe[...]5082",
+        "f418[...]9e16"
+    ],
+    "time" : 1231731025,
+    "nonce" : 1889418792,
+    "bits" : "1d00ffff",
+    "difficulty" : 1.00000000,
+    "previousblockhash" : "0000[...]bd55",
+    "nextblockhash" : "0000[...]b4e0"
+}
+{% endhighlight %}
 
 Note: the only values above which are actually part of the block are size,
 version, merkleroot, time, nonce, and bits. All other values shown
@@ -406,32 +408,34 @@ passing the raw transaction to the `decoderawtransaction` RPC:
       ac625da6f0718e7b302140434bd725706957c092db53805b821a8\
       5b23a7ac61725bac00000000
 
-    {
-        "txid" : "b1fea[...]5082",
-        "version" : 1,
-        "locktime" : 0,
-        "vin" : [
-            {
-                "coinbase" : "04ffff001d0102",
-                "sequence" : 4294967295
+{% highlight json %}
+{
+    "txid" : "b1fea[...]5082",
+    "version" : 1,
+    "locktime" : 0,
+    "vin" : [
+        {
+            "coinbase" : "04ffff001d0102",
+            "sequence" : 4294967295
+        }
+    ],
+    "vout" : [
+        {
+            "value" : 50.00000000,
+            "n" : 0,
+            "scriptPubKey" : {
+                "asm" : "04d4[...]725b OP_CHECKSIG",
+                "hex" : "4104[...]5bac",
+                "reqSigs" : 1,
+                "type" : "pubkey",
+                "addresses" : [
+                    "1PSSGeFHDnKNxiEyFrD1wcEaHr9hrQDDWc"
+                ]
             }
-        ],
-        "vout" : [
-            {
-                "value" : 50.00000000,
-                "n" : 0,
-                "scriptPubKey" : {
-                    "asm" : "04d4[...]725b OP_CHECKSIG",
-                    "hex" : "4104[...]5bac",
-                    "reqSigs" : 1,
-                    "type" : "pubkey",
-                    "addresses" : [
-                        "1PSSGeFHDnKNxiEyFrD1wcEaHr9hrQDDWc"
-                    ]
-                }
-            }
-        ]
-    }
+        }
+    ]
+}
+{% endhighlight %}
 
 Note the vin (input) array includes a single transaction shown with a
 coinbase parameter and the vout (output) spends the block reward of 50
