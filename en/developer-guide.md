@@ -484,8 +484,8 @@ when I'm terribly bored, I should rewrite this whole transaction section
 to use those terms and then get feedback to see if it actually helps. -harding -->
 
 Transactions let users send bitcoins. Each transaction is constructed
-out of several parts which enable both simple direct payments and
-multiperson collaborations. This section will describe each part and
+out of several parts which enable both simple direct payments and complex
+financial [contracts](#contracts). This section will describe each part and
 demonstrate how to use them together to build complete transactions.
 
 To keep things simple, this section pretends coinbase transactions do
@@ -597,6 +597,121 @@ broadcast the transaction to Bitcoin miners through the peer-to-peer
 network. Each peer and miner independently validates the transaction
 before relaying it further or attempting to include it in a new block of
 transactions.
+
+### Standard Transactions
+
+Care must be taken to avoid non-standard output scripts. As of Bitcoin Core
+0.9, the standard output script types are:
+
+
+**Pubkey hash (P2PH)**
+
+P2PH is the most usual form of script used to send a transaction to one
+or multiple Bitcoin addresses.
+
+~~~
+script: OP_DUP OP_HASH160 <PubKeyHash> OP_EQUALVERIFY OP_CHECKSIG
+scriptSig: <sig> <pubkey> 
+~~~
+
+**Script hash (P2SH)**
+
+P2SH allows to send a transaction to a script hash, allowing more [complex
+contracts](#contracts). Each of the standard scripts can be used inside a
+P2SH redeemScript, but in practice only the multisig script makes sense
+until more transactions types are made standard.
+
+~~~
+script: OP_HASH160 <redeemscripthash> OP_EQUAL
+scriptSig: <sig> [sig] [sig...] <redeemscript>
+~~~
+
+Although it’s not a separate transaction type, this is a P2SH multisig with 2-of-3:
+
+~~~
+script: OP_HASH160 <redeemscripthash> OP_EQUAL
+scriptSig: <sig> <sig> <redeemscript>
+redeemScript: OP_0 <OP_2> <pubkey> <pubkey> <pubkey> <OP_3> OP_CHECKMULTISIG
+~~~
+
+**Multisig**
+
+Although P2SH is now generally used for multisig transactions, this script
+can be used to require multiple signatures before a UTXO can be spent.
+
+(m is the number of pubkeys which must match a signature; n is how many
+pubkeys are being provided. Both m and n should be opcodes OP_1 through
+OP_16, corresponding to the number desired.)
+
+~~~
+script: <m> <pubkey> [pubkey] [pubkey...] <n> OP_CHECKMULTISIG
+scriptSig: OP_0 <sig> [sig] [sig...]
+~~~
+
+**Pubkey**
+
+Pubkey scripts are a simplified form of the P2PH script; they’re used in all
+coinbase transactions, but they aren’t as secure as P2PH, so they generally
+aren’t used elsewhere.
+
+~~~
+script: <pubkey> OP_CHECKSIG
+scriptSig: <sig>
+~~~
+
+**Null Data**
+
+Null data scripts let you add a small amount of arbitrary data to the block
+chain in exchange for paying a transaction fee, but doing so is discouraged.
+(Null data is a standard script type only because some people were adding data
+to the block chain in more harmful ways.)
+
+~~~
+script: OP_RETURN <data>
+(Null data scripts cannot be spent, so there's no scriptSig)
+~~~
+
+If you use anything besides a standard script in an output, peers
+and miners using the default Bitcoin Core settings will neither
+accept, relay, nor mine your transaction. When you try to broadcast
+your transaction to a peer running the default settings, you will
+receive an error.
+
+But if you create a non-standard redeemScript, hash it, and use the hash
+in a P2SH output, the network sees only the hash, so it will accept the
+output as valid no matter what the redeemScript says. When you go to
+spend that output, however, peers and miners using the default settings
+will see the non-standard redeemScript and reject it. It will be
+impossible to spend that output until you find a miner who disables the
+default settings.
+
+As of Bitcoin 0.9, standard transactions must also meet the following
+conditions:
+
+* The transaction must be finalized: either its locktime must be in the
+  past (or equal to the current block height), or all of its sequence
+  numbers must be 0xffffffff.
+
+* The transaction must be smaller than 100,000 bytes. That's around 200
+  times larger than a typical single-input, single-output P2PH
+  transaction.
+
+* Each of the transaction's inputs must be smaller than 500 bytes.
+  That's large enough to allow 3-of-3 multisig transactions in P2SH.
+  Multisig transactions which require more than 3 key pairs are
+  currently non-standard.
+
+* The transaction's scriptSig must only push data to the script
+  evaluation stack. It cannot push new OP codes, with the exception of
+  OP codes which solely push data to the stack.
+
+<!-- what's a canonical push?  It's forbidden:
+https://github.com/bitcoin/bitcoin/blob/acfe60677c9bb4e75cf2e139b2dee4b642ee6a0c/src/main.cpp#L527
+-->
+
+* If any of the transaction's outputs spend less than a minimal value
+  (currently 546 satoshis---0.005 millibits), the transaction must pay
+  a minimum transaction fee (currently 0.1 millibits).
 
 ### P2PH Script Validation
 
@@ -785,189 +900,6 @@ Locktime itself is an unsigned 4-byte number which can be parsed two ways:
   can be added to any block whose block header's *time* field is greater
   than the locktime.
 
-### Multisig And Pay-To-Script-Hash (P2SH)
-
-Outputs can use their script to require signatures from more than one
-private key, called multi-signature or multisig.  A multisig script
-provides a list of public keys and indicates how many of those public keys 
-must match signatures in the input's scriptSig.  
-
-A standard multisig transaction looks similar to the pay-to-pubkey-hash
-shown above, except that full public keys (not hashes) are provided and
-`OP_CHECKMULTISIG` is used instead plain checksig.
-`OP_CHECKMULTISIG` takes multiple public keys and multiple
-signatures, so it's necessary to tell it how many public keys are
-being provided (n) and how many signatures are required (m). See the
-prototype script below for an example:
-
-    <m> [pubkey] [pubkey...] <n> OP_CHECKMULTISIG
-
-The values m and n would be replaced with op codes which push the
-corresponding number to the stack, such as `OP_2` and `OP_2` for an
-output which could only be spent if two key pairs were used, or `OP_2`
-and `OP_3` for an output which requires signatures from only two of the
-public keys listed. For example, a 2-of-3 script:
-
-    OP_2 [pubkey] [pubkey] [pubkey] OP_3 OP_CHECKMULTISIG
-
-Recipients who want their bitcoins to be secured with multiple
-signatures outputs must get the spender to create a multisig script.
-This creates several problems:
-
-1. The spender must collect each of the full public keys to be used,
-   which is more complicated than collecting a single Bitcoin address.
-   Almost none of the existing add-on Bitcoin payment tools, such as QR
-   encoded addresses, currently work with multisig.
-
-2. The spender must pay the transaction fee, which is partly based on
-   the number of bytes in a transaction.  Each additional public key in
-   a multisig script increases the size of that transaction by at least 65 bytes,
-   possibly costing the spender more millibits but providing all the
-   benefit to the recipient.
-
-3. Including full public keys in a script is not as secure as including
-   public keys protected by a hash. As mentioned earlier, the hash
-   obfuscates the public key, providing security against unanticipated
-   problems which might allow reconstruction of private keys from public
-   key data at some later point.
-
-To solve these problems, pay-to-script-hash (P2SH) transactions were
-created in 2012 to let a spender create an output script containing a
-hash of a second script, the redeemScript. This solves each of the
-problems quite handily:
-
-1. The hash of the redeemScript is identical to a pubkey hash---so it
-   can be transformed into the standard Bitcoin address format with only
-   one small change to differentiate it from a standard address. This
-   makes collecting a P2SH-style address as simple as collecting a
-   P2PH-style address.
-
-2. The hash of the redeemScript is the exact same size as a pubkey
-   hash, so the spender won't need to increase the transaction fee no
-   matter how many public keys are required.
-
-3. The hash of the redeemScript obfuscates the public keys, so
-   P2SH scripts are as secure as P2PH scripts.
-
-The basic P2SH workflow, illustrated below, looks almost identical to
-the P2PH workflow.  Bob no longer provides a pubkey hash to Alice;
-instead he embeds his public key in a redeemScript, hashes
-the redeemScript, and provides the redeemScript hash to Alice.  Alice creates
-a P2SH-style output containing Bob's redeemScript hash.
-
-![P2SH Transaction Workflow](/img/dev/en-p2sh-workflow.svg)
-
-When Bob wants to spend the output, he provides the full redeemScript
-along with his signature in the normal input scriptSig. The
-peer-to-peer network ensures the full redeemScript hashes to the
-same value as the script hash Alice put in her output; it then processes the
-redeemScript exactly as it would if it were the primary script, letting
-Bob spend the output if the redeemScript returns true.
-
-The extra steps seen in the example above don't really help Bob when he
-could just create a P2PH script instead. But when Bob's business
-partner, Charlie, decides he wants all of their business income to
-require two signatures to spend, P2SH-style outputs become quite handy.
-
-As seen in the figure below, Bob and Charlie each create separate
-private and public keys on their own computers, and Charlie gives a copy
-of his public key to Bob. Bob then creates a multisig redeemScript
-using the both his and Charlie's public keys.  When Alice, one their
-clients, wants to pay an invoice, Bob gives her a hash of the redeemScript.
-
-![P2SH 2-of-2 Multisig Transaction Workflow](/img/dev/en-p2sh-multisig-workflow.svg)
-
-Because it's just a hash, Alice can't see what the script says.  But she
-doesn't care---she just knows that Bob and Charlie will mark her invoice
-as paid if she pays to that hash.
-
-When Bob and Charlie want to spend Alice's output, Bob creates
-transaction #2. He fills in the output details and creates a scriptSig
-containing his signature, a placeholder byte, and the redeemScript. Bob
-gives this incomplete transaction to Charlie, who checks the output
-details and replaces the placeholder byte with his own signature,
-completing the signature. Either Bob or Charlie can broadcast this
-fully-signed transaction to the peer-to-peer network.
-
-Previous P2PH and P2SH illustrations showed Bob signing using the
-`SIGHASH_ALL` procedure, but this multisig P2SH figure does not
-illustrate any particular hash type procedure. Bob and Charlie can each
-independently choose their own signature types. For example, if the
-output created by Alice contains only a few millibits and Charlie
-doesn't care how Bob spends it, Charlie can sign the second
-transaction's input with `SIGHASH_NONE` and give it back to Bob. Bob can
-now change the output script to anything he wants without further
-consulting Charlie.
-
-A lone NONE hash type would usually allow unscrupulous miners to modify
-the output to pay themselves.  But because the multisig input requires
-both Charlie and Bob's signatures, Bob can sign his signature with
-`SIGHASH_ALL` to fully protect the transaction.
-
-### Standard Transactions
-
-Although you can put any output script inside a redeemScript and
-then pay millibits to the corresponding redeemScript hash, care must be
-taken to avoid non-standard output scripts. As of Bitcoin Core 0.9, the
-standard output script types are:
-
-* Pubkey
-* Pubkey hash (P2PH)
-* Script hash (P2SH)
-* Multisig
-* Null Data
-
-Pubkey scripts are a simplified form of the P2PH script; they're used in
-all coinbase transactions, but they aren't as secure as P2PH, so they
-generally aren't used elsewhere.  Null data scripts let you add
-a small amount of arbitrary data to the block chain in exchange for
-paying a transaction fee, but doing so is officially discouraged by the
-Bitcoin Core Developers.  (Null data is a standard script type only
-because some people were adding data to the block chain in more harmful
-ways.)
-
-If you use anything besides a standard script in an output, peers
-and miners using the default Bitcoin Core settings will neither
-accept, relay, nor mine your transaction. When you try to broadcast
-your transaction to a peer running the default settings, you will
-receive an error.
-
-But if you create a non-standard redeemScript, hash it, and use the hash
-in a P2SH output, the network sees only the hash, so it will accept the
-output as valid no matter what the redeemScript says. When you go to
-spend that output, however, peers and miners using the default settings
-will see the non-standard redeemScript and reject it. It will be
-impossible to spend that output until you find a miner who disables the
-default settings.
-
-As of Bitcoin 0.9, standard transactions must also meet the following
-conditions:
-
-* The transaction must be finalized: either its locktime must be in the
-  past (or equal to the current block height), or all of its sequence
-  numbers must be 0xffffffff.
-
-* The transaction must be smaller than 100,000 bytes. That's around 200
-  times larger than a typical single-input, single-output P2PH
-  transaction.
-
-* Each of the transaction's inputs must be smaller than 500 bytes.
-  That's large enough to allow 3-of-3 multisig transactions in P2SH.
-  Multisig transactions which require more than 3 key pairs are
-  currently non-standard.
-
-* The transaction's scriptSig must only push data to the script
-  evaluation stack. It cannot push new OP codes, with the exception of
-  OP codes which solely push data to the stack.
-
-<!-- what's a canonical push?  It's forbidden:
-https://github.com/bitcoin/bitcoin/blob/acfe60677c9bb4e75cf2e139b2dee4b642ee6a0c/src/main.cpp#L527
--->
-
-* If any of the transaction's outputs spend less than a minimal value
-  (currently 546 satoshis---0.005 millibits), the transaction must pay
-  a minimum transaction fee (currently 0.1 millibits).
-
 ### Transaction Fees And Change
 
 Transactions typically pay transaction fees based on the total byte size
@@ -1084,242 +1016,6 @@ Improvement Protocol (BIP) #72, the [URI Extensions For Payment
 Protocol](https://github.com/bitcoin/bips/blob/master/bip-0072.mediawiki)
 (still in draft as of this writing).
 
-### Contracts
-
-By making the system hard to understand, the complexity of transactions
-has so far worked against you. That changes with contracts. Contracts are
-transactions built out of the tools described above which use the
-decentralized Bitcoin system to enforce financial agreements.
-
-In the multisig section, you saw an example of a contract. Bob and
-Charlie received millibits to an output which required both of their
-signatures to spend. Spending those millibits without both Bob and
-Charlie's private keys is impossible.
-
-Bitcoin contracts can often be crafted to minimize dependency on outside
-agents, such as the court system, which significantly decreases the risk
-of dealing with unknown entities in financial transactions. For example,
-Bob and Charlie might only know each other casually over the Internet;
-they would never open a checking account together---one of them could
-pass bad checks, leaving the other on the hook. But with Bitcoin
-contracts, they can nearly eliminate the risk from their relationship
-and start a business even though they hardly know each other.
-
-The following subsections will describe a variety of Bitcoin contracts
-already in use. Because contracts deal with real people, not just
-transactions, they are framed in story format.
-
-Besides the contract types described below, many other contract types
-have been proposed. Several of them are collected on the [Contracts
-page](https://en.bitcoin.it/wiki/Contracts) of the Bitcoin Wiki.
-
-#### Escrow And Arbitration Contracts
-
-Bob and Charlie have a nasty falling out and want to terminate their
-business, but they can't agree how to split their saved millibits, which
-are stored in 2-of-2 multisig outputs. They both trust Alice The Arbitrator
-to sort the issue out---but they're each worried that the other person
-won't abide by any ruling Alice makes. The losing party might even
-delete his private key out of spite so the millibits are lost forever.
-
-The common escrow contract fixes this mess. Alice creates a new 2-of-3
-multisig redeemScript and sends it to both Bob and Charlie for
-examination. The redeemScript requires Alice, Bob, and Charlie each
-provide a public key, with signatures from any two of those public keys
-satisfying the redeemScript conditions.
-
-Bob and Charlie each understands the implication: Alice will be able to
-sign a transaction which will be valid if either Bob or Charlie also
-signs it. Alice can't steal their millibits, so there's no new risk, but she
-can give the winning party the ability to enforce her ruling.
-
-All three of them then give their public keys to each other and
-independently hash the redeemScript, creating a P2SH address. Then Bob
-and Charlie together sign a transaction spending all of their shared
-millibits to that P2SH address.
-
-Alice looks at the business's books and makes a ruling. She creates and
-signs a transaction that spends 60% of the millibits to Bob's public key
-and 40% to Charlie's public key. 
-
-Either Bob and Charlie can sign the transaction and broadcast it to the
-peer-to-peer network, actually spending the millibits. If Alice creates
-and signs a transaction neither of them will agree to, such as spending
-all the millibits to herself, they can find a new arbitrator and repeat
-the procedure.
-
-Merchants can use the 2-of-3 escrow contract to get customers to trust
-them. Customers choose what they want to buy, but instead of paying
-the merchant directly, they spend their millibits to a 2-of-3 P2SH
-multisig output using one public key each from the customer, the
-merchant, and an arbitrator both the customer and merchant trust.
-
-If the product or service is provided as expected, the customer and the
-merchant work together to release the payment to the merchant.  If the
-merchant needs to offer a refund, he and the customer work together to
-release the payment to the customer.  If there's a dispute, the
-arbitrator makes a ruling and either the customer or the merchant signs
-it to release the payment according to the ruling.
-
-**Resource:** [BitRated](https://www.bitrated.com/) provides a multisig arbitration
-service interface using HTML/JavaScript on a GNU AGPL-licensed website.
-
-
-#### Micropayment Channel Contracts
-
-<!-- SOMEDAY: try to rewrite using a more likely real-world example without
-making the text or illustration more complicated --> 
-
-Alice also works part-time moderating forum posts for Bob. Every time
-someone posts to Bob's busy forum, Alice skims the post to make sure it
-isn't offensive or spam. Alas, Bob often forgets to pay her, so Alice
-demands to be paid immediately after each post she approves or rejects.
-Bob says he can't do that because hundreds of small payments will cost
-him dozens of millibits in transaction fees, so Alice suggests they use a
-micropayment channel.
-
-Bob asks Alice for her public key and then creates two transactions.
-The first transaction pays 100 millibits to a P2SH output whose
-2-of-2 multisig redeemScript requires signatures from both Alice and Bob.
-Broadcasting this transaction would let Alice hold the millibits
-hostage, so Bob keeps this transaction private for now and creates a
-second transaction.
-
-The second transaction spends all of the first transaction's millibits
-(minus a transaction fee) back to Bob after a 24 hour delay enforced
-by locktime. Bob can't sign the transaction by himself, so he gives
-the second transaction to Alice to sign, as shown in the
-illustration below.
-
-![Micropayment Channel Example](/img/dev/en-micropayment-channel.svg)
-
-Alice checks that the second transaction's locktime is 24 hours in the
-future, signs it, and gives a copy of it back to Bob. She then asks Bob
-for the first transaction and checks that the second transaction spends
-the output of the first transaction. She can now broadcast the first
-transaction to the network to ensure Bob has to wait for the time lock
-to expire before further spending his millibits. Bob hasn't actually
-spent anything so far, except possibly a small transaction fee, and
-he'll be able to broadcast the second transaction in 24 hours for a
-full refund.
-
-Now, when Alice does some work worth 1 millibit, she asks Bob to create
-and sign a new version of the second transaction.  Version two of the
-transaction spends 1 millibit to Alice and the other 99 back to Bob; it does
-not have a locktime, so Alice can sign it and spend it whenever she
-wants.  (But she doesn't do that immediately.)
-
-Alice and Bob repeat these work-and-pay steps until Alice finishes for
-the day, or until the time lock is about to expire.  Alice signs the
-final version of the second transaction and broadcasts it, paying
-herself and refunding any remaining balance to Bob.  The next day, when
-Alice starts work, they create a new micropayment channel.
-
-If Alice fails to broadcast a version of the second transaction before
-its time lock expires, Bob can broadcast the first version and receive a
-full refund. This is one reason micropayment channels are best suited to
-small payments---if Alice's Internet service goes out for a few hours
-near the time lock expiry, she could be cheated out of her payment.
-
-Transaction malleability, discussed below in the Payment Security section,
-is another reason to limit the value of micropayment channels.
-If someone uses transaction malleability to break the link between the
-two payments, Alice could hold Bob's 100 millibits hostage even if she
-hadn't done any work.
-
-For larger payments, Bitcoin transaction fees are very low as a
-percentage of the total transaction value, so it makes more sense to
-protect payments with immediately-broadcast separate transactions.
-
-**Resource:** The [bitcoinj](https://code.google.com/p/bitcoinj/) Java library
-provides a complete set of micropayment functions, an example
-implementation, and [a
-tutorial](https://code.google.com/p/bitcoinj/wiki/WorkingWithMicropayments)
-all under an Apache license.
-
-#### CoinJoin Contracts 
-
-Alice is concerned about her privacy.  She knows every transaction gets
-added to the public block chain, so when Bob and Charlie pay her, they
-can each easily track those millibits to learn what Bitcoin
-addresses she pays, how much she pays them, and possibly how many
-millibits she has left.
-
-Because Alice isn't a criminal, she doesn't want to use some shady
-Bitcoin laundering service; she just wants plausible deniability about
-where she has spent her bitcoins and how many she has left, so she
-starts up the Tor anonymity service on her computer and logs into an
-IRC chatroom as "AnonGirl."
-
-Also in the chatroom are "Nemo" and "Neminem."  They collectively
-agree to transfer millibits between each other so no one besides them
-can reliably determine who controls which millibits.  But they're faced
-with a dilemma: who transfers their millibits to one of the other two
-pseudonymous persons first? The CoinJoin-style contract, shown in the
-illustration below, makes this decision easy: they create a single
-transaction which does all of the spending simultaneously, ensuring none
-of them can steal the others' millibits.
-
-![Example CoinJoin Transaction](/img/dev/en-coinjoin.svg)
-
-Each contributor looks through their collection of Unspent Transaction
-Outputs (UTXOs) for 100 millibits they can spend. They then each generate
-a brand new public key and give UTXO details and pubkey hashes to the
-facilitator.  In this case, the facilitator is AnonGirl; she creates
-a transaction spending each of the UTXOs to three equally-sized outputs.
-One output goes to each of the contributors' pubkey hashes.
-
-AnonGirl then signs her inputs using `SIGHASH_ALL` to ensure nobody can
-change the input or output details.  She gives the partially-signed
-transaction to Nemo who signs his inputs the same way and passes it
-to Neminem, who also signs it the same way.  Neminem then broadcasts
-the transaction to the peer-to-peer network, mixing all of the millibits in
-a single transaction.
-
-As you can see in the illustration, there's no way for anyone besides
-AnonGirl, Nemo, and Neminem to confidently determine who received
-which output, so they can each spend their output with plausible
-deniability.
-
-Now when Bob or Charlie try to track Alice's transactions through the
-block chain, they'll also see transactions made by Nemo and
-Neminem.  If Alice does a few more CoinJoins, Bob and Charlie might
-have to guess which transactions made by dozens or hundreds of people
-were actually made by Alice.
-
-The complete history of Alice's millibits is still in the block chain,
-so a determined investigator could talk to the people AnonGirl
-CoinJoined with to find out the ultimate origin of her millibits and
-possibly reveal AnonGirl as Alice. But against anyone casually browsing
-block chain history, Alice gains plausible deniability.
-
-The CoinJoin technique described above costs the participants a small
-amount of millibits to pay the transaction fee.  An alternative
-technique, purchaser CoinJoin, can actually save them millibits and
-improve their privacy at the same time.
-
-AnonGirl waits in the IRC chatroom until she wants to make a purchase.
-She announces her intention to spend millibits and waits until someone
-else wants to make a purchase, likely from a different merchant. Then
-they combine their inputs the same way as before but set the outputs
-to the separate merchant addresses so nobody will be able to figure
-out solely from block chain history which one of them bought what from
-the merchant.
-
-Since they would've had to pay a transaction fee to make their purchases
-anyway, AnonGirl and her co-spenders don't pay anything extra---but
-because they reduced overhead by combining multiple transactions, saving
-bytes, they may be able to pay a smaller aggregate transaction fee,
-saving each one of them a tiny amount of millibits.
-
-**Resource:** An alpha-quality (as of this writing) implementation of decentralized
-CoinJoin is [CoinMux](http://coinmux.com/), available under the Apache
-license. A centralized version of purchaser CoinJoin is available at the
-[SharedCoin](https://sharedcoin.com/) website (part of Blockchain.info),
-whose [implementation](https://github.com/blockchain/Sharedcoin) is
-available under the 4-clause BSD license.
-
-
 ### Transaction Malleability
 
 Some contracts are especially susceptible to transaction malleability,
@@ -1377,49 +1073,7 @@ outputs that the lost transaction used as inputs.
 
 The following subsections briefly document core transaction details.
 
-#### Standard Transactions
-
-The standard transactions use the following scripts and scriptSigs.  Each of the
-standard scripts can also be used inside a P2SH redeemScript, but in practice
-only the multisig script makes sense inside P2SH until more transactions
-types are made standard.
-
-* Pay To PubKey (used in coinbase transactions):
-
-        script: <pubkey> OP_CHECKSIG
-        scriptSig: <sig>
-
-* Pay To PubKey Hash (P2PH):
-
-        script: OP_DUP OP_HASH160 <PubKeyHash> OP_EQUALVERIFY OP_CHECKSIG
-        scriptSig: <sig> <pubkey> 
-
-* Pay To Script Hash (P2SH)
-
-        script: OP_HASH160 <redeemscripthash> OP_EQUAL
-        scriptSig: <sig> [sig] [sig...] <redeemscript>
-
-* Multisig (*m* is the number of pubkeys which must match a signature;
-  *n* is how many pubkeys are being provided.  Both *m* and *n* should
-  be opcodes `OP_1` through `OP_16`, corresponding to the number
-  desired.)
-
-        script: <m> <pubkey> [pubkey] [pubkey...] <n> OP_CHECKMULTISIG
-        scriptSig: OP_0 <sig> [sig] [sig...]
-
-* Null data
-
-        script: OP_RETURN <data>
-        (Null data scripts cannot be spent, so there's no scriptSig)
-
-Although it's not a separate transaction type, this is a P2SH multisig
-with 2-of-3:
-
-        script: OP_HASH160 <redeemscripthash> OP_EQUAL
-        scriptSig: <sig> <sig> <redeemscript>
-        redeemScript: OP_0 <OP_2> <pubkey> <pubkey> <pubkey> <OP_3> OP_CHECKMULTISIG
-
-**OP Codes**
+#### OP Codes
 
 The op codes used in standard transactions are,
 
@@ -1651,6 +1305,355 @@ TODO, Relevant links:
 * [https://github.com/bitcoin/bips/blob/master/bip-0013.mediawiki (P2SH)](https://github.com/bitcoin/bips/blob/master/bip-0013.mediawiki)
 * [https://github.com/bitcoin/bips/blob/master/bip-0016.mediawiki (P2SH)](https://github.com/bitcoin/bips/blob/master/bip-0016.mediawiki)
 -->
+
+## Contracts
+
+By making the system hard to understand, the complexity of transactions
+has so far worked against you. That changes with contracts. Contracts are
+transactions which use the decentralized Bitcoin system to enforce financial
+agreements.
+
+Bitcoin contracts can often be crafted to minimize dependency on outside
+agents, such as the court system, which significantly decreases the risk
+of dealing with unknown entities in financial transactions. For example,
+Bob and Charlie might only know each other casually over the Internet;
+they would never open a checking account together---one of them could
+pass bad checks, leaving the other on the hook. But with Bitcoin
+contracts, they can nearly eliminate the risk from their relationship
+and start a business even though they hardly know each other.
+
+The following subsections will describe a variety of Bitcoin contracts
+already in use. Because contracts deal with real people, not just
+transactions, they are framed in story format.
+
+Besides the contract types described below, many other contract types
+have been proposed. Several of them are collected on the [Contracts
+page](https://en.bitcoin.it/wiki/Contracts) of the Bitcoin Wiki.
+
+### Multisig And Pay-To-Script-Hash (P2SH)
+
+Outputs can use their script to require signatures from more than one
+private key, called multi-signature or multisig. A multisig script
+provides a list of public keys and indicates how many of those public keys 
+must match signatures in the input's scriptSig.
+
+A standard multisig transaction looks similar to pay-to-pubkey-hash,
+except that full public keys (not hashes) are provided and
+`OP_CHECKMULTISIG` is used instead plain checksig.
+`OP_CHECKMULTISIG` takes multiple public keys and multiple
+signatures, so it's necessary to tell it how many public keys are
+being provided (n) and how many signatures are required (m). See the
+prototype script below for an example:
+
+    <m> [pubkey] [pubkey...] <n> OP_CHECKMULTISIG
+
+The values m and n would be replaced with op codes which push the
+corresponding number to the stack, such as `OP_2` and `OP_2` for an
+output which could only be spent if two key pairs were used, or `OP_2`
+and `OP_3` for an output which requires signatures from only two of the
+public keys listed. For example, a 2-of-3 script:
+
+    OP_2 [pubkey] [pubkey] [pubkey] OP_3 OP_CHECKMULTISIG
+
+Recipients who want their bitcoins to be secured with multiple
+signatures outputs must get the spender to create a multisig script.
+This creates several problems:
+
+1. The spender must collect each of the full public keys to be used,
+   which is more complicated than collecting a single Bitcoin address.
+   Almost none of the existing add-on Bitcoin payment tools, such as QR
+   encoded addresses, currently work with multisig.
+
+2. The spender must pay the transaction fee, which is partly based on
+   the number of bytes in a transaction.  Each additional public key in
+   a multisig script increases the size of that transaction by at least 65 bytes,
+   possibly costing the spender more millibits but providing all the
+   benefit to the recipient.
+
+3. Including full public keys in a script is not as secure as including
+   public keys protected by a hash. As mentioned earlier, the hash
+   obfuscates the public key, providing security against unanticipated
+   problems which might allow reconstruction of private keys from public
+   key data at some later point.
+
+To solve these problems, pay-to-script-hash (P2SH) transactions were
+created in 2012 to let a spender create an output script containing a
+hash of a second script, the redeemScript. This solves each of the
+problems quite handily:
+
+1. The hash of the redeemScript is identical to a pubkey hash---so it
+   can be transformed into the standard Bitcoin address format with only
+   one small change to differentiate it from a standard address. This
+   makes collecting a P2SH-style address as simple as collecting a
+   P2PH-style address.
+
+2. The hash of the redeemScript is the exact same size as a pubkey
+   hash, so the spender won't need to increase the transaction fee no
+   matter how many public keys are required.
+
+3. The hash of the redeemScript obfuscates the public keys, so
+   P2SH scripts are as secure as P2PH scripts.
+
+The basic P2SH workflow, illustrated below, looks almost identical to
+the P2PH workflow.  Bob no longer provides a pubkey hash to Alice;
+instead he embeds his public key in a redeemScript, hashes
+the redeemScript, and provides the redeemScript hash to Alice.  Alice creates
+a P2SH-style output containing Bob's redeemScript hash.
+
+![P2SH Transaction Workflow](/img/dev/en-p2sh-workflow.svg)
+
+When Bob wants to spend the output, he provides the full redeemScript
+along with his signature in the normal input scriptSig. The
+peer-to-peer network ensures the full redeemScript hashes to the
+same value as the script hash Alice put in her output; it then processes the
+redeemScript exactly as it would if it were the primary script, letting
+Bob spend the output if the redeemScript returns true.
+
+The extra steps seen in the example above don't really help Bob when he
+could just create a P2PH script instead. But when Bob's business
+partner, Charlie, decides he wants all of their business income to
+require two signatures to spend, P2SH-style outputs become quite handy.
+
+As seen in the figure below, Bob and Charlie each create separate
+private and public keys on their own computers, and Charlie gives a copy
+of his public key to Bob. Bob then creates a multisig redeemScript
+using the both his and Charlie's public keys.  When Alice, one their
+clients, wants to pay an invoice, Bob gives her a hash of the redeemScript.
+
+![P2SH 2-of-2 Multisig Transaction Workflow](/img/dev/en-p2sh-multisig-workflow.svg)
+
+Because it's just a hash, Alice can't see what the script says.  But she
+doesn't care---she just knows that Bob and Charlie will mark her invoice
+as paid if she pays to that hash.
+
+When Bob and Charlie want to spend Alice's output, Bob creates
+transaction #2. He fills in the output details and creates a scriptSig
+containing his signature, a placeholder byte, and the redeemScript. Bob
+gives this incomplete transaction to Charlie, who checks the output
+details and replaces the placeholder byte with his own signature,
+completing the signature. Either Bob or Charlie can broadcast this
+fully-signed transaction to the peer-to-peer network.
+
+Previous P2PH and P2SH illustrations showed Bob signing using the
+`SIGHASH_ALL` procedure, but this multisig P2SH figure does not
+illustrate any particular hash type procedure. Bob and Charlie can each
+independently choose their own signature types. For example, if the
+output created by Alice contains only a few millibits and Charlie
+doesn't care how Bob spends it, Charlie can sign the second
+transaction's input with `SIGHASH_NONE` and give it back to Bob. Bob can
+now change the output script to anything he wants without further
+consulting Charlie.
+
+A lone NONE hash type would usually allow unscrupulous miners to modify
+the output to pay themselves.  But because the multisig input requires
+both Charlie and Bob's signatures, Bob can sign his signature with
+`SIGHASH_ALL` to fully protect the transaction.
+
+### Escrow And Arbitration Contracts
+
+Bob and Charlie have a nasty falling out and want to terminate their
+business, but they can't agree how to split their saved millibits, which
+are stored in 2-of-2 multisig outputs. They both trust Alice The Arbitrator
+to sort the issue out---but they're each worried that the other person
+won't abide by any ruling Alice makes. The losing party might even
+delete his private key out of spite so the millibits are lost forever.
+
+The common escrow contract fixes this mess. Alice creates a new 2-of-3
+multisig redeemScript and sends it to both Bob and Charlie for
+examination. The redeemScript requires Alice, Bob, and Charlie each
+provide a public key, with signatures from any two of those public keys
+satisfying the redeemScript conditions.
+
+Bob and Charlie each understands the implication: Alice will be able to
+sign a transaction which will be valid if either Bob or Charlie also
+signs it. Alice can't steal their millibits, so there's no new risk, but she
+can give the winning party the ability to enforce her ruling.
+
+All three of them then give their public keys to each other and
+independently hash the redeemScript, creating a P2SH address. Then Bob
+and Charlie together sign a transaction spending all of their shared
+millibits to that P2SH address.
+
+Alice looks at the business's books and makes a ruling. She creates and
+signs a transaction that spends 60% of the millibits to Bob's public key
+and 40% to Charlie's public key. 
+
+Either Bob and Charlie can sign the transaction and broadcast it to the
+peer-to-peer network, actually spending the millibits. If Alice creates
+and signs a transaction neither of them will agree to, such as spending
+all the millibits to herself, they can find a new arbitrator and repeat
+the procedure.
+
+Merchants can use the 2-of-3 escrow contract to get customers to trust
+them. Customers choose what they want to buy, but instead of paying
+the merchant directly, they spend their millibits to a 2-of-3 P2SH
+multisig output using one public key each from the customer, the
+merchant, and an arbitrator both the customer and merchant trust.
+
+If the product or service is provided as expected, the customer and the
+merchant work together to release the payment to the merchant.  If the
+merchant needs to offer a refund, he and the customer work together to
+release the payment to the customer.  If there's a dispute, the
+arbitrator makes a ruling and either the customer or the merchant signs
+it to release the payment according to the ruling.
+
+**Resource:** [BitRated](https://www.bitrated.com/) provides a multisig arbitration
+service interface using HTML/JavaScript on a GNU AGPL-licensed website.
+
+
+### Micropayment Channel Contracts
+
+<!-- SOMEDAY: try to rewrite using a more likely real-world example without
+making the text or illustration more complicated --> 
+
+Alice also works part-time moderating forum posts for Bob. Every time
+someone posts to Bob's busy forum, Alice skims the post to make sure it
+isn't offensive or spam. Alas, Bob often forgets to pay her, so Alice
+demands to be paid immediately after each post she approves or rejects.
+Bob says he can't do that because hundreds of small payments will cost
+him dozens of millibits in transaction fees, so Alice suggests they use a
+micropayment channel.
+
+Bob asks Alice for her public key and then creates two transactions.
+The first transaction pays 100 millibits to a P2SH output whose
+2-of-2 multisig redeemScript requires signatures from both Alice and Bob.
+Broadcasting this transaction would let Alice hold the millibits
+hostage, so Bob keeps this transaction private for now and creates a
+second transaction.
+
+The second transaction spends all of the first transaction's millibits
+(minus a transaction fee) back to Bob after a 24 hour delay enforced
+by locktime. Bob can't sign the transaction by himself, so he gives
+the second transaction to Alice to sign, as shown in the
+illustration below.
+
+![Micropayment Channel Example](/img/dev/en-micropayment-channel.svg)
+
+Alice checks that the second transaction's locktime is 24 hours in the
+future, signs it, and gives a copy of it back to Bob. She then asks Bob
+for the first transaction and checks that the second transaction spends
+the output of the first transaction. She can now broadcast the first
+transaction to the network to ensure Bob has to wait for the time lock
+to expire before further spending his millibits. Bob hasn't actually
+spent anything so far, except possibly a small transaction fee, and
+he'll be able to broadcast the second transaction in 24 hours for a
+full refund.
+
+Now, when Alice does some work worth 1 millibit, she asks Bob to create
+and sign a new version of the second transaction.  Version two of the
+transaction spends 1 millibit to Alice and the other 99 back to Bob; it does
+not have a locktime, so Alice can sign it and spend it whenever she
+wants.  (But she doesn't do that immediately.)
+
+Alice and Bob repeat these work-and-pay steps until Alice finishes for
+the day, or until the time lock is about to expire.  Alice signs the
+final version of the second transaction and broadcasts it, paying
+herself and refunding any remaining balance to Bob.  The next day, when
+Alice starts work, they create a new micropayment channel.
+
+If Alice fails to broadcast a version of the second transaction before
+its time lock expires, Bob can broadcast the first version and receive a
+full refund. This is one reason micropayment channels are best suited to
+small payments---if Alice's Internet service goes out for a few hours
+near the time lock expiry, she could be cheated out of her payment.
+
+Transaction malleability, discussed below in the Payment Security section,
+is another reason to limit the value of micropayment channels.
+If someone uses transaction malleability to break the link between the
+two payments, Alice could hold Bob's 100 millibits hostage even if she
+hadn't done any work.
+
+For larger payments, Bitcoin transaction fees are very low as a
+percentage of the total transaction value, so it makes more sense to
+protect payments with immediately-broadcast separate transactions.
+
+**Resource:** The [bitcoinj](https://code.google.com/p/bitcoinj/) Java library
+provides a complete set of micropayment functions, an example
+implementation, and [a
+tutorial](https://code.google.com/p/bitcoinj/wiki/WorkingWithMicropayments)
+all under an Apache license.
+
+### CoinJoin Contracts 
+
+Alice is concerned about her privacy.  She knows every transaction gets
+added to the public block chain, so when Bob and Charlie pay her, they
+can each easily track those millibits to learn what Bitcoin
+addresses she pays, how much she pays them, and possibly how many
+millibits she has left.
+
+Because Alice isn't a criminal, she doesn't want to use some shady
+Bitcoin laundering service; she just wants plausible deniability about
+where she has spent her bitcoins and how many she has left, so she
+starts up the Tor anonymity service on her computer and logs into an
+IRC chatroom as "AnonGirl."
+
+Also in the chatroom are "Nemo" and "Neminem."  They collectively
+agree to transfer millibits between each other so no one besides them
+can reliably determine who controls which millibits.  But they're faced
+with a dilemma: who transfers their millibits to one of the other two
+pseudonymous persons first? The CoinJoin-style contract, shown in the
+illustration below, makes this decision easy: they create a single
+transaction which does all of the spending simultaneously, ensuring none
+of them can steal the others' millibits.
+
+![Example CoinJoin Transaction](/img/dev/en-coinjoin.svg)
+
+Each contributor looks through their collection of Unspent Transaction
+Outputs (UTXOs) for 100 millibits they can spend. They then each generate
+a brand new public key and give UTXO details and pubkey hashes to the
+facilitator.  In this case, the facilitator is AnonGirl; she creates
+a transaction spending each of the UTXOs to three equally-sized outputs.
+One output goes to each of the contributors' pubkey hashes.
+
+AnonGirl then signs her inputs using `SIGHASH_ALL` to ensure nobody can
+change the input or output details.  She gives the partially-signed
+transaction to Nemo who signs his inputs the same way and passes it
+to Neminem, who also signs it the same way.  Neminem then broadcasts
+the transaction to the peer-to-peer network, mixing all of the millibits in
+a single transaction.
+
+As you can see in the illustration, there's no way for anyone besides
+AnonGirl, Nemo, and Neminem to confidently determine who received
+which output, so they can each spend their output with plausible
+deniability.
+
+Now when Bob or Charlie try to track Alice's transactions through the
+block chain, they'll also see transactions made by Nemo and
+Neminem.  If Alice does a few more CoinJoins, Bob and Charlie might
+have to guess which transactions made by dozens or hundreds of people
+were actually made by Alice.
+
+The complete history of Alice's millibits is still in the block chain,
+so a determined investigator could talk to the people AnonGirl
+CoinJoined with to find out the ultimate origin of her millibits and
+possibly reveal AnonGirl as Alice. But against anyone casually browsing
+block chain history, Alice gains plausible deniability.
+
+The CoinJoin technique described above costs the participants a small
+amount of millibits to pay the transaction fee.  An alternative
+technique, purchaser CoinJoin, can actually save them millibits and
+improve their privacy at the same time.
+
+AnonGirl waits in the IRC chatroom until she wants to make a purchase.
+She announces her intention to spend millibits and waits until someone
+else wants to make a purchase, likely from a different merchant. Then
+they combine their inputs the same way as before but set the outputs
+to the separate merchant addresses so nobody will be able to figure
+out solely from block chain history which one of them bought what from
+the merchant.
+
+Since they would've had to pay a transaction fee to make their purchases
+anyway, AnonGirl and her co-spenders don't pay anything extra---but
+because they reduced overhead by combining multiple transactions, saving
+bytes, they may be able to pay a smaller aggregate transaction fee,
+saving each one of them a tiny amount of millibits.
+
+**Resource:** An alpha-quality (as of this writing) implementation of decentralized
+CoinJoin is [CoinMux](http://coinmux.com/), available under the Apache
+license. A centralized version of purchaser CoinJoin is available at the
+[SharedCoin](https://sharedcoin.com/) website (part of Blockchain.info),
+whose [implementation](https://github.com/blockchain/Sharedcoin) is
+available under the 4-clause BSD license.
 
 ## Wallets
 
