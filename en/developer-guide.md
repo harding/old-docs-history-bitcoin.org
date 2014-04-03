@@ -605,7 +605,7 @@ script, the script is:
 
     OP_DUP OP_HASH160 <PubkeyHash> OP_EQUALVERIFY OP_CHECKSIG
 
-The spender's scriptSig is [sanitized](#sigscript-sanitization) and prefixed to the beginning of the
+The spender's scriptSig is [sanitized](#scriptsig-sanitization) and prefixed to the beginning of the
 script. In a P2PH transaction, the scriptSig contains a signature (sig)
 and full public key (pubkey), creating the following concatenation:
 
