@@ -902,6 +902,125 @@ Locktime itself is an unsigned 4-byte number which can be parsed two ways:
   can be added to any block whose block header's *time* field is greater
   than the locktime.
 
+### P2SH And Multisig
+
+Outputs can use their script to require signatures from more than one
+private key, called multi-signature or multisig. A multisig script
+provides a list of public keys and indicates how many of those public keys 
+must match signatures in the input's scriptSig.
+
+A standard multisig transaction looks similar to pay-to-pubkey-hash,
+except that full public keys (not hashes) are provided and
+`OP_CHECKMULTISIG` is used instead plain checksig.
+`OP_CHECKMULTISIG` takes multiple public keys and multiple
+signatures, so it's necessary to tell it how many public keys are
+being provided (n) and how many signatures are required (m). See the
+prototype script below for an example:
+
+    <m> [pubkey] [pubkey...] <n> OP_CHECKMULTISIG
+
+The values m and n would be replaced with op codes which push the
+corresponding number to the stack, such as `OP_2` and `OP_2` for an
+output which could only be spent if two key pairs were used, or `OP_2`
+and `OP_3` for an output which requires signatures from only two of the
+public keys listed. For example, a 2-of-3 script:
+
+    OP_2 [pubkey] [pubkey] [pubkey] OP_3 OP_CHECKMULTISIG
+
+Recipients who want their bitcoins to be secured with multiple
+signatures outputs must get the spender to create a multisig script.
+This creates several problems:
+
+1. The spender must collect each of the full public keys to be used,
+   which is more complicated than collecting a single Bitcoin address.
+   Almost none of the existing add-on Bitcoin payment tools, such as QR
+   encoded addresses, currently work with multisig.
+
+2. The spender must pay the transaction fee, which is partly based on
+   the number of bytes in a transaction.  Each additional public key in
+   a multisig script increases the size of that transaction by at least 65 bytes,
+   possibly costing the spender more millibits but providing all the
+   benefit to the recipient.
+
+3. Including full public keys in a script is not as secure as including
+   public keys protected by a hash. As mentioned earlier, the hash
+   obfuscates the public key, providing security against unanticipated
+   problems which might allow reconstruction of private keys from public
+   key data at some later point.
+
+To solve these problems, pay-to-script-hash (P2SH) transactions were
+created in 2012 to let a spender create an output script containing a
+hash of a second script, the redeemScript. This solves each of the
+problems quite handily:
+
+1. The hash of the redeemScript is identical to a pubkey hash---so it
+   can be transformed into the standard Bitcoin address format with only
+   one small change to differentiate it from a standard address. This
+   makes collecting a P2SH-style address as simple as collecting a
+   P2PH-style address.
+
+2. The hash of the redeemScript is the exact same size as a pubkey
+   hash, so the spender won't need to increase the transaction fee no
+   matter how many public keys are required.
+
+3. The hash of the redeemScript obfuscates the public keys, so
+   P2SH scripts are as secure as P2PH scripts.
+
+The basic P2SH workflow, illustrated below, looks almost identical to
+the P2PH workflow.  Bob no longer provides a pubkey hash to Alice;
+instead he embeds his public key in a redeemScript, hashes
+the redeemScript, and provides the redeemScript hash to Alice.  Alice creates
+a P2SH-style output containing Bob's redeemScript hash.
+
+![P2SH Transaction Workflow](/img/dev/en-p2sh-workflow.svg)
+
+When Bob wants to spend the output, he provides the full redeemScript
+along with his signature in the normal input scriptSig. The
+peer-to-peer network ensures the full redeemScript hashes to the
+same value as the script hash Alice put in her output; it then processes the
+redeemScript exactly as it would if it were the primary script, letting
+Bob spend the output if the redeemScript returns true.
+
+The extra steps seen in the example above don't really help Bob when he
+could just create a P2PH script instead. But when Bob's business
+partner, Charlie, decides he wants all of their business income to
+require two signatures to spend, P2SH-style outputs become quite handy.
+
+As seen in the figure below, Bob and Charlie each create separate
+private and public keys on their own computers, and Charlie gives a copy
+of his public key to Bob. Bob then creates a multisig redeemScript
+using the both his and Charlie's public keys.  When Alice, one their
+clients, wants to pay an invoice, Bob gives her a hash of the redeemScript.
+
+![P2SH 2-of-2 Multisig Transaction Workflow](/img/dev/en-p2sh-multisig-workflow.svg)
+
+Because it's just a hash, Alice can't see what the script says.  But she
+doesn't care---she just knows that Bob and Charlie will mark her invoice
+as paid if she pays to that hash.
+
+When Bob and Charlie want to spend Alice's output, Bob creates
+transaction #2. He fills in the output details and creates a scriptSig
+containing his signature, a placeholder byte, and the redeemScript. Bob
+gives this incomplete transaction to Charlie, who checks the output
+details and replaces the placeholder byte with his own signature,
+completing the signature. Either Bob or Charlie can broadcast this
+fully-signed transaction to the peer-to-peer network.
+
+Previous P2PH and P2SH illustrations showed Bob signing using the
+`SIGHASH_ALL` procedure, but this multisig P2SH figure does not
+illustrate any particular hash type procedure. Bob and Charlie can each
+independently choose their own signature types. For example, if the
+output created by Alice contains only a few millibits and Charlie
+doesn't care how Bob spends it, Charlie can sign the second
+transaction's input with `SIGHASH_NONE` and give it back to Bob. Bob can
+now change the output script to anything he wants without further
+consulting Charlie.
+
+A lone NONE hash type would usually allow unscrupulous miners to modify
+the output to pay themselves.  But because the multisig input requires
+both Charlie and Bob's signatures, Bob can sign his signature with
+`SIGHASH_ALL` to fully protect the transaction.
+
 ### Transaction Fees And Change
 
 Transactions typically pay transaction fees based on the total byte size
@@ -1326,125 +1445,6 @@ transactions, they are framed in story format.
 Besides the contract types described below, many other contract types
 have been proposed. Several of them are collected on the [Contracts
 page](https://en.bitcoin.it/wiki/Contracts) of the Bitcoin Wiki.
-
-### Multisig And Pay-To-Script-Hash (P2SH)
-
-Outputs can use their script to require signatures from more than one
-private key, called multi-signature or multisig. A multisig script
-provides a list of public keys and indicates how many of those public keys 
-must match signatures in the input's scriptSig.
-
-A standard multisig transaction looks similar to pay-to-pubkey-hash,
-except that full public keys (not hashes) are provided and
-`OP_CHECKMULTISIG` is used instead plain checksig.
-`OP_CHECKMULTISIG` takes multiple public keys and multiple
-signatures, so it's necessary to tell it how many public keys are
-being provided (n) and how many signatures are required (m). See the
-prototype script below for an example:
-
-    <m> [pubkey] [pubkey...] <n> OP_CHECKMULTISIG
-
-The values m and n would be replaced with op codes which push the
-corresponding number to the stack, such as `OP_2` and `OP_2` for an
-output which could only be spent if two key pairs were used, or `OP_2`
-and `OP_3` for an output which requires signatures from only two of the
-public keys listed. For example, a 2-of-3 script:
-
-    OP_2 [pubkey] [pubkey] [pubkey] OP_3 OP_CHECKMULTISIG
-
-Recipients who want their bitcoins to be secured with multiple
-signatures outputs must get the spender to create a multisig script.
-This creates several problems:
-
-1. The spender must collect each of the full public keys to be used,
-   which is more complicated than collecting a single Bitcoin address.
-   Almost none of the existing add-on Bitcoin payment tools, such as QR
-   encoded addresses, currently work with multisig.
-
-2. The spender must pay the transaction fee, which is partly based on
-   the number of bytes in a transaction.  Each additional public key in
-   a multisig script increases the size of that transaction by at least 65 bytes,
-   possibly costing the spender more millibits but providing all the
-   benefit to the recipient.
-
-3. Including full public keys in a script is not as secure as including
-   public keys protected by a hash. As mentioned earlier, the hash
-   obfuscates the public key, providing security against unanticipated
-   problems which might allow reconstruction of private keys from public
-   key data at some later point.
-
-To solve these problems, pay-to-script-hash (P2SH) transactions were
-created in 2012 to let a spender create an output script containing a
-hash of a second script, the redeemScript. This solves each of the
-problems quite handily:
-
-1. The hash of the redeemScript is identical to a pubkey hash---so it
-   can be transformed into the standard Bitcoin address format with only
-   one small change to differentiate it from a standard address. This
-   makes collecting a P2SH-style address as simple as collecting a
-   P2PH-style address.
-
-2. The hash of the redeemScript is the exact same size as a pubkey
-   hash, so the spender won't need to increase the transaction fee no
-   matter how many public keys are required.
-
-3. The hash of the redeemScript obfuscates the public keys, so
-   P2SH scripts are as secure as P2PH scripts.
-
-The basic P2SH workflow, illustrated below, looks almost identical to
-the P2PH workflow.  Bob no longer provides a pubkey hash to Alice;
-instead he embeds his public key in a redeemScript, hashes
-the redeemScript, and provides the redeemScript hash to Alice.  Alice creates
-a P2SH-style output containing Bob's redeemScript hash.
-
-![P2SH Transaction Workflow](/img/dev/en-p2sh-workflow.svg)
-
-When Bob wants to spend the output, he provides the full redeemScript
-along with his signature in the normal input scriptSig. The
-peer-to-peer network ensures the full redeemScript hashes to the
-same value as the script hash Alice put in her output; it then processes the
-redeemScript exactly as it would if it were the primary script, letting
-Bob spend the output if the redeemScript returns true.
-
-The extra steps seen in the example above don't really help Bob when he
-could just create a P2PH script instead. But when Bob's business
-partner, Charlie, decides he wants all of their business income to
-require two signatures to spend, P2SH-style outputs become quite handy.
-
-As seen in the figure below, Bob and Charlie each create separate
-private and public keys on their own computers, and Charlie gives a copy
-of his public key to Bob. Bob then creates a multisig redeemScript
-using the both his and Charlie's public keys.  When Alice, one their
-clients, wants to pay an invoice, Bob gives her a hash of the redeemScript.
-
-![P2SH 2-of-2 Multisig Transaction Workflow](/img/dev/en-p2sh-multisig-workflow.svg)
-
-Because it's just a hash, Alice can't see what the script says.  But she
-doesn't care---she just knows that Bob and Charlie will mark her invoice
-as paid if she pays to that hash.
-
-When Bob and Charlie want to spend Alice's output, Bob creates
-transaction #2. He fills in the output details and creates a scriptSig
-containing his signature, a placeholder byte, and the redeemScript. Bob
-gives this incomplete transaction to Charlie, who checks the output
-details and replaces the placeholder byte with his own signature,
-completing the signature. Either Bob or Charlie can broadcast this
-fully-signed transaction to the peer-to-peer network.
-
-Previous P2PH and P2SH illustrations showed Bob signing using the
-`SIGHASH_ALL` procedure, but this multisig P2SH figure does not
-illustrate any particular hash type procedure. Bob and Charlie can each
-independently choose their own signature types. For example, if the
-output created by Alice contains only a few millibits and Charlie
-doesn't care how Bob spends it, Charlie can sign the second
-transaction's input with `SIGHASH_NONE` and give it back to Bob. Bob can
-now change the output script to anything he wants without further
-consulting Charlie.
-
-A lone NONE hash type would usually allow unscrupulous miners to modify
-the output to pay themselves.  But because the multisig input requires
-both Charlie and Bob's signatures, Bob can sign his signature with
-`SIGHASH_ALL` to fully protect the transaction.
 
 ### Escrow And Arbitration Contracts
 
