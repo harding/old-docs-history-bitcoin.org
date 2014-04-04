@@ -2967,29 +2967,6 @@ Bitcoin Core.
 
 ### Alerts
 
-## Mining
-
-TODO, Relevant links:
-
-* [https://en.bitcoin.it/wiki/Getwork](https://en.bitcoin.it/wiki/Getwork)
-* [https://github.com/bitcoin/bips/blob/master/bip-0022.mediawiki (getblocktemplate)](https://github.com/bitcoin/bips/blob/master/bip-0022.mediawiki)
-* [https://github.com/bitcoin/bips/blob/master/bip-0023.mediawiki (getblocktemplate)](https://github.com/bitcoin/bips/blob/master/bip-0023.mediawiki)
-
-### getblocktemplate
-
-### getwork (deprecated, worth mentionning?)
-
-Full block validation is best left to the Bitcoin Core software as any
-failure by your program to validate blocks could make it reject blocks
-accepted by the rest of the network, which may prevent your program from
-detecting double spends -- and that means your program may accept double
-spends as valid payment.
-
-Simplified Payment Verification (SPV) is a greatly simplified form of
-verification which can be reliably implemented by third-party Bitcoin
-software because it operates mainly on block headers. It will be
-described elsewhere in this guide.
-
 <!--#md#</div>#md#-->
 
 <script>updateToc();</script>
