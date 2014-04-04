@@ -5,6 +5,8 @@ id: developer-guide
 title: "Developer Guide - Bitcoin"
 ---
 
+[transaction malleability]: #term-transaction-malleability
+
 # Bitcoin Developer Guide
 
 <p class="summary">Find detailed information about the Bitcoin protocol and related specifications.</p>
@@ -1018,17 +1020,13 @@ Protocol](https://github.com/bitcoin/bips/blob/master/bip-0072.mediawiki)
 
 ### Transaction Malleability
 
-Some contracts are especially susceptible to transaction malleability,
-the ability to modify a transaction without making it invalid. The
-issue also affects block-chain-based accounting systems which need to
-track payments.
-
-None of Bitcoin's signature hash types protect the scriptSig. The
-scriptSig contains the signature, which can't sign itself. This allows
-attackers to make non-functional modifications to a transaction without
-rendering it invalid. For example, an attacker can add some data to the
-scriptSig which will be dropped before the previous output script is
-processed.
+None of Bitcoin's signature hash types protect the scriptSig, leaving
+the door open for a limited DOS attack called [transaction
+malleability][]{:.term}{:#term-transaction-malleability}. The scriptSig
+contains the signature, which can't sign itself, allowing attackers to
+make non-functional modifications to a transaction without rendering it
+invalid. For example, an attacker can add some data to the scriptSig
+which will be dropped before the previous output script is processed.
 
 Although the modifications are non-functional---so they do not change
 what inputs the transaction uses nor what outputs it pays---they do
@@ -1039,15 +1037,14 @@ creator expected.
 
 This isn't a problem for most Bitcoin transactions which are designed to
 be added to the block chain immediately. But it does become a problem
-for multi-transaction contracts, such as the micropayment channel
-contract, which depend on transactions that have not yet been added to
-the block chain.
+when the output from a transaction is spent before that transaction is
+added to the block chain.
 
 Bitcoin developers have been working to reduce transaction malleability
 among standard transaction types, but a complete fix is still only in
-the planning stages. At present, contracts should be designed to
-minimize malleability risk, and high-value (or otherwise high-risk)
-agreements should not use multi-transaction contracts.
+the planning stages. At present, new transactions should not depend on
+previous transactions which have not been added to the block chain yet,
+especially if large amounts of satoshis are at stake.
 
 Transaction malleability also affects payment tracking.  Bitcoin Core's
 RPC interface lets you track transactions by their txid---but if that
@@ -1557,7 +1554,7 @@ full refund. This is one reason micropayment channels are best suited to
 small payments---if Alice's Internet service goes out for a few hours
 near the time lock expiry, she could be cheated out of her payment.
 
-Transaction malleability, discussed below in the Payment Security section,
+[Transaction malleability][], discussed above in the Payment Security section,
 is another reason to limit the value of micropayment channels.
 If someone uses transaction malleability to break the link between the
 two payments, Alice could hold Bob's 100 millibits hostage even if she
