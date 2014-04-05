@@ -904,6 +904,10 @@ Locktime itself is an unsigned 4-byte number which can be parsed two ways:
 
 ### P2SH And Multisig
 
+<!--TODO: P2SH and multisig could be separated;
+for details, please read
+https://github.com/saivann/bitcoin.org/pull/45-->
+
 Outputs can use their script to require signatures from more than one
 private key, called multi-signature or multisig. A multisig script
 provides a list of public keys and indicates how many of those public keys 
