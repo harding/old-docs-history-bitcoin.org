@@ -694,10 +694,9 @@ scriptSig: <sig> <pubkey>
 
 **Script hash (P2SH)**
 
-P2SH allows to send a transaction to a script hash, allowing more complex
-transactions. Each of the standard scripts can be used inside a
-P2SH redeemScript, but in practice only the multisig script makes sense
-until more transactions types are made standard.
+P2SH is used to send a transaction to a script hash. Each of the standard
+scripts can be used inside a P2SH redeemScript, but in practice only the
+multisig script makes sense until more transactions types are made standard.
 
 ~~~
 script: OP_HASH160 <redeemscripthash> OP_EQUAL
