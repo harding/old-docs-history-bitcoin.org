@@ -487,7 +487,7 @@ to use those terms and then get feedback to see if it actually helps. -harding -
 
 Transactions let users send bitcoins. Each transaction is constructed
 out of several parts which enable both simple direct payments and complex
-financial [contracts](#contracts). This section will describe each part and
+transactions. This section will describe each part and
 demonstrate how to use them together to build complete transactions.
 
 To keep things simple, this section pretends coinbase transactions do
@@ -618,8 +618,8 @@ scriptSig: <sig> <pubkey>
 
 **Script hash (P2SH)**
 
-P2SH allows to send a transaction to a script hash, allowing more [complex
-contracts](#contracts). Each of the standard scripts can be used inside a
+P2SH allows to send a transaction to a script hash, allowing more complex
+transactions. Each of the standard scripts can be used inside a
 P2SH redeemScript, but in practice only the multisig script makes sense
 until more transactions types are made standard.
 
