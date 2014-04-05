@@ -184,14 +184,9 @@ block they see.)
 
 Eventually miners produce another block which attaches to only one of
 the competing simultaneously-mined blocks. This makes that side of
-the fork longer than the other side. Assuming a fork only contains
-valid blocks, normal peers always follow the longest fork to the end
-of the block chain and throw away (**orphan**) blocks belonging to
-shorter forks.
-
-(Technically peers follow whichever fork would be the most difficult to
-recreate. In practice, the most difficult to recreate fork is almost
-always the longest fork.)
+the fork longer than the other side. Assuming a fork only contains valid
+blocks, normal peers always follow the longest fork (the most difficult chain
+to recreate) and throw away (**orphan**) blocks belonging to shorter forks.
 
 Long-term forks are possible if different miners work at cross-purposes,
 such as some miners diligently working to extend the block chain at the
