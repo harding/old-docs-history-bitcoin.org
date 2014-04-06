@@ -27,91 +27,89 @@ title: "Developer Guide - Bitcoin"
 ## The Bitcoin Block Chain
 
 The block chain provides Bitcoin's public ledger, a timestamped record
-of all confirmed transactions. This system is used to protect against double
-spending and modification of previous transaction records, using proofs of
-work verified by the peer-to-peer network to maintain a global consensus.
+of all [confirmed transactions][]. This system is used to protect against [double spending][double spend] 
+and modification of previous transaction records, using [proof of
+work][] verified by the [peer-to-peer network][network] to maintain a global consensus.
 
 This document provides detailed explanations about the functioning of
-this system along with security advices for risk assessment and tools for
+this system along with security advice for risk assessment and tools for
 using block chain data.
 
 ### Block Chain Overview
 
 ![Block Chain Overview](/img/dev/en-blockchain-overview.svg)
 
-Figure 1 shows a simplified version of a three-block block chain.
-A **block** of new transactions, which can vary from one transaction to
+The figure above shows a simplified version of a three-block block chain.
+A [block]{:#term-block}{:.term} of new [transactions][], which can vary from one transaction to
 over a thousand, is collected into the transaction data part of a block.
 Copies of each transaction are hashed, and the hashes are then paired,
 hashed, paired again, and hashed again until a single hash remains, the
-**Merkle root** of a [Merkle tree](#term-merkle-tree).
+[Merkle root][]{:#term-merkle-root}{:.term} of a [Merkle tree](#term-merkle-tree).
 
-The Merkle root is stored in the **block header**. Each block also
-stores the hash of the
-previous block's header, chaining the blocks together. This ensures a
-transaction cannot be modified without modifying the block that records
-it and all following blocks.
+The Merkle root is stored in the [block header][]. Each block also
+stores the hash of the previous block's header, chaining the blocks
+together. This ensures a transaction cannot be modified without
+modifying the block that records it and all following blocks.
 
 Transactions are also chained together. Bitcoin wallet software gives
-the impression that bitcoins are sent from and to addresses, but
+the impression that [satoshis][] are sent from and to [addresses][], but
 bitcoins really move from transaction to transaction. Each standard
-transaction spends the bitcoins previously spent in one or more earlier
-transactions, so the **input** of one transaction is the **output** of a
+transaction spends the satoshis previously spent in one or more earlier
+transactions, so the [input][] of one transaction is the [output][] of a
 previous transaction.
 
 ![Transaction Propagation](/img/dev/en-transaction-propagation.svg)
 
 A single transaction can spend bitcoins to multiple outputs, as would be
-the case when sending bitcoins to multiple addresses, but each output of
+the case when sending satoshis to multiple addresses, but each output of
 a particular transaction can only be used as an input once in the
-block chain. Any subsequent reference is a forbidden **double
-spend** -- an attempt to spend the same bitcoins twice.
+block chain. Any subsequent reference is a forbidden [double
+spend][]---an attempt to spend the same satoshis twice.
 
 Outputs are not the same as Bitcoin addresses. You can use the same
 address in multiple transactions, but you can only use each output once.
-Outputs are tied to **transaction identifiers (TXIDs)**, which are the hashes
+Outputs are tied to [transaction identifiers (TXIDs)][txid], which are the hashes
 of complete transactions.
 
 Because each output of a particular transaction can only be spent once,
 all transactions included in the block chain can be categorized as either
-**Unspent Transaction Outputs (UTXOs)** or spent transaction outputs. For a
+[Unspent Transaction Outputs (UTXOs)][utxo] or spent transaction outputs. For a
 payment to be valid, it must only use UTXOs as inputs.
 
-Bitcoins cannot be left in a UTXO after a transaction: they will be
+Satoshis cannot be left in a UTXO after a transaction: they will be
 irretrievably lost. So any difference between the number of bitcoins in a
-transaction's inputs and outputs is given as a **transaction fee** to 
-the Bitcoin **miner** who creates the block containing that transaction. 
-For example, in Figure 2 each transaction spends 10 millibits fewer than 
-it receives from its combined inputs, effectively paying a 10 millibit 
-transaction fee. 
+transaction's inputs and outputs is given as a [transaction fee][]{:#term-transaction-fee}{:.term} to 
+the Bitcoin [miner][]{:#term-miner}{:.term} who creates the block containing that transaction. 
+For example, in the figure above, each transaction spends 10 satoshis
+fewer than it receives from its combined inputs, effectively paying a 10
+satoshi transaction fee.
 
-The spenders propose a transaction fee with each 
-transaction; miners decide whether the amount proposed is adequate,
-and only accept transactions that pass their threshold. Therefore,
-transactions with a higher proposed transaction fee are likely to be
-processed faster.
+The spenders propose a transaction fee with each transaction; miners
+decide whether the amount proposed is adequate, and only accept
+transactions that pass their threshold. Therefore, transactions with a
+higher proposed transaction fee are likely to be processed faster.
 
 #### Proof Of Work
 
 Although chaining blocks together makes it impossible to modify
 transactions included in any block without modifying all following block
-headers, the cost of modification is only two hashes for the first block
-modified plus one hash for every subsequent block until the current end
-of the block chain.
+headers, the cost of modification is, at most, only a few thousand
+hashes for each block modified to rebuild the Merkle tree and block
+header.
 
 Since the block chain is collaboratively maintained on a peer-to-peer
-network which may contain untrustworthy peers, Bitcoin requires each
+network which may contain untrustworthy [peers][], Bitcoin requires each
 block prove a significant amount of work was invested in its creation so
 that untrustworthy peers who want to modify past blocks have to work harder
 than trustworthy peers who only want to add new blocks to the
 block chain.
 
-The **proof of work** used in Bitcoin takes advantage of the apparently
-random output of cryptographic hashes. A good cryptographic hash
-algorithm converts arbitrary input data into a seemingly-random number.
-If the input data is modified in any way and the hash re-run, a new
-seemingly-random number is produced, so there is no way to modify the
-input data to make the hash number predictable.
+The [proof of work][]{:#term-proof-of-work}{:.term} used in Bitcoin
+takes advantage of the apparently random output of cryptographic hashes.
+A good cryptographic hash algorithm converts arbitrary input data into a
+seemingly-random number. If the input data is modified in any way and
+the hash re-run, a new seemingly-random number is produced, so there is
+no way to modify the input data to make the hash number predictable.
 
 To prove you did some extra work to create a block, you must create a
 hash of the block header which does not exceed a certain value. For
@@ -122,14 +120,14 @@ class="math">2<sup>256</sup> − 1</span>.
 
 In the example given above, you will almost certainly produce a
 successful hash on your first try. You can even estimate the probability
-that a given hash attempt will generate a number below the **target**
+that a given hash attempt will generate a number below the [target][]{:#term-target}{:.term}
 threshold. Bitcoin itself does not track probabilities but instead
 simply assumes that the lower it makes the target threshold, the more
 hash attempts, on average, will need to be tried.
 
 New blocks will only be added to the block chain if their hash is at
-least as challenging as a **difficulty** value expected by the peer-to-peer
-network. Every 2,016 blocks, the network uses timestamps stored in each
+least as challenging as a [difficulty][]{:#term-difficulty}{:.term} value expected by the peer-to-peer
+network. Every 2,016 blocks, the network uses [timestamps][block time] stored in each
 block header to calculate the number of seconds elapsed between generation
 of the first and last of those last 2,016 blocks. The ideal value is
 1,209,600 seconds (two weeks).
@@ -153,11 +151,11 @@ preceded it, it requires (on average) as much hashing power to
 propagate a modified block as the entire Bitcoin network expended
 between the time the original block was created and the present time.
 Only if you acquired a majority of the network's hashing power
-could you reliably execute such a **51 percent attack** against
+could you reliably execute such a [51 percent attack][]{:#term-51-attack}{:.term} against
 transaction history.
 
 The block header provides several easy-to-modify fields, such as a
-dedicated nonce field, so obtaining new hashes doesn't require waiting
+dedicated [nonce field][header nonce], so obtaining new hashes doesn't require waiting
 for new transactions. Also, only the 80-byte block header is hashed for
 proof-of-work, so adding more transactions to a block does not slow
 down hashing with extra I/O.
@@ -167,15 +165,16 @@ down hashing with extra I/O.
 Any Bitcoin miner who successfully hashes a block header to a value
 below the target can add the entire block to the block chain.
 (Assuming the block is otherwise valid.) These blocks are commonly addressed
-by their **block height** -- the number of blocks between them and the first Bitcoin
-block (block 0, most commonly known as the **genesis block**). For example,
+by their [block height][]{:#term-block-height}{:.term}---the number of blocks between them and the first Bitcoin
+block (block 0, most commonly known as the [genesis block]{:#term-genesis-block}{:.term}). For example,
 block 2016 is where difficulty could have been first adjusted.
 
 ![Common And Uncommon Block Chain Forks](/img/dev/en-blockchain-fork.svg)
 
 Multiple blocks can all have the same block height, as is common when
 two or more miners each produce a block at roughly the same time. This
-creates an apparent **fork** in the block chain, as shown in figure 3.
+creates an apparent [fork][accidental fork]{:#term-accidental-fork}{:.term} in the block chain, as shown in the
+figure above.
 
 When miners produce simultaneous blocks at the end of the block chain, each
 peer individually chooses which block to trust. (In the absence of
@@ -186,21 +185,21 @@ Eventually miners produce another block which attaches to only one of
 the competing simultaneously-mined blocks. This makes that side of
 the fork longer than the other side. Assuming a fork only contains
 valid blocks, normal peers always follow the longest fork to the end
-of the block chain and throw away (**orphan**) blocks belonging to
+of the block chain and throw away ([orphan][]{:#term-orphan}{:.term}) blocks belonging to
 shorter forks.
 
 (Technically peers follow whichever fork would be the most difficult to
 recreate. In practice, the most difficult to recreate fork is almost
 always the longest fork.)
 
-Long-term forks are possible if different miners work at cross-purposes,
+[Long-term forks][long-term fork]{:#term-long-term-fork}{:.term} are possible if different miners work at cross-purposes,
 such as some miners diligently working to extend the block chain at the
 same time other miners are attempting a 51 percent attack to revise
 transaction history.
 
 ### Implementation Details: Block Contents
 
-This section describes version 2 blocks, which are any blocks with a
+This section describes [version 2 blocks][v2 block]{:#term-v2-block}{:.term}, which are any blocks with a
 block height greater than 227,835. (Version 1 and version 2 blocks were
 intermingled for some time before that point.) Future block versions may
 break compatibility with the information in this section. You can determine
@@ -209,7 +208,7 @@ the version of any block by checking its ``version`` field using
 
 As of version 2 blocks, each block consists of four root elements:
 
-1. A magic number (0xd9b4bef9).
+1. A [magic number][block header magic]{:#term-block-header-magic}{:.term} (0xd9b4bef9).
 
 2. A 4-byte unsigned integer indicating how many bytes follow until the
    end of the block. Although this field would suggest maximum block
@@ -245,7 +244,7 @@ The 80-byte block header contains the following six fields:
 | 5. Bits           | 4      | Internal Bitcoin Target Format |
 | 6. Nonce          | 4      | (Arbitrary Data)               |
 
-1. The *version* number indicates which set of block validation rules
+1. The *[block version][]{:#term-block-version}{:.term}* number indicates which set of block validation rules
    to follow so Bitcoin Core developers can add features or
    fix bugs. As of block height 227,836, all blocks use version number
    2.
@@ -258,7 +257,7 @@ The 80-byte block header contains the following six fields:
    in this block. It ensures no transactions can be modified in this
    block without changing the block header.
 
-4. The *time* is the approximate time when this block was created in
+4. The *[block time][]{:#term-block-time}{:.term}* is the approximate time when this block was created in
    Unix Epoch time format (number of seconds elapsed since
    1970-01-01T00:00 UTC). The time value must be greater than the
    time of the previous block. No peer will accept a block with a
@@ -269,7 +268,7 @@ The 80-byte block header contains the following six fields:
    value for this block's hash. The bits value must match the network
    difficulty at the time the block was mined.
 
-6. The *nonce* is an arbitrary input that miners can change to test different
+6. The *[header nonce][]{:#term-header-nonce}{:.term}* is an arbitrary input that miners can change to test different
    hash values for the header until they find a hash value less than or
    equal to the target threshold. If all values within the nonce's four
    bytes are tested, the time can be changed by one second or the
@@ -282,16 +281,16 @@ Every block must include one or more transactions. Exactly one of these
 transactions must be a coinbase transaction which should collect and
 spend any transaction fees paid by transactions included in this block.
 All blocks with a block height less than 6,930,000 are entitled to
-receive a block reward of newly created bitcoin value, which also
+receive a [block reward][]{:#term-block-reward}{:.term} of newly created bitcoin value, which also
 should be spent in the coinbase transaction. (The block reward started
 at 50 bitcoins and is being halved approximately every four years: as of
-March 2014, it's 25 bitcoins.) A coinbase transaction is invalid if it 
+April 2014, it's 25 bitcoins.) A coinbase transaction is invalid if it 
 tries to spend more value than is available from the transaction 
 fees and block reward.
 
-The coinbase transaction has the same basic format as any other
+The [coinbase transaction][]{:#term-coinbase-tx}{:.term} has the same basic format as any other
 transaction, but it references a single non-existent UTXO and a special
-coinbase field replaces the field that would normally hold a script and
+[coinbase field][]{:#term-coinbase-field}{:.term} replaces the field that would normally hold a script and
 signature. In version 2 blocks, the coinbase parameter must begin with
 the current block's block height and may contain additional arbitrary
 data or a script up to a maximum total of 100 bytes.
@@ -300,19 +299,18 @@ The UTXO of a coinbase transaction has the special condition that it
 cannot be spent (used as an input) for at least 100 blocks. This
 helps prevent a miner from spending the transaction fees and block
 reward from a block that will later be orphaned (destroyed) after a
-block fork.
+block chain fork.
 
 Blocks are not required to include any non-coinbase transactions, but
 miners almost always do include additional transactions in order to
 collect their transaction fees.
 
 All transactions, including the coinbase transaction, are encoded into
-blocks in binary rawtransaction format prefixed by a block transaction
+blocks in binary [rawtransaction format][rawtx] prefixed by a block transaction
 sequence number.
 
 The rawtransaction format is hashed to create the transaction
-identifier (txid). From these txids, the <span
-id="term-merkle-tree">Merkle tree</span> is constructed by pairing each
+identifier (txid). From these txids, the [Merkle tree][]{:#term-merkle-tree}{:.term} is constructed by pairing each
 txid with one other txid and then hashing them together. If there are
 an odd number of txids, the txid without a partner is hashed with a
 copy of itself.
@@ -332,7 +330,7 @@ five-transaction Merkle would look like the following text diagram:
     /  \  /  \  /
     A  B  C  D  E .........Transactions
 
-As discussed in the Simplified Payment Verification (SPV) subsection,
+As discussed in the [Simplified Payment Verification (SPV)][spv] subsection,
 <!-- not written yet --> the Merkle tree allows clients to verify for
 themselves that a transaction was included in a block by obtaining the
 Merkle root from a block header and a list of the intermediate hashes
@@ -351,14 +349,14 @@ requires only 140 bytes.
 
 #### Example Block And Coinbase Transaction
 
-The first block with more than one transaction is at block height 170.
+The first block with more than one transaction is at [block height 170][block170].
 We can get the hash of block 170's header with the `getblockhash` RPC:
 
     > getblockhash 170
 
     00000000d1145790a8694403d4063f323d499e655c83426834d4ce2f8dd4a2ee
 
-We can then get a decoded version of that block with the `getblock` RPC:
+We can then get a decoded version of that block with the [`getblock` RPC][rpc getblock]:
 
     > getblock 00000000d1145790a8694403d4063f323d499e655c83\
       426834d4ce2f8dd4a2ee
@@ -391,7 +389,7 @@ are computed.
 The first transaction identifier (txid) listed in the tx array is, in
 this case, the coinbase transaction. The txid is a hash of the raw
 transaction. We can get the actual raw transaction in hexadecimal format
-from the block chain using the `getrawtransaction` RPC with the txid:
+from the block chain using the [`getrawtransaction` RPC][rpc getrawtransaction] with the txid:
 
     > getrawtransaction b1fea52486ce0c62bb442b530a3f0132b82\
       6c74e473d1f2c220bfa78111c5082
@@ -399,7 +397,7 @@ from the block chain using the `getrawtransaction` RPC with the txid:
     01000000[...]00000000
 
 We can expand the raw transaction hex into a human-readable format by
-passing the raw transaction to the `decoderawtransaction` RPC:
+passing the raw transaction to the [`decoderawtransaction` RPC][rpc decoderawtransaction]:
 
     > decoderawtransaction 01000000010000000000000000000000\
       000000000000000000000000000000000000000000ffffffff070\
@@ -948,8 +946,8 @@ will accept.
 
 <!-- TODO: check: 50 KB or 50 KiB?  Not that transactors care... -->
 
-By default, miners reserve 50 KB of each block for high-priority
-transactions which spend millibits that haven't been spent for a long
+By default, miners reserve 50 KB of each block for [high-priority
+transactions][]{:#term-high-priority-transactions}{:.term} which spend millibits that haven't been spent for a long
 time.  The remaining space in each block is allocated to transactions
 based on their fee per byte, with higher-paying transactions being added
 in sequence until all of the available space is filled.
@@ -1479,7 +1477,7 @@ bytes commonly used by Bitcoin are:
 4. Append the checksum to the version and hash, and encode it as a base58
    string: `BASE58(version . hash . checksum)`
  
-Bitcoin's base58 encoding may not match other implementations. Tier
+Bitcoin's base58 encoding, called [Base58Check][]{:#term-base58check}{:.term} may not match other implementations. Tier
 Nolan provided the following example encoding algorithm to the Bitcoin
 Wiki [Base58Check
 encoding](https://en.bitcoin.it/wiki/Base58Check_encoding) page:
@@ -1626,19 +1624,19 @@ TODO, Relevant links:
 
 ## Wallets
 
-Bitcoin wallets at their core are a collection of private keys. These collections are stored digitally in a file, or can even be physically stored on pieces of paper. 
+Bitcoin wallets at their core are a collection of [private keys][]. These collections are stored digitally in a file, or can even be physically stored on pieces of paper. 
 
 ### Private key formats
 Private keys are what are used to unlock bitcoin from a particular address. In Bitcoin, a private key in standard format is simply a 256-bit number, between the values:
 
-0x1 and 0xFFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFE BAAE DCE6 AF48 A03B BFD2 5E8C D036 4141, effectively representing the entire range of 2<sup>256</sup>-1 values. The range is governed by the [secp256k1](http://www.secg.org/index.php?action=secg,docs_secg) ECDSA encryption standard used by Bitcoin. 
+0x1 and 0xFFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFE BAAE DCE6 AF48 A03B BFD2 5E8C D036 4141, effectively representing the entire range of 2<sup>256</sup>-1 values. The range is governed by the [secp256k1][] ECDSA encryption standard used by Bitcoin. 
 
 #### Wallet Import Format (WIF)
-In order to make copying of private keys less prone to error, Wallet Import Format may be utilized. WIF uses base58Check encoding on an extended private key, greatly decreasing the chance of copying error, much like standard Bitcoin addresses.
+In order to make copying of private keys less prone to error, Wallet Import Format may be utilized. WIF uses [base58Check][] encoding on an extended private key, greatly decreasing the chance of copying error, much like standard Bitcoin [addresses][].
 
 1. Take a private key.
 
-2. Add a 0x80 byte in front of it for mainnet addresses or 0xef for testnet addresses.
+2. Add a 0x80 byte in front of it for [mainnet][] addresses or 0xef for [testnet][] addresses.
 
 3. Perform a SHA-256 hash on the extended key.
 
@@ -1657,8 +1655,11 @@ The process is easily reversible, using the Base58 decoding function, and removi
 Mini private key format is a method for encoding a private key in under 30 characters, enabling keys to be embedded in a small physical space, such as physical bitcoin tokens, and more damage-resistant QR codes. 
 
 1. The first character of mini keys is 'S'. 
+
 2. In order to determine if a mini private key is well-formatted, a question mark is added to the private key.
+
 3. The SHA256 hash calculated. If the first byte output is a `00’, it is well-formatted. This key restriction acts as a typo-checking mechanism. A user brute forces the process using random numbers until a well-formatted mini private key is output. 
+
 4. In order to derive the full private key, the user simply takes a single SHA256 hash of the original mini private key. This process is one-way: it is intractible to compute the mini private key format from the derived key.
 
 Many implementations disallow the character '1' in the mini private key due to its visual similarity to 'l'.
@@ -1681,7 +1682,7 @@ Type 1 deterministic wallets are the simpler of the two, which can create a sing
 
 #### Type 2: Hierarchical Deterministic (HD) Wallets
 
-Type 2 wallets, specified in [BIP0032](https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki), are the currently favored format for generating, storing and managing private keys. Hierarchical deterministic wallets allow selective sharing by supporting multiple key-pair chains in a tree structure, derived from a single root. This selective sharing enables many advanced arrangements. An additional goal of the BIP0032 standard is to encourage interoperability between wallet software using the same wallet format, rather than having to manually convert wallet types. The suggested minimal interoperability is the ability to import extended public and private keys, to give access to the descendants as wallet keys. 
+Type 2 wallets, specified in [BIP32][], are the currently favored format for generating, storing and managing private keys. Hierarchical deterministic wallets allow selective sharing by supporting multiple key-pair chains in a tree structure, derived from a single root. This selective sharing enables many advanced arrangements. An additional goal of the BIP32 standard is to encourage interoperability between wallet software using the same wallet format, rather than having to manually convert wallet types. The suggested minimal interoperability is the ability to import extended public and private keys, to give access to the descendants as wallet keys. 
 
 _Seamless interoperability is still a work in progress. It is possible for another implementation to not see non-zero valued addresses, depending on wallet parameters. For safe recovery of wallets, it is recommended to use the same wallet software. Another concern is the saving of HD wallet meta-data such as transaction notes and labels, which has not been standardized._  
 
@@ -1689,16 +1690,16 @@ _Seamless interoperability is still a work in progress. It is possible for anoth
 
 Here are a select number of use cases:
 
-1. Audits: In case an auditor needs full access to the list of incoming and outgoing payments, one can share all account public extended keys. This will allow the auditor to see all transactions from and to the wallet, in all accounts, but not a single secret key.
+1. Audits: In case an auditor needs full access to the list of incoming and outgoing payments, one can share all account public extended keys. This will allow the auditor to see all [transactions][] from and to the wallet, in all accounts, but not a single private key.
 
 2. When a business has several independent offices, they can all use wallets derived from a single master. This will allow the headquarters to maintain a super-wallet that sees all incoming and outgoing transactions of all offices, and even permit moving money between the offices.
 
-3. In case two business partners often transfer money, one can use the extended public key for the external chain of a specific account as a sort of "super address", allowing frequent transactions that cannot (easily) be associated, but without needing to request a new address for each payment. Such a mechanism could also be used by mining pool operators as variable payout address.
+3. In case two business partners often transfer money, one can use the extended public key for the external chain of a specific account as a sort of "super address", allowing frequent transactions that cannot (easily) be associated, but without needing to request a new address for each payment. Such a mechanism could also be used by [mining][mine] pool operators as variable payout address.
 
 With many more arrangements possible. The following section is an in-depth technical discussion of HD wallets.
 
 #### Conventions
-In the rest of this text we will assume the public key cryptography used in Bitcoin, namely elliptic curve cryptography using the field and curve parameters defined by [secp256k1](http://www.secg.org/index.php?action=secg,docs_secg). Variables below are either:
+In the rest of this text we will assume the public key cryptography used in Bitcoin, namely elliptic curve cryptography using the field and curve parameters defined by [secp256k1][]. Variables below are either:
 
 * Integers modulo the order of the curve (referred to as n).
 
@@ -1724,15 +1725,15 @@ As standard conversion functions, we assume:
 
 #### Extended keys
 
-In what follows, we will define a function that derives a number of child keys from a parent key. In order to prevent these from depending solely on the key itself, we extend both private and public keys first with an extra 256 bits of entropy. This extension, called the chain code, is identical for corresponding private and public keys, and consists of 32 bytes.
+In what follows, we will define a function that derives a number of [child keys][child key]{:#term-child-key}{:.term} from a [parent key][]{:#term-parent-key}{:.term}. In order to prevent these from depending solely on the key itself, we extend both [private][private keys] and [public keys][] first with an extra 256 bits of entropy. This extension, called the [chain code][]{:#term-chain-code}{:.term}, is identical for corresponding private and public keys, and consists of 32 bytes.
 
-We represent an extended private key as (k, c), with k the normal private key, and c the chain code. An extended public key is represented as (K, c), with K = point(k) and c the chain code.
+We represent an [extended private key][]{:#term-extended-private-key}{:.term} as (k, c), with k the normal private key, and c the chain code. An [extended public key][]{:#term-extended-public-key}{:.term} is represented as (K, c), with K = point(k) and c the chain code.
 
-Each extended key has 2<sup>31</sup> normal child keys, and 2<sup>31</sup> hardened child keys. Each of these child keys has an index. The normal child keys use indices 0 through 2<sup>31</sup>-1. The hardened child keys use indices 2<sup>31</sup> through 2<sup>32</sup>-1. To ease notation for hardened key indices, a number i<sub>H</sub> represents i+2<sup>31</sup>.
+Each [extended key][]{:#term-extended-key}{:.term} has 2<sup>31</sup> [normal child keys][normal child key]{:#term-normal-child-key}{:.term}, and 2<sup>31</sup> [hardened child keys][hardened child key]{:#term-hardened-child-key}{:.term}. Each of these child keys has an [index][key index]{:#term-key-index}{:.term}. The normal child keys use indices 0 through 2<sup>31</sup>-1. The hardened child keys use indices 2<sup>31</sup> through 2<sup>32</sup>-1. To ease notation for hardened key indices, a number i<sub>H</sub> represents i+2<sup>31</sup>.
 
 #### Child key derivation (CKD) functions
 
-Given a parent extended key and an index i, it is possible to compute the corresponding child extended key. The algorithm to do so depends on whether the child is a hardened key or not (or, equivalently, whether i ≥ 2<sup>31</sup>), and whether we're talking about private or public keys.
+Given a parent extended key and an index i, it is possible to compute the corresponding [child extended key][]{:#term-child-extended-key}{:.term}. The algorithm to do so depends on whether the child is a hardened key or not (or, equivalently, whether i ≥ 2<sup>31</sup>), and whether we're talking about private or public keys.
 
 ##### Private parent key &rarr; private child key
 
@@ -1752,11 +1753,11 @@ The function CKDpriv((k<sub>par</sub>, c<sub>par</sub>), i) &rarr; (k<sub>i</sub
 
 * In case parse<sub>256</sub>(I<sub>L</sub>) ≥ n or k<sub>i</sub> = 0, the resulting key is invalid, and one should proceed with the next value for i. (Note: this has probability lower than 1 in 2<sup>127</sup>.)
 
-The HMAC-SHA512 function is specified in [RFC 4231](http://tools.ietf.org/html/rfc4231 RFC 4231).
+The HMAC-SHA512 function is specified in [RFC 4231](http://tools.ietf.org/html/rfc4231).
 
 ##### Public parent key &rarr; public child key
 
-The function CKDpub((K<sub>par</sub>, c<sub>par</sub>), i) &rarr; (K<sub>i</sub>, c<sub>i</sub>) computes a child extended public key from the parent extended public key. It is only defined for non-hardened child keys.
+The function CKDpub((K<sub>par</sub>, c<sub>par</sub>), i) &rarr; (K<sub>i</sub>, c<sub>i</sub>) computes a child extended public key from the parent [extended public key][]. It is only defined for non-hardened child keys.
 
 * Check whether i ≥ 2<sup>31</sup> (whether the child is a hardened key).
 
@@ -1786,7 +1787,7 @@ To compute the public child key of a parent private key:
 
 * CKDpub(N(k<sub>par</sub>, c<sub>par</sub>), i) (works only for non-hardened child keys).
 
-The fact that they are equivalent is what makes non-hardened keys useful (one can derive child public keys of a given parent key without knowing any private key), and also what distinguishes them from hardened keys. The reason for not always using non-hardened keys (which are more useful) is security; see further for more information.
+The fact that they are equivalent is what makes non-hardened keys useful (one can derive [child public keys][child public key]{:#term-child-public-key}{:.term} of a given parent key without knowing any private key), and also what distinguishes them from hardened keys. The reason for not always using non-hardened keys (which are more useful) is security; see further for more information.
 
 ##### Public parent key &rarr; private child key
 
@@ -1810,7 +1811,7 @@ Each leaf node in the tree corresponds to an actual key, while the internal node
 
 Extended keys can be identified by the Hash160 (RIPEMD160 after SHA256) of the serialized public key, ignoring the chain code. This corresponds exactly to the data used in traditional Bitcoin addresses. It is not advised to represent this data in base58 format though, as it may be interpreted as an address that way (and wallet software is not required to accept payment to the chain key itself).
 
-The first 32 bits of the identifier are called the key fingerprint.
+The first 32 bits of the identifier are called the [key fingerprint][]{:#term-key-fingerprint}{:.term}.
 
 #### Serialization format
 
@@ -1836,9 +1837,9 @@ When importing a serialized extended public key, implementations must verify whe
 
 #### Master key generation
 
-The total number of possible extended keypairs is almost 2<sup>512</sup>, but the produced keys are only 256 bits long, and offer about half of that in terms of security. Therefore, master keys are not generated directly, but instead from a potentially short seed value.
+The total number of possible extended keypairs is almost 2<sup>512</sup>, but the produced keys are only 256 bits long, and offer about half of that in terms of security. Therefore, [master keys][master key]{:#term-master-key}{:.term} are not generated directly, but instead from a potentially short seed value.
 
-* Generate a seed byte sequence S of a chosen length (between 128 and 512 bits; 256 bits is advised) from a (P)RNG.
+* Generate a [seed][master key seed]{:#term-master-key-seed}{:.term} byte sequence S of a chosen length (between 128 and 512 bits; 256 bits is advised) from a (P)RNG.
 
 * Calculate I = HMAC-SHA512(Key = "Bitcoin seed", Data = S)
 
@@ -1856,9 +1857,9 @@ The previous sections specified key trees and their nodes. The next step is impo
 
 #### The default wallet layout
 
-An HDW is organized as several 'accounts'. Accounts are numbered, the default account ("") being number 0. Clients are not required to support more than one account - if not, they only use the default account.
+An HDW is organized as several [accounts][HD account]{:#term-hd-account}{:.term}. Accounts are numbered, the default account ("") being number 0. Clients are not required to support more than one account - if not, they only use the default account.
 
-Each account is composed of two keypair chains: an internal and an external one. The external keychain is used to generate new public addresses, while the internal keychain is used for all other operations (change addresses, generation addresses, ..., anything that doesn't need to be communicated). Clients that do not support separate keychains for these should use the external one for everything.
+Each account is composed of two keypair chains: an [internal chain][]{:#term-internal-chain}{:.term} and an [external chain][]{:#term-external-chain}{:.term}. The external keychain is used to generate new [public addresses][addresses], while the internal keychain is used for all other operations ([change addresses][change address], [coinbase addresses][coinbase transaction], and anything else that doesn't need to be communicated). Clients that do not support separate keychains for these should use the external one for everything.
 
 * m/i<sub>H</sub>/0/k corresponds to the k'th keypair of the external chain of account number i of the HDW derived from master m.
 
@@ -1870,30 +1871,31 @@ Most of the standard security guarantees afforded the standard key setups such a
 
 Note however that the following properties does not exist:
 
-* Given a parent extended public key (K<sub>par</sub>,c<sub>par</sub>) and a child public key (K<sub>i</sub>), it is hard to find child key index (i).
+* Given a parent [extended public key][] (K<sub>par</sub>,c<sub>par</sub>) and a [child public key][] (K<sub>i</sub>), it is hard to find child [key index][] (i).
 
-* Given a parent extended public key (K<sub>par</sub>,c<sub>par</sub>) and a non-hardened child private key (k<sub>i</sub>), it is hard to find the parent private key (k<sub>par</sub>).
+* Given a parent [extended public key][] (K<sub>par</sub>,c<sub>par</sub>) and a non-[hardened child private key][hardened
+child key] (k<sub>i</sub>), it is hard to find the [parent private key][parent key] (k<sub>par</sub>).
 
 Consequently:
 
-1. Private and public keys must be kept safe as usual. Leaking a private key means access to coins - leaking a public key can mean loss of privacy.
+1. Private and public keys must be kept safe as usual. Leaking a [private key][] means access to coins - leaking a [public key][] can mean loss of privacy.
 
-2. Somewhat more care must be taken regarding extended keys, as these correspond to an entire (sub)tree of keys.
+2. Somewhat more care must be taken regarding [extended keys][extended key], as these correspond to an entire (sub)tree of keys.
 
-3. One weakness that may not be immediately obvious, is that knowledge of the extended public key + any non-hardened private key descending from it is equivalent to knowing the extended private key (and thus every private and public key descending from it). This means that extended public keys must be treated more carefully than regular public keys.
+3. One weakness that may not be immediately obvious, is that knowledge of the [extended public key][] plus any non-[hardened private key][hardened child key] descending from it is equivalent to knowing the [extended private key][] (and thus every private and public key descending from it). This means that extended public keys must be treated more carefully than regular public keys.
 
-*It is also the reason for the existence of hardened keys, and why they are used for the account level in the tree. This way, a leak of account-specific (or below) private key never risks compromising the master or other accounts.*
+*It is also the reason for the existence of hardened keys, and why they are used for the [account][HD account] level in the tree. This way, a leak of account-specific (or below) private key never risks compromising the [master][master key] or other accounts.*
 
 <!-- END extended quote from BIP0032 spec --> 
 
-**Resources:** Refer to [BIP0032](https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki) for the full HD Wallet specification.
+**Resources:** Refer to [BIP32][] for the full HD Wallet specification.
 
 
 
 
 ### JBOK (Just a bunch of keys) wallets formats (deprecated)
 
-JBOK-style wallets are a deprecated form of wallet that originated from the reference client wallet. The reference client wallet would create 100 private/public key pairs automatically via a PRNG for use. Once all these keys are consumed or the RPC call keypoolrefill is run, another 100 key pairs would be created. This created considerable difficulty in backing up one’s keys, considering backups have to be run manually to save the newly generated private keys. If a new key pair set had been generated, used, then lost prior to a backup, the stored bitcoin value is likely lost forever. Many older-style mobile wallets followed a similar format, but only generated a new private key upon user demand.
+JBOK-style wallets are a deprecated form of wallet that originated from the Bitcoin Core client wallet. Bitcoin Core client wallet would create 100 [private key][]/[public key][] pairs automatically via a Psuedo-Random-Number Generator (PRNG) for use. Once all these keys are consumed or the RPC call [keypoolrefill][rpc keypoolrefill] is run, another 100 key pairs would be created. This created considerable difficulty in backing up one’s keys, considering backups have to be run manually to save the newly generated private keys. If a new key pair set had been generated, used, then lost prior to a backup, the stored satoshis are likely lost forever. Many older-style mobile wallets followed a similar format, but only generated a new private key upon user demand.
 
 This wallet type is being actively phased out and strongly discouraged from being used to store significant amounts of bitcoin due to the security and backup difficulty.
 
@@ -1908,8 +1910,8 @@ to make and accept payments in exchange for products or services. The
 basic steps have not changed since the dawn of commerce, but the
 technology has. This section will explain how how receivers and spenders
 can, respectively, request and make payments using Bitcoin---and how
-they can deal with complications such as refunds and recurrent
-rebilling.
+they can deal with complications such as [refunds][refund] and [recurrent
+rebilling][].
 
 Bitcoin payment processing is being actively developed at the moment, so
 each subsection below attempts to describe what's widely deployed now,
@@ -1924,8 +1926,8 @@ occasional or optional steps.
 
 ### Calculating Order Totals In Satoshis
 
-Because of exchange rate variability between satoshis and national
-currencies (fiat), many Bitcoin orders are priced in fiat but paid
+Because of exchange rate variability between [satoshis][] and national
+currencies ([fiat][]{:#term-fiat}{:.term}), many Bitcoin orders are priced in fiat but paid
 in satoshis, necessitating a price conversion.
 
 Exchange rate data is widely available through HTTP-based APIs provided
@@ -1962,7 +1964,7 @@ order totals from fiat into satoshis.
 #### Expiring Old Order Totals
 
 Because the exchange rate fluctuates over time, order totals pegged to
-fiat must expire to prevent spenders from delaying payment in the hope
+[fiat][] must expire to prevent spenders from delaying payment in the hope
 that satoshis will drop in price. Most widely-used payment processing
 systems currently expire their invoices after 10 minutes.
 
@@ -1978,8 +1980,8 @@ fluctuate a significant amount before payment is received.
 
 ### Requesting Payments Using Bitcoin
 
-Before requesting payment, your application must create a Bitcoin
-address, or acquire an address from another program such as
+Before requesting payment, your application must create a [Bitcoin
+address][address], or acquire an address from another program such as
 Bitcoin Core.  Bitcoin addresses are described in detail in the
 [Transactions](#transactions) section. Also described in that section
 are two important reasons to [avoid using an address more than
@@ -1989,7 +1991,7 @@ payment requests:
 Using a separate address for each incoming payment makes it trivial to
 determine which customers have paid their payment requests.  Your
 applications need only track the association between a particular payment
-request and the address used in it, and then scan the block chain for
+request and the address used in it, and then scan the [block chain][] for
 transactions matching that address.
 
 The next subsections will describe in detail the following three
@@ -1999,14 +2001,14 @@ compatible ways to give the spender the address and amount to be paid:
    address and amount into a payment screen. This is, of course,
    inconvenient---but it makes an effective fallback option.
 
-2. Almost all desktop wallets can associate with `bitcoin:` URIs, so
+2. Almost all desktop wallets can associate with [`bitcoin:` URIs][bitcoin URI], so
    spenders can click a link to pre-fill the payment screen. This also
    works with many mobile wallets, but it generally does not work with
    web-based wallets unless the spender installs a browser extension or
    manually configures a URI handler.
 
 3. Some desktop wallets and most mobile wallets support `bitcoin:` URIs
-   encoded in a QR code. Most web-based wallets do not support reading
+   encoded in a [QR code][URI QR Code]. Most web-based wallets do not support reading
    QR codes directly, although they do often generate QR codes for
    accepting payment.
 
@@ -2017,18 +2019,18 @@ compatible ways to give the spender the address and amount to be paid:
 #### Requesting Payment Using Plain Text
 
 To specify an amount directly for copying and pasting, you must provide
-the address, the amount, and the denomination. An expiration time for
+the address, the amount, and the [denomination][]. An expiration time for
 the offer may also be specified.  For example:
 
-(Note: all examples in this section use Testnet addresses.)
+(Note: all examples in this section use [Testnet][] addresses.)
 
     Pay: mjSk1Ny9spzU2fouzYgLqGUD8U41iR35QN
     Amount: 100 BTC
     You must pay by: 2014-04-01 at 23:00 UTC
 
-Indicating the denomination is critical. As of this writing, all popular
-Bitcoin wallet software defaults to denominating amounts in either bitcoins (BTC)
-or millibits (mBTC). Choosing between BTC and mBTC is widely supported,
+Indicating the [denomination][]{:#term-denomination}{:.term} is critical. As of this writing, all popular
+Bitcoin wallet software defaults to denominating amounts in either [bitcoins][]{:#term-bitcoins}{:.term} (BTC)
+or [millibits][]{:#term-millibits}{:.term} (mBTC). Choosing between BTC and mBTC is widely supported,
 but other software also lets its users select denomination amounts from
 some or all of the following options:
 
@@ -2038,7 +2040,7 @@ some or all of the following options:
 | 0.01        | bitcent (cBTC)      |
 | 0.001       | millibit (mBTC)     |
 | 0.000001    | microbit (uBTC)     |
-| 0.00000001  | satoshi             |
+| 0.00000001  | [satoshi][]{:#term-satoshi}{:.term}             |
 
 Because of the widespread popularity of BTC and mBTC, it may be more
 useful to specify the amount in both denominations when the text is
@@ -2057,7 +2059,7 @@ replacing your application's addresses with some other addresses.
 
 #### Requesting Payment Using The `bitcoin:` URI
 
-The `bitcoin:` URI scheme defined in [BIP21][] eliminates denomination
+The [`bitcoin:` URI][bitcoin URI]{:#term-bitcoin-uri}{:.term} scheme defined in [BIP21][] eliminates denomination
 confusion and saves the spender from copying and pasting two separate
 values. It also lets the payment request provide some additional
 information to the spender. An example:
@@ -2070,7 +2072,7 @@ Only the address is required, and if it is the only thing specified,
 wallets will pre-fill a payment request with it and let the spender enter
 an amount.
 
-The amount specified is always in decimal bitcoins (BTC), although requests
+The amount specified is always in decimal [bitcoins][] (BTC), although requests
 only for whole bitcoins (as in the example above), may omit the decimal
 point. The amount field must not contain any commas. Fractional bitcoins
 may be specified with or without a leading zero; for example, either of
@@ -2079,15 +2081,15 @@ the URIs below requesting one millibit are valid:
     bitcoin:mjSk1Ny9spzU2fouzYgLqGUD8U41iR35QN?amount=.001
     bitcoin:mjSk1Ny9spzU2fouzYgLqGUD8U41iR35QN?amount=0.001
 
-Two other parameters are widely supported. The `label` parameter is
+Two other parameters are widely supported. The [`label`][label]{:#term-label}{:.term} parameter is
 generally used to provide wallet software with the recipient's name. The
-`message` parameter is generally used to describe the payment request to
+[`message`][message]{:#term-message}{:.term} parameter is generally used to describe the payment request to
 the spender. Both the label and the message are commonly stored by the
-spender's wallet software---but they are never added to the actual
+spender's [wallet][] software---but they are never added to the actual
 transaction, so other Bitcoin users cannot see them. Both the label and
-the message must be URI encoded.
+the message must be [URI encoded][].
 
-All four parameters used together, with appropriate URI escaping, can be
+All four parameters used together, with appropriate URI encoding, can be
 seen in the line-wrapped example below.
 
     bitcoin:mjSk1Ny9spzU2fouzYgLqGUD8U41iR35QN\
@@ -2113,10 +2115,10 @@ Which produces:
 Some payment processors use Javascript to display countdown timers
 indicating the number of minutes and seconds until the offer expires.
 
-The URI scheme can be extended, as will be seen in the payment protocol
+The URI scheme can be extended, as will be seen in the [payment protocol][]
 section below, with both new optional and required parameters. As of this
 writing, the only widely-used parameter besides the four described above
-is the payment protocol's `r` parameter.
+is the payment protocol's [`r`][r] parameter.
 
 Programs accepting URIs in any form must ask the user for confirmation
 before paying unless the user has explicitly disabled prompting (as
@@ -2135,8 +2137,8 @@ images, or in videos. Most mobile Bitcoin wallet apps, and some desktop
 wallets, support scanning QR codes to pre-fill their payment screens.
 
 The figure below shows the same `bitcoin:` URI code encoded as four
-different QR codes at different error correction levels (described
-below the image). The QR code can include the label and message
+different [Bitcoin QR codes][URI QR code]{:#term-uri-qr-code}{:.term} at different error correction levels (described
+below the image). The QR code can include the [label][] and [message][]
 parameters---and any other optional parameters---but they were
 omitted here to keep the QR code small and easy to scan with unsteady
 or low-resolution mobile cameras.
@@ -2172,18 +2174,18 @@ replace the intended QR code with an alternative QR code.
 
 #### Requesting Payment With The Payment Protocol
 
-Bitcoin Core 0.9 supports the new payment protocol. The payment protocol
+Bitcoin Core 0.9 supports the new [payment protocol][]{:#term-payment-protocol}{:.term}. The payment protocol
 lets receivers provide more detail about the requested payment to
-spenders. It also lets them use X.509 certificates and SSL encryption to
+spenders. It also lets them use [X.509 certificates][x509] and SSL encryption to
 verify their identity to spenders and help prevent man-in-the-middle attacks.
 
-Instead of being asked to pay a meaningless address, such as
+Instead of being asked to pay a meaningless [address][], such as
 "mjSk1Ny9spzU2fouzYgLqGUD8U41iR35QN", spenders are asked to pay the
 Common Name (CN) description from the receiver's X.509 certificate, such
 as "www.bitcoin.org".
 
 To request payment using the payment protocol, you use an extended (but
-backwards-compatible) `bitcoin:` URI.  For example:
+backwards-compatible) [`bitcoin:` URI][bitcoin URI].  For example:
 
     bitcoin:mjSk1Ny9spzU2fouzYgLqGUD8U41iR35QN\
     ?amount=0.10\
@@ -2193,20 +2195,20 @@ backwards-compatible) `bitcoin:` URI.  For example:
 
 None of the parameters provided above, except `r`, are required for the
 payment protocol---but your applications may include them for backwards
-compatibility with wallet programs which don't yet handle the payment
+compatibility with [wallet][] programs which don't yet handle the payment
 protocol. 
 
-The `r` parameter tells payment-protocol-aware wallet programs to ignore
-the other parameters and fetch an invoice from the URL provided.  If the
-invoice will be signed, which is recommended but not required, it can be
+The [`r`][r]{:#term-r-parameter}{:.term} parameter tells payment-protocol-aware wallet programs to ignore
+the other parameters and fetch a [PaymentRequest][] from the URL provided.  If the
+request will be signed, which is recommended but not required, it can be
 fetched from an HTTP server---although fetching it from an HTTPS server
 would still be preferable.
 
 The browser, QR code reader, or other program processing the URI opens
 the spender's Bitcoin wallet program on the URI. If the wallet program is
 aware of the payment protocol, it accesses the URL specified in the `r`
-parameter, which should provide it with a serialized PaymentRequest
-served with the MIME type `application/bitcoin-paymentrequest`.
+parameter, which should provide it with a serialized [PaymentRequest][]
+served with the [MIME][] type `application/bitcoin-paymentrequest`.
 
 
 
@@ -2214,16 +2216,13 @@ served with the MIME type `application/bitcoin-paymentrequest`.
 
 ##### PaymentRequest & PaymentDetails In The Payment Protocol
 
-The PaymentRequest is created with data structures built using
+The [PaymentRequest][]{:#term-paymentrequest}{:.term} is created with data structures built using
 [Google's Protocol Buffers][protobuf]. [BIP70][] describes these data
 structures in the non-sequential way they're defined in the payment
 request protocol buffer code, but the text below will describe them in
 a more linear order using a simple (but functional) Python CGI
 script. (For brevity and clarity, many normal CGI best practices are
 not used in this script.)
-
-[protobuf]: https://developers.google.com/protocol-buffers/
-[BIP70]: https://github.com/bitcoin/bips/blob/master/bip-0070.mediawiki
 
 The full sequence of events is illustrated below, starting with the
 spender clicking a `bitcoin:` URI or scanning a `bitcoin:` QR code.
@@ -2235,7 +2234,7 @@ Google's Protocol Buffer compiler (`protoc`), which is available in most
 modern Linux package managers and [directly from Google.][protobuf] Non-Google
 protocol buffer compilers are also available for a variety of other
 programming languages. You will also need a copy of the PaymentRequest
-Protocol Buffer description, which is available in BIP70 or as
+Protocol Buffer description, which is available in [BIP70][] or as
 `src/qt/paymentrequest.proto` in the Bitcoin Core source code.
 
 With the Python code generated from `paymentrequest.proto`, we can start
@@ -2302,8 +2301,8 @@ request.payment_details_version = 1  ## Default: 1
 ## all the way to (but not including) the certificate authority's
 ## certificate.
 #
-## This is the pubkey/certificate corresponding to the private key below
-## that we'll use to sign:
+## This is the pubkey/certificate corresponding to the private SSL key
+## below that we'll use to sign:
 x509.certificate.append(file("/etc/apache2/example.com-cert.der", "r").read())
 #
 ## If the pubkey/cert above didn't have the signature of a root
@@ -2311,70 +2310,70 @@ x509.certificate.append(file("/etc/apache2/example.com-cert.der", "r").read())
 ## which signed it:
 #x509.certificate.append(file("/some/intermediary/cert.der", "r").read())
 
-## (Required if pki_type != none) You will need a private key in a
+## (Required if pki_type != none) You will need a private SSL key in a
 ## format your CGI script supports. In this script, we'll load it from a
 ## PEM file. (Obviously, embedding your passphrase in your CGI code, as
 ## done here with the password "test", is a bad idea in real life.)
 #
-## The private key will not be transmitted with your request. We're only
+## The private SSL key will not be transmitted with your request. We're only
 ## loading it into memory here.
 priv_key_file           = "/etc/apache2/example.com-key.pem"
 private_key = load_privatekey(FILETYPE_PEM, file(priv_key_file, "r").read(), "test")
 {% endhighlight %}
 
 The configuration code above pushes a few settings into the `request`
-(PaymentRequest) and `details` (PaymentDetails) objects. When we
-serialize them, PaymentDetails will be contained within the
+([PaymentRequest][]) and `details` (PaymentDetails) objects. When we
+serialize them, [PaymentDetails][]{:#term-paymentdetails}{:.term} will be contained within the
 PaymentRequest.
 
-The Public-Key Infrastructure types let you define how you want to
+The [Public-Key Infrastructure][PKI]{:#term-pki}{:.term} types let you define how you want to
 cryptographically sign your PaymentRequest so that it can't be modified
 by a man-in-the-middle attack. If you don't want to sign the
-PaymentRequest, you can choose `none.`
+PaymentRequest, you can choose a [`pki_type`][pp pki
+type]{:#term-pp-pki-type}{:.term} of `none.`
 
 If you do choose the sign the PaymentRequest, you currently have two
-options defined by BIP70: `x509+sha1` and `x509+sha256`.  Both options
-use the X.509 certificate system, the same system used for HTTP Secure
+options defined by [BIP70][]: `x509+sha1` and `x509+sha256`.  Both options
+use the [X.509][x509] certificate system, the same system used for HTTP Secure
 (HTTPS).  To use either option, you will need a certificate signed by a
 certificate authority or one of their intermediaries. (A self-signed
 certificate will not work.)
 
-Each wallet program may choose which certificate authorities to trust,
+Each [wallet][] program may choose which certificate authorities to trust,
 but it's likely that they'll trust whatever certificate authorities their
 operating system trusts.  If the wallet program doesn't have a full
-operating system, as might be the case for small hardware wallets, BIP70
+operating system, as might be the case for small hardware wallets, [BIP70][]
 suggests they use the [Mozilla Root Certificate Store][mozrootstore]. In
 general, if a certificate works in your web browser when you connect to
-your webserver, it will work for your PaymentRequests.
+your webserver, it will work for your [PaymentRequests][].
 
-[mozrootstore]: https://www.mozilla.org/en-US/about/governance/policies/security-group/certs/
-
-You must provide the public key/certificate corresponding to the private
-key you'll use to sign the PaymentRequest.  You must also provide any
-intermediate certificates necessary to link your certificate to the root
-certificate of a certificate authority trusted by the spender's
+You must provide the public SSL key/certificate corresponding to the private
+SSL key you'll use to sign the PaymentRequest.  You must also provide any
+[intermediate certificates][intermediate certificate] necessary to link your certificate to the [root
+certificate][] of a certificate authority trusted by the spender's
 software, such as a certificate from the Mozilla root store.
 
 The certificates must be provided in a specific order---the same order
 used by Apache's `SSLCertificateFile` directive and other server
 software.   The figure below shows the signature chain of the
 www.bitcoin.org X.509 certificate and how each certificate (except the
-root certificate) would be loaded into the X509Certificates protocol
+root certificate) would be loaded into the [X509Certificates][]{:#term-x509certificates}{:.term} protocol
 buffer message.
 
 ![X509Certificates Loading Order](/img/dev/en-cert-order.svg)
 
-To be specific, the first certificate provided must be the DER-formatted
-X.509 certificate corresponding to the private key which will make the
-signature, called the *leaf certificate.* Any *intermediate
-certificates* necessary to link that signed public key to the *root
-certificate* (the certificate authority) are attached separately, with each
+To be specific, the first certificate provided must be the [DER-formatted][DER]
+X.509 certificate corresponding to the private SSL key which will make the
+signature, called the [leaf certificate][]{:#term-leaf-certificate}{:.term}. Any [intermediate
+certificates][intermediate certificate]{:#term-intermediate-certificate}{:.term} necessary to link that signed public SSL
+key to the [root
+certificate][]{:#term-root-certificate}{:.term} (the certificate authority) are attached separately, with each
 certificate in DER format bearing the signature of the certificate that
 follows it all the way to (but not including) the root certificate.
 
-If you accidentally include the root certificate, no known X.509
-implementation will invalidate your certificate chain. However,
-including the root certificate will waste space (PaymentRequests must be
+If you accidentally include the root certificate, no known [X.509][x509]
+implementation will invalidate your [certificate chain][]{:#term-certificate-chain}{:.term}. However,
+including the [root certificate][] will waste space ([PaymentRequests][] must be
 less than 50 KB) and bandwidth for no good reason---if the spender's
 software does not already have a copy of the root certificate, it will
 never consider your certificate chain valid.
@@ -2434,29 +2433,30 @@ details.merchant_data   = "Invoice #123"
 {% endhighlight %}
 
 In the code above, we tell the spender's wallet how to pay. It's
-possible to specify multiple output scripts and amounts as part of a
-merge avoidance strategy, described later in the Merge Avoidance
-subsection. However, effective merge avoidance is not possible under
-the base BIP70 rules in which the spender pays each `script` the exact
+possible to specify multiple [`scripts`][pp script]{:#term-pp-script}{:.term} and amounts as part of a
+[merge avoidance][] strategy, described later in the [Merge Avoidance
+subsection][]. However, effective merge avoidance is not possible under
+the base [BIP70][] rules in which the spender pays each `script` the exact
 amount specified by its paired `amount`. If the amounts are omitted
 from all amount/output pairs, the spender will be prompted to choose an
 amount to pay.
 
-In the example above, we used a standard P2PH output script, but your
+In the example above, we used a standard [P2PH][] output script, but your
 CGI script can use any valid output script. Of course, you should stick
 to [standard script types](#standard-transactions) such as P2PH,
-multisig, and P2SH multisig.
+[multisig][], and [P2SH multisig][].
 
-The `memo` field and the `merchant_data` field can be arbitrarily long,
+The [`memo`][pp memo]{:#term-pp-memo}{:.term} field and the [`merchant_data`][pp merchant data]{:#term-pp-merchant-data}{:.term} field can be arbitrarily long,
 but if you make them too long, you'll run into the 50,000 byte limit on
-the entire PaymentRequest, which includes the often several kilobytes
-given over to storing the certificate chain. As will be described in a
+the entire [PaymentRequest][], which includes the often several kilobytes
+given over to storing the [certificate chain][]. As will be described in a
 later subsection, the `memo` field can be used by the spender after
-payment as part of a cryptographically-proven receipt.
+payment as part of a cryptographically-proven [receipt][].
 
 Next, let's look at some information your CGI script can
 automatically derive.
 
+<a name="term-pp-expires"></a> <!-- TODO: break up code block -->
 {% highlight python %}
 ##     Details automatically derivable from      ##
 ## payment variables and configuration settings  ##
@@ -2495,10 +2495,10 @@ request.signature = ""
 request.signature = sign(private_key, request.SerializeToString(), "sha256")
 {% endhighlight %}
 
-The code above reminds us that PaymentDetails is contained within
-PaymentRequest, and that PaymentRequest's main job is to hold the
-signature and certificate data which will allow the spender's wallet to
-authenticate the request (provided `pki_type` is set to something
+The code above reminds us that [PaymentDetails][] is contained within
+[PaymentRequest][], and that PaymentRequest's main job is to hold the
+[signature][ssl signature]{:#term-ssl-signature} and [PKI data][pp PKI data]{:#term-pp-pki-data}{:.term} which will allow the spender's [wallet][] to
+authenticate the request (provided [`pki_type`][pp pki type] is set to something
 besides `none`).
 
 Now that we have PaymentRequest all filled out, we can serialize it and
@@ -2523,7 +2523,7 @@ file.write(stdout, request.SerializeToString())
 #### END SAMPLE SCRIPT ####
 {% endhighlight %}
 
-The following screenshot shows how the authenticated PaymentDetails
+The following screenshot shows how the authenticated [PaymentDetails][]
 created by the script above appears in the GUI from Bitcoin Core 0.9.
 
 ![Bitcoin Core Showing Validated Payment Request](/img/dev/en-btcc-payment-request.png)
@@ -2533,26 +2533,27 @@ created by the script above appears in the GUI from Bitcoin Core 0.9.
 
 ##### Payment In The Payment Protocol
 
-If the spender declines to pay, the wallet program will not send any
+If the spender declines to pay, the [wallet][] program will not send any
 further messages to the receiver's server unless the spender clicks
-another URI pointing to that server.  If the spender does decide to pay,
+another [URI][bitcoin uri] pointing to that server.  If the spender does decide to pay,
 the wallet program will create at least one transaction paying each of
-the outputs in the PaymentDetails section. The wallet may broadcast
+the outputs in the [PaymentDetails][] section. The wallet may [broadcast][]
 the transaction or transactions, as Bitcoin Core 0.9 does, but it
 doesn't need to.
 
 Whether or not it broadcasts the transaction or transactions, the wallet
-program composes a reply to the PaymentRequest; the reply is called the
-Payment. Payment contains four fields:
+program composes a reply to the [PaymentRequest][]; the reply is called the
+Payment. [Payment][pp payment]{:#term-pp-payment}{:.term} contains four fields:
 
-* `merchant_data`: (optional) an exact copy of the `merchant_data` from the
-  PaymentDetails.  This is optional in the case that the PaymentDetails
-  doesn't provide `merchant_data`.  Receivers should be aware that
-  malicious spenders can modify the merchant data before sending it back,
-  so they may wish to cryptographically sign it before giving it to the
-  spender and then validate it before relying on it.
+* `merchant_data`: (optional) an exact copy of the
+  [`merchant_data`][pp merchant data] from the [PaymentDetails][]. This is
+  optional in the case that the PaymentDetails doesn't provide
+  `merchant_data`. Receivers should be aware that malicious spenders can
+  modify the merchant data before sending it back, so receivers may wish to
+  cryptographically sign it before giving it to the spender and then
+  validate it before relying on it.
 
-* `transactions`: (required) one or more signed transactions which pay the outputs
+* [`transactions`][pp transactions]{:#term-pp-transactions}{:.term}: (required) one or more signed transactions which pay the [outputs][]
   specified in the PaymentDetails.
 
 <!-- BIP70 implies that refund_to is required (i.e. "one or more..."),
@@ -2560,7 +2561,7 @@ but Mike Hearn implied on bitcoin-devel that it's optional (i.e. "wallets have
 to either never submit refund data, or always submit it"). 
 I'll use the BIP70 version here until I hear differently. -harding -->
 
-* `refund_to`: (required) one or more output scripts to which the
+* [`refund_to`][pp refund to]{:#term-pp-refund-to}{:.term}: (required) one or more [output scripts][] to which the
   receiver can send a partial or complete refund. As of this writing, a
   proposal is gaining traction to expire refund output scripts after a
   certain amount of time (not defined yet) so spenders don't need to
@@ -2570,7 +2571,8 @@ I'll use the BIP70 version here until I hear differently. -harding -->
   should not contain HTML or any other markup. Spenders should not depend
   on receivers reading their memos.
 
-The Payment is sent to the `payment_url` provided in the PaymentDetails.
+The Payment is sent to the [`payment_url`][pp payment
+url]{:#term-pp-payment-url}{:.term} provided in the PaymentDetails.
 The URL should be a HTTPS address to prevent a man-in-the-middle attack
 from modifying the spender's `refund_to` output scripts. When sending the
 Payment, the wallet program must set the following HTTP client headers:
@@ -2580,14 +2582,14 @@ Payment, the wallet program must set the following HTTP client headers:
 
 ##### PaymentACK In The Payment Protocol
 
-The receiver's CGI script at the `payment_url` receives the Payment and
-decodes it using its Protocol Buffers code. The `transactions` are
-checked to see if they pay the output scripts the receiver requested in
-PaymentDetails and are then broadcast to the network (unless the network
+The receiver's CGI script at the [`payment_url`][pp payment url] receives the [Payment][pp payment] and
+decodes it using its Protocol Buffers code. The [`transactions`][pp transactions] are
+checked to see if they pay the [output scripts][] the receiver requested in
+[PaymentDetails][] and are then [broadcast][] to the [network][] (unless the network
 already has them).
 
-The CGI script checks the `merchant_data` field if necessary and issues
-a PaymentACK (acknowledgment) with the following HTTP headers:
+The CGI script checks the [`merchant_data`][pp merchant data] parameter if necessary and issues
+a [PaymentACK][]{:#term-paymentack}{:.term} (acknowledgment) with the following HTTP headers:
 
     Content-Type: application/bitcoin-paymentack
     Content-Transfer-Encoding: binary
@@ -2595,7 +2597,7 @@ a PaymentACK (acknowledgment) with the following HTTP headers:
 Then it sends another Protocol-Buffers-encoded message with one or two
 fields:
 
-* `payment`: (required) A copy of the the entire Payment message (in
+* `payment`: (required) A copy of the the entire [Payment][pp payment] message (in
   serialized form) which is being acknowledged.
 
 * `memo`: (optional) A plain UTF-8 text memo displayed to the spender
@@ -2605,10 +2607,10 @@ fields:
 
 The PaymentACK does not mean that the payment is final; it just means
 that everything seems to be correct. The payment is final once the
-payment transactions are block-chain confirmed to the receiver's
+payment transactions are block-chain [confirmed][] to the receiver's
 satisfaction.
 
-However, the spender's wallet program should indicate to the spender that
+However, the spender's [wallet][] program should indicate to the spender that
 the payment was accepted for processing so the spender can direct his or
 her attention elsewhere.
 
@@ -2617,51 +2619,53 @@ her attention elsewhere.
 
 ##### Receipts In The Payment Protocol
 
-Unlike PaymentRequest, PaymentDetails, Payment, and PaymentACK, there is
-no specific receipt object.  However, a cryptographically-verifyable
-receipt can be derived from a signed PaymentDetails and one or more confirmed 
+Unlike [PaymentRequest][], [PaymentDetails][], [Payment][pp payment], and [PaymentACK][], there is
+no specific [receipt][]{:#term-receipt}{:.term} object.  However, a cryptographically-verifyable
+receipt can be derived from a signed PaymentDetails and one or more [confirmed][]
 transactions.
 
-The PaymentDetails indicates what output scripts should be paid
-(`script`), how much they should be paid (`amount`), and by when
-(`expires`). The Bitcoin block chain indicates whether those outputs
+The PaymentDetails indicates what [output scripts][] should be paid
+([`script`][pp script]), how much they should be paid ([`amount`][pp
+amount]), and by when
+([`expires`][pp expires]). The Bitcoin block chain indicates whether those outputs
 were paid the requested amount and can provide a rough idea of when the
 transactions were generated.  Together, this information provides
-verifiable proof that the spender paid the receiver, or somebody with the
+verifiable proof that the spender paid somebody with the
 receiver's private SSL key.
 
 
 
 ### Verifying Payment
 
-As explained in the Transactions and Block Chain sections, broadcasting
-a transaction to the network doesn't ensure that the receiver gets
+As explained in the [Transactions][] and [Block Chain][] sections, [broadcasting][]
+a transaction to the [network][] doesn't ensure that the receiver gets
 paid. A malicious spender can create one transaction that pays the
-receiver and a second one that pays the same input back to himself. Only
+receiver and a second one that pays the same [input][] back to himself. Only
 one of these transactions will be added to the block chain, and nobody
 can say for sure which one it will be.
 
 Two or more transactions spending the same input are commonly referred
-to as double spends.
+to as a [double spend][]{:#term-double-spend}{:.term}.
 
-Once the transaction is included in a block, double spends are
+Once the transaction is included in a [block][], double spends are
 impossible without modifying block chain history to replace the
 transaction, which is quite difficult. Using this system,
 the Bitcoin protocol can give each of your transactions an updating confidence 
 score based on the number of blocks which would need to be modified to replace 
-a transaction. For each block, the transaction gains one **confirmation**. Since 
+a transaction. For each block, the transaction gains one [confirmation][]{:#term-confirmation}{:.term}. Since 
 modifying blocks is quite difficult, higher confirmation scores indicate 
 greater protection.
 
-**0 confirmations**: The transaction has been broadcast but is still not 
-included in any block. Zero confirmation transactions should generally not be 
-trusted without risk analysis. Although miners usually confirm the first 
+**0 confirmations**: The transaction has been [broadcast][] but is still not 
+included in any block. Zero confirmation transactions ([unconfirmed
+transactions][]{:#term-unconfirmed-transactions}{:.term}) should generally not be 
+trusted without risk analysis. Although [miners][] usually confirm the first 
 transaction they receive, fraudsters may be able to manipulate the
 network into including their version of a transaction.
 
 **1 confirmation**: The transaction is included in the latest block and 
 double-spend risk decreases dramatically. Transactions which pay
-sufficient transaction fees need 10 minutes on average to receive one
+sufficient [transaction fees][] need 10 minutes on average to receive one
 confirmation. However, the most recent block gets replaced fairly often by
 accident, so a double spend is still a real possibility.
 
@@ -2672,25 +2676,27 @@ expensive mining equipment.
 
 **6 confirmations**: The network has spent about an hour working to protect 
 your transaction against double spends and the transaction is buried under six 
-blocks. Even a reasonably lucky attacker would require a large percentage of 
+[blocks][]. Even a reasonably lucky attacker would require a large percentage of 
 the total network hashing power to replace six blocks. Although this number is 
 somewhat arbitrary, software handling high-value transactions, or otherwise at 
 risk for fraud, should wait for at least six confirmations before treating a 
 payment as accepted.
 
-Bitcoin Core provides several RPCs which can provide your program with the 
-confirmation score for transactions in your wallet or arbitrary transactions. 
-For example, the `listunspent` RPC provides an array of every bitcoin you can 
+Bitcoin Core provides several [RPCs][] which can provide your program with the 
+[confirmation][] score for transactions in your wallet or arbitrary transactions. 
+For example, the [`listunspent` RPC][rpc listunspent] provides an array of every [satoshi][] you can 
 spend along with its confirmation score.
 
-Although confirmations provide excellent double-spend protection most of the 
+Although confirmations provide excellent [double-spend][double spend] protection most of the 
 time, there are at least three cases where double-spend risk analysis can be 
 required:
 
 1. In the case when the program or its user cannot wait for a confirmation and 
-wants to accept zero confirmation payments.
+wants to accept [unconfirmed][] payments.
+
 2. In the case when the program or its user is accepting high value 
 transactions and cannot wait for at least six confirmations or more.
+
 3. In the case of an implementation bug or prolonged attack against Bitcoin 
 which makes the system less reliable than expected.
 
@@ -2702,15 +2708,15 @@ type of service.
 <!-- TODO Example of double spend risk analysis using bitcoinj, eventually? -->
 
 For example, unconfirmed transactions can be compared among all connected peers 
-to see if any UTXO is used in multiple unconfirmed transactions, indicating a 
+to see if any [UTXO][] is used in multiple unconfirmed transactions, indicating a 
 double-spend attempt, in which case the payment can be refused until it is 
 confirmed. Transactions can also be ranked by their transaction fee to
 estimate the amount of time until they're added to a block.
 
-Another example could be to detect a fork when multiple peers report differing 
-block header hashes at the same block height. Your program can go into a safe mode if the 
+Another example could be to detect a [fork][accidental fork] when multiple [peers][] report differing 
+[block header][] hashes at the same [block height][]. Your program can go into a safe mode if the 
 fork extends for more than two blocks, indicating a possible problem with the 
-block chain.
+[block chain][].
 
 Another good source of double-spend protection can be human intelligence. For 
 example, fraudsters may act differently from legitimate customers, letting 
@@ -2723,23 +2729,23 @@ basis.
 ### Issuing Refunds
 
 Occasionally receivers using your applications will need to issue
-refunds.  The obvious way to do that, which is very unsafe, is simply to
-return the satoshis to the output script from which they came.  For
-example:
+refunds. The obvious way to do that, which is very unsafe, is simply
+to return the satoshis to the output script from which they came.
+For example:
 
 * Alice wants to buy a widget from Bob, so Bob gives Alice a price and
-  Bitcoin address. 
+  Bitcoin [address][]. 
 
-* Alice opens her wallet program and sends some satoshis to that
+* Alice opens her [wallet][] program and sends some [satoshis][] to that
   address. Her wallet program automatically chooses to spend those
-  satoshis from one of its unspent outputs, an output corresponding to
+  satoshis from one of its [unspent outputs][utxo], an output corresponding to
   the Bitcoin address mjSk1Ny9spzU2fouzYgLqGUD8U41iR35QN.
 
 * Bob discovers Alice paid too many satoshis. Being an honest fellow,
   Bob refunds the extra satoshis to the MjSk[...] address.
 
 This seems like it should work, but Alice is using a centralized
-multi-user web wallet which doesn't give unique addresses to each user,
+multi-user web wallet which doesn't give [unique addresses][] to each user,
 so it has no way to know that Bob's refund is meant for Alice.  Now the
 refund is a unintentional donation to the company behind the centralized
 wallet, unless Alice opens a support ticket and proves those satoshis
@@ -2747,11 +2753,11 @@ were meant for her.
 
 This leaves receivers only two correct ways to issue refunds:
 
-* If an address was copy-and-pasted or a basic `bitcoin:` URI was used,
+* If an address was copy-and-pasted or a basic [`bitcoin:` URI][bitcoin uri] was used,
   contact the spender directly and ask them to provide a refund address.
 
 * If a payment request was used, send the refund to the output
-  listed in the `refund_to` field of the Payment message.
+  listed in the [`refund_to`][pp refund to] field of the Payment message.
 
 As discussed in the Payment section, `refund_to` addresses may come with
 implicit expiration dates, so you may need to revert to contacting the
@@ -2763,27 +2769,27 @@ original payment was made.
 
 ### Disbursing Income (Limiting Forex Risk)
 
-Many receivers worry that their satoshis will be less valuable in the
+Many receivers worry that their [satoshis][] will be less valuable in the
 future than they are now, called foreign exchange (forex) risk. To limit
 forex risk, many receivers choose to disburse newly-acquired payments
 soon after they're received.
 
 If your application provides this business logic, it will need to choose
-which outputs to spend first.  There are a few different algorithms
+which [outputs][] to spend first.  There are a few different algorithms
 which can lead to different results.
 
-* A merge avoidance algorithm makes it harder for outsiders looking
-  at block chain data to figure out how many satoshis the receiver has
+* A [merge avoidance][] algorithm makes it harder for outsiders looking
+  at [block chain][] data to figure out how many satoshis the receiver has
   earned, spent, and saved.
 
 * A last-in-first-out (LIFO) algorithm spends newly acquired satoshis
-  while there's still double spend risk, possibly pushing that risk on
+  while there's still [double spend][] risk, possibly pushing that risk on
   to others. This can be good for the receiver's balance sheet but
   possibly bad for their reputation.
 
 * A first-in-last-out (FIFO) algorithm spends the oldest satoshis
   first, which can help ensure that the receiver's payments always
-  confirm, although this has utility only in a few edge cases.
+  [confirm][], although this has utility only in a few edge cases.
 
 
 
@@ -2791,7 +2797,7 @@ which can lead to different results.
 
 ##### Merge Avoidance
 
-When a receiver receives satoshis in an output, the spender can track
+When a receiver receives [satoshis][] in an [output][], the spender can track
 (in a crude way) how the receiver spends those satoshis. But the spender
 can't automatically see other satoshis paid to the receiver by other
 spenders as long as the receiver uses unique addresses for each
@@ -2799,11 +2805,11 @@ transaction.
 
 However, if the receiver spends satoshis from two different spenders in
 the same transaction, each of those spenders can see the other spender's
-payment.  This is called a merge, and the more a receiver merges
+payment.  This is called a [merge][]{:#term-merge}{:.term}, and the more a receiver merges
 outputs, the easier it is for an outsider to track how many satoshis the
 receiver has earned, spent, and saved.
 
-Merge avoidance means trying to avoid spending unrelated outputs in the
+[Merge avoidance][]{:#term-merge-avoidance}{:.term} means trying to avoid spending unrelated outputs in the
 same transaction. For persons and businesses which want to keep their
 transaction data secret from other people and competitors to the
 greatest degree possible, it can be an important strategy.
@@ -2816,7 +2822,7 @@ with the 500-satoshi output. This way, as long as you have outputs
 larger than your bills, you avoid merging.
 
 More advanced merge avoidance strategies largely depend on enhancements
-to the payment protocol which will allow payers to avoid merging by
+to the [payment protocol][] which will allow payers to avoid merging by
 intelligently distributing their payments among multiple outputs
 provided by the receiver.
 
@@ -2826,17 +2832,17 @@ provided by the receiver.
 
 ##### Last In, First Out (LIFO)
 
-Outputs can be spent as soon as they're received---even before they're
-confirmed. Since recent outputs are at the greatest risk of being
-double-spent, spending them before older outputs allows the spender to
+[Outputs][] can be spent as soon as they're received---even before they're
+[confirmed][]. Since recent outputs are at the greatest risk of being
+[double-spent][double spend], spending them before older outputs allows the spender to
 hold on to older confirmed outputs which are much less likely to be
 double-spent.
 
 There are two closely-related downsides to LIFO:
 
-* If you spend an output from one unconfirmed transaction in a second
-  transaction, the second transaction becomes invalid if transaction
-  malleability changes the first transaction. 
+* If you spend an output from one [unconfirmed][] transaction in a second
+  transaction, the second transaction becomes invalid if [transaction
+  malleability][] changes the first transaction. 
 
 * If you spend an output from one unconfirmed transaction in a second
   transaction and the first transaction's output is successfully double
@@ -2855,15 +2861,15 @@ six confirmations whether you spend old outputs or new outputs.
 LIFO should not be used when the primary transaction recipient's
 reputation might be at stake, such as when paying employees. In these
 cases, it's better to wait for transactions to be fully verified (see
-the subsection above) before using them to make payments.
+the [Verification subsection][] above) before using them to make payments.
 
 
 
 ##### First In, First Out (FIFO)
 
-The oldest outputs are the most reliable, as the longer it's been since
-they were received, the more blocks would need to be modified to double
-spend them. However, after just a few blocks, a point of rapidly
+The oldest [outputs][] are the most reliable, as the longer it's been since
+they were received, the more blocks would need to be modified to [double
+spend][] them. However, after just a few [blocks][], a point of rapidly
 diminishing returns is reached. The [original Bitcoin paper][bitcoinpdf]
 predicts the chance of an attacker being able to modify old blocks,
 assuming the attacker has 30% of the total network hashing power:
@@ -2881,19 +2887,17 @@ assuming the attacker has 30% of the total network hashing power:
 | 45     | 0.00024%                         |
 | 50     | 0.00006%                         |
 
-[bitcoinpdf]: http://bitcoin.org/bitcoin.pdf
-
-FIFO does have a small advantage when it comes to transaction fees, as
+FIFO does have a small advantage when it comes to [transaction fees][], as
 older outputs may be eligible for inclusion in the 50,000 bytes set
-aside for free transactions by miners running the default Bitcoin Core
+aside for no-fee-required [high-priority transactions][] by [miners][] running the default Bitcoin Core
 codebase.  However, with transaction fees being so low, this is not a
 significant advantage.
 
 The only practical use of FIFO is by receivers who spend all or most
 of their income within a few blocks, and who want to reduce the
 chance of their payments becoming accidentally invalid. For example,
-a receiver who holds each payment for six confirmations, and then
-spends 100% of verified payments to vendors and a savings account on
+a receiver who holds each payment for six [confirmations][], and then
+spends 100% of [verified payments][] to vendors and a savings account on
 a bi-hourly schedule.
 
 
@@ -2902,22 +2906,22 @@ a bi-hourly schedule.
 ### Rebilling Recurring Payments
 
 Automated recurring payments are not possible with decentralized Bitcoin
-wallets. Even if a wallet supported automatically sending non-reversible
+[wallets][]. Even if a wallet supported automatically sending non-reversible
 payments on a regular schedule, the user would still need to start the
 program at the appointed time, or leave it running all the time
 unprotected by encryption.
 
 This means automated recurring Bitcoin payments can only be made from a
-centralized server which handles satoshis on behalf of its spenders. In
-practice, receivers who want to set prices in fiat terms must also let
+centralized server which handles [satoshis][] on behalf of its spenders. In
+practice, receivers who want to set prices in [fiat][] terms must also let
 the same centralized server choose the appropriate exchange rate.
 
 Non-automated rebilling can be managed by the same mechanism used before
 credit-card recurring payments became common: contact the spender and
-ask them to pay again---for example, by sending them a payment request
-`bitcoin:` URI in an HTML email.
+ask them to pay again---for example, by sending them a [PaymentRequest][]
+[`bitcoin:` URI][bitcoin uri] in an HTML email.
 
-In the future, extensions to the payment protocol and new wallet
+In the future, extensions to the [payment protocol][] and new wallet
 features may allow some wallet programs to manage a list of recurring
 transactions. The spender will still need to start the program on a
 regular basis and authorize payment---but it should be easier and more
@@ -2966,6 +2970,158 @@ Bitcoin Core.
 ### Transactions broadcasting
 
 ### Alerts
+
+<!-- Links to terms used in this document (case-insensitive alphabetic order)
+---- * Link text is case insensitve in markdown so [Block Chain] and
+----   [block chain] are equivilent
+---- * If nothing uses one of the below reference links, the refence
+----   link must be commented out or it will appear in the rendered page
+-->
+
+[51 percent attack]: #term-51-attack "The ability of someone controlling a majority of hashing power to revise transactions history and prevent new transactions from confirming"
+[accidental fork]: #term-accidental-fork "When two or more blocks have the same block height, forking the block chain.  Happens occassionally by accident"
+[addresses]: #FIXME-TX "A 20-byte hash formatted as a P2PH or P2SH Bitcoin Address"
+[address]: #FIXME-TX "A 20-byte hash formatted as a P2PH or P2SH Bitcoin Address"
+[base58Check]: #term-base58check "The method used in Bitcoin for converting 160-bit hashes into Bitcoin addresses"
+[bitcoin URI]: #term-bitcoin-uri "A URI which allows receivers to encode payment details so spenders don't have to manually enter addresses and other details"
+[bitcoins]: #term-bitcoins "A primary accounting unit used in Bitcoin; 100 million satoshis"
+[block]: #term-block "A block of transactions protected by proof of work"
+[blocks]: #term-block "Blocks of transactions protected by proof of work"
+[block chain]: #the-bitcoin-block-chain "A chain of blocks with each block linking to the block that preceeded; the most-difficult-to-recreate chain is The Block Chain"
+[block header]: #block-header "An 80-byte header belonging to a single block which is hashed repeatedly to create proof of work"
+[block header magic]: #term-block-header-magic "A magic number used to separate block data from transaction data on the P2P network"
+[block height]: #term-block-height "The number of chained blocks preceeding this block"
+[block reward]: #term-block-reward "New satoshis given to a miner for creating one of the first 6,929,999 blocks"
+[block time]: #term-block-time "The time field in the block header"
+[block version]: #term-block-version "The version field in the block header"
+[broadcast]: #FIXME-P2P "Sending transactions or blocks to all other peers on the Bitcoin network (compare to privately transmitting to a single peer or partner"
+[broadcasting]: #FIXME-P2P "Sending transactions or blocks to all other peers on the Bitcoin network (compare to privately transmitting to a single peer or partner)"
+[certificate chain]: #term-certificate-chain "A chain of certificates connecting a individual's leaf certificate to the certificate authority's root certificate"
+[chain code]: #term-chain-code "In HD wallets, 32 bytes of entropy added to the master public and private keys to help them generate secure child keys; the chain code is usually derived from a seed along with the master private key"
+[change address]: #FIXME-TX "An output used by a spender to send back to himself some of the satoshis from the inputs"
+[child extended key]: #term-child-extended-key "A child key extended so that it can become a parent key and derive its own child keys"
+[child key]: #term-child-key "In HD wallets, a key derived from a parent key"
+[child public key]: #term-child-public-key "In HD wallets, a public key derived from a parent public key or a child private key"
+[coinbase field]: #term-coinbase-field "A special input-like field for coinbase transactions"
+[coinbase transaction]: #term-coinbase-tx "A special transaction which miners must create when they generate a block"
+[confirm]: #term-confirmation "A transaction included in a block currently on the block chain"
+[confirmed]: #term-confirmation "A transaction included in a block currently on the block chain"
+[confirmed transactions]: #term-confirmation "Transactions included in a block currently on the block chain"
+[confirmation]: #term-confirmation "The number of blocks which would need to be modified to remove or modify a transaction"
+[confirmations]: #term-confirmation "The number of blocks which would need to be modified to remove or modify a transaction"
+[denomination]: #term-denomination "bitcoins (BTC), bitcents (cBTC), millibits (mBTC), microbits (uBTC), or satoshis"
+[difficulty]: #term-difficulty "A number corresponding to the target threshold which indicates how difficult it will be to find the next block"
+[double spend]: #term-double-spend "Attempting to spend the same satoshis which were spent in a previous transaction"
+[extended key]: #term-extended-key "A public or private key extended with the chain code, which adds an extra 32 bytes of entropy"
+[extended private key]: #term-extended-private-key "A private key extended with the chain code, which adds an extra 32 bytes of entropy"
+[extended public key]: #term-extended-public-key "A public key extended with the chain code, which adds an extra 32 bytes of entropy "
+[enternal chain]: #term-enternal-chain "A default subdivision in HD wallet accounts used for public P2PH addresses and other public keys used by other people"
+[fiat]: #term-fiat "National currencies such as the dollar or euro"
+[genesis block]: #term-genesis-block "The first block created; also called block 0"
+[hardened child key]: #term-hardened-child-key "In an HD wallet, a child key which can only be derived from a parent private key; it cannot be derived from a parent public key"
+[HD account]: #term-hd-account "A sub-chain of the master chain in an HD wallet"
+[header nonce]: #term-header-nonce "Four bytes of arbitrary data in a block header used to let miners create headers with different hashes for proof of work"
+[high-priority transactions]: #term-high-priority-transactions "Transactions which don't pay a transaction fee; only transactions spending long-idle outputs are eligible"
+[input]: #FIXME-TX "The input to a transaction linking to the output of a previous transaction which permits spending of satoshis"
+[internal chain]: #term-internal-chain "A default subdivision in HD wallet accounts used for change addresses and other self-created transactions"
+[intermediate certificate]: #term-intermediate-certificate "A intermediate certificate authority certificate which helps connect a leaf (receiver) certicate to a root certificate authority"
+[key fingerprint]: #term-key-fingerprint "The first 32 bits of an extended key (not including the chain code) used to identify the extended key" 
+[key index]: #term-key-index "An index number used in the HD wallet formula to generate child keys from a parent key" 
+[label]: #term-label "The label parameter of a bitcoin: URI which provides the spender with the receiver's name (unauthenticated)" 
+[leaf certificate]: #term-leaf-certificate "The end-node in a certificate chain; in the payment protocol, it is the certificate belonging to the receiver of satoshis"
+[long-term fork]: #term-long-term-fork "When a series of blocks have corresponding block heights, indicating a possiblly serious problem"
+[mainnet]: #FIXME-Intro "The Bitcoin main network used to transfer satoshis (compare to testnet, the test network)"
+[master key seed]: #term-master-key-seed "A potentially-short value used as a seed to generate a master key for an HD wallet"
+[master key]: #term-master-key "In an HD wallet, top-level private key extended by the chaincode; master keys are usually generated by a seed"
+[merge]: #term-merge "Spending, in the same transaction, multiple outputs which can be traced back to different previous spenders, leaking information about how many satoshis you control"
+[merge avoidance]: #term-merge-avoidance "A strategy for selecting which outputs to spend that avoids merging outputs with different histories that could leak private information"
+[message]: #term-message "A parameter of bitcoin: URIs which allows the receiver to optionally specify a message to the spender"
+[Merkle root]: #term-merkle-root "The root node of a Merkle tree descended from all the hashed pairs in the tree"
+[Merkle tree]: #term-merkle-tree "A tree constructed by hashing paired data, then pairing and hashing the results until a single hash remains, the Merkle root"
+[millibits]: #term-millibits "0.001 bitcoins (100,000 satoshis)"
+[miner]: #term-miner "Creators of Bitcoin blocks who solve proof-of-work puzzles in exchange for block rewards and transaction fees"
+[miners]: #term-miner "Creators of Bitcoin blocks who solve proof-of-work puzzles in exchange for block rewards and transaction fees"
+[multisig]: #FIXME-TX "An output script using OP_CHECKMULTISIG to check for multiple signatures"
+[network]: #FIXME-P2P "The Bitcoin P2P network which broadcasts transactions and blocks"
+[normal child key]: #term-normal-child-key "A standard public or private Bitcoin key which was derived from an extended key"
+[orphan]: #term-orphan "Blocks which were successfully mined but which aren't included on the current valid block chain"
+[output]: #FIXME-TX "The output of a transaction which transfers value to a script"
+[outputs]: #FIXME-TX "The outputs of a transaction which transfer value to scripts"
+[output scripts]: #FIXME-TX "The script part of an output which sets the conditions for spending of the satoshis in that output"
+[P2PH]: #FIXME-TX "A script which Pays To Pubkey Hashes (P2PH), allowing spending of satoshis to anyone with a Bitcoin address"
+[P2SH multisig]: #FIXME-TX "A multisig script embedded in the redeemScript of a pay-to-script-hash (P2SH) transaction"
+[parent key]: #term-parent-key "An extended private or public key capable of forming child keys"
+[payment protocol]: #term-payment-protocol "The protocol defined in BIP70 which lets spenders get signed payment details from receivers"
+[PaymentACK]: #term-paymentack "The PaymentACK of the payment protocol which allows the receiver to indicate to the spender that the payment is being processed"
+[PaymentDetails]: #term-paymentdetails "The PaymentDetails of the payment protocol which allows the receiver to specify the payment details to the spender"
+[PaymentRequest]: #term-paymentrequest "The PaymentRequest of the payment protocol which contains and allows signing of the PaymentDetails"
+[PaymentRequests]: #term-paymentrequest "The PaymentRequest of the payment protocol which contains and allows signing of the PaymentDetails"
+[peers]: #FIXME-P2P "Peers on the P2P network who receive and broadcast transactions and blocks"
+[PKI]: #term-pki "Public Key Infrastructure; usually meant to indicate the X.509 certificate system used for HTTP Secure (https)."
+[private key]: #FIXME-TX "The private portion of a keypair which can create signatures which other people can verify using the public key"
+[private keys]: #FIXME-TX "The private portion of a keypair which can create signatures which other people can verify using the public key"
+[public key]: #FIXME-TX "The public portion of a keypair which can be safely distributed to other people so they can verify a signature created with the corresponding private key"
+[public keys]: #FIXME-TX "The public portion of a keypair which can be safely distributed to other people so they can verify a signature created with the corresponding private key"
+[pp expires]: #term-pp-expires "The expires field of a PaymentDetails where the receiver tells the spender when the PaymentDetails expires"
+[pp memo]: #term-pp-memo "The memo fields of PaymentDetails, Payment, and PaymentACK which allow spenders and receivers to send each other memos"
+[pp merchant data]: #term-pp-merchant-data "The merchant_data part of PaymentDetails and Payment which allows the receiver to send arbitrary data to the spender in PaymentDetails and receive it back in Payments"
+[pp Payment]: #term-pp-payment "The Payment message of the PaymentProtocol which allows the spender to send payment details to the receiver"
+[pp PKI data]: #term-pp-pki-data "The pki_data field of a PaymentRequest which provides details such as certificates necessary to validate the request"
+[pp pki type]: #term-pp-pki-type "The PKI field of a PaymentRequest which tells spenders how to validate this request as being from a specific receipient"
+[pp refund to]: #term-pp-refund-to "The refund_to field of a Payment where the spender tells the receiver what outputs to send refunds to"
+[pp script]: #term-pp-script "The script field of a PaymentDetails where the receiver tells the spender what output scripts to pay"
+[pp transactions]: #term-pp-transactions "The transactions field of a Payment where the spender provides copies of signed transactions to the recevier"
+[pp payment url]: #term-pp-payment-url "The payment_url of the PaymentDetails which allows the receiver to specify where the sender should post payment"
+[proof of work]: #term-proof-of-work "Proof that computationally-difficult work was performed which helps secure blocks against modification, protecting transaction history"
+[r]: #term-r-parameter "The payment request parameter in a bitcoin: URI" [rawtx]: #FIXME-TX "Complete transactions in their binary format; often represented using hexidecimal"
+[receipt]: #term-receipt "A cryptographically-verifiable receipt created using parts of a payment request and a confirmed transaction"
+[recurrent rebilling]: #rebilling-recurring-payments "Billing a spender on a regular schedule"
+[refund]: #issuing-refunds "A transaction which refunds some or all satoshis received in a previous transaction"
+[root certificate]: #term-root-certificate "A certificate belonging to a certificate authority (CA)"
+[satoshi]: #term-satoshi "The smallest unit of Bitcoin value; 0.00000001 bitcoins.  Also used generically for any value of bitcoins"
+[satoshis]: #term-satoshi "The smallest unit of Bitcoin value; 0.00000001 bitcoins.  Also used generically for any value of bitcoins"
+[spv]: #FIXME-OM "A method for verifying particular transactions were included in blocks without downloading the entire contents of the block chain"
+[ssl signature]: #term-ssl-signature "Signatures created and recognized by major SSL implementations such as OpenSSL"
+[target]: #term-target "The threshold below which a block header hash must be in order for the block to be added to the block chain"
+[testnet]: #FIXME-Intro "A Bitcoin-like network where the satoshis have no real-world value to allow risk-free testing"
+[transaction fee]: #term-transaction-fee "The amount remaining when all outputs are subtracted from all inputs in a transaction; the fee is paid to the miner who includes that transaction in a block"
+[transaction fees]: #term-transaction-fee "The amount remaining when all outputs are subtracted from all inputs in a transaction; the fee is paid to the miner who includes that transaction in a block"
+[transaction malleability]: #FIXME-TX "The ability of an attacker to change the transaction identifier (txid) of unconfirmed transactions, making dependent transactions invalid"
+[txid]: #FIXME-TX "A hash of a completed transaction which allows other transactions to spend its outputs"
+[transaction]: #transactions "A transaction spending satoshis"
+[transactions]: #transactions "A transaction spending satoshis"
+[unconfirmed]: #term-unconfirmed-transactions "A transaction which has not yet been added to the block chain"
+[unconfirmed transactions]: #term-unconfirmed-transactions "A transaction which has not yet been added to the block chain"
+[unique addresses]: #FIXME-TX "Address which are only used once to protect privacy and increase security"
+[URI QR Code]: #term-uri-qr-code "A QR code containing a bitcoin: URI"
+[utxo]: #FIXME-TX "Unspent Transaction Output (UTXO) holding satoshis which have not yet been spent"
+[verified payments]: #verifying-payment "Payments which the receiver believes won't be double spent"
+[v2 block]: #term-v2-block "The current version of Bitcoin blocks"
+[wallet]: #wallets "Software which stores private keys to allow users to spend and receive satoshis"
+[wallets]: #wallets "Software which stores private keys to allow users to spend and receive satoshis"
+[X509Certificates]: #term-x509certificates
+
+<!-- Non-terminology links which may be used multiple times (case-insensitive alphabetical order) -->
+[BIP32]: https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki
+[BIP70]: https://github.com/bitcoin/bips/blob/master/bip-0070.mediawiki
+[bitcoinpdf]: http://bitcoin.org/bitcoin.pdf
+[block170]: http://blockexplorer.com/block/00000000d1145790a8694403d4063f323d499e655c83426834d4ce2f8dd4a2ee
+[DER]: https://en.wikipedia.org/wiki/Abstract_Syntax_Notation_One
+[MIME]: https://en.wikipedia.org/wiki/Internet_media_type
+[Merge Avoidance subsection]: #merge-avoidance
+[mozrootstore]: https://www.mozilla.org/en-US/about/governance/policies/security-group/certs/
+[protobuf]: https://developers.google.com/protocol-buffers/
+[rpc decoderawtransaction]: /en/api-reference#TK
+[rpc getblock]: /en/api-reference#TK
+[rpc getrawtransaction]: /en/api-reference#TK
+[rpc keypoolrefill]: /en/api-reference#TK
+[rpc listunspent]: /en/api-reference#TK
+[RPCs]: /en/api-reference
+[secp256k1]: http://www.secg.org/index.php?action=secg,docs_secg
+[URI encoded]: https://tools.ietf.org/html/rfc3986
+[Verification subsection]: #verifying-payment
+[x509]: https://en.wikipedia.org/wiki/X.509
+
 
 <!--#md#</div>#md#-->
 
