@@ -2923,21 +2923,28 @@ secure for the spender than clicking an emailed invoice, increasing the
 chance receivers get paid on time.
 
 
-
-
-
 ## Operating modes
 
-TODO, Relevant links:
+Currently there are two primary methods of validating the block chain as a client: Full nodes, and SPV clients. Other methods, such as server-trusting methods, are not discussed as they are not recommended.
 
-* [https://en.bitcoin.it/wiki/Thin_Client_Security (SPV / Simple Payment Verification)](https://en.bitcoin.it/wiki/Thin_Client_Security)
-* [https://bitcointalk.org/index.php?topic=88208.0 (OUT / Unspent output tree)](https://bitcointalk.org/index.php?topic=88208.0)
-
-### Full node
+### Full Node
+The first and most secure model is the one followed by the reference Satoshi client, also known as a “thick” or “full chain” client. This security model assures the validity of the ledger by downloading and validating blocks from the genesis block all the way to the most recently discovered block. This is known as using the *height* of a particular block to verify the client’s view of the network. For a client to be fooled, an adversary would have had to give a complete alternate block chain history that is of greater difficulty than the current “true” chain, which is impossible due to the fact that the longest chain is the "true" chain. After the suggested 6 confirmations the ability to fool the client are intractable, as only a single honest network node is needed to have the complete state of the ledger. 
 
 ### SPV
 
-### UOT (short overview?)
+An alternative approach also detailed in the original Satoshi white paper is a client that downloads the headers of all blocks, omitting their contents. This still scales linearly with the height of the block chain, but at a miniscule 80 bytes per block header, or up to 4.2MB per year. 
+
+One effect of this selective downloading is that a SPV client can not tell if a transaction is valid. It can only tell that the transaction in question is of a certain *depth*, or in other words embedded in a block which has been built on top of by a number of subsequently mined blocks. Therefore the client trusts the block’s *depth*, rather than *height*.  
+
+One major issue with this security model is that if the client has been cut off from the honest nodes, the client can be tricked into thinking a payment has been sent when it has not been. A common case could be a mobile user who connects to a cafe’s WiFi network which is being controlled by the malicious user, and feeds the user false information. 
+
+### Future Proposals 
+
+There are future proposals such as Unused Output Tree in the block chain (UOT) to find a more satisfactory middle-ground for clients between needing a complete copy of the block chain, or trusting that a majority of your connected peers are not lying. UOT would enable a very secure client using a finite amount of storage using a data structure that is authenticated in the block chain. These type of proposals are however in very early stages, and will require soft forks in the network. 
+
+Until these types of operating modes are implemented, modes should be chosen based on the likely threat model, computing and bandwidth constraints, and liability in bitcoin value.  
+
+**Resource:** [Original Thread on UOT](https://bitcointalk.org/index.php?topic=88208.0), [UOT Prefix Tree BIP Proposal](https://github.com/maaku/bips/blob/master/drafts/auth-trie.mediawiki)
 
 ## P2P Network
 
