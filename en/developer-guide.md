@@ -2930,7 +2930,7 @@ Currently there are two primary methods of validating the block chain as a clien
 ### Full Node
 The first and most secure model is the one followed by the reference Satoshi client, also known as a “thick” or “full chain” client. This security model assures the validity of the ledger by downloading and validating blocks from the genesis block all the way to the most recently discovered block. This is known as using the *height* of a particular block to verify the client’s view of the network. For a client to be fooled, an adversary would have had to give a complete alternate block chain history that is of greater difficulty than the current “true” chain, which is impossible due to the fact that the longest chain is by definition the true chain. After the suggested 6 confirmations the ability to fool the client become intractable, as only a single honest network node is needed to have the complete state of the ledger. 
 
-<!-- Add picture showing height vs depth? -->
+![Block Height Compared To Block Depth](/img/dev/en-block-height-vs-depth.svg)
 
 ### SPV
 
