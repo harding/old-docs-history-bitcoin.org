@@ -55,8 +55,8 @@ modifying the block that records it and all following blocks.
 
 Transactions are also chained together. Bitcoin wallet software gives
 the impression that [satoshis][] are sent from and to [addresses][], but
-bitcoins really move from transaction to transaction. Each standard
-transaction spends the satoshis previously spent in one or more earlier
+bitcoins really move from transaction to transaction. Each [standard
+transaction][standard script] spends the satoshis previously spent in one or more earlier
 transactions, so the [input][] of one transaction is the [output][] of a
 previous transaction.
 
@@ -70,20 +70,20 @@ spend][]---an attempt to spend the same satoshis twice.
 
 Outputs are not the same as Bitcoin addresses. You can use the same
 address in multiple transactions, but you can only use each output once.
-Outputs are tied to [transaction identifiers (TXIDs)][txid], which are the hashes
+Outputs are tied to [transaction identifiers (TXIDs)][txid]{:#term-txid}{:.term}, which are the hashes
 of complete transactions.
 
 Because each output of a particular transaction can only be spent once,
 all transactions included in the block chain can be categorized as either
-[Unspent Transaction Outputs (UTXOs)][utxo] or spent transaction outputs. For a
-payment to be valid, it must only use UTXOs as inputs.
+[Unspent Transaction Outputs (UTXOs)][utxo]{:#term-utxo}{:.term} or spent transaction outputs. For a
+payment to be valid, it must only use UTXOs as [inputs][input].
 
-Satoshis cannot be left in a UTXO after a transaction: they will be
+[Satoshis][] cannot be left in a UTXO after a transaction: they will be
 irretrievably lost. So any difference between the number of bitcoins in a
 transaction's inputs and outputs is given as a [transaction fee][]{:#term-transaction-fee}{:.term} to 
 the Bitcoin [miner][]{:#term-miner}{:.term} who creates the block containing that transaction. 
 For example, in the figure above, each transaction spends 10 satoshis
-fewer than it receives from its combined inputs, effectively paying a 10
+fewer than it receives from its combined [inputs][input], effectively paying a 10
 satoshi transaction fee.
 
 The spenders propose a transaction fee with each transaction; miners
@@ -93,18 +93,18 @@ higher proposed transaction fee are likely to be processed faster.
 
 #### Proof Of Work
 
-Although chaining blocks together makes it impossible to modify
-transactions included in any block without modifying all following block
-headers, the cost of modification is, at most, only a few thousand
-hashes for each block modified to rebuild the Merkle tree and block
+Although chaining [blocks][block] together makes it impossible to modify
+transactions included in any block without modifying all following [block
+headers][block header], the cost of modification is, at most, only a few thousand
+hashes for each block modified to rebuild the [Merkle tree][] and block
 header.
 
 Since the block chain is collaboratively maintained on a peer-to-peer
-network which may contain untrustworthy [peers][], Bitcoin requires each
+[network][] which may contain untrustworthy [peers][], Bitcoin requires each
 block prove a significant amount of work was invested in its creation so
 that untrustworthy peers who want to modify past blocks have to work harder
 than trustworthy peers who only want to add new blocks to the
-block chain.
+[block chain][].
 
 The [proof of work][]{:#term-proof-of-work}{:.term} used in Bitcoin
 takes advantage of the apparently random output of cryptographic hashes.
@@ -113,8 +113,8 @@ seemingly-random number. If the input data is modified in any way and
 the hash re-run, a new seemingly-random number is produced, so there is
 no way to modify the input data to make the hash number predictable.
 
-To prove you did some extra work to create a block, you must create a
-hash of the block header which does not exceed a certain value. For
+To prove you did some extra work to create a [block], you must create a
+hash of the [block header][] which does not exceed a certain value. For
 example, if the maximum possible hash value is <span
 class="math">2<sup>256</sup> − 1</span>, you can prove that you
 tried up to two combinations by producing a hash value less than <span
@@ -127,27 +127,27 @@ threshold. Bitcoin itself does not track probabilities but instead
 simply assumes that the lower it makes the target threshold, the more
 hash attempts, on average, will need to be tried.
 
-New blocks will only be added to the block chain if their hash is at
+New blocks will only be added to the [block chain][] if their hash is at
 least as challenging as a [difficulty][]{:#term-difficulty}{:.term} value expected by the peer-to-peer
-network. Every 2,016 blocks, the network uses [timestamps][block time] stored in each
+[network][]. Every 2,016 blocks, the network uses [timestamps][block time] stored in each
 block header to calculate the number of seconds elapsed between generation
 of the first and last of those last 2,016 blocks. The ideal value is
 1,209,600 seconds (two weeks).
 
 * If it took fewer than two weeks to generate the 2,016 blocks,
-  the expected difficulty value is increased proportionally (by as much
+  the expected [difficulty][] value is increased proportionally (by as much
   as 300%) so that the next 2,016 blocks should take exactly two weeks
   to generate if hashes are checked at the same rate.
 
 * If it took more than two weeks to generate the blocks, the expected
-  difficulty value is decreased proportionally (by as much as 75%) for
+  [difficulty][] value is decreased proportionally (by as much as 75%) for
   the same reason.
 
 (Note: an off-by-one error in the implementation causes the difficulty
 to be updated every 2,01*6* blocks using timestamps from only
 2,01*5* blocks, creating a slight skew.)
 
-Because each block header must hash to a value below the target
+Because each [block header][] must hash to a value below the [target][]
 threshold, and because each block is linked to the block that
 preceded it, it requires (on average) as much hashing power to
 propagate a modified block as the entire Bitcoin network expended
@@ -159,13 +159,13 @@ transaction history.
 The block header provides several easy-to-modify fields, such as a
 dedicated [nonce field][header nonce], so obtaining new hashes doesn't require waiting
 for new transactions. Also, only the 80-byte block header is hashed for
-proof-of-work, so adding more transactions to a block does not slow
+[proof-of-work][proof of work], so adding more transactions to a block does not slow
 down hashing with extra I/O.
 
 #### Block Height And Forking
 
-Any Bitcoin miner who successfully hashes a block header to a value
-below the target can add the entire block to the block chain.
+Any Bitcoin [miner][] who successfully hashes a [block header][] to a value
+below the [target][] can add the entire [block][] to the [block chain][].
 (Assuming the block is otherwise valid.) These blocks are commonly addressed
 by their [block height][]{:#term-block-height}{:.term}---the number of blocks between them and the first Bitcoin
 block (block 0, most commonly known as the [genesis block]{:#term-genesis-block}{:.term}). For example,
@@ -178,29 +178,29 @@ two or more miners each produce a block at roughly the same time. This
 creates an apparent [fork][accidental fork]{:#term-accidental-fork}{:.term} in the block chain, as shown in the
 figure above.
 
-When miners produce simultaneous blocks at the end of the block chain, each
-peer individually chooses which block to trust. (In the absence of
+When miners produce simultaneous blocks at the end of the [block chain][], each
+[peer][] individually chooses which block to trust. (In the absence of
 other considerations, discussed below, peers usually trust the first
 block they see.)
 
-Eventually miners produce another block which attaches to only one of
+Eventually [miners][miner] produce another block which attaches to only one of
 the competing simultaneously-mined blocks. This makes that side of
 the fork longer than the other side. Assuming a fork only contains valid
 blocks, normal peers always follow the longest fork (the most difficult chain
-to recreate) and throw away ([orphan][]{#term-orphan}{:.term}) blocks belonging to shorter forks.
+to recreate) and throw away ([orphan][]{:#term-orphan}{:.term}) blocks belonging to shorter forks.
 
 [Long-term forks][long-term fork]{:#term-long-term-fork}{:.term} are possible if different miners work at cross-purposes,
-such as some miners diligently working to extend the block chain at the
-same time other miners are attempting a 51 percent attack to revise
+such as some miners diligently working to extend the [block chain][] at the
+same time other miners are attempting a [51 percent attack][] to revise
 transaction history.
 
 ### Implementation Details: Block Contents
 
 This section describes [version 2 blocks][v2 block]{:#term-v2-block}{:.term}, which are any blocks with a
-block height greater than 227,835. (Version 1 and version 2 blocks were
+[block height][] greater than 227,835. (Version 1 and version 2 blocks were
 intermingled for some time before that point.) Future block versions may
 break compatibility with the information in this section. You can determine
-the version of any block by checking its ``version`` field using
+the version of any block by checking its `version` field using
 [bitcoind RPC calls](#example-block-and-coinbase-transaction).
 
 As of version 2 blocks, each block consists of four root elements:
@@ -210,22 +210,22 @@ As of version 2 blocks, each block consists of four root elements:
 2. A 4-byte unsigned integer indicating how many bytes follow until the
    end of the block. Although this field would suggest maximum block
    sizes of 4 GiB, max block size is currently capped at 1 MiB and the
-   default max block size (used by most miners) is 350 KiB (although
+   default max block size (used by most [miners][miner]) is 350 KiB (although
    this will likely increase over time).
 
-3. An 80-byte header described in the section below.
+3. An 80-byte [header][block header] described in the section below.
 
-4. One or more transactions. 
+4. One or more [transactions][].
 
 Blocks are usually referenced by the SHA256(SHA256()) hash of their header, but
-because this hash must be below the target threshold, there exists an
+because this hash must be below the [target threshold][target], there exists an
 increased (but still minuscule) chance of eventual hash collision.
 
-Blocks can also be referenced by their block height, but multiple blocks
-can have the same height during a block chain fork, so block height
+Blocks can also be referenced by their [block height][], but multiple blocks
+can have the same height during a block chain [fork][accidental fork], so block height
 should not be used as a globally unique identifier. In version 2 blocks,
 each block must place its height as the first parameter in the coinbase
-field of the coinbase transaction (described below), so block height
+field of the [coinbase transaction][] (described below), so block height
 can be determined without access to previous blocks.
 
 #### Block Header
@@ -247,67 +247,67 @@ The 80-byte block header contains the following six fields:
    2.
 
 2. The *hash of the previous block header* puts this block on the
-   block chain and ensures no previous block can be changed without also
+   [block chain][] and ensures no previous block can be changed without also
    changing this block's header.
 
-3. The *Merkle root* is a hash of all the transactions included
-   in this block. It ensures no transactions can be modified in this
-   block without changing the block header.
+3. The *[Merkle root][]* is a hash derived from hashes of all the
+   transactions included in this block. It ensures no transactions can
+   be modified in this block without changing the block header.
 
 4. The *[block time][]{:#term-block-time}{:.term}* is the approximate time when this block was created in
    Unix Epoch time format (number of seconds elapsed since
    1970-01-01T00:00 UTC). The time value must be greater than the
-   time of the previous block. No peer will accept a block with a
+   time of the previous block. No [peer][] will accept a block with a
    time currently more than two hours in the future according to the
    peer's clock.
 
-5. *Bits* translates into the target threshold value -- the maximum allowed
+5. *Bits* translates into the [target threshold][target] value -- the maximum allowed
    value for this block's hash. The bits value must match the network
-   difficulty at the time the block was mined.
+   [difficulty][] at the time the block was mined.
 
 6. The *[header nonce][]{:#term-header-nonce}{:.term}* is an arbitrary input that miners can change to test different
    hash values for the header until they find a hash value less than or
-   equal to the target threshold. If all values within the nonce's four
-   bytes are tested, the time can be changed by one second or the
-   coinbase transaction (described below) can be changed and the Merkle
-   root updated.
+   equal to the [target][] threshold. If all values within the nonce's four
+   bytes are tested, the time can be updated or the
+   [coinbase transaction][] (described below) can be changed and the [Merkle
+   root][] updated.
 
 #### Transaction Data
 
-Every block must include one or more transactions. Exactly one of these
-transactions must be a coinbase transaction which should collect and
-spend any transaction fees paid by transactions included in this block.
-All blocks with a block height less than 6,930,000 are entitled to
+Every [block][] must include one or more [transactions][]. Exactly one of these
+transactions must be a [coinbase transaction][] which should collect and
+spend any [transaction fees][] paid by transactions included in this block.
+All blocks with a [block height][] less than 6,930,000 are entitled to
 receive a [block reward][]{:#term-block-reward}{:.term} of newly created bitcoin value, which also
 should be spent in the coinbase transaction. (The block reward started
-at 50 bitcoins and is being halved approximately every four years: as of
-April 2014, it's 25 bitcoins.) A coinbase transaction is invalid if it 
+at 50 bitcoins and is being halved approximately every four years. As of
+april 2014, it's 25 bitcoins.) A coinbase transaction is invalid if it 
 tries to spend more value than is available from the transaction 
 fees and block reward.
 
 The [coinbase transaction][]{:#term-coinbase-tx}{:.term} has the same basic format as any other
-transaction, but it references a single non-existent UTXO and a special
-[coinbase field][]{:#term-coinbase-field}{:.term} replaces the field that would normally hold a script and
-signature. In version 2 blocks, the coinbase parameter must begin with
-the current block's block height and may contain additional arbitrary
+transaction, but it references a single non-existent [UTXO][] and a special
+[coinbase field][]{:#term-coinbase-field}{:.term} replaces the field that would normally hold a [script][] and
+[signature][]. In version 2 blocks, the coinbase parameter must begin with
+the current block's [block height][] and may contain additional arbitrary
 data or a script up to a maximum total of 100 bytes.
 
-The UTXO of a coinbase transaction has the special condition that it
-cannot be spent (used as an input) for at least 100 blocks. This
-helps prevent a miner from spending the transaction fees and block
-reward from a block that will later be orphaned (destroyed) after a
-block chain fork.
+The [UTXO][] of a coinbase transaction has the special condition that it
+cannot be spent (used as an [input][]) for at least 100 [blocks][block]. This
+helps prevent a [miner][] from spending the [transaction fees][] and [block
+reward][] from a block that will later be [orphaned][orphan] (destroyed) after a
+block chain [fork][accidental fork].
 
 Blocks are not required to include any non-coinbase transactions, but
 miners almost always do include additional transactions in order to
-collect their transaction fees.
+collect their [transaction fees][].
 
 All transactions, including the coinbase transaction, are encoded into
-blocks in binary [rawtransaction format][rawtx] prefixed by a block transaction
+blocks in binary [rawtransaction format][raw format] prefixed by a block transaction
 sequence number.
 
 The rawtransaction format is hashed to create the transaction
-identifier (txid). From these txids, the [Merkle tree][]{:#term-merkle-tree}{:.term} is constructed by pairing each
+identifier ([txid][]). From these txids, the [Merkle tree][]{:#term-merkle-tree}{:.term} is constructed by pairing each
 txid with one other txid and then hashing them together. If there are
 an odd number of txids, the txid without a partner is hashed with a
 copy of itself.
@@ -316,8 +316,8 @@ The resulting hashes themselves are each paired with one other hash and
 hashed together. Any hash without a partner is hashed with itself. The
 process repeats until only one hash remains, the Merkle root.
 
-For example, if transactions were merely combined (not hashed), a
-five-transaction Merkle would look like the following text diagram:
+For example, if transactions were merely joined (not hashed), a
+five-transaction Merkle tree would look like the following text diagram:
 
            ABCDEEEE .......Merkle root
           /        \
@@ -330,8 +330,8 @@ five-transaction Merkle would look like the following text diagram:
 As discussed in the [Simplified Payment Verification (SPV)][spv] subsection,
 <!-- not written yet --> the Merkle tree allows clients to verify for
 themselves that a transaction was included in a block by obtaining the
-Merkle root from a block header and a list of the intermediate hashes
-from a full peer. The full peer does not need to be trusted: it is
+[Merkle root][] from a [block header][] and a list of the intermediate hashes
+from a full [peer][]. The full peer does not need to be trusted: it is
 expensive to fake blocks and the intermediate hashes cannot be faked or
 the verification will fail.
 
@@ -339,7 +339,7 @@ For example, a peer who wants to verify transaction D was added to the
 block only needs a copy of the C, AB, and EEEE hashes in addition to the
 Merkle root; the peer doesn't need to know anything about any of the
 other transactions. If the five transactions in this block were all at
-the maximum size, downloading the entire block would require over
+the maximum size, downloading the entire [block][] would require over
 500,000 bytes---but downloading three hashes plus the block header
 requires only 140 bytes.
 
@@ -380,11 +380,11 @@ We can then get a decoded version of that block with the [`getblock` RPC][rpc ge
 {% endhighlight %}
 
 Note: the only values above which are actually part of the block are size,
-version, merkleroot, time, nonce, and bits. All other values shown
+version, [merkleroot][merkle root], [time][block time], [nonce][header nonce], and bits. All other values shown
 are computed.
 
-The first transaction identifier (txid) listed in the tx array is, in
-this case, the coinbase transaction. The txid is a hash of the raw
+The first transaction identifier ([txid][]) listed in the tx array is
+the [coinbase transaction][]. The txid is a hash of the raw
 transaction. We can get the actual raw transaction in hexadecimal format
 from the block chain using the [`getrawtransaction` RPC][rpc getrawtransaction] with the txid:
 
@@ -432,9 +432,9 @@ passing the raw transaction to the [`decoderawtransaction` RPC][rpc decoderawtra
 }
 {% endhighlight %}
 
-Note the vin (input) array includes a single transaction shown with a
-coinbase parameter and the vout (output) spends the block reward of 50
-bitcoins to a public key (not a standard hashed Bitcoin address).
+Note the vin ([input][]) array includes a single transaction shown with a
+[coinbase field][] and the vout ([output][]) spends the block reward of 50
+bitcoins to a [public key][] (not a standard hashed Bitcoin [address][]).
 
 ## Transactions
 
@@ -448,28 +448,28 @@ various ways the outputs/inputs are used, such as "prevout", "nextout",
 when I'm terribly bored, I should rewrite this whole transaction section
 to use those terms and then get feedback to see if it actually helps. -harding -->
 
-Transactions let users send bitcoins. Each transaction is constructed
+Transactions let users spend satoshis. Each transaction is constructed
 out of several parts which enable both simple direct payments and complex
 transactions. This section will describe each part and
 demonstrate how to use them together to build complete transactions.
 
-To keep things simple, this section pretends coinbase transactions do
-not exist. Coinbase transactions can only be created by Bitcoin miners
+To keep things simple, this section pretends [coinbase transactions][coinbase transaction] do
+not exist. Coinbase transactions can only be created by Bitcoin [miners][miner]
 and they're an exception to many of the rules listed below. Instead of
 pointing out the coinbase exception to each rule, we invite you to read
-about coinbase transactions in the block chain section of this guide.
+about coinbase transactions in the [block chain][] section of this guide.
 
 ![The Parts Of A Transaction](/img/dev/en-tx-overview.svg)
 
-The figure above shows the core parts of a Bitcoin transaction. Each
-transaction has at least one input and one output. Each input spends the
-bitcoins paid to a previous output. Each output then waits as an Unspent
-Transaction Output (UTXO) until a later input spends it. When your
-Bitcoin wallet tells you that you have a 100 millibit balance, it really
-means that you have 100 millibits waiting in one or more UTXOs.
+The figure above shows the core parts of a Bitcoin [transaction][]. Each
+transaction has at least one input and one output. Each [input][]{:#term-input}{:.term} spends the
+satoshis paid to a previous output. Each [output][]{:#term-output}{:.term} then waits as an Unspent
+Transaction Output ([UTXO][]) until a later input spends it. When your
+Bitcoin [wallet][] tells you that you have a 10,000 satoshi balance, it really
+means that you have 10,000 satoshis waiting in one or more UTXOs.
 
-Each transaction is prefixed by a four-byte version number which tells
-Bitcoin peers and miners which set of rules to use to validate it.  This
+Each transaction is prefixed by a four-byte [transaction version number][]{:#term-transaction-version-number}{:.term} which tells
+Bitcoin [peers][] and [miners][] which set of rules to use to validate it.  This
 lets developers create new rules for future transactions without
 invalidating previous transactions.
 
@@ -477,21 +477,22 @@ The figure below helps illustrate the other transaction features by
 showing the workflow Alice uses to send Bob a transaction and which Bob
 later uses to spend that transaction. Both Alice and Bob will use the
 most common form of the standard Pay-To-Pubkey-Hash (P2PH) transaction
-type. P2PH lets Alice spend millibits to a typical Bitcoin address,
-and then lets Bob further spend those millibits using a simple
-cryptographic key pair.
+type. [P2PH][]{:#term-p2ph}{:.term} lets Alice spend satoshis to a typical Bitcoin address,
+and then lets Bob further spend those satoshis using a simple
+cryptographic [key pair][].
 
 ![P2PH Transaction Workflow](/img/dev/en-p2ph-workflow.svg)
 
-Bob must generate a private/public key pair before Alice can create the
-first transaction. Standard Bitcoin private keys are 256 bits of random
-data. A copy of that data is deterministically transformed into a public
-key. Because the transformation can be reliably repeated later, the
+Bob must generate a private/public [key pair][]{:#term-key-pair}{:.term} before Alice can create the
+first transaction. Standard Bitcoin [private keys][private
+key]{:#term-private-key}{:.term} are 256 bits of random
+data. A copy of that data is deterministically transformed into a [public
+key][]{:#term-public-key}{:.term}. Because the transformation can be reliably repeated later, the
 public key does not need to be stored.
 
 The public key is then cryptographically hashed. This pubkey hash can
 also be reliably repeated later, so it also does not need to be stored.
-The hash shortens and obfuscates the public key, making manual
+The hash shortens and obfuscates the [public key][], making manual
 transcription easier and providing security against
 unanticipated problems which might allow reconstruction of private keys
 from public key data at some later point.
@@ -503,84 +504,84 @@ different states of a public key and to help the text better match the
 space-constrained diagrams where "public-key hash" wouldn't fit. -harding -->
 
 
-Bob provides the pubkey hash to Alice. Pubkey hashes are almost always
-sent encoded as Bitcoin addresses, which are base-58 encoded strings
+Bob provides the [pubkey hash][]{:#term-pubkey-hash}{:.term} to Alice. Pubkey hashes are almost always
+sent encoded as Bitcoin [addresses][]{:#term-address}{:.term}, which are [base-58 encoded][base58check] strings
 containing an address version number, the hash, and an error-detection
 checksum to catch typos. The address can be transmitted
 through any medium, including one-way mediums which prevent the spender
-from communicating with the recipient, and it can be further encoded
-into another format, such as a QR code [containg a bitcoin:
-URI](https://github.com/bitcoin/bips/blob/master/bip-0021.mediawiki).
+from communicating with the receiver, and it can be further encoded
+into another format, such as a [QR code containg a bitcoin:
+URI.][bitcoin URI]
 
 Once Alice has the address and decodes it back into a standard hash, she
-can create the first transaction. She creates a standard P2PH
+can create the first transaction. She creates a standard [P2PH][]
 transaction output containing instructions which allow anyone to spend that
-output if they can prove they control the private key corresponding to
-Bob's hashed public key. These instructions are called the script.
+output if they can prove they control the [private key][] corresponding to
+Bob's hashed [public key][]. These instructions are called the [output][] [script][]{:#term-script}{:.term}.
 
-Alice broadcasts the transaction and it is added to the block chain.
-The network categorizes it as an Unspent Transaction Output (UTXO), and Bob's
-wallet software displays it as a spendable balance.
+Alice [broadcasts][] the transaction and it is added to the [block chain][].
+The [network][] categorizes it as an Unspent Transaction Output ([UTXO][]), and Bob's
+[wallet][] software displays it as a spendable balance.
 
 When, some time later, Bob decides to spend the UTXO, he must create an
-input which references the transaction Alice created by its hash, called
-a Transaction Identifier (txid), and the specific output she used by its
-index number (output index). He must then create a scriptSig---a
+[input][] which references the transaction Alice created by its hash, called
+a Transaction Identifier ([txid][]), and the specific [output][] she used by its
+index number ([output index][]{:#term-output-index}{:.term}). He must then create a [scriptSig][]{:#term-scriptsig}{:.term}---a
 collection of data parameters which satisfy the conditions Alice placed
 in the previous output's script.
 
 Bob does not need to communicate with Alice to do this; he must simply
-prove to the Bitcoin peer-to-peer network that he can satisfy the
-script's conditions.  For a P2PH-style output, Bob's scriptSig will
+prove to the Bitcoin peer-to-peer [network][] that he can satisfy the
+[script's][script] conditions.  For a [P2PH][]-style output, Bob's [scriptSig][] will
 contain the following two pieces of data:
 
-1. His full (unhashed) public key, so the script can check that it
-   hashes to the same value as the hashed pubkey provided by Alice.
+1. His full (unhashed) [public key][], so the script can check that it
+   hashes to the same value as the [hashed pubkey][pubkey hash] provided by Alice.
 
-2. A signature made by using the ECDSA cryptographic formula to combine
-   certain transaction data (described below) with Bob's private key.
+2. A [signature][]{:#term-signature}{:.term} made by using the [ECDSA][] cryptographic formula to combine
+   certain transaction data (described below) with Bob's [private key][].
    This lets the script verify that Bob owns the private key which
-   created the public key.
+   created the [public key][].
 
-Bob's signature doesn't just prove Bob controls his private key; it also
+Bob's [signature][] doesn't just prove Bob controls his [private key][]; it also
 makes the rest of his transaction tamper-proof so Bob can safely
-broadcast it over the peer-to-peer network.
+[broadcast][] it over the peer-to-peer [network][].
 
 <!-- Editors: please keep "amount of bitcoins" (instead of "number of
-bitcoins") in the text below to match the text in the figure above.  -harding -->
+bitcoins") in the paragraph below to match the text in the figure above.  -harding -->
 
-As illustrated in the figure above, the data Bob signs includes the
-txid and output index of the previous transaction, the previous
-output's script, the script Bob creates which will let the next
-recipient spend this transaction's output, and the amount of millibits to
+As illustrated in the figure above, the data Bob [signs][signature] includes the
+[txid][] and [output index][] of the previous transaction, the previous
+output's [script][], the script Bob creates which will let the next
+recipient spend this transaction's [output][], and the amount of satoshis to
 spend to the next recipient. In essence, the entire transaction is
-signed except for any scriptSigs, which hold the full public keys and
-signatures.
+signed except for any [scriptSigs][scriptsig], which hold the full [public keys][] and
+[signatures][signature].
 
 After putting his signature and public key in the scriptSig, Bob
-broadcast the transaction to Bitcoin miners through the peer-to-peer
-network. Each peer and miner independently validates the transaction
-before relaying it further or attempting to include it in a new block of
+[broadcasts][broadcast] the transaction to Bitcoin [miners][miner] through the peer-to-peer
+[network][]. Each [peer][] and miner independently validates the transaction
+before broadcasting it further or attempting to include it in a new [block][] of
 transactions.
 
 ### P2PH Script Validation
 
-The validation procedure requires evaluation of the script.  In a P2PH
+The validation procedure requires evaluation of the [script][].  In a [P2PH][]
 script, the script is:
 
     OP_DUP OP_HASH160 <PubkeyHash> OP_EQUALVERIFY OP_CHECKSIG
 
-The spender's scriptSig is [sanitized](#scriptsig-sanitization) and prefixed to the beginning of the
-script. In a P2PH transaction, the scriptSig contains a signature (sig)
-and full public key (pubkey), creating the following concatenation:
+The spender's [scriptSig][] is [evaluated](#scriptsig-evaluation) and prefixed to the beginning of the
+[script][]. In a [P2PH][] transaction, the scriptSig contains a [signature][] (sig)
+and full [public key][] (pubkey), creating the following concatenation:
 
     <Sig> <PubKey> OP_DUP OP_HASH160 <PubkeyHash> OP_EQUALVERIFY OP_CHECKSIG
 
-The script language is a
+The [script][] language is a
 [Forth-like](https://en.wikipedia.org/wiki/Forth_%28programming_language%29)
-stack-based language deliberately designed to be stateless and not
+[stack][]{:#term-stack}{:.term}-based language deliberately designed to be stateless and not
 Turing complete. Statelessness ensures that once a transaction is added
-to the block chain, there is no condition which renders it permanently
+to the [block chain][], there is no condition which renders it permanently
 unspendable. Turing-incompleteness (specifically, a lack of loops or
 gotos) makes the script language less flexible and more predictable,
 greatly simplifying the security model.
@@ -590,36 +591,36 @@ sections about stacks. These are programming terms. Also "above",
 "below", "top", and "bottom" are commonly used relative directions or
 locations in stack descriptions. -harding -->
 
-To test whether the transaction is valid, scriptSig and script arguments
+To test whether the transaction is valid, [scriptSig][] and [script][] arguments
 are pushed to the stack one item at a time, starting with Bob's scriptSig
 and continuing to the end of Alice's script. The figure below shows the
-evaluation of a standard P2PH script; below the figure is a description
+evaluation of a standard [P2PH][] script; below the figure is a description
 of the process.
 
 ![P2PH Stack Evaluation](/img/dev/en-p2ph-stack.svg)
 
-* The signature (from Bob's scriptSig) is added (pushed) to an empty stack.
+* The [signature][] (from Bob's [scriptSig][]) is added (pushed) to an empty stack.
   Because it's just data, nothing is done except adding it to the stack.
-  The public key (also from the scriptSig) is pushed on top of the signature.
+  The [public key][] (also from the scriptSig) is pushed on top of the signature.
 
-* From Alice's script, the `OP_DUP` operation is pushed. `OP_DUP` replaces
+* From Alice's [script][], the [`OP_DUP`][op_dup] operation is pushed. `OP_DUP` replaces
   itself with a copy of the data from one level below it---in this
-  case creating a copy of the public key Bob provided.
+  case creating a copy of the [public key][] Bob provided.
 
-* The operation pushed next, `OP_HASH160`, replaces itself with a hash
-  of the data from one level below it---in this case, Bob's public key.
+* The operation pushed next, [`OP_HASH160`][op_hash160], replaces itself with a hash
+  of the data from one level below it---in this case, Bob's [public key][].
   This creates a hash of Bob's public key.
 
-* Alice's script then pushes the pubkey hash that Bob gave her for the
+* Alice's [script][] then pushes the [pubkey hash][] that Bob gave her for the
   first transaction.  At this point, there should be two copies of Bob's
   pubkey hash at the top of the stack.
 
-* Now it gets interesting: Alice's script adds `OP_EQUALVERIFY` to the
-  stack. `OP_EQUALVERIFY` expands to `OP_EQUAL` and `OP_VERIFY` (not shown).
+* Now it gets interesting: Alice's [script][] adds [`OP_EQUALVERIFY`][op_equalverify] to the
+  stack. `OP_EQUALVERIFY` expands to [`OP_EQUAL`][op_equal] and [`OP_VERIFY`][op_verify] (not shown).
 
     `OP_EQUAL` (not shown) checks the two values below it; in this
-    case, it checks whether the pubkey hash generated from the full
-    public key Bob provided equals the pubkey hash Alice provided when
+    case, it checks whether the [pubkey hash][] generated from the full
+    [public key][] Bob provided equals the pubkey hash Alice provided when
     she created transaction #1. `OP_EQUAL` then replaces itself and
     the two values it compared with the result of that comparison:
     zero (*false*) or one (*true*).
@@ -629,44 +630,44 @@ of the process.
     the transaction validation fails. Otherwise it pops both itself and
     the *true* value off the stack.
 
-* Finally, Alice's script pushes `OP_CHECKSIG`, which checks the
-  signature Bob provided against the now-authenticated public key he
+* Finally, Alice's script pushes [`OP_CHECKSIG`][op_checksig], which checks the
+  [signature][] Bob provided against the now-authenticated [public key][] he
   also provided. If the signature matches the public key and was
   generated using all of the data required to be signed, `OP_CHECKSIG`
   replaces itself with *true.*
 
-If *true* is at the top of the stack after the script has been
+If *true* is at the top of the stack after the [script][] has been
 evaluated, the transaction is valid (provided there are no other
 problems with it).
 
 ### Standard Transactions
 
 Care must be taken to avoid non-standard output scripts. As of Bitcoin Core
-0.9, the standard output script types are:
+0.9, the [standard output script][standard script] types are:
 
 
-**Pubkey hash (P2PH)**
+**Pubkey hash ([P2PH][])**
 
-P2PH is the most usual form of script used to send a transaction to one
-or multiple Bitcoin addresses.
+[P2PH][] is the most common form of [script][] used to send a transaction to one
+or multiple Bitcoin [addresses][].
 
 ~~~
 script: OP_DUP OP_HASH160 <PubKeyHash> OP_EQUALVERIFY OP_CHECKSIG
 scriptSig: <sig> <pubkey> 
 ~~~
 
-**Script hash (P2SH)**
+**Script hash ([P2SH][])**
 
-P2SH is used to send a transaction to a script hash. Each of the standard
-scripts can be used inside a P2SH redeemScript, but in practice only the
-multisig script makes sense until more transactions types are made standard.
+[P2SH][] is used to send a transaction to a [script hash][]. Each of the standard
+[scripts][] can be used inside a P2SH [redeemScript][], but in practice only the
+[multisig][] script makes sense until more transactions types are made standard.
 
 ~~~
 script: OP_HASH160 <redeemscripthash> OP_EQUAL
 scriptSig: <sig> [sig] [sig...] <redeemscript>
 ~~~
 
-Although it’s not a separate transaction type, this is a P2SH multisig with 2-of-3:
+Although it’s not a separate transaction type, this is a [P2SH multisig][] with 2-of-3:
 
 ~~~
 script: OP_HASH160 <redeemscripthash> OP_EQUAL
@@ -674,24 +675,26 @@ scriptSig: <sig> <sig> <redeemscript>
 redeemScript: OP_0 <OP_2> <pubkey> <pubkey> <pubkey> <OP_3> OP_CHECKMULTISIG
 ~~~
 
-**Multisig**
+**[Multisig][]**
 
-Although P2SH is now generally used for multisig transactions, this script
-can be used to require multiple signatures before a UTXO can be spent.
+Although [P2SH][] is now generally used for [multisig][] transactions, this [script][]
+can be used to require multiple signatures before a [UTXO][] can be spent.
 
-(m is the number of pubkeys which must match a signature; n is how many
-pubkeys are being provided. Both m and n should be opcodes OP_1 through
-OP_16, corresponding to the number desired.)
+(m is the *minimum* subset size---the number of [public keys][public
+key] which must match a [signature][]; n is the *number* of public keys being
+provided. Both m and n should be [opcodes][op code] `OP_1` through `OP_16`,
+corresponding to the number desired.)
 
 ~~~
 script: <m> <pubkey> [pubkey] [pubkey...] <n> OP_CHECKMULTISIG
 scriptSig: OP_0 <sig> [sig] [sig...]
 ~~~
 
-**Pubkey**
+**[Pubkey][]**
 
-Pubkey scripts are a simplified form of the P2PH script; they’re used in all
-coinbase transactions, but they aren’t as secure as P2PH, so they generally
+[Pubkey][]{:#term-pubkey}{:.term} [scripts][] are a simplified form of the [P2PH][] script; they’re used in all
+[coinbase transactions][coinbase transaction], but they aren’t as convenient
+or secure as P2PH, so they generally
 aren’t used elsewhere.
 
 ~~~
@@ -699,11 +702,11 @@ script: <pubkey> OP_CHECKSIG
 scriptSig: <sig>
 ~~~
 
-**Null Data**
+**[Null Data][]**
 
-Null data scripts let you add a small amount of arbitrary data to the block
-chain in exchange for paying a transaction fee, but doing so is discouraged.
-(Null data is a standard script type only because some people were adding data
+[Null data][]{:#term-null-data}{:.term} [scripts][] let you add a small amount of arbitrary data to the [block
+chain][] in exchange for paying a [transaction fee][], but doing so is discouraged.
+(Null data is a [standard script][] type only because some people were adding data
 to the block chain in more harmful ways.)
 
 ~~~
@@ -711,14 +714,14 @@ script: OP_RETURN <data>
 (Null data scripts cannot be spent, so there's no scriptSig)
 ~~~
 
-If you use anything besides a standard script in an output, peers
-and miners using the default Bitcoin Core settings will neither
-accept, relay, nor mine your transaction. When you try to broadcast
+If you use anything besides a [standard script][] in an [output][], [peers][]
+and [miners][] using the default Bitcoin Core settings will neither
+accept, [broadcast][], nor [mine][] your transaction. When you try to broadcast
 your transaction to a peer running the default settings, you will
 receive an error.
 
-But if you create a non-standard redeemScript, hash it, and use the hash
-in a P2SH output, the network sees only the hash, so it will accept the
+But if you create a non-standard [redeemScript][], hash it, and use the hash
+in a [P2SH][] [output][], the [network][] sees only the hash, so it will accept the
 output as valid no matter what the redeemScript says. When you go to
 spend that output, however, peers and miners using the default settings
 will see the non-standard redeemScript and reject it. It will be
@@ -728,80 +731,80 @@ default settings.
 As of Bitcoin 0.9, standard transactions must also meet the following
 conditions:
 
-* The transaction must be finalized: either its locktime must be in the
-  past (or equal to the current block height), or all of its sequence
-  numbers must be 0xffffffff.
+* The transaction must be finalized: either its [locktime][] must be in the
+  past (or equal to the current [block height][]), or all of its [sequence
+  numbers][sequence number] must be 0xffffffff.
 
 * The transaction must be smaller than 100,000 bytes. That's around 200
-  times larger than a typical single-input, single-output P2PH
+  times larger than a typical single-input, single-output [P2PH][]
   transaction.
 
-* Each of the transaction's inputs must be smaller than 500 bytes.
-  That's large enough to allow 3-of-3 multisig transactions in P2SH.
-  Multisig transactions which require more than 3 key pairs are
-  currently non-standard.
+* Each of the transaction's [inputs][] must be smaller than 500 bytes.
+  That's large enough to allow 3-of-3 [multisig][] transactions in [P2SH][].
+  Multisig transactions which require more than 3 [public keys][] are
+  currently non-[standard][standard script].
 
-* The transaction's scriptSig must only push data to the script
-  evaluation stack. It cannot push new OP codes, with the exception of
+* The transaction's [scriptSig][] must only push data to the [script][]
+  evaluation stack. It cannot push new [OP codes][op code], with the exception of
   OP codes which solely push data to the stack.
 
 <!-- what's a canonical push?  It's forbidden:
 https://github.com/bitcoin/bitcoin/blob/acfe60677c9bb4e75cf2e139b2dee4b642ee6a0c/src/main.cpp#L527
 -->
 
-* If any of the transaction's outputs spend less than a minimal value
+* If any of the transaction's [outputs][] spend less than a minimal value
   (currently 546 satoshis---0.005 millibits), the transaction must pay
-  a minimum transaction fee (currently 0.1 millibits).
+  a minimum [transaction fee][] (currently 0.1 millibits).
 
 ### Signature Hash Types
 
-`OP_CHECKSIG` extracts a non-stack argument from each signature it
+[`OP_CHECKSIG`][op_checksig] extracts a non-stack argument from each [signature][] it
 evaluates, allowing the signer to decide which parts of the transaction
-to sign. Since the signature protects those parts of the transaction
+to [sign][signature]. Since the signature protects those parts of the transaction
 from modification, this lets signers selectively choose to let other
 people modify their transactions.
 
 The various options for what to sign are
-called signature hash types. There are three base SIGHASH types
+called [signature hash][]{:#term-signature-hash}{:.term} types. There are three base SIGHASH types
 currently available:
 
-* `SIGHASH_ALL`, the default, signs all the inputs and outputs,
-  protecting everything except the scriptSigs against modification.
+* [`SIGHASH_ALL`][sighash_all]{:#term-sighash-all}{:.term}, the default, signs all the [inputs][] and [outputs][],
+  protecting everything except the [scriptSigs][scriptSig] against modification.
 
-* `SIGHASH_NONE` signs all of the inputs but none of the outputs,
-  allowing anyone to change where the bitcoins are going unless other
-  signatures using other hash flags protect the outputs.
+* [`SIGHASH_NONE`][sighash_none]{:#term-sighash-none}{:.term} signs all of the [inputs][] but none of the [outputs][],
+  allowing anyone to change where the satoshis are going unless other
+  [signatures][signature] using other [signature hash][] flags protect the outputs.
 
-* `SIGHASH_SINGLE` signs only this input and only one corresponding
-  output (the output with the same index number as the input), ensuring
+* [`SIGHASH_SINGLE`][sighash_single]{:#term-sighash-single}{:.term} signs only this [input] and only one corresponding
+  [output][] (the output with the same [output index][] number as the input), ensuring
   nobody can change your part of the transaction but allowing other
   signers to change their part of the transaction. The corresponding
   output must exist or the value "1" will be signed, breaking the security
   scheme.
 
-The base types can be modified with the SIGHASH_ANYONECANPAY (anyone can
+The base types can be modified with the [`SIGHASH_ANYONECANPAY`][shacp]{:#term-sighash-anyonecanpay}{:.term} (anyone can
 pay) flag, creating three new combined types:
 
-* `SIGHASH_ALL|SIGHASH_ANYONECANPAY` signs all of the outputs but only
-  this one input, and it also allows anyone to add or remove other
-  inputs, so anyone can contribute additional payments but they cannot
-  change how many millibits are sent nor where they go.
+* [`SIGHASH_ALL|SIGHASH_ANYONECANPAY`][sha_shacp]{:#term-sighash-all-sighash-anyonecanpay}{:.term} signs all of the [outputs][] but only
+  this one [input][], and it also allows anyone to add or remove other
+  inputs, so anyone can contribute additional satoshis but they cannot
+  change how many satoshis are sent nor where they go.
 
-* `SIGHASH_NONE|SIGHASH_ANYONECANPAY` signs only this one input and
-  allows anyone to add or remove other inputs or outputs, so anyone who
+* [`SIGHASH_NONE|SIGHASH_ANYONECANPAY`][shn_shacp]{:#term-sighash-none-sighash-anyonecanpay}{:.term} signs only this one [input][] and
+  allows anyone to add or remove other inputs or [outputs][], so anyone who
   gets a copy of this input can spend it however they'd like.
 
-* `SIGHASH_SINGLE|SIGHASH_ANYONECANPAY` signs only this input and only
-  one corresponding output, but it also allows anyone to add or remove
+* [`SIGHASH_SINGLE|SIGHASH_ANYONECANPAY`][shs_shacp]{:#term-sighash-single-sighash-anyonecanpay}{:.term} signs only this [input][] and only
+  one corresponding [output][], but it also allows anyone to add or remove
   other inputs.
 
-Because each input is signed, a transaction with multiple inputs can
-have multiple hash types signing different parts of the transaction. For
-example, a single-input transaction signed with `NONE` could have its
-output changed by the miner who adds it to the block chain. On the other
-hand, if a two-input transaction has one input signed with `NONE` and
-one input signed with `ALL`, the `ALL` signer can choose where to spend
-the bitcoins without consulting the `NONE` signer---but nobody else can
+Because each input is signed, a transaction with multiple [inputs][] can
+have multiple [signature hash][] types signing different parts of the transaction. For
+example, a single-input transaction signed with [`NONE`][sighash_none] could have its
+[output][] changed by the [miner][] who adds it to the [block chain][]. On the other
+hand, if a two-input transaction has one input signed with [`NONE`][sighash_none] and
+one input signed with [`ALL`][sighash_all], the `ALL` signer can choose where to spend
+the satoshis without consulting the `NONE` signer---but nobody else can
 modify the transaction.
 
 <!-- TODO: describe useful combinations maybe using a 3x3 grid;
@@ -813,9 +816,9 @@ hash types sign, including the procedure for inserting the subscript -->
 
 ### Locktime And Sequence Number
 
-One thing all signature hash types sign is the transaction's locktime.
+One thing all [signature hash][] types [sign][signature] is the transaction's [locktime][]{:#term-locktime}{:.term}.
 The locktime indicates the earliest time a transaction can be added to
-the block chain.  
+the [block chain][].  
 
 Locktime allows signers to create time-locked transactions which will
 only become valid in the future, giving the signers a chance to change
@@ -823,14 +826,14 @@ their minds.
 
 If any of the signers change their mind, they can create a new
 non-locktime transaction. The new transaction will use, as one of
-its inputs, one of the same outputs which was used as an input to
+its [inputs][], one of the same [outputs][] which was used as an input to
 the locktime transaction. This makes the locktime transaction
 invalid if the new transaction is added to the block chain before
 the time lock expires.
 
 Care must be taken near the expiry time of a time lock. The peer-to-peer
-network allows times on the block chain to be up to two hours ahead of
-real time, so a locktime transaction can be added to the block chain up
+[network][] allows [times][block time] on the [block chain][] to be up to two hours ahead of
+real time, so a [locktime][] transaction can be added to the block chain up
 to two hours before its time lock officially expires. Also, blocks are
 not created at guaranteed intervals, so any attempt to cancel a valuable
 transaction should be made a few hours before the time lock expires.
@@ -839,29 +842,29 @@ Previous versions of Bitcoin Core provided a feature which prevented
 transaction signers from using the method described above to cancel a
 time-locked transaction, but a necessary part of this feature was
 disabled to prevent DOS attacks. A legacy of this system are four-byte
-sequence numbers in every input. Sequence numbers were meant to allow
+[sequence numbers][sequence number]{:#term-sequence-number}{:.term} in every input. Sequence numbers were meant to allow
 multiple signers to agree to update a transaction; when they finished
-updating the transaction, they could agree to set every input's
+updating the transaction, they could agree to set every [input][]'s
 sequence number to the four-byte unsigned maximum (0xffffffff),
-allowing the transaction to be added to a block even if its time lock
+allowing the transaction to be added to a [block][] even if its time lock
 had not expired.
 
 Even today, setting all sequence numbers to 0xffffffff (the default in
 Bitcoin Core) can still disable the time lock, so if you want to use
-locktime, at least one input must have a sequence number below the
-maximum. Since sequence numbers are not used by the network for any
+[locktime][], at least one [input][] must have a sequence number below the
+maximum. Since sequence numbers are not used by the [network][] for any
 other purpose, setting any sequence number to zero is sufficient to
-enable locktime.
+enable [locktime][].
 
 Locktime itself is an unsigned 4-byte number which can be parsed two ways:
 
-* If less than 500 million, locktime is parsed as a block height. The
+* If less than 500 million, locktime is parsed as a [block height][]. The
   transaction can be added to any block which has this height or higher.
 
 * If greater than or equal to 500 million, locktime is parsed using the
   Unix epoch time format (the number of seconds elapsed since
   1970-01-01T00:00 UTC---currently over 1.395 billion). The transaction
-  can be added to any block whose block header's *time* field is greater
+  can be added to any block whose [block header][]'s [time][block time] field is greater
   than the locktime.
 
 ### P2SH And Multisig
@@ -870,183 +873,185 @@ Locktime itself is an unsigned 4-byte number which can be parsed two ways:
 for details, please read
 https://github.com/saivann/bitcoin.org/pull/45-->
 
-Outputs can use their script to require signatures from more than one
-private key, called multi-signature or multisig. A multisig script
-provides a list of public keys and indicates how many of those public keys 
-must match signatures in the input's scriptSig.
+[Outputs][] can use their [script][] to require [signatures][signature] from more than one
+[private key][], called multi-signature or [multisig][]{:#term-multisig}{:.term}. A multisig script
+provides a list of [public keys][public key] and indicates how many of those public keys 
+must match signatures in the [input][]'s [scriptSig][].
 
-A standard multisig transaction looks similar to pay-to-pubkey-hash,
+A standard multisig transaction looks similar to [pay-to-pubkey-hash][P2PH],
 except that full public keys (not hashes) are provided and
-`OP_CHECKMULTISIG` is used instead plain checksig.
+[`OP_CHECKMULTISIG`][op_checkmultisig] is used instead plain [checksig][op_checksig].
 `OP_CHECKMULTISIG` takes multiple public keys and multiple
 signatures, so it's necessary to tell it how many public keys are
 being provided (n) and how many signatures are required (m). See the
-prototype script below for an example:
+prototype [script][] below for an example:
 
     <m> [pubkey] [pubkey...] <n> OP_CHECKMULTISIG
 
-The values m and n would be replaced with op codes which push the
-corresponding number to the stack, such as `OP_2` and `OP_2` for an
-output which could only be spent if two key pairs were used, or `OP_2`
-and `OP_3` for an output which requires signatures from only two of the
+The values m and n would be replaced with [op codes][op code] which push the
+corresponding number to the [stack][], such as `OP_2` and `OP_2` for an
+[output][] which could only be spent if two public keys were used, or `OP_2`
+and `OP_3` for an output which requires [signatures][signature] from only two of the
 public keys listed. For example, a 2-of-3 script:
 
     OP_2 [pubkey] [pubkey] [pubkey] OP_3 OP_CHECKMULTISIG
 
-Recipients who want their bitcoins to be secured with multiple
-signatures outputs must get the spender to create a multisig script.
+Recipients who want their [satoshis][] to be secured with multiple
+signatures must get the spender to create a [multisig][] [script][].
 This creates several problems:
 
-1. The spender must collect each of the full public keys to be used,
-   which is more complicated than collecting a single Bitcoin address.
-   Almost none of the existing add-on Bitcoin payment tools, such as QR
-   encoded addresses, currently work with multisig.
+1. The spender must collect each of the full [public keys][public key] to be used,
+   which is more complicated than collecting a single Bitcoin [address][].
+   Almost none of the existing add-on Bitcoin payment tools, such as [QR
+   encoded addresses][URI QR Code], currently work with [multisig][].
 
-2. The spender must pay the transaction fee, which is partly based on
-   the number of bytes in a transaction.  Each additional public key in
-   a multisig script increases the size of that transaction by at least 65 bytes,
-   possibly costing the spender more millibits but providing all the
-   benefit to the recipient.
+2. The spender must pay the [transaction fee][], which is partly based on
+   the number of bytes in a transaction.  Each additional [public key][] in
+   a [multisig][] [script][] increases the size of that transaction by at least 65 bytes,
+   possibly costing the spender more satoshis but providing all the
+   benefit to the receiver.
 
-3. Including full public keys in a script is not as secure as including
+3. Including full [public keys][public key] in a [script][] is not as secure as including
    public keys protected by a hash. As mentioned earlier, the hash
    obfuscates the public key, providing security against unanticipated
-   problems which might allow reconstruction of private keys from public
+   problems which might allow reconstruction of [private keys][] from public
    key data at some later point.
 
-To solve these problems, pay-to-script-hash (P2SH) transactions were
-created in 2012 to let a spender create an output script containing a
-hash of a second script, the redeemScript. This solves each of the
+To solve these problems, pay-to-script-hash ([P2SH][]{:#term-p2sh}{:.term}) transactions were
+created in 2012 to let a spender create an [output][] [script][] containing a
+[hash of a second script][script hash]{:#term-script-hash}{:.term}, the [redeemScript][]{:#term-redeemscript}{:.term}. This solves each of the
 problems quite handily:
 
-1. The hash of the redeemScript is identical to a pubkey hash---so it
-   can be transformed into the standard Bitcoin address format with only
+1. The hash of the [redeemScript][] is identical to a [pubkey hash][]---so it
+   can be transformed into the standard Bitcoin [address][] format with only
    one small change to differentiate it from a standard address. This
-   makes collecting a P2SH-style address as simple as collecting a
-   P2PH-style address.
+   makes collecting a [P2SH][]-style address as simple as collecting a
+   [P2PH][]-style address.
 
-2. The hash of the redeemScript is the exact same size as a pubkey
-   hash, so the spender won't need to increase the transaction fee no
-   matter how many public keys are required.
+2. The hash of the [redeemScript][] is the exact same size as a [pubkey
+   hash][], so the spender won't need to increase the [transaction fee][] no
+   matter how many [public keys][public key] are required.
 
-3. The hash of the redeemScript obfuscates the public keys, so
-   P2SH scripts are as secure as P2PH scripts.
+3. The hash of the [redeemScript][] obfuscates the [public keys][public keys], so
+   [P2SH][] [scripts][] are as secure as [P2PH][] scripts.
 
-The basic P2SH workflow, illustrated below, looks almost identical to
-the P2PH workflow.  Bob no longer provides a pubkey hash to Alice;
-instead he embeds his public key in a redeemScript, hashes
-the redeemScript, and provides the redeemScript hash to Alice.  Alice creates
+The basic [P2SH][] workflow, illustrated below, looks almost identical to
+the [P2PH][] workflow.  Bob no longer provides a [pubkey hash][] to Alice;
+instead he embeds his [public key][] in a [redeemScript][], hashes
+the redeemScript, and provides the [redeemScript hash][script hash] to Alice.  Alice creates
 a P2SH-style output containing Bob's redeemScript hash.
 
 ![P2SH Transaction Workflow](/img/dev/en-p2sh-workflow.svg)
 
-When Bob wants to spend the output, he provides the full redeemScript
-along with his signature in the normal input scriptSig. The
-peer-to-peer network ensures the full redeemScript hashes to the
-same value as the script hash Alice put in her output; it then processes the
-redeemScript exactly as it would if it were the primary script, letting
+When Bob wants to spend the [output][], he provides the full [redeemScript][]
+along with his [signature][] in the normal [input][] [scriptSig][]. The
+peer-to-peer [network][] ensures the full redeemScript hashes to the
+same value as the [script hash][] Alice put in her [output][]; it then processes the
+redeemScript exactly as it would if it were the primary [script][], letting
 Bob spend the output if the redeemScript returns true.
 
 The extra steps seen in the example above don't really help Bob when he
-could just create a P2PH script instead. But when Bob's business
+could just create a [P2PH][] [script][] instead. But when Bob's business
 partner, Charlie, decides he wants all of their business income to
-require two signatures to spend, P2SH-style outputs become quite handy.
+require two signatures to spend, [P2SH][]-style [outputs][] become quite handy.
 
 As seen in the figure below, Bob and Charlie each create separate
-private and public keys on their own computers, and Charlie gives a copy
-of his public key to Bob. Bob then creates a multisig redeemScript
+[private][private key] and [public keys][public key] on their own computers, and Charlie gives a copy
+of his public key to Bob. Bob then creates a [P2SH multisig][]{:#term-p2sh-multisig}{:.term} [redeemScript][]
 using the both his and Charlie's public keys.  When Alice, one their
 clients, wants to pay an invoice, Bob gives her a hash of the redeemScript.
 
 ![P2SH 2-of-2 Multisig Transaction Workflow](/img/dev/en-p2sh-multisig-workflow.svg)
 
-Because it's just a hash, Alice can't see what the script says.  But she
+Because it's just a hash, Alice can't see what the [script][] says.  But she
 doesn't care---she just knows that Bob and Charlie will mark her invoice
 as paid if she pays to that hash.
 
-When Bob and Charlie want to spend Alice's output, Bob creates
-transaction #2. He fills in the output details and creates a scriptSig
-containing his signature, a placeholder byte, and the redeemScript. Bob
+When Bob and Charlie want to spend Alice's [output][], Bob creates
+transaction #2. He fills in the output details and creates a [scriptSig][]
+containing his [signature][], a placeholder byte (0x00), and the [redeemScript][]. Bob
 gives this incomplete transaction to Charlie, who checks the output
-details and replaces the placeholder byte with his own signature,
-completing the signature. Either Bob or Charlie can broadcast this
-fully-signed transaction to the peer-to-peer network.
+details and replaces the placeholder byte with his own [signature][],
+completing the signatures. Either Bob or Charlie can [broadcast][] this
+fully-signed transaction to the peer-to-peer [network][].
 
-Previous P2PH and P2SH illustrations showed Bob signing using the
-`SIGHASH_ALL` procedure, but this multisig P2SH figure does not
-illustrate any particular hash type procedure. Bob and Charlie can each
+Previous [P2PH][] and [P2SH][] illustrations showed Bob signing using the
+[`SIGHASH_ALL`][sighash_all] procedure, but this [multisig P2SH][p2sh multisig] figure does not
+illustrate any particular [signature hash][] procedure. Bob and Charlie can each
 independently choose their own signature types. For example, if the
-output created by Alice contains only a few millibits and Charlie
-doesn't care how Bob spends it, Charlie can sign the second
-transaction's input with `SIGHASH_NONE` and give it back to Bob. Bob can
-now change the output script to anything he wants without further
+output created by Alice contains only a few satoshis and Charlie
+doesn't care how Bob spends them, Charlie can sign the second
+transaction's input with [`SIGHASH_NONE`][sighash_none] and give it back to Bob. Bob can
+now change the [output][] [script][] to anything he wants without further
 consulting Charlie.
 
-A lone NONE hash type would usually allow unscrupulous miners to modify
-the output to pay themselves.  But because the multisig input requires
-both Charlie and Bob's signatures, Bob can sign his signature with
-`SIGHASH_ALL` to fully protect the transaction.
+A lone [NONE][sighash_none] hash type would usually allow unscrupulous [miners][miner] to modify
+the [output][] to pay themselves.  But because the [multisig][] [input][] requires
+both Charlie and Bob's signatures, Bob can sign his [signature][] with
+[`SIGHASH_ALL`][sighash_all] to fully protect the transaction.
 
 ### Transaction Fees And Change
 
-Transactions typically pay transaction fees based on the total byte size
+Transactions typically pay [transaction fees][transaction fee] based on the total byte size
 of the signed transaction.  The transaction fee is given to the
-Bitcoin miner, as explained in the block chain section, and so it is
+Bitcoin [miner][], as explained in the [block chain section][block chain], and so it is
 ultimately up to each miner to choose the minimum transaction fee they
 will accept.
 
 <!-- TODO: check: 50 KB or 50 KiB?  Not that transactors care... -->
 
 By default, miners reserve 50 KB of each block for [high-priority
-transactions][]{:#term-high-priority-transactions}{:.term} which spend millibits that haven't been spent for a long
-time.  The remaining space in each block is allocated to transactions
+transactions][]{:#term-high-priority-transactions}{:.term} which spend [satoshis][] that haven't been spent for a long
+time.  The remaining space in each [block][] is allocated to transactions
 based on their fee per byte, with higher-paying transactions being added
 in sequence until all of the available space is filled.
 
-As of Bitcoin Core 0.9, transactions which do not count as high priority
-need to pay a minimum fee of 1,000 satoshis (0.01 millibits) to be
-relayed across the network. Any transaction paying the minimum fee
+As of Bitcoin Core 0.9, transactions which do not count as [high priority][high-priority transactions]
+need to pay a [minimum fee][]{:#term-minimum-fee}{:.term} of 1,000 [satoshis][] (0.01 millibits) to be
+[broadcast][] across the [network][]. Any transaction paying the minimum fee
 should be prepared to wait a long time before there's enough spare space
-in a block to include it. Please see the block chain section about
-confirmations for why this could be important.
+in a [block][] to include it. Please see the [block chain section][block chain] about
+[confirmations][confirmation] for why this could be important.
 
-Since each transaction spends Unspent Transaction Outputs (UTXOs) and
+Since each transaction spends Unspent Transaction Outputs ([UTXOs][utxo]) and
 because a UTXO can only be spent once, the full value of the included
-UTXOs must be spent or given to a miner as a transaction fee.  Few
+UTXOs must be spent or given to a [miner][] as a [transaction fee][].  Few
 people will have UTXOs that exactly match the amount they want to pay,
-so most transactions include a change output.
+so most transactions include a [change output][].
 
-Change outputs are regular outputs which spend the surplus millibits
-from the UTXOs back to the spender.  They can reuse the same P2PH pubkey hash
-or P2SH script hash as was used in the UTXO, but for the reasons
-described in the next section, it is highly recommended that change
-outputs be sent to a new P2PH or P2SH address.
+[Change outputs][change output]{:#term-change-output} are regular [outputs][] which spend the surplus satoshis
+from the [UTXOs][utxo] back to the spender.  They can reuse the same [P2PH][] [pubkey hash][]
+or [P2SH][] [script hash][] as was used in the UTXO, but for the reasons
+described in the [next section](#avoiding-key-reuse), it is highly recommended that change
+outputs be sent to a new P2PH or P2SH [address][].
 
 ### Avoiding Key Reuse
 
-The block chain, Bitcoin's ledger, is public information, so anyone can
-look up the aggregate balance of all outputs sent to a particular public
-key, pubkey hash, or script hash. Every time you pay or are paid by
+The [block chain][], Bitcoin's ledger, is public information, so anyone can
+look up the aggregate balance of all [outputs][] sent to a particular [public
+key][], [pubkey hash][], or [script hash][]. Every time you pay or are paid by
 someone, you give them one of these three pieces of information,
-allowing them to look up the corresponding balance of millibits on the
+allowing them to look up the corresponding balance of [satoshis][] on the
 the block chain.
 
-Most people prefer not to reveal how many millibits they have to
+Most people prefer not to reveal how many satoshis they have to
 everyone with whom they transact, so we highly recommended the use of
-never-before-used public keys (in address form) for each incoming
-payment.  This includes using new public keys when creating change outputs.
+never-before-used [public keys][] (in [address][] form) for each incoming
+payment.  This includes using [unique
+addresses][]{:#term-unique-address} when creating [change outputs][change
+output].
 
 The new address will not be linked to any of your previous addresses, so
-the payer cannot see how many millibits you have at the time of payment.
-He will, of course, know how many millibits he pays you, and if he
-watches the block chain closely as you spend his payment, he may be able
+the payer cannot see how many satoshis you have at the time of payment.
+He will, of course, know how many satoshis he pays you, and if he
+watches the [block chain][] closely as you spend his payment, he may be able
 to figure out how much you haven't spent yet.
 
 If you combine his payment, or a transaction descended from it, with a
-payment someone else gave you, he may be able to track the millibits
+payment someone else gave you, he may be able to track the [satoshis][]
 from that second payment too. But as long as you consistently use a new
-public key (in some form) for every incoming payment, no one will ever
-be able to determine from block chain data the maximum number of millibits
+[public key][] (in some form) for every incoming payment, no one will ever
+be able to determine from block chain data the maximum number of satoshis
 you control.
 
 #### Private Key Reuse Security Considerations
@@ -1055,21 +1060,21 @@ In addition to enhancing your financial privacy, avoiding key reuse can
 enhance your security in the event of a serious, but not fatal, flaw in
 the cryptographic signing system used by Bitcoin.
 
-The theory behind the signing system Bitcoin uses, ECDSA, has been
+The theory behind the signing system Bitcoin uses, [ECDSA][], has been
 widely peer reviewed without any real-world problems being discovered,
 but actual implementations (such as the one used by Bitcoin Core) are
 occasionally found vulnerable to various attacks.
 
 Bitcoin was designed to anticipate these possible vulnerabilities by
-letting you obfuscate ECDSA public keys with a SHA256 hash in either the
-P2PH or P2SH transaction types. SHA256 has been as widely peer reviewed
+letting you obfuscate ECDSA [public keys][public key] with a [SHA256][] hash in either the
+[P2PH][] or [P2SH][] transaction types. SHA256 has been as widely peer reviewed
 as ECDSA and is based on different principles, nearly eliminating the
 chance of both ECDSA and SHA256 becoming vulnerable at the same time.
 
-However, when you sign a transaction, you reveal your full public key
-without any SHA256 protection.  Worse, you provide a signature made by
+However, when you sign a transaction, you reveal your full [public key][]
+without any SHA256 protection.  Worse, you provide a [signature][] made by
 running data known to the attacker (the signed parts of the transaction)
-through your ECDSA implementation along with your private key, which
+through your ECDSA implementation along with your [private key][], which
 could leak information about your private key.
 
 According to the ECDSA theory, this doesn't matter much. But in a world
@@ -1078,7 +1083,7 @@ implementations, signing a transaction puts you in a more exposed
 position than before you created the signature.
 
 Again, Bitcoin was designed to anticipate this situation.  There is no
-technical reason you should ever need to use the same private key in
+technical reason you should ever need to use the same [private key][] in
 more than one transaction.  Creating a new private/public key pair costs
 you nothing but some bits from your computer's pool of randomness, and it
 increases both the financial privacy and security your applications can
@@ -1086,59 +1091,57 @@ provide.
 
 There is, however, one major non-technical reason which may drive you
 and your users into using the same private/public key pair more than
-once: reusable Bitcoin addresses.
+once: reusable Bitcoin [addresses][].
 
-As explained previously, each Bitcoin address is the hash of a public
-key derived from your private key. If you paste your address on your
-website, give it to your clients, or put it in a QR code printed on your
+As explained previously, each Bitcoin address is the hash of a [public
+key][] derived from your [private key][]. If you paste your address on your
+website, give it to your clients, or put it in a [QR code][URI QR code] printed on your
 shirt, you will likely end up using your private key multiple times.
-Millibits sent to those previously-spent addresses are less safe than
-millibits sent to a brand new address. 
+[Satoshis][] sent to those previously-spent addresses are less safe than
+satoshis sent to a brand new address. 
 
 The increases in privacy and security make it highly advisable to build
-your applications to avoid address reuse and, when possible, to discourage
+your applications to avoid [address][] reuse and, when possible, to discourage
 users from reusing addresses. If your application needs to provide a
 fixed URI to which payments should be sent, please see Bitcoin
-Improvement Protocol (BIP) #72, the [URI Extensions For Payment
-Protocol](https://github.com/bitcoin/bips/blob/master/bip-0072.mediawiki)
-(still in draft as of this writing).
+the [`Bitcoin:` URI section][section bitcoin URI] below.
 
 ### Transaction Malleability
 
-None of Bitcoin's signature hash types protect the scriptSig, leaving
+None of Bitcoin's [signature hash][] types protect the [scriptSig][], leaving
 the door open for a limited DOS attack called [transaction
 malleability][]{:.term}{:#term-transaction-malleability}. The scriptSig
-contains the signature, which can't sign itself, allowing attackers to
+contains the [signature][], which can't sign itself, allowing attackers to
 make non-functional modifications to a transaction without rendering it
 invalid. For example, an attacker can add some data to the scriptSig
-which will be dropped before the previous output script is processed.
+which will be dropped before the previous [output][] [script][] is processed.
 
 Although the modifications are non-functional---so they do not change
-what inputs the transaction uses nor what outputs it pays---they do
+what [inputs][] the transaction uses nor what [outputs][] it pays---they do
 change the computed hash of the transaction. Since each transaction
 links to previous transactions using hashes as a transaction
-identifier (txid), a modified transaction will not have the txid its
+identifier ([txid][]), a modified transaction will not have the txid its
 creator expected.
 
 This isn't a problem for most Bitcoin transactions which are designed to
-be added to the block chain immediately. But it does become a problem
-when the output from a transaction is spent before that transaction is
+be added to the [block chain][] immediately. But it does become a problem
+when the [output][] from a transaction is spent before that transaction is
 added to the block chain.
 
 Bitcoin developers have been working to reduce transaction malleability
-among standard transaction types, but a complete fix is still only in
+among [standard transaction][standard script] types, but a complete fix is still only in
 the planning stages. At present, new transactions should not depend on
-previous transactions which have not been added to the block chain yet,
-especially if large amounts of satoshis are at stake.
+previous transactions which have not been added to the [block chain][] yet,
+especially if large amounts of [satoshis][] are at stake.
 
-Transaction malleability also affects payment tracking.  Bitcoin Core's
-RPC interface lets you track transactions by their txid---but if that
+[Transaction malleability][] also affects payment tracking.  Bitcoin Core's
+[RPC][] interface lets you track transactions by their [txid][]---but if that
 txid changes because the transaction was modified, it may appear that
-the transaction has disappeared from the network.
+the transaction has disappeared from the [network][].
 
 Current best practices for transaction tracking dictate that a
-transaction should be tracked by the transaction outputs (UTXOs) it
-spends as inputs, as they cannot be changed without invalidating the
+transaction should be tracked by the transaction [outputs][] ([UTXOs][utxo]) it
+spends as [inputs][], as they cannot be changed without invalidating the
 transaction.
 
 <!-- TODO/harding: The paragraph above needs practical advice about how
@@ -1146,10 +1149,10 @@ to do that. I'll need to find some time to look at somebody's wallet
 code. -harding -->
 
 Best practices further dictate that if a transaction does seem to
-disappear from the network and needs to be reissued, that it be reissued
+disappear from the [network][] and needs to be reissued, that it be reissued
 in a way that invalidates the lost transaction. One method which will
 always work is to ensure the reissued payment spends all of the same
-outputs that the lost transaction used as inputs.
+[outputs][] that the lost transaction used as [inputs][].
 
 ### Transaction Reference
 
@@ -1161,80 +1164,79 @@ The op codes used in standard transactions are,
 
 * Various data pushing op codes from 0x00 to 0x4e (1--78). These haven't
   been shown in the examples above, but they must be used to push
-  signatures and pubkeys onto the stack. See the link below this list
+  [signatures][signature] and [public keys][public key] onto the stack. See the link below this list
   for a description.
 
 * `OP_1NEGATE` (0x4f), `OP_TRUE`/`OP_1` (0x51), and `OP_2` through
   `OP_16` (0x52--0x60), which (respectively) push the values -1, 1, and
   2--16 to the stack.
 
-* `OP_CHECKSIG` consumes a signature and a full public key, and returns
-  true if the the transaction data specified by the SIGHASH flag was
-  converted into the signature using the same ECDSA private key that
+* [`OP_CHECKSIG`][op_checksig]{:#term-op-checksig}{:.term} consumes a [signature][] and a full [public key][], and returns
+  true if the the transaction data specified by the [SIGHASH][signature hash] flag was
+  converted into the signature using the same [ECDSA][] [private key][] that
   generated the public key.  Otherwise, it returns false.
 
-* `OP_DUP` returns a copy of the item on the stack below it.
+* [`OP_DUP`][op_dup]{:#term-op-dup}{:.term} returns a copy of the item on the stack below it.
 
-* `OP_HASH160` consumes the item on the stack below it and returns with
+* [`OP_HASH160`][op_hash160]{:#term-op-hash160}{:.term} consumes the item on the stack below it and returns with
   a RIPEMD-160(SHA256()) hash of that item.
 
-* `OP_EQUAL` consumes the two items on the stack below it and returns
+* [`OP_EQUAL`][op_equal]{:#term-op-equal}{:.term} consumes the two items on the stack below it and returns
   true if they are the same.  Otherwise, it returns false.
 
-* `OP_VERIFY` consumes one value and returns nothing, but it will
-  terminate the script in failure if the value consumed is zero (false).
+* [`OP_VERIFY`][op_verify]{:#term-op-verify}{:.term} consumes one value and returns nothing, but it will
+  terminate the [script][] in failure if the value consumed is zero (false).
 
-* `OP_EQUALVERIFY` runs `OP_EQUAL` and then `OP_VERIFY` in sequence.
+* [`OP_EQUALVERIFY`][op_equalverify]{:#term-op-equalverify}{:.term} runs [`OP_EQUAL`][op_equal] and then [`OP_VERIFY`][op_verify] in sequence.
 
-* `OP_CHECKMULTISIG` consumes the value (n) at the top of the stack,
-  consumes that many of the next stack levels (public keys), consumes
+* [`OP_CHECKMULTISIG`][op_checkmultisig]{:#term-op-checkmultisig}{:.term} consumes the value (n) at the top of the stack,
+  consumes that many of the next stack levels ([public keys][public key]), consumes
   the value (m) now at the top of the stack, and consumes that many of
-  the next values (signatures) plus one extra value. Then it compares
+  the next values ([signatures][signature]) plus one extra value. Then it compares
   each of public keys against each of the signatures looking for ECDSA
   matches; if n of the public keys match signatures, it returns true.
   Otherwise, it returns false.
 
     The "one extra value" it consumes is the result of an off-by-one
-    error in the implementation. This value is not used, so standard
-    scriptSigs prefix the signatures with a single OP_0 (0x00, an empty
-    array of bytes).
+    error in the implementation. This value is not used, so
+    [scriptSigs][scriptSig] prefix the signatures with a single OP_0 (0x00).
 
-* `OP_RETURN` terminates the script in failure. However, this will not
-  invalidate a null-data-type transaction which contains no more than 40
-  bytes following `OP_RETURN` no more than once per transaction.
+* [`OP_RETURN`][op_return]{:#term-op-return}{:.term} terminates the [script][] in failure. However, this will not
+  invalidate a [null-data-type][null data] transaction which contains no more than 40
+  bytes following [`OP_RETURN`][op_return] no more than once per transaction.
 
 A complete list of OP codes can be found on the Bitcoin Wiki [Script
 Page](https://en.bitcoin.it/wiki/Script), with an authoritative list in the `opcodetype` enum of the
 Bitcoin Core [script header
 file](https://github.com/bitcoin/bitcoin/blob/master/src/script.h).
 
-<span id="scriptsig-sanitization">Note:</span> non-standard transactions can add non-data-pushing op codes to
-their scriptSig, but scriptSig is run separately from the script (with a
-shared stack), so scriptSig can't use arguments such as `OP_RETURN` to
+<span id="scriptsig-evaluation">Note:</span> non-standard transactions can add non-data-pushing op codes to
+their [scriptSig][], but scriptSig is run separately from the [script][] (with a
+shared stack), so scriptSig can't use arguments such as [`OP_RETURN`][op_return] to
 prevent the script from working as expected.
 
 #### Conversion Of Hashes To Addresses And Vice-Versa
 
-The hashes used in P2PH and P2SH outputs are commonly encoded as Bitcoin
-addresses.  This is the procedure to encode those hashes and decode the
+The hashes used in [P2PH][] and [P2SH][] [outputs][] are commonly encoded as Bitcoin
+[addresses][].  This is the procedure to encode those hashes and decode the
 addresses.
 
-First, get your hash.  For P2PH, you RIPEMD-160(SHA256()) hash a ECDSA
-public key derived from your 256-bit ECDSA private key (random data).
-For P2SH, you RIPEMD-160(SHA256()) hash a redeemScript serialized in the
-format used in raw transactions (described in a following
-sub-section).  Taking the resulting hash:
+First, get your hash.  For [P2PH][], you RIPEMD-160(SHA256()) hash a ECDSA
+[public key][] derived from your 256-bit ECDSA [private key][] (random data).
+For [P2SH][], you RIPEMD-160(SHA256()) hash a [redeemScript][] serialized in the
+format used in raw transactions (described in a [following
+sub-section][raw transaction format]).  Taking the resulting hash:
 
 1. Add an address version byte in front of the hash.  The version
 bytes commonly used by Bitcoin are:
 
-    * 0x00 for P2PH addresses on the main Bitcoin network (mainnet)
+    * 0x00 for [P2PH][] addresses on the main Bitcoin network ([mainnet][])
 
-    * 0x6f for P2PH addresses on the Bitcoin testing network (testnet)
+    * 0x6f for [P2PH][] addresses on the Bitcoin testing network ([testnet][])
 
-    * 0x05 for P2SH addresses on mainnet
+    * 0x05 for [P2SH][] addresses on [mainnet][]
 
-    * 0xc4 for P2SH addresses on testnet
+    * 0xc4 for [P2SH][] addresses on [testnet][]
 
 2. Create a copy of the version and hash; then hash that twice with SHA256: `SHA256(SHA256(version . hash))`
 
@@ -1242,7 +1244,7 @@ bytes commonly used by Bitcoin are:
    These are used as a checksum to ensure the base hash gets transmitted
    correctly.
 
-4. Append the checksum to the version and hash, and encode it as a base58
+4. Append the checksum to the version and hash, and encode it as a [base58][base58check]
    string: `BASE58(version . hash . checksum)`
  
 Bitcoin's base58 encoding, called [Base58Check][]{:#term-base58check}{:.term} may not match other implementations. Tier
@@ -1274,19 +1276,19 @@ output_string.reverse();
 Bitcoin's own code can be traced using the [base58 header
 file](https://github.com/bitcoin/bitcoin/blob/master/src/base58.h).
 
-To convert addresses back into hashes, reverse the base58 encoding, extract
+To convert [addresses][] back into hashes, reverse the base58 encoding, extract
 the checksum, repeat the steps to create the checksum and compare it
 against the extracted checksum, and then remove the version byte.
 
 #### Raw Transaction Format
 
-Bitcoin transactions are broadcast between peers and stored in the
-block chain in a serialized byte format, called raw format. Bitcoin Core
+Bitcoin transactions are [broadcast][] between [peers][] and stored in the
+[block chain][] in a serialized byte format, called [raw format][]{:#term-raw-format}{:.term}. Bitcoin Core
 and many other tools print and accept raw transactions encoded as hex.
 
-A sample raw transaction is the first non-coinbase transaction, made in
-block 170.  To get the transaction, use the `getrawtransaction` RPC with
-that transaction's txid (provided below):
+A sample raw transaction is the first non-[coinbase transaction][], made in
+[block 170][block170].  To get the transaction, use the [`getrawtransaction` RPC][rpc getrawtransaction] with
+that transaction's [txid][] (provided below):
 
     > getrawtransaction \
       f4184fc596403b9d638783cf57adfe4c75c605f6356fbc91338530e9831e9e16
@@ -1368,7 +1370,7 @@ text has been updated to use the terms used in this document.)
 
 #### Generating Transactions
 
-Bitcoin Core's RPC interface provides a number of tools which help you
+Bitcoin Core's [RPC][] interface provides a number of tools which help you
 generate and sign transactions.  
 
 TODO: this really needs to be it's own section (h2) which walks the developer
@@ -1392,7 +1394,7 @@ TODO, Relevant links:
 
 ## Contracts
 
-By making the system hard to understand, the complexity of transactions
+By making the system hard to understand, the complexity of [transactions][]
 has so far worked against you. That changes with contracts. Contracts are
 transactions which use the decentralized Bitcoin system to enforce financial
 agreements.
@@ -1408,7 +1410,7 @@ and start a business even though they hardly know each other.
 
 The following subsections will describe a variety of Bitcoin contracts
 already in use. Because contracts deal with real people, not just
-transactions, they are framed in story format.
+transactions, they are framed below in story format.
 
 Besides the contract types described below, many other contract types
 have been proposed. Several of them are collected on the [Contracts
@@ -1417,52 +1419,52 @@ page](https://en.bitcoin.it/wiki/Contracts) of the Bitcoin Wiki.
 ### Escrow And Arbitration Contracts
 
 Bob and Charlie have a nasty falling out and want to terminate their
-business, but they can't agree how to split their saved millibits, which
-are stored in 2-of-2 multisig outputs. They both trust Alice The Arbitrator
+business, but they can't agree how to split their saved [satoshis][], which
+are stored in 2-of-2 [multisig outputs][multisig]. They both trust Alice The Arbitrator
 to sort the issue out---but they're each worried that the other person
 won't abide by any ruling Alice makes. The losing party might even
-delete his private key out of spite so the millibits are lost forever.
+delete his [private key][] out of spite so the satoshis are lost forever.
 
-The common escrow contract fixes this mess. Alice creates a new 2-of-3
-multisig redeemScript and sends it to both Bob and Charlie for
+The common [escrow contract][]{:#term-escrow-contract}{:.term} fixes this mess. Alice creates a new 2-of-3
+[multisig][] [redeemScript][] and sends it to both Bob and Charlie for
 examination. The redeemScript requires Alice, Bob, and Charlie each
-provide a public key, with signatures from any two of those public keys
+provide a [public key][], with [signatures][signature] from any two of those public keys
 satisfying the redeemScript conditions.
 
 Bob and Charlie each understands the implication: Alice will be able to
 sign a transaction which will be valid if either Bob or Charlie also
-signs it. Alice can't steal their millibits, so there's no new risk, but she
+signs it. Alice can't steal their [satoshis][], so there's no new risk, but she
 can give the winning party the ability to enforce her ruling.
 
 All three of them then give their public keys to each other and
-independently hash the redeemScript, creating a P2SH address. Then Bob
+independently hash the [redeemScript][], creating a [P2SH][] [address][]. Then Bob
 and Charlie together sign a transaction spending all of their shared
-millibits to that P2SH address.
+satoshis to that P2SH address.
 
 Alice looks at the business's books and makes a ruling. She creates and
-signs a transaction that spends 60% of the millibits to Bob's public key
+signs a transaction that spends 60% of the satoshis to Bob's [public key][]
 and 40% to Charlie's public key. 
 
-Either Bob and Charlie can sign the transaction and broadcast it to the
-peer-to-peer network, actually spending the millibits. If Alice creates
+Either Bob and Charlie can sign the transaction and [broadcast][] it to the
+peer-to-peer [network][], actually spending the satoshis. If Alice creates
 and signs a transaction neither of them will agree to, such as spending
-all the millibits to herself, they can find a new arbitrator and repeat
+all the satoshis to herself, they can find a new arbitrator and repeat
 the procedure.
 
-Merchants can use the 2-of-3 escrow contract to get customers to trust
+Merchants can use the 2-of-3 [escrow contract][] to get customers to trust
 them. Customers choose what they want to buy, but instead of paying
-the merchant directly, they spend their millibits to a 2-of-3 P2SH
-multisig output using one public key each from the customer, the
+the merchant directly, they spend their satoshis to a 2-of-3 [P2SH
+multisig][] [output][] using one [public key][] each from the customer, the
 merchant, and an arbitrator both the customer and merchant trust.
 
 If the product or service is provided as expected, the customer and the
 merchant work together to release the payment to the merchant.  If the
-merchant needs to offer a refund, he and the customer work together to
+merchant needs to offer a [refund][], he and the customer work together to
 release the payment to the customer.  If there's a dispute, the
 arbitrator makes a ruling and either the customer or the merchant signs
 it to release the payment according to the ruling.
 
-**Resource:** [BitRated](https://www.bitrated.com/) provides a multisig arbitration
+**Resource:** [BitRated](https://www.bitrated.com/) provides a [multisig][] arbitration
 service interface using HTML/JavaScript on a GNU AGPL-licensed website.
 
 
@@ -1476,45 +1478,45 @@ someone posts to Bob's busy forum, Alice skims the post to make sure it
 isn't offensive or spam. Alas, Bob often forgets to pay her, so Alice
 demands to be paid immediately after each post she approves or rejects.
 Bob says he can't do that because hundreds of small payments will cost
-him dozens of millibits in transaction fees, so Alice suggests they use a
-micropayment channel.
+him thousands of [satoshis][] in [transaction fees][], so Alice suggests they use a
+[micropayment channel][]{:#term-micropayment-channel}{:.term}.
 
-Bob asks Alice for her public key and then creates two transactions.
-The first transaction pays 100 millibits to a P2SH output whose
-2-of-2 multisig redeemScript requires signatures from both Alice and Bob.
-Broadcasting this transaction would let Alice hold the millibits
+Bob asks Alice for her [public key][] and then creates two transactions.
+The first transaction pays 100 millibits to a [P2SH][] [output][] whose
+2-of-2 [multisig][] [redeemScript][] requires [signatures][signature] from both Alice and Bob.
+[Broadcasting][] this transaction would let Alice hold the millibits
 hostage, so Bob keeps this transaction private for now and creates a
 second transaction.
 
 The second transaction spends all of the first transaction's millibits
-(minus a transaction fee) back to Bob after a 24 hour delay enforced
-by locktime. Bob can't sign the transaction by himself, so he gives
+(minus a [transaction fee][]) back to Bob after a 24 hour delay enforced
+by [locktime][]. Bob can't sign the transaction by himself, so he gives
 the second transaction to Alice to sign, as shown in the
 illustration below.
 
 ![Micropayment Channel Example](/img/dev/en-micropayment-channel.svg)
 
-Alice checks that the second transaction's locktime is 24 hours in the
+Alice checks that the second transaction's [locktime][] is 24 hours in the
 future, signs it, and gives a copy of it back to Bob. She then asks Bob
 for the first transaction and checks that the second transaction spends
-the output of the first transaction. She can now broadcast the first
-transaction to the network to ensure Bob has to wait for the time lock
+the [output][] of the first transaction. She can now [broadcast][] the first
+transaction to the [network][] to ensure Bob has to wait for the time lock
 to expire before further spending his millibits. Bob hasn't actually
-spent anything so far, except possibly a small transaction fee, and
+spent anything so far, except possibly a small [transaction fee][], and
 he'll be able to broadcast the second transaction in 24 hours for a
-full refund.
+full [refund][].
 
 Now, when Alice does some work worth 1 millibit, she asks Bob to create
 and sign a new version of the second transaction.  Version two of the
 transaction spends 1 millibit to Alice and the other 99 back to Bob; it does
-not have a locktime, so Alice can sign it and spend it whenever she
+not have a [locktime][], so Alice can sign it and spend it whenever she
 wants.  (But she doesn't do that immediately.)
 
 Alice and Bob repeat these work-and-pay steps until Alice finishes for
 the day, or until the time lock is about to expire.  Alice signs the
-final version of the second transaction and broadcasts it, paying
+final version of the second transaction and [broadcasts][broadcast] it, paying
 herself and refunding any remaining balance to Bob.  The next day, when
-Alice starts work, they create a new micropayment channel.
+Alice starts work, they create a new [micropayment channel][].
 
 If Alice fails to broadcast a version of the second transaction before
 its time lock expires, Bob can broadcast the first version and receive a
@@ -1528,7 +1530,7 @@ If someone uses transaction malleability to break the link between the
 two payments, Alice could hold Bob's 100 millibits hostage even if she
 hadn't done any work.
 
-For larger payments, Bitcoin transaction fees are very low as a
+For larger payments, Bitcoin [transaction fees][] are very low as a
 percentage of the total transaction value, so it makes more sense to
 protect payments with immediately-broadcast separate transactions.
 
@@ -1541,45 +1543,45 @@ all under an Apache license.
 ### CoinJoin Contracts 
 
 Alice is concerned about her privacy.  She knows every transaction gets
-added to the public block chain, so when Bob and Charlie pay her, they
-can each easily track those millibits to learn what Bitcoin
-addresses she pays, how much she pays them, and possibly how many
-millibits she has left.
+added to the public [block chain][], so when Bob and Charlie pay her, they
+can each easily track those satoshis to learn what Bitcoin
+[addresses][] she pays, how much she pays them, and possibly how many
+satoshis she has left.
 
 Because Alice isn't a criminal, she doesn't want to use some shady
 Bitcoin laundering service; she just wants plausible deniability about
-where she has spent her bitcoins and how many she has left, so she
+where she has spent her satoshis and how many she has left, so she
 starts up the Tor anonymity service on her computer and logs into an
 IRC chatroom as "AnonGirl."
 
 Also in the chatroom are "Nemo" and "Neminem."  They collectively
-agree to transfer millibits between each other so no one besides them
-can reliably determine who controls which millibits.  But they're faced
-with a dilemma: who transfers their millibits to one of the other two
+agree to transfer satoshis between each other so no one besides them
+can reliably determine who controls which satoshis.  But they're faced
+with a dilemma: who transfers their satoshis to one of the other two
 pseudonymous persons first? The CoinJoin-style contract, shown in the
 illustration below, makes this decision easy: they create a single
 transaction which does all of the spending simultaneously, ensuring none
-of them can steal the others' millibits.
+of them can steal the others' satoshis.
 
 ![Example CoinJoin Transaction](/img/dev/en-coinjoin.svg)
 
 Each contributor looks through their collection of Unspent Transaction
-Outputs (UTXOs) for 100 millibits they can spend. They then each generate
-a brand new public key and give UTXO details and pubkey hashes to the
+Outputs ([UTXOs][utxo]) for 100 millibits they can spend. They then each generate
+a brand new [public key][] and give UTXO details and [pubkey hashes][pubkey hash] to the
 facilitator.  In this case, the facilitator is AnonGirl; she creates
-a transaction spending each of the UTXOs to three equally-sized outputs.
+a transaction spending each of the UTXOs to three equally-sized [outputs].
 One output goes to each of the contributors' pubkey hashes.
 
-AnonGirl then signs her inputs using `SIGHASH_ALL` to ensure nobody can
-change the input or output details.  She gives the partially-signed
+AnonGirl then signs her inputs using [`SIGHASH_ALL`][sighash_all] to ensure nobody can
+change the [input][] or [output][] details.  She gives the partially-signed
 transaction to Nemo who signs his inputs the same way and passes it
-to Neminem, who also signs it the same way.  Neminem then broadcasts
-the transaction to the peer-to-peer network, mixing all of the millibits in
+to Neminem, who also signs it the same way.  Neminem then [broadcasts][broadcast]
+the transaction to the peer-to-peer [network][], mixing all of the millibits in
 a single transaction.
 
 As you can see in the illustration, there's no way for anyone besides
 AnonGirl, Nemo, and Neminem to confidently determine who received
-which output, so they can each spend their output with plausible
+which [output][], so they can each spend their output with plausible
 deniability.
 
 Now when Bob or Charlie try to track Alice's transactions through the
@@ -1588,30 +1590,30 @@ Neminem.  If Alice does a few more CoinJoins, Bob and Charlie might
 have to guess which transactions made by dozens or hundreds of people
 were actually made by Alice.
 
-The complete history of Alice's millibits is still in the block chain,
+The complete history of Alice's satoshis is still in the [block chain][],
 so a determined investigator could talk to the people AnonGirl
-CoinJoined with to find out the ultimate origin of her millibits and
+CoinJoined with to find out the ultimate origin of her satoshis and
 possibly reveal AnonGirl as Alice. But against anyone casually browsing
 block chain history, Alice gains plausible deniability.
 
 The CoinJoin technique described above costs the participants a small
-amount of millibits to pay the transaction fee.  An alternative
-technique, purchaser CoinJoin, can actually save them millibits and
+amount of [satoshis][] to pay the [transaction fee][].  An alternative
+technique, purchaser CoinJoin, can actually save them satoshis and
 improve their privacy at the same time.
 
 AnonGirl waits in the IRC chatroom until she wants to make a purchase.
-She announces her intention to spend millibits and waits until someone
+She announces her intention to spend satoshis and waits until someone
 else wants to make a purchase, likely from a different merchant. Then
-they combine their inputs the same way as before but set the outputs
-to the separate merchant addresses so nobody will be able to figure
-out solely from block chain history which one of them bought what from
+they combine their [inputs][] the same way as before but set the [outputs][]
+to the separate merchant [addresses][address] so nobody will be able to figure
+out solely from [block chain][] history which one of them bought what from
 the merchant.
 
-Since they would've had to pay a transaction fee to make their purchases
+Since they would've had to pay a [transaction fee][] to make their purchases
 anyway, AnonGirl and her co-spenders don't pay anything extra---but
 because they reduced overhead by combining multiple transactions, saving
 bytes, they may be able to pay a smaller aggregate transaction fee,
-saving each one of them a tiny amount of millibits.
+saving each one of them a tiny amount of satoshis.
 
 **Resource:** An alpha-quality (as of this writing) implementation of decentralized
 CoinJoin is [CoinMux](http://coinmux.com/), available under the Apache
@@ -1625,12 +1627,14 @@ available under the 4-clause BSD license.
 Bitcoin wallets at their core are a collection of [private keys][]. These collections are stored digitally in a file, or can even be physically stored on pieces of paper. 
 
 ### Private key formats
-Private keys are what are used to unlock bitcoin from a particular address. In Bitcoin, a private key in standard format is simply a 256-bit number, between the values:
+
+[Private keys][private key] are what are used to unlock [satoshis][] from a particular [address][]. In Bitcoin, a private key in standard format is simply a 256-bit number, between the values:
 
 0x1 and 0xFFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFE BAAE DCE6 AF48 A03B BFD2 5E8C D036 4141, effectively representing the entire range of 2<sup>256</sup>-1 values. The range is governed by the [secp256k1][] ECDSA encryption standard used by Bitcoin. 
 
 #### Wallet Import Format (WIF)
-In order to make copying of private keys less prone to error, Wallet Import Format may be utilized. WIF uses [base58Check][] encoding on an extended private key, greatly decreasing the chance of copying error, much like standard Bitcoin [addresses][].
+
+In order to make copying of [private keys][private key] less prone to error, [Wallet Import Format][]{:#term-wallet-import-format}{:.term} may be utilized. WIF uses [base58Check][] encoding on an private key, greatly decreasing the chance of copying error, much like standard Bitcoin [addresses][].
 
 1. Take a private key.
 
@@ -1650,7 +1654,7 @@ The process is easily reversible, using the Base58 decoding function, and removi
 
 #### Mini Private Key Format
 
-Mini private key format is a method for encoding a private key in under 30 characters, enabling keys to be embedded in a small physical space, such as physical bitcoin tokens, and more damage-resistant QR codes. 
+Mini private key format is a method for encoding a [private key][] in under 30 characters, enabling keys to be embedded in a small physical space, such as physical bitcoin tokens, and more damage-resistant QR codes. 
 
 1. The first character of mini keys is 'S'. 
 
@@ -1658,7 +1662,7 @@ Mini private key format is a method for encoding a private key in under 30 chara
 
 3. The SHA256 hash calculated. If the first byte output is a `00’, it is well-formatted. This key restriction acts as a typo-checking mechanism. A user brute forces the process using random numbers until a well-formatted mini private key is output. 
 
-4. In order to derive the full private key, the user simply takes a single SHA256 hash of the original mini private key. This process is one-way: it is intractible to compute the mini private key format from the derived key.
+4. In order to derive the full [private key][], the user simply takes a single SHA256 hash of the original mini private key. This process is one-way: it is intractible to compute the mini private key format from the derived key.
 
 Many implementations disallow the character '1' in the mini private key due to its visual similarity to 'l'.
 
@@ -1669,34 +1673,35 @@ Many implementations disallow the character '1' in the mini private key due to i
 
 ### Deterministic wallets formats
 
-Deterministic wallets are the recommended method of generating and storing private keys, as they allow a simple one-time backup of wallets via mnemonic pass-phrase of a number of short, common English words.
+Deterministic wallets are the recommended method of generating and storing [private keys][private key], as they allow a simple one-time backup of wallets via mnemonic pass-phrase of a number of short, common English words.
 
 
 
 
 #### Type 1: Single Chain Wallets
 
-Type 1 deterministic wallets are the simpler of the two, which can create a single series of keys from a single seed. A primary weakness is that if the master seed is leaked, all funds are compromised, and wallet sharing is extremely limited.
+Type 1 deterministic wallets are the simpler of the two, which can create a single series of keys from a single [seed][]. A primary weakness is that if the seed is leaked, all funds are compromised, and [wallet][] sharing is extremely limited.
 
 #### Type 2: Hierarchical Deterministic (HD) Wallets
 
-Type 2 wallets, specified in [BIP32][], are the currently favored format for generating, storing and managing private keys. Hierarchical deterministic wallets allow selective sharing by supporting multiple key-pair chains in a tree structure, derived from a single root. This selective sharing enables many advanced arrangements. An additional goal of the BIP32 standard is to encourage interoperability between wallet software using the same wallet format, rather than having to manually convert wallet types. The suggested minimal interoperability is the ability to import extended public and private keys, to give access to the descendants as wallet keys. 
+Type 2 wallets, specified in [BIP32][], are the currently favored format for generating, storing and managing [private keys][private key]. Hierarchical deterministic wallets allow selective sharing by supporting multiple key-pair chains in a tree structure, derived from a single root. This selective sharing enables many advanced arrangements. An additional goal of the BIP32 standard is to encourage interoperability between wallet software using the same wallet format, rather than having to manually convert wallet types. The suggested minimal interoperability is the ability to import extended [public][public key] and [private keys][private key], to give access to the descendants as wallet keys. 
 
-_Seamless interoperability is still a work in progress. It is possible for another implementation to not see non-zero valued addresses, depending on wallet parameters. For safe recovery of wallets, it is recommended to use the same wallet software. Another concern is the saving of HD wallet meta-data such as transaction notes and labels, which has not been standardized._  
+_Seamless interoperability is still a work in progress. It is possible for another implementation to not see non-zero valued addresses, depending on [wallet][] parameters. For safe recovery of wallets, it is recommended to use the same wallet software. Another concern is the saving of HD wallet meta-data such as transaction notes and [labels][label], which has not been standardized._  
 
 <!-- BEGIN The following text largely taken from the BIP0032 specification --> 
 
 Here are a select number of use cases:
 
-1. Audits: In case an auditor needs full access to the list of incoming and outgoing payments, one can share all account public extended keys. This will allow the auditor to see all [transactions][] from and to the wallet, in all accounts, but not a single private key.
+1. Audits: In case an auditor needs full access to the list of incoming and outgoing payments, one can share all account [public extended keys][extended key]. This will allow the auditor to see all [transactions][] from and to the wallet, in all accounts, but not a single [private key][].
 
-2. When a business has several independent offices, they can all use wallets derived from a single master. This will allow the headquarters to maintain a super-wallet that sees all incoming and outgoing transactions of all offices, and even permit moving money between the offices.
+2. When a business has several independent offices, they can all use wallets derived from a single [seed][]. This will allow the headquarters to maintain a super-wallet that sees all incoming and outgoing transactions of all offices, and even permit moving money between the offices.
 
-3. In case two business partners often transfer money, one can use the extended public key for the external chain of a specific account as a sort of "super address", allowing frequent transactions that cannot (easily) be associated, but without needing to request a new address for each payment. Such a mechanism could also be used by [mining][mine] pool operators as variable payout address.
+3. In case two business partners often transfer money, one can use the [extended public key][] for the external chain of a specific account as a sort of "super address", allowing frequent transactions that cannot (easily) be associated, but without needing to request a new [address][] for each payment. Such a mechanism could also be used by [mining][miner] pool operators as variable payout address.
 
 With many more arrangements possible. The following section is an in-depth technical discussion of HD wallets.
 
 #### Conventions
+
 In the rest of this text we will assume the public key cryptography used in Bitcoin, namely elliptic curve cryptography using the field and curve parameters defined by [secp256k1][]. Variables below are either:
 
 * Integers modulo the order of the curve (referred to as n).
@@ -1706,6 +1711,7 @@ In the rest of this text we will assume the public key cryptography used in Bitc
 * Byte sequences.
 
 Addition (+) of two coordinate pair is defined as application of the EC group operation.
+
 Concatenation (\|\|) is the operation of appending one byte sequence onto another.
 
 As standard conversion functions, we assume:
@@ -1725,21 +1731,21 @@ As standard conversion functions, we assume:
 
 In what follows, we will define a function that derives a number of [child keys][child key]{:#term-child-key}{:.term} from a [parent key][]{:#term-parent-key}{:.term}. In order to prevent these from depending solely on the key itself, we extend both [private][private keys] and [public keys][] first with an extra 256 bits of entropy. This extension, called the [chain code][]{:#term-chain-code}{:.term}, is identical for corresponding private and public keys, and consists of 32 bytes.
 
-We represent an [extended private key][]{:#term-extended-private-key}{:.term} as (k, c), with k the normal private key, and c the chain code. An [extended public key][]{:#term-extended-public-key}{:.term} is represented as (K, c), with K = point(k) and c the chain code.
+We represent an [extended private key][]{:#term-extended-private-key}{:.term} as (k, c), with k the normal [private key][], and c the [chain code][]. An [extended public key][]{:#term-extended-public-key}{:.term} is represented as (K, c), with K = point(k) and c the chain code.
 
 Each [extended key][]{:#term-extended-key}{:.term} has 2<sup>31</sup> [normal child keys][normal child key]{:#term-normal-child-key}{:.term}, and 2<sup>31</sup> [hardened child keys][hardened child key]{:#term-hardened-child-key}{:.term}. Each of these child keys has an [index][key index]{:#term-key-index}{:.term}. The normal child keys use indices 0 through 2<sup>31</sup>-1. The hardened child keys use indices 2<sup>31</sup> through 2<sup>32</sup>-1. To ease notation for hardened key indices, a number i<sub>H</sub> represents i+2<sup>31</sup>.
 
 #### Child key derivation (CKD) functions
 
-Given a parent extended key and an index i, it is possible to compute the corresponding [child extended key][]{:#term-child-extended-key}{:.term}. The algorithm to do so depends on whether the child is a hardened key or not (or, equivalently, whether i ≥ 2<sup>31</sup>), and whether we're talking about private or public keys.
+Given a parent [extended key][] and an index i, it is possible to compute the corresponding [child extended key][]{:#term-child-extended-key}{:.term}. The algorithm to do so depends on whether the child is a hardened key or not (or, equivalently, whether i ≥ 2<sup>31</sup>), and whether we're talking about [private][private key] or [public keys][public key].
 
 ##### Private parent key &rarr; private child key
 
-The function CKDpriv((k<sub>par</sub>, c<sub>par</sub>), i) &rarr; (k<sub>i</sub>, c<sub>i</sub>) computes a child extended private key from the parent extended private key:
+The function CKDpriv((k<sub>par</sub>, c<sub>par</sub>), i) &rarr; (k<sub>i</sub>, c<sub>i</sub>) computes a [child extended private key][extended key] from the [parent extended private key][extended key]:
 
 * Check whether i ≥ 2<sup>31</sup> (whether the child is a hardened key).
 
-    * If so (hardened child): let I = HMAC-SHA512(Key = c<sub>par</sub>, Data = 0x00 \|\| ser<sub>256</sub>(k<sub>par</sub>) \|\| ser<sub>32</sub>(i)). (Note: The 0x00 pads the private key to make it 33 bytes long.)
+    * If so (hardened child): let I = HMAC-SHA512(Key = c<sub>par</sub>, Data = 0x00 \|\| ser<sub>256</sub>(k<sub>par</sub>) \|\| ser<sub>32</sub>(i)). (Note: The 0x00 pads the [private key][] to make it 33 bytes long.)
 
     * If not (normal child): let I = HMAC-SHA512(Key = c<sub>par</sub>, Data = ser<sub>P</sub>(point(k<sub>par</sub>)) \|\| ser<sub>32</sub>(i)).
 
@@ -1837,7 +1843,7 @@ When importing a serialized extended public key, implementations must verify whe
 
 The total number of possible extended keypairs is almost 2<sup>512</sup>, but the produced keys are only 256 bits long, and offer about half of that in terms of security. Therefore, [master keys][master key]{:#term-master-key}{:.term} are not generated directly, but instead from a potentially short seed value.
 
-* Generate a [seed][master key seed]{:#term-master-key-seed}{:.term} byte sequence S of a chosen length (between 128 and 512 bits; 256 bits is advised) from a (P)RNG.
+* Generate a [seed][]{:#term-master-key-seed}{:.term} byte sequence S of a chosen length (between 128 and 512 bits; 256 bits is advised) from a (P)RNG.
 
 * Calculate I = HMAC-SHA512(Key = "Bitcoin seed", Data = S)
 
@@ -1893,9 +1899,9 @@ Consequently:
 
 ### JBOK (Just a bunch of keys) wallets formats (deprecated)
 
-JBOK-style wallets are a deprecated form of wallet that originated from the Bitcoin Core client wallet. Bitcoin Core client wallet would create 100 [private key][]/[public key][] pairs automatically via a Psuedo-Random-Number Generator (PRNG) for use. Once all these keys are consumed or the RPC call [keypoolrefill][rpc keypoolrefill] is run, another 100 key pairs would be created. This created considerable difficulty in backing up one’s keys, considering backups have to be run manually to save the newly generated private keys. If a new key pair set had been generated, used, then lost prior to a backup, the stored satoshis are likely lost forever. Many older-style mobile wallets followed a similar format, but only generated a new private key upon user demand.
+JBOK-style wallets are a deprecated form of wallet that originated from the Bitcoin Core client wallet. Bitcoin Core client wallet would create 100 [private key][]/[public key][] pairs automatically via a Psuedo-Random-Number Generator (PRNG) for use. Once all these keys are consumed or the [RPC][] call [keypoolrefill][rpc keypoolrefill] is run, another 100 key pairs would be created. This created considerable difficulty in backing up one’s keys, considering backups have to be run manually to save the newly generated private keys. If a new key pair set had been generated, used, then lost prior to a backup, the stored [satoshis][] are likely lost forever. Many older-style mobile wallets followed a similar format, but only generated a new private key upon user demand.
 
-This wallet type is being actively phased out and strongly discouraged from being used to store significant amounts of bitcoin due to the security and backup difficulty.
+This wallet type is being actively phased out and strongly discouraged from being used to store significant amounts of satoshis due to the security and backup difficulty.
 
 
 
@@ -2455,6 +2461,7 @@ Next, let's look at some information your CGI script can
 automatically derive.
 
 <a name="term-pp-expires"></a> <!-- TODO: break up code block -->
+<a name="term-pp-amount"></a> <!-- TODO: break up code block -->
 {% highlight python %}
 ##     Details automatically derivable from      ##
 ## payment variables and configuration settings  ##
@@ -2559,7 +2566,7 @@ but Mike Hearn implied on bitcoin-devel that it's optional (i.e. "wallets have
 to either never submit refund data, or always submit it"). 
 I'll use the BIP70 version here until I hear differently. -harding -->
 
-* [`refund_to`][pp refund to]{:#term-pp-refund-to}{:.term}: (required) one or more [output scripts][] to which the
+* [`refund_to`][pp refund to]{:#term-pp-refund-to}{:.term}: (required) one or more [output][] [scripts][script] to which the
   receiver can send a partial or complete refund. As of this writing, a
   proposal is gaining traction to expire refund output scripts after a
   certain amount of time (not defined yet) so spenders don't need to
@@ -2582,7 +2589,7 @@ Payment, the wallet program must set the following HTTP client headers:
 
 The receiver's CGI script at the [`payment_url`][pp payment url] receives the [Payment][pp payment] and
 decodes it using its Protocol Buffers code. The [`transactions`][pp transactions] are
-checked to see if they pay the [output scripts][] the receiver requested in
+checked to see if they pay the [output] [scripts][script] the receiver requested in
 [PaymentDetails][] and are then [broadcast][] to the [network][] (unless the network
 already has them).
 
@@ -2622,9 +2629,8 @@ no specific [receipt][]{:#term-receipt}{:.term} object.  However, a cryptographi
 receipt can be derived from a signed PaymentDetails and one or more [confirmed][]
 transactions.
 
-The PaymentDetails indicates what [output scripts][] should be paid
-([`script`][pp script]), how much they should be paid ([`amount`][pp
-amount]), and by when
+The PaymentDetails indicates what [output][] [scripts][script] should be paid
+([`script`][pp script]), how much they should be paid ([`amount`][pp amount]), and by when
 ([`expires`][pp expires]). The Bitcoin block chain indicates whether those outputs
 were paid the requested amount and can provide a rough idea of when the
 transactions were generated.  Together, this information provides
@@ -2978,8 +2984,8 @@ Bitcoin Core.
 
 [51 percent attack]: #term-51-attack "The ability of someone controlling a majority of hashing power to revise transactions history and prevent new transactions from confirming"
 [accidental fork]: #term-accidental-fork "When two or more blocks have the same block height, forking the block chain.  Happens occassionally by accident"
-[addresses]: #FIXME-TX "A 20-byte hash formatted as a P2PH or P2SH Bitcoin Address"
-[address]: #FIXME-TX "A 20-byte hash formatted as a P2PH or P2SH Bitcoin Address"
+[addresses]: #term-address "A 20-byte hash formatted as a P2PH or P2SH Bitcoin Address"
+[address]: #term-address "A 20-byte hash formatted as a P2PH or P2SH Bitcoin Address"
 [base58Check]: #term-base58check "The method used in Bitcoin for converting 160-bit hashes into Bitcoin addresses"
 [bitcoin URI]: #term-bitcoin-uri "A URI which allows receivers to encode payment details so spenders don't have to manually enter addresses and other details"
 [bitcoins]: #term-bitcoins "A primary accounting unit used in Bitcoin; 100 million satoshis"
@@ -2993,10 +2999,12 @@ Bitcoin Core.
 [block time]: #term-block-time "The time field in the block header"
 [block version]: #term-block-version "The version field in the block header"
 [broadcast]: #FIXME-P2P "Sending transactions or blocks to all other peers on the Bitcoin network (compare to privately transmitting to a single peer or partner"
+[broadcasts]: #FIXME-P2P "Sending transactions or blocks to all other peers on the Bitcoin network (compare to privately transmitting to a single peer or partner"
 [broadcasting]: #FIXME-P2P "Sending transactions or blocks to all other peers on the Bitcoin network (compare to privately transmitting to a single peer or partner)"
 [certificate chain]: #term-certificate-chain "A chain of certificates connecting a individual's leaf certificate to the certificate authority's root certificate"
 [chain code]: #term-chain-code "In HD wallets, 32 bytes of entropy added to the master public and private keys to help them generate secure child keys; the chain code is usually derived from a seed along with the master private key"
-[change address]: #FIXME-TX "An output used by a spender to send back to himself some of the satoshis from the inputs"
+[change address]: #term-change-output "An output used by a spender to send back to himself some of the satoshis from the inputs"
+[change output]: #term-change-output "An output used by a spender to send back to himself some of the satoshis from the inputs"
 [child extended key]: #term-child-extended-key "A child key extended so that it can become a parent key and derive its own child keys"
 [child key]: #term-child-key "In HD wallets, a key derived from a parent key"
 [child public key]: #term-child-public-key "In HD wallets, a public key derived from a parent public key or a child private key"
@@ -3013,53 +3021,73 @@ Bitcoin Core.
 [extended key]: #term-extended-key "A public or private key extended with the chain code, which adds an extra 32 bytes of entropy"
 [extended private key]: #term-extended-private-key "A private key extended with the chain code, which adds an extra 32 bytes of entropy"
 [extended public key]: #term-extended-public-key "A public key extended with the chain code, which adds an extra 32 bytes of entropy "
-[enternal chain]: #term-enternal-chain "A default subdivision in HD wallet accounts used for public P2PH addresses and other public keys used by other people"
+[external chain]: #term-external-chain "A default subdivision in HD wallet accounts used for public P2PH addresses and other public keys used by other people"
+[escrow contract]: #term-escrow-contract "A contract in which the spender and receiver store satoshis in a multisig output until both parties agree to release the satoshis"
 [fiat]: #term-fiat "National currencies such as the dollar or euro"
 [genesis block]: #term-genesis-block "The first block created; also called block 0"
 [hardened child key]: #term-hardened-child-key "In an HD wallet, a child key which can only be derived from a parent private key; it cannot be derived from a parent public key"
 [HD account]: #term-hd-account "A sub-chain of the master chain in an HD wallet"
 [header nonce]: #term-header-nonce "Four bytes of arbitrary data in a block header used to let miners create headers with different hashes for proof of work"
 [high-priority transactions]: #term-high-priority-transactions "Transactions which don't pay a transaction fee; only transactions spending long-idle outputs are eligible"
-[input]: #FIXME-TX "The input to a transaction linking to the output of a previous transaction which permits spending of satoshis"
+[input]: #term-input "The input to a transaction linking to the output of a previous transaction which permits spending of satoshis"
+[inputs]: #term-input "The input to a transaction linking to the output of a previous transaction which permits spending of satoshis"
 [internal chain]: #term-internal-chain "A default subdivision in HD wallet accounts used for change addresses and other self-created transactions"
 [intermediate certificate]: #term-intermediate-certificate "A intermediate certificate authority certificate which helps connect a leaf (receiver) certicate to a root certificate authority"
 [key fingerprint]: #term-key-fingerprint "The first 32 bits of an extended key (not including the chain code) used to identify the extended key" 
 [key index]: #term-key-index "An index number used in the HD wallet formula to generate child keys from a parent key" 
+[key pair]: #term-key-pair "A private key and its derived public key"
 [label]: #term-label "The label parameter of a bitcoin: URI which provides the spender with the receiver's name (unauthenticated)" 
 [leaf certificate]: #term-leaf-certificate "The end-node in a certificate chain; in the payment protocol, it is the certificate belonging to the receiver of satoshis"
+[locktime]: #term-locktime "Part of a transaction which indicates the earliest time or earliest block when that transaction can be added to the block chain"
 [long-term fork]: #term-long-term-fork "When a series of blocks have corresponding block heights, indicating a possiblly serious problem"
 [mainnet]: #FIXME-Intro "The Bitcoin main network used to transfer satoshis (compare to testnet, the test network)"
-[master key seed]: #term-master-key-seed "A potentially-short value used as a seed to generate a master key for an HD wallet"
 [master key]: #term-master-key "In an HD wallet, top-level private key extended by the chaincode; master keys are usually generated by a seed"
 [merge]: #term-merge "Spending, in the same transaction, multiple outputs which can be traced back to different previous spenders, leaking information about how many satoshis you control"
 [merge avoidance]: #term-merge-avoidance "A strategy for selecting which outputs to spend that avoids merging outputs with different histories that could leak private information"
 [message]: #term-message "A parameter of bitcoin: URIs which allows the receiver to optionally specify a message to the spender"
 [Merkle root]: #term-merkle-root "The root node of a Merkle tree descended from all the hashed pairs in the tree"
 [Merkle tree]: #term-merkle-tree "A tree constructed by hashing paired data, then pairing and hashing the results until a single hash remains, the Merkle root"
+[micropayment channel]: #term-micropayment-channel
 [millibits]: #term-millibits "0.001 bitcoins (100,000 satoshis)"
+[mine]: #term-miner "Creating Bitcoin blocks which solve proof-of-work puzzles in exchange for block rewards and transaction fees"
 [miner]: #term-miner "Creators of Bitcoin blocks who solve proof-of-work puzzles in exchange for block rewards and transaction fees"
 [miners]: #term-miner "Creators of Bitcoin blocks who solve proof-of-work puzzles in exchange for block rewards and transaction fees"
-[multisig]: #FIXME-TX "An output script using OP_CHECKMULTISIG to check for multiple signatures"
+[minimum fee]: #term-minimum-fee "The minimum fee a transaction must pay in must circumstances to be mined or broadcast by peers across the network"
+[multisig]: #term-multisig "An output script using OP_CHECKMULTISIG to check for multiple signatures"
 [network]: #FIXME-P2P "The Bitcoin P2P network which broadcasts transactions and blocks"
 [normal child key]: #term-normal-child-key "A standard public or private Bitcoin key which was derived from an extended key"
+[Null data]: #term-null-data "A standard transaction type which allows adding 40 bytes of arbitrary data to the block chain up to once per transaction"
+[op_checkmultisig]: #term-op-checkmultisig "Op code which returns true if one or more provided signatures (m) sign the correct parts of a transaction and match one or more provided public keys (n)"
+[op_checksig]: #term-op-checksig "Op code which returns true if a signature signs the correct parts of a transaction and matches a provided public key"
+[op code]: #op-codes "Operation codes which run functions within a script"
+[op_dup]: #term-op-dup "Operation which duplicates the entry below it on the stack"
+[op_equal]:#term-op-equal "Operation which returns true if the two entries below it on the stack are equalivent"
+[op_equalverify]: #term-op-equalverify "Operation which terminates the script in failure unless the two entries below it on the stack are equavilent"
+[op_hash160]: #term-op-hash160 "Operation which converts the entry below it on the stack into a RIPEMD(SHA256()) hashed version of itself"
+[op_return]: #term-op-return "Operation which terminates the script in failure"
+[op_verify]: #term-op-verify "Operation which terminates the script if the entry below it on the stack is non-true (zero)"
 [orphan]: #term-orphan "Blocks which were successfully mined but which aren't included on the current valid block chain"
-[output]: #FIXME-TX "The output of a transaction which transfers value to a script"
-[outputs]: #FIXME-TX "The outputs of a transaction which transfer value to scripts"
-[output scripts]: #FIXME-TX "The script part of an output which sets the conditions for spending of the satoshis in that output"
-[P2PH]: #FIXME-TX "A script which Pays To Pubkey Hashes (P2PH), allowing spending of satoshis to anyone with a Bitcoin address"
-[P2SH multisig]: #FIXME-TX "A multisig script embedded in the redeemScript of a pay-to-script-hash (P2SH) transaction"
+[output]: #term-output "The output of a transaction which transfers value to a script"
+[output index]: #term-output-index "The sequencially-numbered index of outputs in a single transaction starting from 0"
+[outputs]: #term-output "The outputs of a transaction which transfer value to scripts"
+[P2PH]: #term-p2ph "A script which Pays To Pubkey Hashes (P2PH), allowing spending of satoshis to anyone with a Bitcoin address"
+[P2SH]: #term-p2sh "A script which Pays To Script Hashes (P2SH), allowing convienent spending of satoshis to an address referencing a script"
+[P2SH multisig]: #term-p2sh-multisig "A multisig script embedded in the redeemScript of a pay-to-script-hash (P2SH) transaction"
 [parent key]: #term-parent-key "An extended private or public key capable of forming child keys"
 [payment protocol]: #term-payment-protocol "The protocol defined in BIP70 which lets spenders get signed payment details from receivers"
 [PaymentACK]: #term-paymentack "The PaymentACK of the payment protocol which allows the receiver to indicate to the spender that the payment is being processed"
 [PaymentDetails]: #term-paymentdetails "The PaymentDetails of the payment protocol which allows the receiver to specify the payment details to the spender"
 [PaymentRequest]: #term-paymentrequest "The PaymentRequest of the payment protocol which contains and allows signing of the PaymentDetails"
 [PaymentRequests]: #term-paymentrequest "The PaymentRequest of the payment protocol which contains and allows signing of the PaymentDetails"
+[peer]: #FIXME-P2P "Peer on the P2P network who receives and broadcasts transactions and blocks"
 [peers]: #FIXME-P2P "Peers on the P2P network who receive and broadcast transactions and blocks"
 [PKI]: #term-pki "Public Key Infrastructure; usually meant to indicate the X.509 certificate system used for HTTP Secure (https)."
-[private key]: #FIXME-TX "The private portion of a keypair which can create signatures which other people can verify using the public key"
-[private keys]: #FIXME-TX "The private portion of a keypair which can create signatures which other people can verify using the public key"
-[public key]: #FIXME-TX "The public portion of a keypair which can be safely distributed to other people so they can verify a signature created with the corresponding private key"
-[public keys]: #FIXME-TX "The public portion of a keypair which can be safely distributed to other people so they can verify a signature created with the corresponding private key"
+[private key]: #term-private-key "The private portion of a keypair which can create signatures which other people can verify using the public key"
+[private keys]: #term-private-key "The private portion of a keypair which can create signatures which other people can verify using the public key"
+[pubkey hash]: #term-pubkey-hash "The hash of a public key which can be included in a P2PH output"
+[public key]: #term-public-key "The public portion of a keypair which can be safely distributed to other people so they can verify a signature created with the corresponding private key"
+[public keys]: #term-public-key "The public portion of a keypair which can be safely distributed to other people so they can verify a signature created with the corresponding private key"
+[pp amount]: #term-pp-amount "Part of the Output part of the PaymentDetails part of a payment protocol where receivers can specify the amount of satoshis they want paid to a particular output script"
 [pp expires]: #term-pp-expires "The expires field of a PaymentDetails where the receiver tells the spender when the PaymentDetails expires"
 [pp memo]: #term-pp-memo "The memo fields of PaymentDetails, Payment, and PaymentACK which allow spenders and receivers to send each other memos"
 [pp merchant data]: #term-pp-merchant-data "The merchant_data part of PaymentDetails and Payment which allows the receiver to send arbitrary data to the spender in PaymentDetails and receive it back in Payments"
@@ -3071,31 +3099,53 @@ Bitcoin Core.
 [pp transactions]: #term-pp-transactions "The transactions field of a Payment where the spender provides copies of signed transactions to the recevier"
 [pp payment url]: #term-pp-payment-url "The payment_url of the PaymentDetails which allows the receiver to specify where the sender should post payment"
 [proof of work]: #term-proof-of-work "Proof that computationally-difficult work was performed which helps secure blocks against modification, protecting transaction history"
-[r]: #term-r-parameter "The payment request parameter in a bitcoin: URI" [rawtx]: #FIXME-TX "Complete transactions in their binary format; often represented using hexidecimal"
+[Pubkey]: #term-pubkey "A standard output script which specifies the full public key to match a signature; used in coinbase transactions"
+[r]: #term-r-parameter "The payment request parameter in a bitcoin: URI" 
+[raw format]: #term-raw-format "Complete transactions in their binary format; often represented using hexidecimal"
 [receipt]: #term-receipt "A cryptographically-verifiable receipt created using parts of a payment request and a confirmed transaction"
 [recurrent rebilling]: #rebilling-recurring-payments "Billing a spender on a regular schedule"
+[redeemScript]: #term-redeemscript "A script created by the receipient, hashed, and given to the spender for use in a P2SH output"
 [refund]: #issuing-refunds "A transaction which refunds some or all satoshis received in a previous transaction"
 [root certificate]: #term-root-certificate "A certificate belonging to a certificate authority (CA)"
 [satoshi]: #term-satoshi "The smallest unit of Bitcoin value; 0.00000001 bitcoins.  Also used generically for any value of bitcoins"
 [satoshis]: #term-satoshi "The smallest unit of Bitcoin value; 0.00000001 bitcoins.  Also used generically for any value of bitcoins"
+[sequence number]: #term-sequence-number "A number intended to allow time locked transactions to be updated before being finalized; not currently used except to disable locktime in a transaction"
+[script]: #term-script "The part of an output which sets the conditions for spending of the satoshis in that output"
+[scripts]: #term-script "The part of an output which sets the conditions for spending of the satoshis in that output"
+[scriptSig]: #term-scriptsig "Data generated by a spender which is almost always used as variables to satisfy an output script"
+[script hash]: #term-script-hash "The hash of a redeemScript used to create a P2SH output"
+[seed]: #term-master-key-seed "A potentially-short value used as a seed to generate a master private key and chain code for an HD wallet"
+[sha_shacp]: #term-sighash-all-sighash-anyonecanpay "Signature hash type which allows other people to contribute satoshis without changing the number of satoshis sent nor where they go"
+[shacp]: #term-sighash-anyonecanpay "A signature hash type which modifies the behavior of other signature hash types"
+[shn_shacp]: #term-sighash-none-sighash-anyonecanpay "Signature hash type which allows unfettered modification of a transaction"
+[shs_shacp]: #term-sighash-single-sighash-anyonecanpay "Signature hash type which allows modification of the entire transaction except the signed input and the output with the same index number"
+[sighash_all]: #term-sighash-all "Default signature hash type which signs the entire transation except any scriptSigs, preventing modification of the signed parts"
+[sighash_none]: #term-sighash-none "Signature hash type which only signs the inputs, allowing anyone to change the outputs however they'd like"
+[sighash_single]: #term-sighash-single "Signature hash type which only signs its input and the output with the same index value, allowing modification of other inputs and outputs"
+[signature]: #term-signature "The result of combining a private key and some data in an ECDSA signature operation which allows anyone with the corresponding public key to verify the signature"
+[signature hash]: #term-signature-hash "A byte appended onto signatures generated in Bitcoin which allows the signer to specify what data was signed, allowing modification of the unsigned data"
 [spv]: #FIXME-OM "A method for verifying particular transactions were included in blocks without downloading the entire contents of the block chain"
 [ssl signature]: #term-ssl-signature "Signatures created and recognized by major SSL implementations such as OpenSSL"
+[stack]: #term-stack "An evaluation stack used in Bitcoin's script language"
+[standard script]: #standard-transactions "An output script which matches the isStandard() patterns specified in Bitcoin Core---or a transaction containing only standard outputs. Only standard transactions are mined or broadcast by peers running the default Bitcoin Core software"
 [target]: #term-target "The threshold below which a block header hash must be in order for the block to be added to the block chain"
 [testnet]: #FIXME-Intro "A Bitcoin-like network where the satoshis have no real-world value to allow risk-free testing"
 [transaction fee]: #term-transaction-fee "The amount remaining when all outputs are subtracted from all inputs in a transaction; the fee is paid to the miner who includes that transaction in a block"
 [transaction fees]: #term-transaction-fee "The amount remaining when all outputs are subtracted from all inputs in a transaction; the fee is paid to the miner who includes that transaction in a block"
-[transaction malleability]: #FIXME-TX "The ability of an attacker to change the transaction identifier (txid) of unconfirmed transactions, making dependent transactions invalid"
-[txid]: #FIXME-TX "A hash of a completed transaction which allows other transactions to spend its outputs"
+[transaction malleability]: #transaction-malleability "The ability of an attacker to change the transaction identifier (txid) of unconfirmed transactions, making dependent transactions invalid"
+[txid]: #term-txid "A hash of a completed transaction which allows other transactions to spend its outputs"
 [transaction]: #transactions "A transaction spending satoshis"
+[transaction version number]: #term-transaction-version-number "A version number prefixed to transactions to allow upgrading""
 [transactions]: #transactions "A transaction spending satoshis"
 [unconfirmed]: #term-unconfirmed-transactions "A transaction which has not yet been added to the block chain"
 [unconfirmed transactions]: #term-unconfirmed-transactions "A transaction which has not yet been added to the block chain"
-[unique addresses]: #FIXME-TX "Address which are only used once to protect privacy and increase security"
+[unique addresses]: #term-unique-address "Address which are only used once to protect privacy and increase security"
 [URI QR Code]: #term-uri-qr-code "A QR code containing a bitcoin: URI"
-[utxo]: #FIXME-TX "Unspent Transaction Output (UTXO) holding satoshis which have not yet been spent"
+[utxo]: #term-utxo "Unspent Transaction Output (UTXO) holding satoshis which have not yet been spent"
 [verified payments]: #verifying-payment "Payments which the receiver believes won't be double spent"
 [v2 block]: #term-v2-block "The current version of Bitcoin blocks"
 [wallet]: #wallets "Software which stores private keys to allow users to spend and receive satoshis"
+[Wallet Import Format]: #term-wallet-import-format "A private key specially formatted to allow easy import into a wallet"
 [wallets]: #wallets "Software which stores private keys to allow users to spend and receive satoshis"
 [X509Certificates]: #term-x509certificates
 
@@ -3105,21 +3155,25 @@ Bitcoin Core.
 [bitcoinpdf]: http://bitcoin.org/bitcoin.pdf
 [block170]: http://blockexplorer.com/block/00000000d1145790a8694403d4063f323d499e655c83426834d4ce2f8dd4a2ee
 [DER]: https://en.wikipedia.org/wiki/Abstract_Syntax_Notation_One
+[ECDSA]: https://en.wikipedia.org/wiki/Elliptic_Curve_DSA
 [MIME]: https://en.wikipedia.org/wiki/Internet_media_type
 [Merge Avoidance subsection]: #merge-avoidance
 [mozrootstore]: https://www.mozilla.org/en-US/about/governance/policies/security-group/certs/
 [protobuf]: https://developers.google.com/protocol-buffers/
+[raw transaction format]: #raw-transaction-format
 [rpc decoderawtransaction]: /en/api-reference#TK
 [rpc getblock]: /en/api-reference#TK
 [rpc getrawtransaction]: /en/api-reference#TK
 [rpc keypoolrefill]: /en/api-reference#TK
 [rpc listunspent]: /en/api-reference#TK
+[RPC]: /en/api-reference
 [RPCs]: /en/api-reference
 [secp256k1]: http://www.secg.org/index.php?action=secg,docs_secg
+[section bitcoin URI]: #requesting-payment-using-the-bitcoin-uri
+[SHA256]: https://en.wikipedia.org/wiki/SHA-2
 [URI encoded]: https://tools.ietf.org/html/rfc3986
 [Verification subsection]: #verifying-payment
 [x509]: https://en.wikipedia.org/wiki/X.509
-
 
 <!--#md#</div>#md#-->
 
