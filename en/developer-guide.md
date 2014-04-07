@@ -26,7 +26,7 @@ title: "Developer Guide - Bitcoin"
 
 **Note**: Some strings are shortened or wrapped: "[...]" indicates extra data was removed, and lines ending in a single backslash "\\" are continued below.
 
-## The Bitcoin Block Chain
+## Block Chain
 
 The block chain provides Bitcoin's public ledger, a timestamped record
 of all confirmed transactions. This system is used to protect against double
@@ -195,7 +195,7 @@ such as some miners diligently working to extend the block chain at the
 same time other miners are attempting a 51 percent attack to revise
 transaction history.
 
-### Implementation Details: Block Contents
+### Block Contents
 
 This section describes version 2 blocks, which are any blocks with a
 block height greater than 227,835. (Version 1 and version 2 blocks were
@@ -1215,7 +1215,7 @@ their scriptSig, but scriptSig is run separately from the script (with a
 shared stack), so scriptSig can't use arguments such as `OP_RETURN` to
 prevent the script from working as expected.
 
-#### Conversion Of Hashes To Addresses And Vice-Versa
+#### Address Conversion
 
 The hashes used in P2PH and P2SH outputs are commonly encoded as Bitcoin
 addresses.  This is the procedure to encode those hashes and decode the
@@ -1416,7 +1416,7 @@ Besides the contract types described below, many other contract types
 have been proposed. Several of them are collected on the [Contracts
 page](https://en.bitcoin.it/wiki/Contracts) of the Bitcoin Wiki.
 
-### Escrow And Arbitration Contracts
+### Escrow And Arbitration
 
 Bob and Charlie have a nasty falling out and want to terminate their
 business, but they can't agree how to split their saved millibits, which
@@ -1468,7 +1468,7 @@ it to release the payment according to the ruling.
 service interface using HTML/JavaScript on a GNU AGPL-licensed website.
 
 
-### Micropayment Channel Contracts
+### Micropayment Channel
 
 <!-- SOMEDAY: try to rewrite using a more likely real-world example without
 making the text or illustration more complicated --> 
@@ -1540,7 +1540,7 @@ implementation, and [a
 tutorial](https://code.google.com/p/bitcoinj/wiki/WorkingWithMicropayments)
 all under an Apache license.
 
-### CoinJoin Contracts 
+### CoinJoin
 
 Alice is concerned about her privacy.  She knows every transaction gets
 added to the public block chain, so when Bob and Charlie pay her, they
