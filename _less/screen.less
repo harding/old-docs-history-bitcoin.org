@@ -717,14 +717,23 @@ table tr.even td{
 	max-width:100%;
 }
 .toccontent a[href ^="#"]:link,
-.toccontent a[href ^="#"]:visited {
-    color: #646464;
-    border-bottom: thin dotted silver;
+.toccontent a[href ^="#"]:visited{
+	color:#646464;
+	border-bottom:thin dotted #BDBDBD;
 }
-
 .toccontent a:link.term,
-.toccontent a:visited.term {
-    color: black;
+.toccontent a:visited.term{
+	color:#000;
+}
+.toccontent a:link.term code,
+.toccontent a:visited.term code{
+	color:#646464;
+}
+.toccontent a[href ^="#"]:link:hover,
+.toccontent a[href ^="#"]:visited:hover,
+.toccontent a:link.term:hover,
+.toccontent a:visited.term:hover{
+	color:#000;
 }
 
 .highlight  { background: #ffffff; }
