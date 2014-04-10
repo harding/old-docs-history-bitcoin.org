@@ -1,0 +1,53 @@
+---
+## "pattern to match in file" => "reference to give it",
+## ^^^^ produces \/\/\/
+## [pattern to match in file][reference to give it]
+#
+## If you have a patten you usually want to match (such as "satoshi"
+## (currency)) but which may appear a few times where you don't want it
+## to match (such as "Satoshi" (name)), use the zero-space word-joiner
+## character (&#8288;) in the middle of the term you don't want to
+## match. E.g.:
+### Bitcoin was invented by Sa&#8288;toshi Nakamoto.
+## This is ugly, but it gets the job done.
+
+## Terms sorted alphabetically (for the sake of human editors)
+#
+## Recommendation: use base ("") for singular; use references for
+## plurals. E.g.: block: "", blocks: block
+#
+## Mandatory: terms that will be used by themselves inside `` need to
+## have their `` form defined. E.g.: "script" => "", "`script`" =>
+## "script"
+#
+## Terms inside longer `` spans won't work. You'll have to stop
+## using autocrossref mode to get them to work correctly. E.g.:
+## `you can't put script here` unless you prefix it with
+## {% endautocrossref %}
+
+addresses: address
+block:
+block chain:
+block header:
+blocks: block
+confirmed transactions:
+double spend:
+double spending: double spend
+inputs: input
+input:
+merkle root:
+merkle tree:
+miner:
+outputs: output
+output:
+peer-to-peer network: network
+proof of work:
+satoshi:
+satoshis: satoshi
+standard transaction: standard script
+#transaction -- Recommend we don't autocrossref this; it occurs to often
+transaction fee:
+txid:
+txids: txid
+utxo:
+utxos: utxo

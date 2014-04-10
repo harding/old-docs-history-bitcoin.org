@@ -1,5 +1,7 @@
 module Jekyll
 
+require 'yaml'
+
   class AutoCrossRefBlock < Liquid::Block
 
     def initialize(tag_name, text, tokens)
@@ -9,53 +11,8 @@ module Jekyll
     def render(context)
       output = super
 
-      ## TODO: put term defs in a separate file 
-      terms = { 
-        ## "pattern to match in file" => "reference to give it",
-        ## ^^^^ produces \/\/\/
-        ## [pattern to match in file][reference to give it]
-
-        ## Terms sorted alphabetically (for the sake of human editors)
-        #
-        ## Recommendation: use base ("") for singular; use references
-        ## for plurals. E.g.: "block" => "", "blocks" => "block"
-        #
-        ## Mandatory: terms that will be used by themselves inside ``
-        ## need to have their `` form defined. E.g.: "script" => "",
-        ## "`script`" => "script"
-        #
-        ## Terms inside longer `` spans won't work. You'll have to stop
-        ## using autocrossref mode to get them to work correctly. E.g.:
-        ## `you can't put script here` unless you prefix it with 
-        ## {% endautocrossref %}
-        "addresses" => "address",
-        "block" => "",
-        "block chain" => "", 
-        "block header" => "",
-        "blocks" => "block",
-        "confirmed transactions" => "",
-        "double spend" => "",
-        "double spending" => "double spend",
-        "inputs" => "input",
-        "input" => "",  ## This could be troublesome
-        "merkle root" => "",
-        "merkle tree" => "",
-        "miner" => "",
-        "outputs" => "output",
-        "output" => "", ## This could be troublesome
-        "peer-to-peer network" => "network",
-        "proof of work" => "",
-        #satoshi -- Recommend no autoxref so we can use Satoshi (name) without linking to satoshis (unit)
-        "satoshis" => "",
-        "standard transaction" => "standard script",
-        #transaction -- Recommend we don't autocrossref this; it occurs to often
-        "transaction fee" => "",
-        "txid" => "",
-        "txids" => "txid",
-        "utxo" => "",
-        "utxos" => "utxo",
-
-      }
+      ## Load terms from file
+      terms = YAML.load_file("_autocrossref.yaml")
 
       ## Sort terms by reverse length, so longest matches get linked
       ## first (e.g. "block chain" before "block"). Otherwise short
