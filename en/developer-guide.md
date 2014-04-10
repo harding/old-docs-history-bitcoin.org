@@ -28,36 +28,39 @@ title: "Developer Guide - Bitcoin"
 
 ## Block Chain
 
+{% autocrossref %}
 The block chain provides Bitcoin's public ledger, a timestamped record
-of all [confirmed transactions][]. This system is used to protect against [double spending][double spend] 
-and modification of previous transaction records, using [proof of
-work][] verified by the [peer-to-peer network][network] to maintain a global consensus.
+of all confirmed transactions. This system is used to protect against double spending
+and modification of previous transaction records, using proof of
+work verified by the peer-to-peer network to maintain a global consensus.
 
 This document provides detailed explanations about the functioning of
 this system along with security advice for risk assessment and tools for
 using block chain data.
+{% endautocrossref %}
 
 ### Block Chain Overview
 
 ![Block Chain Overview](/img/dev/en-blockchain-overview.svg)
 
+{% autocrossref %}
 The figure above shows a simplified version of a three-block block chain.
-A [block]{:#term-block}{:.term} of new [transactions][], which can vary from one transaction to
+A [block]{:#term-block}{:.term} of new transactions, which can vary from one transaction to
 over a thousand, is collected into the transaction data part of a block.
 Copies of each transaction are hashed, and the hashes are then paired,
 hashed, paired again, and hashed again until a single hash remains, the
-[Merkle root][]{:#term-merkle-root}{:.term} of a [Merkle tree](#term-merkle-tree).
+[Merkle root][]{:#term-merkle-root}{:.term} of a Merkle tree.
 
-The Merkle root is stored in the [block header][]. Each block also
+The Merkle root is stored in the block header. Each block also
 stores the hash of the previous block's header, chaining the blocks
 together. This ensures a transaction cannot be modified without
 modifying the block that records it and all following blocks.
 
 Transactions are also chained together. Bitcoin wallet software gives
-the impression that [satoshis][] are sent from and to [addresses][], but
-bitcoins really move from transaction to transaction. Each [standard
-transaction][standard script] spends the satoshis previously spent in one or more earlier
-transactions, so the [input][] of one transaction is the [output][] of a
+the impression that satoshis are sent from and to addresses, but
+bitcoins really move from transaction to transaction. Each standard
+transaction spends the satoshis previously spent in one or more earlier
+transactions, so the input of one transaction is the output of a
 previous transaction.
 
 ![Transaction Propagation](/img/dev/en-transaction-propagation.svg)
@@ -65,8 +68,8 @@ previous transaction.
 A single transaction can spend bitcoins to multiple outputs, as would be
 the case when sending satoshis to multiple addresses, but each output of
 a particular transaction can only be used as an input once in the
-block chain. Any subsequent reference is a forbidden [double
-spend][]---an attempt to spend the same satoshis twice.
+block chain. Any subsequent reference is a forbidden double
+spend---an attempt to spend the same satoshis twice.
 
 Outputs are not the same as Bitcoin addresses. You can use the same
 address in multiple transactions, but you can only use each output once.
@@ -76,20 +79,21 @@ of complete transactions.
 Because each output of a particular transaction can only be spent once,
 all transactions included in the block chain can be categorized as either
 [Unspent Transaction Outputs (UTXOs)][utxo]{:#term-utxo}{:.term} or spent transaction outputs. For a
-payment to be valid, it must only use UTXOs as [inputs][input].
+payment to be valid, it must only use UTXOs as inputs.
 
-[Satoshis][] cannot be left in a UTXO after a transaction: they will be
+Satoshis cannot be left in a UTXO after a transaction: they will be
 irretrievably lost. So any difference between the number of bitcoins in a
 transaction's inputs and outputs is given as a [transaction fee][]{:#term-transaction-fee}{:.term} to 
 the Bitcoin [miner][]{:#term-miner}{:.term} who creates the block containing that transaction. 
 For example, in the figure above, each transaction spends 10 satoshis
-fewer than it receives from its combined [inputs][input], effectively paying a 10
+fewer than it receives from its combined inputs, effectively paying a 10
 satoshi transaction fee.
 
 The spenders propose a transaction fee with each transaction; miners
 decide whether the amount proposed is adequate, and only accept
 transactions that pass their threshold. Therefore, transactions with a
 higher proposed transaction fee are likely to be processed faster.
+{% endautocrossref %}
 
 #### Proof Of Work
 
@@ -2991,7 +2995,7 @@ Bitcoin Core.
 [bitcoins]: #term-bitcoins "A primary accounting unit used in Bitcoin; 100 million satoshis"
 [block]: #term-block "A block of transactions protected by proof of work"
 [blocks]: #term-block "Blocks of transactions protected by proof of work"
-[block chain]: #the-bitcoin-block-chain "A chain of blocks with each block linking to the block that preceded; the most-difficult-to-recreate chain is The Block Chain"
+[block chain]: #block-chain "A chain of blocks with each block linking to the block that preceded; the most-difficult-to-recreate chain is The Block Chain"
 [block header]: #block-header "An 80-byte header belonging to a single block which is hashed repeatedly to create proof of work"
 [block header magic]: #term-block-header-magic "A magic number used to separate block data from transaction data on the P2P network"
 [block height]: #term-block-height "The number of chained blocks preceding this block"
