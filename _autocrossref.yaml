@@ -38,12 +38,25 @@ input:
 merkle root:
 merkle tree:
 miner:
+'`op_checksig`': op_checksig
+'`op_dup`': op_dup
+'`op_equal`': op_equal
+'`op_equalverify`': op_equalverify
+'`op_hash160`': op_hash160
+'`op_verify`': op_verify
 outputs: output
 output:
+p2ph:
 peer-to-peer network: network
 proof of work:
+pubkey hash:
+public key:
 satoshi:
 satoshis: satoshi
+script:
+scriptSig:
+signature:
+stack:
 standard transaction: standard script
 #transaction -- Recommend we don't autocrossref this; it occurs to often
 transaction fee:

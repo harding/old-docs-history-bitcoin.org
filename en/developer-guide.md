@@ -581,11 +581,12 @@ and full [public key][] (pubkey), creating the following concatenation:
 
     <Sig> <PubKey> OP_DUP OP_HASH160 <PubkeyHash> OP_EQUALVERIFY OP_CHECKSIG
 
-The [script][] language is a
+{% autocrossref %}
+The script language is a
 [Forth-like](https://en.wikipedia.org/wiki/Forth_%28programming_language%29)
 [stack][]{:#term-stack}{:.term}-based language deliberately designed to be stateless and not
 Turing complete. Statelessness ensures that once a transaction is added
-to the [block chain][], there is no condition which renders it permanently
+to the block chain, there is no condition which renders it permanently
 unspendable. Turing-incompleteness (specifically, a lack of loops or
 gotos) makes the script language less flexible and more predictable,
 greatly simplifying the security model.
@@ -595,36 +596,36 @@ sections about stacks. These are programming terms. Also "above",
 "below", "top", and "bottom" are commonly used relative directions or
 locations in stack descriptions. -harding -->
 
-To test whether the transaction is valid, [scriptSig][] and [script][] arguments
+To test whether the transaction is valid, scriptSig and script arguments
 are pushed to the stack one item at a time, starting with Bob's scriptSig
 and continuing to the end of Alice's script. The figure below shows the
-evaluation of a standard [P2PH][] script; below the figure is a description
+evaluation of a standard P2PH script; below the figure is a description
 of the process.
 
 ![P2PH Stack Evaluation](/img/dev/en-p2ph-stack.svg)
 
-* The [signature][] (from Bob's [scriptSig][]) is added (pushed) to an empty stack.
+* The signature (from Bob's scriptSig) is added (pushed) to an empty stack.
   Because it's just data, nothing is done except adding it to the stack.
-  The [public key][] (also from the scriptSig) is pushed on top of the signature.
+  The public key (also from the scriptSig) is pushed on top of the signature.
 
-* From Alice's [script][], the [`OP_DUP`][op_dup] operation is pushed. `OP_DUP` replaces
+* From Alice's script, the `OP_DUP` operation is pushed. `OP_DUP` replaces
   itself with a copy of the data from one level below it---in this
-  case creating a copy of the [public key][] Bob provided.
+  case creating a copy of the public key Bob provided.
 
-* The operation pushed next, [`OP_HASH160`][op_hash160], replaces itself with a hash
-  of the data from one level below it---in this case, Bob's [public key][].
+* The operation pushed next, `OP_HASH160`, replaces itself with a hash
+  of the data from one level below it---in this case, Bob's public key.
   This creates a hash of Bob's public key.
 
-* Alice's [script][] then pushes the [pubkey hash][] that Bob gave her for the
+* Alice's script then pushes the pubkey hash that Bob gave her for the
   first transaction.  At this point, there should be two copies of Bob's
   pubkey hash at the top of the stack.
 
-* Now it gets interesting: Alice's [script][] adds [`OP_EQUALVERIFY`][op_equalverify] to the
-  stack. `OP_EQUALVERIFY` expands to [`OP_EQUAL`][op_equal] and [`OP_VERIFY`][op_verify] (not shown).
+* Now it gets interesting: Alice's script adds `OP_EQUALVERIFY` to the
+  stack. `OP_EQUALVERIFY` expands to `OP_EQUAL` and `OP_VERIFY` (not shown).
 
     `OP_EQUAL` (not shown) checks the two values below it; in this
-    case, it checks whether the [pubkey hash][] generated from the full
-    [public key][] Bob provided equals the pubkey hash Alice provided when
+    case, it checks whether the pubkey hash generated from the full
+    public key Bob provided equals the pubkey hash Alice provided when
     she created transaction #1. `OP_EQUAL` then replaces itself and
     the two values it compared with the result of that comparison:
     zero (*false*) or one (*true*).
@@ -634,15 +635,17 @@ of the process.
     the transaction validation fails. Otherwise it pops both itself and
     the *true* value off the stack.
 
-* Finally, Alice's script pushes [`OP_CHECKSIG`][op_checksig], which checks the
-  [signature][] Bob provided against the now-authenticated [public key][] he
+* Finally, Alice's script pushes `OP_CHECKSIG`, which checks the
+  signature Bob provided against the now-authenticated public key he
   also provided. If the signature matches the public key and was
   generated using all of the data required to be signed, `OP_CHECKSIG`
   replaces itself with *true.*
 
-If *true* is at the top of the stack after the [script][] has been
+If *true* is at the top of the stack after the script has been
 evaluated, the transaction is valid (provided there are no other
 problems with it).
+
+{% endautocrossref %}
 
 ### Standard Transactions
 

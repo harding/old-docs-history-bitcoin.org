@@ -31,7 +31,7 @@ require 'yaml'
         term[0].gsub!('\ ', '\s+')
 
         output.gsub!(/
-            \b    ## Word boundry
+            (?<!\w)  ## Don't match inside words
             #{term[0]}  ## Find our key
             (?![^\[]*\])  ## No subst if key inside [brackets]
             (?![^\{]*\})  ## No subst if key inside {braces}
@@ -40,7 +40,7 @@ require 'yaml'
 		     ## use .svg or .png in non-image base text; if that
 		     ## becomes an issue, we can devise a more complex
 		     ## regex
-            \b   ## Word boundry
+            (?!\w)  ## Don't match inside words
           /xmi, "[\\&][#{term[1]}]")
       }
 
