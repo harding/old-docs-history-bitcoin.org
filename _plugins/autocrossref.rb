@@ -74,6 +74,7 @@ module Jekyll
         term[0].gsub!('\ ', '\s+')
 
         output.gsub!(/
+            \b    ## Word boundry
             #{term[0]}  ## Find our key
             (?![^\[]*\])  ## No subst if key inside [brackets]
             (?![^\{]*\})  ## No subst if key inside {braces}
@@ -82,6 +83,7 @@ module Jekyll
 		     ## use .svg or .png in non-image base text; if that
 		     ## becomes an issue, we can devise a more complex
 		     ## regex
+            \b   ## Word boundry
           /xmi, "[\\&][#{term[1]}]")
       }
 
