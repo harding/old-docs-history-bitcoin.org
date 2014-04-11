@@ -45,6 +45,7 @@ a:visited img,
 a:active img{
 	border:0;
 }
+
 blockquote{
 	margin-left:0;
 	margin-bottom:18px;
@@ -714,6 +715,25 @@ table tr.even td{
 }
 .toccontent img{
 	max-width:100%;
+}
+.toccontent a[href ^="#"]:link,
+.toccontent a[href ^="#"]:visited{
+	color:#646464;
+	border-bottom:thin dotted #BDBDBD;
+}
+.toccontent a:link.term,
+.toccontent a:visited.term{
+	color:#000;
+}
+.toccontent a:link.term code,
+.toccontent a:visited.term code{
+	color:#646464;
+}
+.toccontent a[href ^="#"]:link:hover,
+.toccontent a[href ^="#"]:visited:hover,
+.toccontent a:link.term:hover,
+.toccontent a:visited.term:hover{
+	color:#000;
 }
 
 .highlight  { background: #ffffff; }
