@@ -2955,7 +2955,7 @@ If implemented naively, an SPV client has a few important weaknesses.
 
 First, while the SPV client can not be easily fooled into thinking a transaction is in a block when it is not, the reverse is not true. A full node can simply lie by omission, leading an SPV client to believe a transaction has not occurred. This can be considered a form of Denial of Service. One mitigation strategy is to connect to a number of full nodes, and send the requests to each node. However this can be defeated by network partitioning or Sybil attacks, since identities are essentially free, and can be bandwidth intensive. Care must be taken to ensure the client is not cut off from honest nodes.
 
-Second, the SPV client only requests transactions from full nodes corresponding to keys it owns. If the SPV client downloads all blocks then discards unneeded ones, this can be extremely bandwidth intesive. If they simply ask full nodes for blocks with specific transactions, this allows full nodes a complete view of the public addresses that correspond to the user. This is a large privacy leak, and allows for tactics such as denial of service for clients, users, or addresses that are disfavored by those running full nodes, as well as trivial linking of funds. A client could simply spam many fake transaction requests, but this creates a large strain on the SPV client, and can end up defeating the purpose of thin clients altogether. 
+Second, the SPV client only requests transactions from full nodes corresponding to keys it owns. If the SPV client downloads all blocks then discards unneeded ones, this can be extremely bandwidth intensive. If they simply ask full nodes for blocks with specific transactions, this allows full nodes a complete view of the public addresses that correspond to the user. This is a large privacy leak, and allows for tactics such as denial of service for clients, users, or addresses that are disfavored by those running full nodes, as well as trivial linking of funds. A client could simply spam many fake transaction requests, but this creates a large strain on the SPV client, and can end up defeating the purpose of thin clients altogether. 
 
 To mitigate the latter issue, Bloom filters have been implemented as a method of obfuscation and compression of block requests. 
 
@@ -2971,7 +2971,7 @@ When adding an element to the Bloom filter, the element is hashed k times separa
 
 Querying of the Bloom filter is done by using the same hash functions as before. If all k bits accessed in the bloom filter are set to 1, this demonstrates with high probability that the element lies in the set. Clearly, the k indices could have been set to 1 by the addition of a combination of other elements in the domain, but the parameters allow the user to choose the acceptable false positive rate. 
 
-Removal of elements can only be done by scrapping the build filter and re-creating it from scratch.
+Removal of elements can only be done by scrapping the bloom filter and re-creating it from scratch.
 
 #### Application of Bloom Filters 
 
