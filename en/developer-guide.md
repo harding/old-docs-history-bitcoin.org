@@ -2055,7 +2055,7 @@ meant to be copied and pasted. For example:
     You must pay by: 2014-04-01 at 23:00 UTC
 
 Plain-text payment requests should, whenever possible, be sent over
-secure medium (such as HTTPS) to prevent a man-it-the-middle attack from
+secure medium (such as HTTPS) to prevent a man-in-the-middle attack from
 replacing your application's addresses with some other addresses.
 
 
@@ -2791,7 +2791,7 @@ which can lead to different results.
   to others. This can be good for the receiver's balance sheet but
   possibly bad for their reputation.
 
-* A first-in-last-out (FIFO) algorithm spends the oldest satoshis
+* A first-in-first-out (FIFO) algorithm spends the oldest satoshis
   first, which can help ensure that the receiver's payments always
   [confirm][], although this has utility only in a few edge cases.
 
