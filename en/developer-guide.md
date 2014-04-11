@@ -2939,7 +2939,9 @@ Currently there are two primary methods of validating the block chain as a clien
 
 ### Full Node
 
-The first and most secure model is the one followed by Bitcoin Core, also known as a “thick” or “full chain” client. This security model assures the validity of the ledger by downloading and validating blocks from the genesis block all the way to the most recently discovered block. This is known as using the *height* of a particular block to verify the client’s view of the network. For a client to be fooled, an adversary would have had to give a complete alternate block chain history that is of greater difficulty than the current “true” chain, which is impossible due to the fact that the longest chain is by definition the true chain. After the suggested 6 confirmations the ability to fool the client become intractable, as only a single honest network node is needed to have the complete state of the ledger. 
+The first and most secure model is the one followed by Bitcoin Core, also known as a “thick” or “full chain” client. This security model assures the validity of the ledger by downloading and validating blocks from the genesis block all the way to the most recently discovered block. This is known as using the *height* of a particular block to verify the client’s view of the network. 
+
+For a client to be fooled, an adversary would have had to give a complete alternate block chain history that is of greater difficulty than the current “true” chain, which is impossible due to the fact that the longest chain is by definition the true chain. After the suggested 6 confirmations the ability to fool the client become intractable, as only a single honest network node is needed to have the complete state of the ledger. 
 
 ![Block Height Compared To Block Depth](/img/dev/en-block-height-vs-depth.svg)
 
@@ -2947,7 +2949,9 @@ The first and most secure model is the one followed by Bitcoin Core, also known 
 
 An alternative approach detailed in the original Satoshi white paper is a client that only downloads the headers of blocks during the initial syncing process, and requesting transactions from full nodes as needed. This scales linearly with the height of the block chain, but at only 80 bytes per block header, or up to 4.2MB per year, regardless of total block size. 
 
-As described in the white paper, the Merkle root in the block header along with a Merkle branch can prove to the SPV client that the transaction in question is embedded in a block in the block chain. This does not guarantee validity of the transactions that are embedded. Instead it demonstrates the amount of work required to perform a double-spend attack. The block's depth in the block chain corresponds to the cumulative difficulty that has been performed to build on top of that particular block. The SPV client knows the Merkel root and associated transaction information, and requests the respective Merkle branch from a full node. Once the Merkle branch has been retrieved, proving the existance of the transaction in the block, the SPV client can then look to block *depth* for the security of the transaction.
+As described in the white paper, the Merkle root in the block header along with a Merkle branch can prove to the SPV client that the transaction in question is embedded in a block in the block chain. This does not guarantee validity of the transactions that are embedded. Instead it demonstrates the amount of work required to perform a double-spend attack. 
+
+The block's depth in the block chain corresponds to the cumulative difficulty that has been performed to build on top of that particular block. The SPV client knows the Merkel root and associated transaction information, and requests the respective Merkle branch from a full node. Once the Merkle branch has been retrieved, proving the existance of the transaction in the block, the SPV client can then look to block *depth* for the security of the transaction.
 
 #### Potential SPV Weaknesses
 
@@ -2975,7 +2979,7 @@ Removal of elements can only be done by scrapping the bloom filter and re-creati
 
 #### Application of Bloom Filters 
 
-Rather than viewing the false positive rates as a liability, it is used to create a tunable parameter that represents the desired privacy level and bandwidth tradeoff. A SPV client creates their Bloom filter, and sends it to a full node using the message filterload, which sets the filter for which transactions are desired. The command filteradd allows addition of desired data to the filter without needing to send a totally new Bloom filter, and filterclear allows the connection to revert to standard block discovery mechanisms. If the filter has been loaded, then full nodes will send a modified form of blocks, called a merkleblock. The merkleblock is simply the block header with the merkle branch associated with the set Bloom filter. 
+Rather than viewing the false positive rates as a liability, it is used to create a tunable parameter that represents the desired privacy level and bandwidth tradeoff. A SPV client creates their Bloom filter, and sends it to a full node using the message `filterload`, which sets the filter for which transactions are desired. The command `filteradd` allows addition of desired data to the filter without needing to send a totally new Bloom filter, and `filterclear` allows the connection to revert to standard block discovery mechanisms. If the filter has been loaded, then full nodes will send a modified form of blocks, called a merkleblock. The merkleblock is simply the block header with the merkle branch associated with the set Bloom filter. 
 
 An SPV client can not only add transactions as elements to the filter, but also public keys, data from input and outputs scripts, and more. This enables P2SH transaction finding.
 
@@ -2988,13 +2992,14 @@ Bloom filters were standardized for use via [BIP0037](https://github.com/bitcoin
 
 
 <!-- As mentioned before, this could certainly be cut as it's still future work -->
+
 ### Future Proposals 
 
 There are future proposals such as Unused Output Tree in the block chain (UOT) to find a more satisfactory middle-ground for clients between needing a complete copy of the block chain, or trusting that a majority of your connected peers are not lying. UOT would enable a very secure client using a finite amount of storage using a data structure that is authenticated in the block chain. These type of proposals are however in very early stages, and will require soft forks in the network. 
 
 Until these types of operating modes are implemented, modes should be chosen based on the likely threat model, computing and bandwidth constraints, and liability in bitcoin value.  
 
-**Resource:** [Original Thread on UOT](https://bitcointalk.org/index.php?topic=88208.0), [UOT Prefix Tree BIP Proposal](https://github.com/maaku/bips/blob/master/drafts/auth-trie.mediawiki)
+**Resources:** [Original Thread on UOT](https://bitcointalk.org/index.php?topic=88208.0), [UOT Prefix Tree BIP Proposal](https://github.com/maaku/bips/blob/master/drafts/auth-trie.mediawiki)
 
 ## P2P Network
 
