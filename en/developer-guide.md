@@ -97,18 +97,17 @@ higher proposed transaction fee are likely to be processed faster.
 
 #### Proof Of Work
 
-Although chaining [blocks][block] together makes it impossible to modify
-transactions included in any block without modifying all following [block
-headers][block header], the cost of modification is, at most, only a few thousand
-hashes for each block modified to rebuild the [Merkle tree][] and block
-header.
+The block chain is collaboratively maintained on a peer-to-peer network, so
+Bitcoin requires each block prove a significant amount of work was invested in
+its creation to ensure that untrustworthy peers who want to modify past blocks have
+to work harder than trustworthy peers who only want to add new blocks to the
+block chain.
 
-Since the block chain is collaboratively maintained on a peer-to-peer
-[network][] which may contain untrustworthy [peers][], Bitcoin requires each
-block prove a significant amount of work was invested in its creation so
-that untrustworthy peers who want to modify past blocks have to work harder
-than trustworthy peers who only want to add new blocks to the
-[block chain][].
+The block chain magnifies the effect of this proof of work.
+Chaining blocks together makes it impossible to modify transactions included
+in any block without modifying all following blocks. As a
+result, the cost to modify a particular block increases with every new block
+added to the block chain.
 
 The [proof of work][]{:#term-proof-of-work}{:.term} used in Bitcoin
 takes advantage of the apparently random output of cryptographic hashes.
@@ -163,8 +162,8 @@ transaction history.
 The block header provides several easy-to-modify fields, such as a
 dedicated [nonce field][header nonce], so obtaining new hashes doesn't require waiting
 for new transactions. Also, only the 80-byte block header is hashed for
-[proof-of-work][proof of work], so adding more transactions to a block does not slow
-down hashing with extra I/O.
+[proof-of-work][proof of work], so adding more bytes of transaction data to
+a block does not slow down hashing with extra I/O.
 
 #### Block Height And Forking
 
