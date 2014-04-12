@@ -28,36 +28,39 @@ title: "Developer Guide - Bitcoin"
 
 ## Block Chain
 
+{% autocrossref %}
 The block chain provides Bitcoin's public ledger, a timestamped record
-of all [confirmed transactions][]. This system is used to protect against [double spending][double spend] 
-and modification of previous transaction records, using [proof of
-work][] verified by the [peer-to-peer network][network] to maintain a global consensus.
+of all confirmed transactions. This system is used to protect against double spending
+and modification of previous transaction records, using proof of
+work verified by the peer-to-peer network to maintain a global consensus.
 
 This document provides detailed explanations about the functioning of
 this system along with security advice for risk assessment and tools for
 using block chain data.
+{% endautocrossref %}
 
 ### Block Chain Overview
 
 ![Block Chain Overview](/img/dev/en-blockchain-overview.svg)
 
+{% autocrossref %}
 The figure above shows a simplified version of a three-block block chain.
-A [block]{:#term-block}{:.term} of new [transactions][], which can vary from one transaction to
+A [block]{:#term-block}{:.term} of new transactions, which can vary from one transaction to
 over a thousand, is collected into the transaction data part of a block.
 Copies of each transaction are hashed, and the hashes are then paired,
 hashed, paired again, and hashed again until a single hash remains, the
-[Merkle root][]{:#term-merkle-root}{:.term} of a [Merkle tree](#term-merkle-tree).
+[Merkle root][]{:#term-merkle-root}{:.term} of a Merkle tree.
 
-The Merkle root is stored in the [block header][]. Each block also
+The Merkle root is stored in the block header. Each block also
 stores the hash of the previous block's header, chaining the blocks
 together. This ensures a transaction cannot be modified without
 modifying the block that records it and all following blocks.
 
 Transactions are also chained together. Bitcoin wallet software gives
-the impression that [satoshis][] are sent from and to [addresses][], but
-bitcoins really move from transaction to transaction. Each [standard
-transaction][standard script] spends the satoshis previously spent in one or more earlier
-transactions, so the [input][] of one transaction is the [output][] of a
+the impression that satoshis are sent from and to addresses, but
+bitcoins really move from transaction to transaction. Each standard
+transaction spends the satoshis previously spent in one or more earlier
+transactions, so the input of one transaction is the output of a
 previous transaction.
 
 ![Transaction Propagation](/img/dev/en-transaction-propagation.svg)
@@ -65,8 +68,8 @@ previous transaction.
 A single transaction can spend bitcoins to multiple outputs, as would be
 the case when sending satoshis to multiple addresses, but each output of
 a particular transaction can only be used as an input once in the
-block chain. Any subsequent reference is a forbidden [double
-spend][]---an attempt to spend the same satoshis twice.
+block chain. Any subsequent reference is a forbidden double
+spend---an attempt to spend the same satoshis twice.
 
 Outputs are not the same as Bitcoin addresses. You can use the same
 address in multiple transactions, but you can only use each output once.
@@ -76,20 +79,21 @@ of complete transactions.
 Because each output of a particular transaction can only be spent once,
 all transactions included in the block chain can be categorized as either
 [Unspent Transaction Outputs (UTXOs)][utxo]{:#term-utxo}{:.term} or spent transaction outputs. For a
-payment to be valid, it must only use UTXOs as [inputs][input].
+payment to be valid, it must only use UTXOs as inputs.
 
-[Satoshis][] cannot be left in a UTXO after a transaction: they will be
+Satoshis cannot be left in a UTXO after a transaction: they will be
 irretrievably lost. So any difference between the number of bitcoins in a
 transaction's inputs and outputs is given as a [transaction fee][]{:#term-transaction-fee}{:.term} to 
 the Bitcoin [miner][]{:#term-miner}{:.term} who creates the block containing that transaction. 
 For example, in the figure above, each transaction spends 10 satoshis
-fewer than it receives from its combined [inputs][input], effectively paying a 10
+fewer than it receives from its combined inputs, effectively paying a 10
 satoshi transaction fee.
 
 The spenders propose a transaction fee with each transaction; miners
 decide whether the amount proposed is adequate, and only accept
 transactions that pass their threshold. Therefore, transactions with a
 higher proposed transaction fee are likely to be processed faster.
+{% endautocrossref %}
 
 #### Proof Of Work
 
@@ -577,11 +581,12 @@ and full [public key][] (pubkey), creating the following concatenation:
 
     <Sig> <PubKey> OP_DUP OP_HASH160 <PubkeyHash> OP_EQUALVERIFY OP_CHECKSIG
 
-The [script][] language is a
+{% autocrossref %}
+The script language is a
 [Forth-like](https://en.wikipedia.org/wiki/Forth_%28programming_language%29)
 [stack][]{:#term-stack}{:.term}-based language deliberately designed to be stateless and not
 Turing complete. Statelessness ensures that once a transaction is added
-to the [block chain][], there is no condition which renders it permanently
+to the block chain, there is no condition which renders it permanently
 unspendable. Turing-incompleteness (specifically, a lack of loops or
 gotos) makes the script language less flexible and more predictable,
 greatly simplifying the security model.
@@ -591,36 +596,36 @@ sections about stacks. These are programming terms. Also "above",
 "below", "top", and "bottom" are commonly used relative directions or
 locations in stack descriptions. -harding -->
 
-To test whether the transaction is valid, [scriptSig][] and [script][] arguments
+To test whether the transaction is valid, scriptSig and script arguments
 are pushed to the stack one item at a time, starting with Bob's scriptSig
 and continuing to the end of Alice's script. The figure below shows the
-evaluation of a standard [P2PH][] script; below the figure is a description
+evaluation of a standard P2PH script; below the figure is a description
 of the process.
 
 ![P2PH Stack Evaluation](/img/dev/en-p2ph-stack.svg)
 
-* The [signature][] (from Bob's [scriptSig][]) is added (pushed) to an empty stack.
+* The signature (from Bob's scriptSig) is added (pushed) to an empty stack.
   Because it's just data, nothing is done except adding it to the stack.
-  The [public key][] (also from the scriptSig) is pushed on top of the signature.
+  The public key (also from the scriptSig) is pushed on top of the signature.
 
-* From Alice's [script][], the [`OP_DUP`][op_dup] operation is pushed. `OP_DUP` replaces
+* From Alice's script, the `OP_DUP` operation is pushed. `OP_DUP` replaces
   itself with a copy of the data from one level below it---in this
-  case creating a copy of the [public key][] Bob provided.
+  case creating a copy of the public key Bob provided.
 
-* The operation pushed next, [`OP_HASH160`][op_hash160], replaces itself with a hash
-  of the data from one level below it---in this case, Bob's [public key][].
+* The operation pushed next, `OP_HASH160`, replaces itself with a hash
+  of the data from one level below it---in this case, Bob's public key.
   This creates a hash of Bob's public key.
 
-* Alice's [script][] then pushes the [pubkey hash][] that Bob gave her for the
+* Alice's script then pushes the pubkey hash that Bob gave her for the
   first transaction.  At this point, there should be two copies of Bob's
   pubkey hash at the top of the stack.
 
-* Now it gets interesting: Alice's [script][] adds [`OP_EQUALVERIFY`][op_equalverify] to the
-  stack. `OP_EQUALVERIFY` expands to [`OP_EQUAL`][op_equal] and [`OP_VERIFY`][op_verify] (not shown).
+* Now it gets interesting: Alice's script adds `OP_EQUALVERIFY` to the
+  stack. `OP_EQUALVERIFY` expands to `OP_EQUAL` and `OP_VERIFY` (not shown).
 
     `OP_EQUAL` (not shown) checks the two values below it; in this
-    case, it checks whether the [pubkey hash][] generated from the full
-    [public key][] Bob provided equals the pubkey hash Alice provided when
+    case, it checks whether the pubkey hash generated from the full
+    public key Bob provided equals the pubkey hash Alice provided when
     she created transaction #1. `OP_EQUAL` then replaces itself and
     the two values it compared with the result of that comparison:
     zero (*false*) or one (*true*).
@@ -630,15 +635,17 @@ of the process.
     the transaction validation fails. Otherwise it pops both itself and
     the *true* value off the stack.
 
-* Finally, Alice's script pushes [`OP_CHECKSIG`][op_checksig], which checks the
-  [signature][] Bob provided against the now-authenticated [public key][] he
+* Finally, Alice's script pushes `OP_CHECKSIG`, which checks the
+  signature Bob provided against the now-authenticated public key he
   also provided. If the signature matches the public key and was
   generated using all of the data required to be signed, `OP_CHECKSIG`
   replaces itself with *true.*
 
-If *true* is at the top of the stack after the [script][] has been
+If *true* is at the top of the stack after the script has been
 evaluated, the transaction is valid (provided there are no other
 problems with it).
+
+{% endautocrossref %}
 
 ### Standard Transactions
 
@@ -3043,7 +3050,7 @@ Bitcoin Core.
 [bitcoins]: #term-bitcoins "A primary accounting unit used in Bitcoin; 100 million satoshis"
 [block]: #term-block "A block of transactions protected by proof of work"
 [blocks]: #term-block "Blocks of transactions protected by proof of work"
-[block chain]: #the-bitcoin-block-chain "A chain of blocks with each block linking to the block that preceded; the most-difficult-to-recreate chain is The Block Chain"
+[block chain]: #block-chain "A chain of blocks with each block linking to the block that preceded; the most-difficult-to-recreate chain is The Block Chain"
 [block header]: #block-header "An 80-byte header belonging to a single block which is hashed repeatedly to create proof of work"
 [block header magic]: #term-block-header-magic "A magic number used to separate block data from transaction data on the P2P network"
 [block height]: #term-block-height "The number of chained blocks preceding this block"
