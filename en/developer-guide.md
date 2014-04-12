@@ -2806,7 +2806,7 @@ which can lead to different results.
 
 
 
-##### Merge Avoidance
+#### Merge Avoidance
 
 When a receiver receives [satoshis][] in an [output][], the spender can track
 (in a crude way) how the receiver spends those satoshis. But the spender
@@ -2841,7 +2841,7 @@ provided by the receiver.
 
 
 
-##### Last In, First Out (LIFO)
+#### Last In, First Out (LIFO)
 
 [Outputs][] can be spent as soon as they're received---even before they're
 [confirmed][]. Since recent outputs are at the greatest risk of being
@@ -2876,7 +2876,7 @@ the [Verification subsection][] above) before using them to make payments.
 
 
 
-##### First In, First Out (FIFO)
+#### First In, First Out (FIFO)
 
 The oldest [outputs][] are the most reliable, as the longer it's been since
 they were received, the more blocks would need to be modified to [double
