@@ -2746,7 +2746,7 @@ For example:
   the Bitcoin address mjSk1Ny9spzU2fouzYgLqGUD8U41iR35QN.
 
 * Bob discovers Alice paid too many satoshis. Being an honest fellow,
-  Bob refunds the extra satoshis to the MjSk[...] address.
+  Bob refunds the extra satoshis to the mjSk[...] address.
 
 This seems like it should work, but Alice is using a centralized
 multi-user web wallet which doesn't give [unique addresses][] to each user,
