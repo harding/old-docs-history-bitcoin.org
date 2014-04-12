@@ -105,8 +105,7 @@ block chain.
 
 Chaining blocks together makes it impossible to modify transactions included
 in any block without modifying all following block headers and hashes. As a
-result, the cost of modification of a block never stops increasing (two hashes
-for the first block modified plus one hash for every subsequent block).
+result, the cost of modification of a block never stops increasing.
 
 The [proof of work][]{:#term-proof-of-work}{:.term} used in Bitcoin
 takes advantage of the apparently random output of cryptographic hashes.
@@ -161,8 +160,9 @@ transaction history.
 The block header provides several easy-to-modify fields, such as a
 dedicated [nonce field][header nonce], so obtaining new hashes doesn't require waiting
 for new transactions. Also, only the 80-byte block header is hashed for
-[proof-of-work][proof of work], so adding more transactions to a block does not slow
-down hashing with extra I/O.
+[proof-of-work][proof of work] and only the [Merkle root][] of transactions'
+[Merkle tree][] is used for the header hash, so adding more transactions to
+a block does not slow down hashing with extra I/O.
 
 #### Block Height And Forking
 
