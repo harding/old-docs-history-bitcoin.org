@@ -1034,69 +1034,37 @@ outputs be sent to a new P2PH or P2SH [address][].
 
 ### Avoiding Key Reuse
 
-Due to its public nature, Bitcoin's block chain is leaking
-information, causing privacy issues as well as potential
-security issues. As explained below, the solution to this
-problem is to avoid reusing the same keys and addresses.
+In each transaction, the spender and receiver reveal their public keys
+(in some form) to each other.  Afterwards, either party can use the
+public block chain to track past and future transactions made with those
+same public keys, weakening each party's financial privacy.
 
-When it comes to privacy, every time you pay or are paid by
-someone, you give them a public key, pubkey hash, or script hash,
-allowing them to look up the corresponding balance of satoshis on the
-the block chain. However, most people prefer not to reveal how many
-satoshis they have to
-everyone with whom they transact.
+Avoiding key reuse can mitigate that problem. In the optimum situation,
+each public key will be used exactly twice: once to receive a payment
+and once to spend that payment. This will not guarantee financial
+privacy, but it will enhance it.
 
-For this reason, it is highly recommended to use
-new public keys (in address form) for each incoming
-payment.  This includes using [unique addresses][]{:#term-unique-address} when creating change outputs.
-This way, the new address will not be linked to any of your previous addresses, so
-the payer cannot see how many satoshis you have.
-He will, of course, know how many satoshis he pays you, and if he
-watches the block chain as you spend his payment, he may be able
-to figure out how much you haven't spent yet.
+Using new public keys ([unique addresses][]{:#term-unique-address}) when
+accepting payments or creating change outputs can be combined with other
+techniques discussed later, such as CoinJoin or merge avoidance, to make
+it extremely difficult to use the block chain by itself to reliably
+track how users receive and spend their satoshis.
 
-If you combine his payment, or a transaction descended from it, with a
-payment someone else gave you, he may be able to track the [satoshis][]
-from that second payment too. But as long as you consistently use a new
-[public key][] (in some form) for every incoming payment, no one will ever
-be able to determine from block chain data the maximum number of satoshis
-you control.
+There is, however, one thing which may drive your application or
+your users into using the same public key more than once: reusable
+Bitcoin addresses.
 
-When it comes to security, avoiding key reuse can
-protect your private keys in the event of a serious flaw in the cryptographic
-signing system used by Bitcoin. The theory behind the signing system Bitcoin
-uses, ECDSA, has been widely peer reviewed without any problems being
-discovered, but actual implementations are
-occasionally found vulnerable to various attacks.
+As explained previously, each Bitcoin address is the hash of a public
+key. If a users of your application reuse the same address multiple
+times---for example, by pasting static donation links on their
+websites---those users will likely end up using the same public key
+multiple times, weakening their privacy.
 
-Bitcoin was designed to anticipate these possible vulnerabilities by
-obfuscating ECDSA public keys with a SHA256 hash in either the P2PH or P2SH
-transaction types. SHA256 is based on different principles, nearly eliminating
-the
-chance of both ECDSA and SHA256 becoming vulnerable at the same time.
-
-However, when you sign a transaction, you reveal your full public key and a
-signature made by running data known to the attacker (the signed parts of
-the transaction) without SHA256 protection. According to the ECDSA theory,
-this doesn't matter. But in a world where flaws in cryptographic theories and
-implementations are occasionally found, signing a transaction puts you in a
-more exposed position.
-
-There is no technical reason you should ever need to use the same private key
-in more than one transaction. There is, however, one major non-technical
-reason which may drive you and your users into using the same private/public
-key pair more than once: reusable Bitcoin addresses.
-
-As explained previously, each Bitcoin address is the hash of a [public
-key][] derived from your [private key][]. If you paste your address on your
-website, give it to your clients, or put it in a [QR code][URI QR code] printed on your
-shirt, you will likely end up using your private key multiple times.
-
-The increases in privacy and security make it highly advisable to build
-your applications to avoid [address][] reuse and, when possible, to discourage
-users from reusing addresses. If your application needs to provide a
-fixed URI to which payments should be sent, please see Bitcoin
-the [`Bitcoin:` URI section][section bitcoin URI] below.
+We encourage you to build your applications to avoid public key reuse
+and, when possible, to discourage users from reusing addresses. If your
+application needs to provide a fixed URI to which payments should be
+sent, please see Bitcoin the [`Bitcoin:` URI section][section bitcoin
+URI] below.
 
 ### Transaction Malleability
 
