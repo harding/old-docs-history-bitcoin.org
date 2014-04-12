@@ -97,18 +97,16 @@ higher proposed transaction fee are likely to be processed faster.
 
 #### Proof Of Work
 
-Although chaining [blocks][block] together makes it impossible to modify
-transactions included in any block without modifying all following [block
-headers][block header], the cost of modification is, at most, only a few thousand
-hashes for each block modified to rebuild the [Merkle tree][] and block
-header.
+Since the block chain is collaboratively maintained on a peer-to-peer network,
+Bitcoin requires each block prove a significant amount of work was invested in
+its creation so that untrustworthy peers who want to modify past blocks have
+to work harder than trustworthy peers who only want to add new blocks to the
+block chain.
 
-Since the block chain is collaboratively maintained on a peer-to-peer
-[network][] which may contain untrustworthy [peers][], Bitcoin requires each
-block prove a significant amount of work was invested in its creation so
-that untrustworthy peers who want to modify past blocks have to work harder
-than trustworthy peers who only want to add new blocks to the
-[block chain][].
+Chaining blocks together makes it impossible to modify transactions included
+in any block without modifying all following block headers and hashes. As a
+result, the cost of modification of a block never stops increasing (two hashes
+for the first block modified plus one hash for every subsequent block).
 
 The [proof of work][]{:#term-proof-of-work}{:.term} used in Bitcoin
 takes advantage of the apparently random output of cryptographic hashes.
