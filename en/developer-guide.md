@@ -96,6 +96,7 @@ higher proposed transaction fee are likely to be processed faster.
 {% endautocrossref %}
 
 #### Proof Of Work
+{% autocrossref %}
 
 Although chaining [blocks][block] together makes it impossible to modify
 transactions included in any block without modifying all following [block
@@ -104,7 +105,7 @@ hashes for each block modified to rebuild the [Merkle tree][] and block
 header.
 
 Since the block chain is collaboratively maintained on a peer-to-peer
-[network][] which may contain untrustworthy [peers][], Bitcoin requires each
+network which may contain untrustworthy [peers][], Bitcoin requires each
 block prove a significant amount of work was invested in its creation so
 that untrustworthy peers who want to modify past blocks have to work harder
 than trustworthy peers who only want to add new blocks to the
@@ -112,10 +113,10 @@ than trustworthy peers who only want to add new blocks to the
 
 The [proof of work][]{:#term-proof-of-work}{:.term} used in Bitcoin
 takes advantage of the apparently random output of cryptographic hashes.
-A good cryptographic hash algorithm converts arbitrary input data into a
-seemingly-random number. If the input data is modified in any way and
+A good cryptographic hash algorithm converts arbitrary data into a
+seemingly-random number. If the data is modified in any way and
 the hash re-run, a new seemingly-random number is produced, so there is
-no way to modify the input data to make the hash number predictable.
+no way to modify the data to make the hash number predictable.
 
 To prove you did some extra work to create a [block], you must create a
 hash of the [block header][] which does not exceed a certain value. For
@@ -133,7 +134,7 @@ hash attempts, on average, will need to be tried.
 
 New blocks will only be added to the [block chain][] if their hash is at
 least as challenging as a [difficulty][]{:#term-difficulty}{:.term} value expected by the peer-to-peer
-[network][]. Every 2,016 blocks, the network uses [timestamps][block time] stored in each
+network. Every 2,016 blocks, the network uses [timestamps][block time] stored in each
 block header to calculate the number of seconds elapsed between generation
 of the first and last of those last 2,016 blocks. The ideal value is
 1,209,600 seconds (two weeks).
@@ -165,8 +166,10 @@ dedicated [nonce field][header nonce], so obtaining new hashes doesn't require w
 for new transactions. Also, only the 80-byte block header is hashed for
 [proof-of-work][proof of work], so adding more transactions to a block does not slow
 down hashing with extra I/O.
+{% endautocrossref %}
 
 #### Block Height And Forking
+{% autocrossref %}
 
 Any Bitcoin [miner][] who successfully hashes a [block header][] to a value
 below the [target][] can add the entire [block][] to the [block chain][].
@@ -197,8 +200,10 @@ to recreate) and throw away ([orphan][]{:#term-orphan}{:.term}) blocks belonging
 such as some miners diligently working to extend the [block chain][] at the
 same time other miners are attempting a [51 percent attack][] to revise
 transaction history.
+{% endautocrossref %}
 
 ### Block Contents
+{% autocrossref %}
 
 This section describes [version 2 blocks][v2 block]{:#term-v2-block}{:.term}, which are any blocks with a
 [block height][] greater than 227,835. (Version 1 and version 2 blocks were
@@ -231,8 +236,10 @@ should not be used as a globally unique identifier. In version 2 blocks,
 each block must place its height as the first parameter in the coinbase
 field of the [coinbase transaction][] (described below), so block height
 can be determined without access to previous blocks.
+{% endautocrossref %}
 
 #### Block Header
+{% autocrossref %}
 
 The 80-byte block header contains the following six fields:
 
@@ -275,8 +282,10 @@ The 80-byte block header contains the following six fields:
    bytes are tested, the time can be updated or the
    [coinbase transaction][] (described below) can be changed and the [Merkle
    root][] updated.
+{% endautocrossref %}
 
 #### Transaction Data
+{% autocrossref %}
 
 Every [block][] must include one or more [transactions][]. Exactly one of these
 transactions must be a [coinbase transaction][] which should collect and
@@ -322,6 +331,7 @@ process repeats until only one hash remains, the Merkle root.
 
 For example, if transactions were merely joined (not hashed), a
 five-transaction Merkle tree would look like the following text diagram:
+{% endautocrossref %}
 
            ABCDEEEE .......Merkle root
           /        \
@@ -331,6 +341,7 @@ five-transaction Merkle tree would look like the following text diagram:
     /  \  /  \  /
     A  B  C  D  E .........Transactions
 
+{% autocrossref %}
 As discussed in the [Simplified Payment Verification (SPV)][spv] subsection,
 <!-- not written yet --> the Merkle tree allows clients to verify for
 themselves that a transaction was included in a block by obtaining the
@@ -346,18 +357,23 @@ other transactions. If the five transactions in this block were all at
 the maximum size, downloading the entire [block][] would require over
 500,000 bytes---but downloading three hashes plus the block header
 requires only 140 bytes.
+{% endautocrossref %}
 
 
 #### Example Block And Coinbase Transaction
 
+{% autocrossref %}
 The first block with more than one transaction is at [block height 170][block170].
 We can get the hash of block 170's header with the `getblockhash` RPC:
+{% endautocrossref %}
 
     > getblockhash 170
 
     00000000d1145790a8694403d4063f323d499e655c83426834d4ce2f8dd4a2ee
 
+{% autocrossref %}
 We can then get a decoded version of that block with the [`getblock` RPC][rpc getblock]:
+{% endautocrossref %}
 
     > getblock 00000000d1145790a8694403d4063f323d499e655c83\
       426834d4ce2f8dd4a2ee
@@ -383,6 +399,7 @@ We can then get a decoded version of that block with the [`getblock` RPC][rpc ge
 }
 {% endhighlight %}
 
+{% autocrossref %}
 Note: the only values above which are actually part of the block are size,
 version, [merkleroot][merkle root], [time][block time], [nonce][header nonce], and bits. All other values shown
 are computed.
@@ -391,14 +408,17 @@ The first transaction identifier ([txid][]) listed in the tx array is
 the [coinbase transaction][]. The txid is a hash of the raw
 transaction. We can get the actual raw transaction in hexadecimal format
 from the block chain using the [`getrawtransaction` RPC][rpc getrawtransaction] with the txid:
+{% endautocrossref %}
 
     > getrawtransaction b1fea52486ce0c62bb442b530a3f0132b82\
       6c74e473d1f2c220bfa78111c5082
 
     01000000[...]00000000
 
+{% autocrossref %}
 We can expand the raw transaction hex into a human-readable format by
 passing the raw transaction to the [`decoderawtransaction` RPC][rpc decoderawtransaction]:
+{% endautocrossref %}
 
     > decoderawtransaction 01000000010000000000000000000000\
       000000000000000000000000000000000000000000ffffffff070\
@@ -436,11 +456,14 @@ passing the raw transaction to the [`decoderawtransaction` RPC][rpc decoderawtra
 }
 {% endhighlight %}
 
+{% autocrossref %}
 Note the vin ([input][]) array includes a single transaction shown with a
 [coinbase field][] and the vout ([output][]) spends the block reward of 50
 bitcoins to a [public key][] (not a standard hashed Bitcoin [address][]).
+{% endautocrossref %}
 
 ## Transactions
+{% autocrossref %}
 
 <!-- reference tx (made by Satoshi in block 170): 
     bitcoind decoderawtransaction $( bitcoind getrawtransaction f4184fc596403b9d638783cf57adfe4c75c605f6356fbc91338530e9831e9e16 )
@@ -535,7 +558,7 @@ collection of data parameters which satisfy the conditions Alice placed
 in the previous output's script.
 
 Bob does not need to communicate with Alice to do this; he must simply
-prove to the Bitcoin peer-to-peer [network][] that he can satisfy the
+prove to the Bitcoin peer-to-peer network that he can satisfy the
 [script's][script] conditions.  For a [P2PH][]-style output, Bob's [scriptSig][] will
 contain the following two pieces of data:
 
@@ -549,7 +572,7 @@ contain the following two pieces of data:
 
 Bob's [signature][] doesn't just prove Bob controls his [private key][]; it also
 makes the rest of his transaction tamper-proof so Bob can safely
-[broadcast][] it over the peer-to-peer [network][].
+[broadcast][] it over the peer-to-peer network.
 
 <!-- Editors: please keep "amount of bitcoins" (instead of "number of
 bitcoins") in the paragraph below to match the text in the figure above.  -harding -->
@@ -564,20 +587,25 @@ signed except for any [scriptSigs][scriptsig], which hold the full [public keys]
 
 After putting his signature and public key in the scriptSig, Bob
 [broadcasts][broadcast] the transaction to Bitcoin [miners][miner] through the peer-to-peer
-[network][]. Each [peer][] and miner independently validates the transaction
+network. Each [peer][] and miner independently validates the transaction
 before broadcasting it further or attempting to include it in a new [block][] of
 transactions.
+{% endautocrossref %}
 
 ### P2PH Script Validation
+{% autocrossref %}
 
 The validation procedure requires evaluation of the [script][].  In a [P2PH][]
 script, the script is:
+{% endautocrossref %}
 
     OP_DUP OP_HASH160 <PubkeyHash> OP_EQUALVERIFY OP_CHECKSIG
 
+{% autocrossref %}
 The spender's [scriptSig][] is [evaluated](#scriptsig-evaluation) and prefixed to the beginning of the
 [script][]. In a [P2PH][] transaction, the scriptSig contains a [signature][] (sig)
 and full [public key][] (pubkey), creating the following concatenation:
+{% endautocrossref %}
 
     <Sig> <PubKey> OP_DUP OP_HASH160 <PubkeyHash> OP_EQUALVERIFY OP_CHECKSIG
 
@@ -648,6 +676,7 @@ problems with it).
 {% endautocrossref %}
 
 ### Standard Transactions
+{% autocrossref %}
 
 Care must be taken to avoid non-standard output scripts. As of Bitcoin Core
 0.9, the [standard output script][standard script] types are:
@@ -657,24 +686,29 @@ Care must be taken to avoid non-standard output scripts. As of Bitcoin Core
 
 [P2PH][] is the most common form of [script][] used to send a transaction to one
 or multiple Bitcoin [addresses][].
+{% endautocrossref %}
 
 ~~~
 script: OP_DUP OP_HASH160 <PubKeyHash> OP_EQUALVERIFY OP_CHECKSIG
 scriptSig: <sig> <pubkey> 
 ~~~
 
+{% autocrossref %}
 **Script hash ([P2SH][])**
 
 [P2SH][] is used to send a transaction to a [script hash][]. Each of the standard
 [scripts][] can be used inside a P2SH [redeemScript][], but in practice only the
 [multisig][] script makes sense until more transactions types are made standard.
+{% endautocrossref %}
 
 ~~~
 script: OP_HASH160 <redeemscripthash> OP_EQUAL
 scriptSig: <sig> [sig] [sig...] <redeemscript>
 ~~~
 
+{% autocrossref %}
 Although it’s not a separate transaction type, this is a [P2SH multisig][] with 2-of-3:
+{% endautocrossref %}
 
 ~~~
 script: OP_HASH160 <redeemscripthash> OP_EQUAL
@@ -682,6 +716,7 @@ scriptSig: <sig> <sig> <redeemscript>
 redeemScript: OP_0 <OP_2> <pubkey> <pubkey> <pubkey> <OP_3> OP_CHECKMULTISIG
 ~~~
 
+{% autocrossref %}
 **[Multisig][]**
 
 Although [P2SH][] is now generally used for [multisig][] transactions, this [script][]
@@ -689,38 +724,44 @@ can be used to require multiple signatures before a [UTXO][] can be spent.
 
 (m is the *minimum* subset size---the number of [public keys][public
 key] which must match a [signature][]; n is the *number* of public keys being
-provided. Both m and n should be [opcodes][op code] `OP_1` through `OP_16`,
+provided. Both m and n should be [op codes][op code] `OP_1` through `OP_16`,
 corresponding to the number desired.)
+{% endautocrossref %}
 
 ~~~
 script: <m> <pubkey> [pubkey] [pubkey...] <n> OP_CHECKMULTISIG
 scriptSig: OP_0 <sig> [sig] [sig...]
 ~~~
 
+{% autocrossref %}
 **[Pubkey][]**
 
 [Pubkey][]{:#term-pubkey}{:.term} [scripts][] are a simplified form of the [P2PH][] script; they’re used in all
 [coinbase transactions][coinbase transaction], but they aren’t as convenient
 or secure as P2PH, so they generally
 aren’t used elsewhere.
+{% endautocrossref %}
 
 ~~~
 script: <pubkey> OP_CHECKSIG
 scriptSig: <sig>
 ~~~
 
+{% autocrossref %}
 **[Null Data][]**
 
 [Null data][]{:#term-null-data}{:.term} [scripts][] let you add a small amount of arbitrary data to the [block
 chain][] in exchange for paying a [transaction fee][], but doing so is discouraged.
 (Null data is a [standard script][] type only because some people were adding data
 to the block chain in more harmful ways.)
+{% endautocrossref %}
 
 ~~~
 script: OP_RETURN <data>
 (Null data scripts cannot be spent, so there's no scriptSig)
 ~~~
 
+{% autocrossref %}
 If you use anything besides a [standard script][] in an [output][], [peers][]
 and [miners][] using the default Bitcoin Core settings will neither
 accept, [broadcast][], nor [mine][] your transaction. When you try to broadcast
@@ -763,7 +804,10 @@ https://github.com/bitcoin/bitcoin/blob/acfe60677c9bb4e75cf2e139b2dee4b642ee6a0c
   (currently 546 satoshis---0.005 millibits), the transaction must pay
   a minimum [transaction fee][] (currently 0.1 millibits).
 
+{% endautocrossref %}
+
 ### Signature Hash Types
+{% autocrossref %}
 
 [`OP_CHECKSIG`][op_checksig] extracts a non-stack argument from each [signature][] it
 evaluates, allowing the signer to decide which parts of the transaction
@@ -820,8 +864,10 @@ between different sigs -->
 
 <!-- TODO: add to the technical section details about what the different
 hash types sign, including the procedure for inserting the subscript -->
+{% endautocrossref %}
 
 ### Locktime And Sequence Number
+{% autocrossref %}
 
 One thing all [signature hash][] types [sign][signature] is the transaction's [locktime][]{:#term-locktime}{:.term}.
 The locktime indicates the earliest time a transaction can be added to
@@ -839,7 +885,7 @@ invalid if the new transaction is added to the block chain before
 the time lock expires.
 
 Care must be taken near the expiry time of a time lock. The peer-to-peer
-[network][] allows [times][block time] on the [block chain][] to be up to two hours ahead of
+network allows [times][block time] on the [block chain][] to be up to two hours ahead of
 real time, so a [locktime][] transaction can be added to the block chain up
 to two hours before its time lock officially expires. Also, blocks are
 not created at guaranteed intervals, so any attempt to cancel a valuable
@@ -873,8 +919,10 @@ Locktime itself is an unsigned 4-byte number which can be parsed two ways:
   1970-01-01T00:00 UTC---currently over 1.395 billion). The transaction
   can be added to any block whose [block header][]'s [time][block time] field is greater
   than the locktime.
+{% endautocrossref %}
 
 ### P2SH And Multisig
+{% autocrossref %}
 
 <!--TODO: P2SH and multisig could be separated;
 for details, please read
@@ -887,22 +935,26 @@ must match signatures in the [input][]'s [scriptSig][].
 
 A standard multisig transaction looks similar to [pay-to-pubkey-hash][P2PH],
 except that full public keys (not hashes) are provided and
-[`OP_CHECKMULTISIG`][op_checkmultisig] is used instead plain [checksig][op_checksig].
+[`OP_CHECKMULTISIG`][op_checkmultisig] is used instead of plain [checksig][op_checksig].
 `OP_CHECKMULTISIG` takes multiple public keys and multiple
 signatures, so it's necessary to tell it how many public keys are
 being provided (n) and how many signatures are required (m). See the
 prototype [script][] below for an example:
+{% endautocrossref %}
 
     <m> [pubkey] [pubkey...] <n> OP_CHECKMULTISIG
 
+{% autocrossref %}
 The values m and n would be replaced with [op codes][op code] which push the
 corresponding number to the [stack][], such as `OP_2` and `OP_2` for an
 [output][] which could only be spent if two public keys were used, or `OP_2`
 and `OP_3` for an output which requires [signatures][signature] from only two of the
 public keys listed. For example, a 2-of-3 script:
+{% endautocrossref %}
 
     OP_2 [pubkey] [pubkey] [pubkey] OP_3 OP_CHECKMULTISIG
 
+{% autocrossref %}
 Recipients who want their [satoshis][] to be secured with multiple
 signatures must get the spender to create a [multisig][] [script][].
 This creates several problems:
@@ -952,7 +1004,7 @@ a P2SH-style output containing Bob's redeemScript hash.
 
 When Bob wants to spend the [output][], he provides the full [redeemScript][]
 along with his [signature][] in the normal [input][] [scriptSig][]. The
-peer-to-peer [network][] ensures the full redeemScript hashes to the
+peer-to-peer network ensures the full redeemScript hashes to the
 same value as the [script hash][] Alice put in her [output][]; it then processes the
 redeemScript exactly as it would if it were the primary [script][], letting
 Bob spend the output if the redeemScript returns true.
@@ -980,7 +1032,7 @@ containing his [signature][], a placeholder byte (0x00), and the [redeemScript][
 gives this incomplete transaction to Charlie, who checks the output
 details and replaces the placeholder byte with his own [signature][],
 completing the signatures. Either Bob or Charlie can [broadcast][] this
-fully-signed transaction to the peer-to-peer [network][].
+fully-signed transaction to the peer-to-peer network.
 
 Previous [P2PH][] and [P2SH][] illustrations showed Bob signing using the
 [`SIGHASH_ALL`][sighash_all] procedure, but this [multisig P2SH][p2sh multisig] figure does not
@@ -996,8 +1048,10 @@ A lone [NONE][sighash_none] hash type would usually allow unscrupulous [miners][
 the [output][] to pay themselves.  But because the [multisig][] [input][] requires
 both Charlie and Bob's signatures, Bob can sign his [signature][] with
 [`SIGHASH_ALL`][sighash_all] to fully protect the transaction.
+{% endautocrossref %}
 
 ### Transaction Fees And Change
+{% autocrossref %}
 
 Transactions typically pay [transaction fees][transaction fee] based on the total byte size
 of the signed transaction.  The transaction fee is given to the
@@ -1031,6 +1085,7 @@ from the [UTXOs][utxo] back to the spender.  They can reuse the same [P2PH][] [p
 or [P2SH][] [script hash][] as was used in the UTXO, but for the reasons
 described in the [next section](#avoiding-key-reuse), it is highly recommended that change
 outputs be sent to a new P2PH or P2SH [address][].
+{% endautocrossref %}
 
 ### Avoiding Key Reuse
 
@@ -1114,6 +1169,7 @@ fixed URI to which payments should be sent, please see Bitcoin
 the [`Bitcoin:` URI section][section bitcoin URI] below.
 
 ### Transaction Malleability
+{% autocrossref %}
 
 None of Bitcoin's [signature hash][] types protect the [scriptSig][], leaving
 the door open for a limited DOS attack called [transaction
@@ -1160,12 +1216,14 @@ disappear from the [network][] and needs to be reissued, that it be reissued
 in a way that invalidates the lost transaction. One method which will
 always work is to ensure the reissued payment spends all of the same
 [outputs][] that the lost transaction used as [inputs][].
+{% endautocrossref %}
 
 ### Transaction Reference
 
 The following subsections briefly document core transaction details.
 
 #### OP Codes
+{% autocrossref %}
 
 The op codes used in standard transactions are,
 
@@ -1221,8 +1279,10 @@ file](https://github.com/bitcoin/bitcoin/blob/master/src/script.h).
 their [scriptSig][], but scriptSig is run separately from the [script][] (with a
 shared stack), so scriptSig can't use arguments such as [`OP_RETURN`][op_return] to
 prevent the script from working as expected.
+{% endautocrossref %}
 
 #### Address Conversion
+{% autocrossref %}
 
 The hashes used in [P2PH][] and [P2SH][] [outputs][] are commonly encoded as Bitcoin
 [addresses][].  This is the procedure to encode those hashes and decode the
@@ -1259,6 +1319,7 @@ Nolan provided the following example encoding algorithm to the Bitcoin
 Wiki [Base58Check
 encoding](https://en.bitcoin.it/wiki/Base58Check_encoding) page:
 
+{% endautocrossref %}
 
 {% highlight c %}
 code_string = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"
@@ -1280,14 +1341,17 @@ repeat(number_of_leading_zero_bytes_in_hash)
 output_string.reverse();
 {% endhighlight %}
 
+{% autocrossref %}
 Bitcoin's own code can be traced using the [base58 header
 file](https://github.com/bitcoin/bitcoin/blob/master/src/base58.h).
 
 To convert [addresses][] back into hashes, reverse the base58 encoding, extract
 the checksum, repeat the steps to create the checksum and compare it
 against the extracted checksum, and then remove the version byte.
+{% endautocrossref %}
 
 #### Raw Transaction Format
+{% autocrossref %}
 
 Bitcoin transactions are [broadcast][] between [peers][] and stored in the
 [block chain][] in a serialized byte format, called [raw format][]{:#term-raw-format}{:.term}. Bitcoin Core
@@ -1296,6 +1360,7 @@ and many other tools print and accept raw transactions encoded as hex.
 A sample raw transaction is the first non-[coinbase transaction][], made in
 [block 170][block170].  To get the transaction, use the [`getrawtransaction` RPC][rpc getrawtransaction] with
 that transaction's [txid][] (provided below):
+{% endautocrossref %}
 
     > getrawtransaction \
       f4184fc596403b9d638783cf57adfe4c75c605f6356fbc91338530e9831e9e16
@@ -1400,6 +1465,7 @@ TODO, Relevant links:
 -->
 
 ## Contracts
+{% autocrossref %}
 
 By making the system hard to understand, the complexity of [transactions][]
 has so far worked against you. That changes with contracts. Contracts are
@@ -1422,8 +1488,10 @@ transactions, they are framed below in story format.
 Besides the contract types described below, many other contract types
 have been proposed. Several of them are collected on the [Contracts
 page](https://en.bitcoin.it/wiki/Contracts) of the Bitcoin Wiki.
+{% endautocrossref %}
 
 ### Escrow And Arbitration
+{% autocrossref %}
 
 Bob and Charlie have a nasty falling out and want to terminate their
 business, but they can't agree how to split their saved [satoshis][], which
@@ -1453,7 +1521,7 @@ signs a transaction that spends 60% of the satoshis to Bob's [public key][]
 and 40% to Charlie's public key. 
 
 Either Bob and Charlie can sign the transaction and [broadcast][] it to the
-peer-to-peer [network][], actually spending the satoshis. If Alice creates
+peer-to-peer network, actually spending the satoshis. If Alice creates
 and signs a transaction neither of them will agree to, such as spending
 all the satoshis to herself, they can find a new arbitrator and repeat
 the procedure.
@@ -1473,9 +1541,11 @@ it to release the payment according to the ruling.
 
 **Resource:** [BitRated](https://www.bitrated.com/) provides a [multisig][] arbitration
 service interface using HTML/JavaScript on a GNU AGPL-licensed website.
+{% endautocrossref %}
 
 
 ### Micropayment Channel
+{% autocrossref %}
 
 <!-- SOMEDAY: try to rewrite using a more likely real-world example without
 making the text or illustration more complicated --> 
@@ -1546,8 +1616,10 @@ provides a complete set of micropayment functions, an example
 implementation, and [a
 tutorial](https://code.google.com/p/bitcoinj/wiki/WorkingWithMicropayments)
 all under an Apache license.
+{% endautocrossref %}
 
 ### CoinJoin
+{% autocrossref %}
 
 Alice is concerned about her privacy.  She knows every transaction gets
 added to the public [block chain][], so when Bob and Charlie pay her, they
@@ -1583,7 +1655,7 @@ AnonGirl then signs her inputs using [`SIGHASH_ALL`][sighash_all] to ensure nobo
 change the [input][] or [output][] details.  She gives the partially-signed
 transaction to Nemo who signs his inputs the same way and passes it
 to Neminem, who also signs it the same way.  Neminem then [broadcasts][broadcast]
-the transaction to the peer-to-peer [network][], mixing all of the millibits in
+the transaction to the peer-to-peer network, mixing all of the millibits in
 a single transaction.
 
 As you can see in the illustration, there's no way for anyone besides
@@ -1628,18 +1700,24 @@ license. A centralized version of purchaser CoinJoin is available at the
 [SharedCoin](https://sharedcoin.com/) website (part of Blockchain.info),
 whose [implementation](https://github.com/blockchain/Sharedcoin) is
 available under the 4-clause BSD license.
+{% endautocrossref %}
 
 ## Wallets
+{% autocrossref %}
 
 Bitcoin wallets at their core are a collection of [private keys][]. These collections are stored digitally in a file, or can even be physically stored on pieces of paper. 
+{% endautocrossref %}
 
 ### Private key formats
+{% autocrossref %}
 
 [Private keys][private key] are what are used to unlock [satoshis][] from a particular [address][]. In Bitcoin, a private key in standard format is simply a 256-bit number, between the values:
 
 0x1 and 0xFFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFE BAAE DCE6 AF48 A03B BFD2 5E8C D036 4141, effectively representing the entire range of 2<sup>256</sup>-1 values. The range is governed by the [secp256k1][] ECDSA encryption standard used by Bitcoin. 
+{% endautocrossref %}
 
 #### Wallet Import Format (WIF)
+{% autocrossref %}
 
 In order to make copying of [private keys][private key] less prone to error, [Wallet Import Format][]{:#term-wallet-import-format}{:.term} may be utilized. WIF uses [base58Check][] encoding on an private key, greatly decreasing the chance of copying error, much like standard Bitcoin [addresses][].
 
@@ -1658,8 +1736,10 @@ In order to make copying of [private keys][private key] less prone to error, [Wa
 7. Convert the result from a byte string into a Base58 string using Base58Check encoding.
 
 The process is easily reversible, using the Base58 decoding function, and removing the padding.
+{% endautocrossref %}
 
 #### Mini Private Key Format
+{% autocrossref %}
 
 Mini private key format is a method for encoding a [private key][] in under 30 characters, enabling keys to be embedded in a small physical space, such as physical bitcoin tokens, and more damage-resistant QR codes. 
 
@@ -1675,21 +1755,28 @@ Many implementations disallow the character '1' in the mini private key due to i
 
 **Resource:** A common tool to create and redeem these keys is the [Casascius Bitcoin Address Utility](https://github.com/casascius/Bitcoin-Address-Utility).
 
+{% endautocrossref %}
+
 
 
 
 ### Deterministic wallets formats
+{% autocrossref %}
 
 Deterministic wallets are the recommended method of generating and storing [private keys][private key], as they allow a simple one-time backup of wallets via mnemonic pass-phrase of a number of short, common English words.
 
+{% endautocrossref %}
 
 
 
 #### Type 1: Single Chain Wallets
+{% autocrossref %}
 
 Type 1 deterministic wallets are the simpler of the two, which can create a single series of keys from a single [seed][]. A primary weakness is that if the seed is leaked, all funds are compromised, and [wallet][] sharing is extremely limited.
+{% endautocrossref %}
 
 #### Type 2: Hierarchical Deterministic (HD) Wallets
+{% autocrossref %}
 
 Type 2 wallets, specified in [BIP32][], are the currently favored format for generating, storing and managing [private keys][private key]. Hierarchical deterministic wallets allow selective sharing by supporting multiple key-pair chains in a tree structure, derived from a single root. This selective sharing enables many advanced arrangements. An additional goal of the BIP32 standard is to encourage interoperability between wallet software using the same wallet format, rather than having to manually convert wallet types. The suggested minimal interoperability is the ability to import extended [public][public key] and [private keys][private key], to give access to the descendants as wallet keys. 
 
@@ -1706,8 +1793,10 @@ Here are a select number of use cases:
 3. In case two business partners often transfer money, one can use the [extended public key][] for the external chain of a specific account as a sort of "super address", allowing frequent transactions that cannot (easily) be associated, but without needing to request a new [address][] for each payment. Such a mechanism could also be used by [mining][miner] pool operators as variable payout address.
 
 With many more arrangements possible. The following section is an in-depth technical discussion of HD wallets.
+{% endautocrossref %}
 
 #### Conventions
+{% autocrossref %}
 
 In the rest of this text we will assume the public key cryptography used in Bitcoin, namely elliptic curve cryptography using the field and curve parameters defined by [secp256k1][]. Variables below are either:
 
@@ -1732,21 +1821,27 @@ As standard conversion functions, we assume:
 * ser<sub>P</sub>(P): serializes the coordinate pair P = (x,y) as a byte sequence using SEC1's compressed form: (0x02 or 0x03) \|\| ser<sub>256</sub>(x), where the header byte depends on the parity of the omitted y coordinate.
 
 * parse<sub>256</sub>(p): interprets a 32-byte sequence as a 256-bit number, most significant byte first.
+{% endautocrossref %}
 
 
 #### Extended keys
+{% autocrossref %}
 
 In what follows, we will define a function that derives a number of [child keys][child key]{:#term-child-key}{:.term} from a [parent key][]{:#term-parent-key}{:.term}. In order to prevent these from depending solely on the key itself, we extend both [private][private keys] and [public keys][] first with an extra 256 bits of entropy. This extension, called the [chain code][]{:#term-chain-code}{:.term}, is identical for corresponding private and public keys, and consists of 32 bytes.
 
 We represent an [extended private key][]{:#term-extended-private-key}{:.term} as (k, c), with k the normal [private key][], and c the [chain code][]. An [extended public key][]{:#term-extended-public-key}{:.term} is represented as (K, c), with K = point(k) and c the chain code.
 
 Each [extended key][]{:#term-extended-key}{:.term} has 2<sup>31</sup> [normal child keys][normal child key]{:#term-normal-child-key}{:.term}, and 2<sup>31</sup> [hardened child keys][hardened child key]{:#term-hardened-child-key}{:.term}. Each of these child keys has an [index][key index]{:#term-key-index}{:.term}. The normal child keys use indices 0 through 2<sup>31</sup>-1. The hardened child keys use indices 2<sup>31</sup> through 2<sup>32</sup>-1. To ease notation for hardened key indices, a number i<sub>H</sub> represents i+2<sup>31</sup>.
+{% endautocrossref %}
 
 #### Child key derivation (CKD) functions
+{% autocrossref %}
 
 Given a parent [extended key][] and an index i, it is possible to compute the corresponding [child extended key][]{:#term-child-extended-key}{:.term}. The algorithm to do so depends on whether the child is a hardened key or not (or, equivalently, whether i ≥ 2<sup>31</sup>), and whether we're talking about [private][private key] or [public keys][public key].
+{% endautocrossref %}
 
 ##### Private parent key &rarr; private child key
+{% autocrossref %}
 
 The function CKDpriv((k<sub>par</sub>, c<sub>par</sub>), i) &rarr; (k<sub>i</sub>, c<sub>i</sub>) computes a [child extended private key][extended key] from the [parent extended private key][extended key]:
 
@@ -1765,8 +1860,10 @@ The function CKDpriv((k<sub>par</sub>, c<sub>par</sub>), i) &rarr; (k<sub>i</sub
 * In case parse<sub>256</sub>(I<sub>L</sub>) ≥ n or k<sub>i</sub> = 0, the resulting key is invalid, and one should proceed with the next value for i. (Note: this has probability lower than 1 in 2<sup>127</sup>.)
 
 The HMAC-SHA512 function is specified in [RFC 4231](http://tools.ietf.org/html/rfc4231).
+{% endautocrossref %}
 
 ##### Public parent key &rarr; public child key
+{% autocrossref %}
 
 The function CKDpub((K<sub>par</sub>, c<sub>par</sub>), i) &rarr; (K<sub>i</sub>, c<sub>i</sub>) computes a child extended public key from the parent [extended public key][]. It is only defined for non-hardened child keys.
 
@@ -1783,8 +1880,10 @@ The function CKDpub((K<sub>par</sub>, c<sub>par</sub>), i) &rarr; (K<sub>i</sub>
 * The returned chain code c<sub>i</sub> is I<sub>R</sub>.
 
 * In case parse<sub>256</sub>(I<sub>L</sub>) ≥ n or K<sub>i</sub> is the point at infinity, the resulting key is invalid, and one should proceed with the next value for i.
+{% endautocrossref %}
 
 ##### Private parent key &rarr; public child key
+{% autocrossref %}
 
 The function N((k, c)) &rarr; (K, c) computes the extended public key corresponding to an extended private key (the "neutered" version, as it removes the ability to sign transactions).
 
@@ -1799,12 +1898,14 @@ To compute the public child key of a parent private key:
 * CKDpub(N(k<sub>par</sub>, c<sub>par</sub>), i) (works only for non-hardened child keys).
 
 The fact that they are equivalent is what makes non-hardened keys useful (one can derive [child public keys][child public key]{:#term-child-public-key}{:.term} of a given parent key without knowing any private key), and also what distinguishes them from hardened keys. The reason for not always using non-hardened keys (which are more useful) is security; see further for more information.
+{% endautocrossref %}
 
 ##### Public parent key &rarr; private child key
 
 This is not possible, as is expected.
 
 #### The key tree
+{% autocrossref %}
 
 The next step is cascading several CKD constructions to build a tree. We start with one root, the master extended key m. By evaluating CKDpriv(m,i) for several values of i, we get a number of level-1 derived nodes. As each of these is again an extended key, CKDpriv can be applied to those as well.
 
@@ -1817,14 +1918,18 @@ To shorten notation, we will write CKDpriv(CKDpriv(CKDpriv(m,3<sub>H</sub>),2),5
 However, N(m/a<sub>H</sub>) cannot be rewritten as N(m)/a<sub>H</sub>, as the latter is not possible.
 
 Each leaf node in the tree corresponds to an actual key, while the internal nodes correspond to the collections of keys that descend from them. The chain codes of the leaf nodes are ignored, and only their embedded private or public key is relevant. Because of this construction, knowing an extended private key allows reconstruction of all descendant private keys and public keys, and knowing an extended public keys allows reconstruction of all descendant non-hardened public keys.
+{% endautocrossref %}
 
 #### Key identifiers
+{% autocrossref %}
 
 Extended keys can be identified by the Hash160 (RIPEMD160 after SHA256) of the serialized public key, ignoring the chain code. This corresponds exactly to the data used in traditional Bitcoin addresses. It is not advised to represent this data in base58 format though, as it may be interpreted as an address that way (and wallet software is not required to accept payment to the chain key itself).
 
 The first 32 bits of the identifier are called the [key fingerprint][]{:#term-key-fingerprint}{:.term}.
+{% endautocrossref %}
 
 #### Serialization format
+{% autocrossref %}
 
 Extended public and private keys are serialized as follows:
 
@@ -1845,8 +1950,10 @@ This 78 byte structure can be encoded like other Bitcoin data in Base58, by firs
 Note that the fingerprint of the parent only serves as a fast way to detect parent and child nodes in software, and software must be willing to deal with collisions. Internally, the full 160-bit identifier could be used.
 
 When importing a serialized extended public key, implementations must verify whether the X coordinate in the public key data corresponds to a point on the curve. If not, the extended public key is invalid.
+{% endautocrossref %}
 
 #### Master key generation
+{% autocrossref %}
 
 The total number of possible extended keypairs is almost 2<sup>512</sup>, but the produced keys are only 256 bits long, and offer about half of that in terms of security. Therefore, [master keys][master key]{:#term-master-key}{:.term} are not generated directly, but instead from a potentially short seed value.
 
@@ -1862,11 +1969,17 @@ In case I<sub>L</sub> is 0 or ≥n, the master key is invalid.
 
 ![Example](/img/dev/derivation.png)
 
+{% endautocrossref %}
+
 #### Specification: Wallet structure
+{% autocrossref %}
 
 The previous sections specified key trees and their nodes. The next step is imposing a wallet structure on this tree. The layout defined in this section is a default only, though clients are encouraged to mimick it for compatibility, even if not all features are supported.
 
+{% endautocrossref %}
+
 #### The default wallet layout
+{% autocrossref %}
 
 An HDW is organized as several [accounts][HD account]{:#term-hd-account}{:.term}. Accounts are numbered, the default account ("") being number 0. Clients are not required to support more than one account - if not, they only use the default account.
 
@@ -1875,8 +1988,10 @@ Each account is composed of two keypair chains: an [internal chain][]{:#term-int
 * m/i<sub>H</sub>/0/k corresponds to the k'th keypair of the external chain of account number i of the HDW derived from master m.
 
 * m/i<sub>H</sub>/1/k corresponds to the k'th keypair of the internal chain of account number i of the HDW derived from master m.
+{% endautocrossref %}
 
 #### Security Considerations
+{% autocrossref %}
 
 Most of the standard security guarantees afforded the standard key setups such as Type 1 wallets are still in place. 
 
@@ -1901,20 +2016,24 @@ Consequently:
 
 **Resources:** Refer to [BIP32][] for the full HD Wallet specification.
 
+{% endautocrossref %}
 
 
 
 ### JBOK (Just a bunch of keys) wallets formats (deprecated)
+{% autocrossref %}
 
-JBOK-style wallets are a deprecated form of wallet that originated from the Bitcoin Core client wallet. Bitcoin Core client wallet would create 100 [private key][]/[public key][] pairs automatically via a Psuedo-Random-Number Generator (PRNG) for use. Once all these keys are consumed or the [RPC][] call [keypoolrefill][rpc keypoolrefill] is run, another 100 key pairs would be created. This created considerable difficulty in backing up one’s keys, considering backups have to be run manually to save the newly generated private keys. If a new key pair set had been generated, used, then lost prior to a backup, the stored [satoshis][] are likely lost forever. Many older-style mobile wallets followed a similar format, but only generated a new private key upon user demand.
+JBOK-style wallets are a deprecated form of wallet that originated from the Bitcoin Core client wallet. Bitcoin Core client wallet would create 100 [private key][]/[public key][] pairs automatically via a Psuedo-Random-Number Generator (PRNG) for use. Once all these keys are consumed or the [RPC][] call [`keypoolrefill`][rpc keypoolrefill] is run, another 100 key pairs would be created. This created considerable difficulty in backing up one’s keys, considering backups have to be run manually to save the newly generated private keys. If a new key pair set had been generated, used, then lost prior to a backup, the stored [satoshis][] are likely lost forever. Many older-style mobile wallets followed a similar format, but only generated a new private key upon user demand.
 
-This wallet type is being actively phased out and strongly discouraged from being used to store significant amounts of satoshis due to the security and backup difficulty.
+This wallet type is being actively phased out and strongly discouraged from being used to store significant amounts of satoshis due to the security and backup hassle.
 
+{% endautocrossref %}
 
 
 
 
 ## Payment Processing
+{% autocrossref %}
 
 Payment processing encompasses the steps spenders and receivers perform
 to make and accept payments in exchange for products or services. The
@@ -1934,8 +2053,10 @@ The figure above illustrates payment processing using Bitcoin from a
 receiver's perspective, starting with a new order. The following
 subsections will each address the three common steps and the three
 occasional or optional steps.
+{% endautocrossref %}
 
 ### Calculating Order Totals In Satoshis
+{% autocrossref %}
 
 Because of exchange rate variability between [satoshis][] and national
 currencies ([fiat][]{:#term-fiat}{:.term}), many Bitcoin orders are priced in fiat but paid
@@ -1968,11 +2089,13 @@ technologies, so there are no new or planned technologies which
 will make it significantly easier for your program to correctly convert
 order totals from fiat into satoshis.
 
+{% endautocrossref %}
 
 
 
 
 #### Expiring Old Order Totals
+{% autocrossref %}
 
 Because the exchange rate fluctuates over time, order totals pegged to
 [fiat][] must expire to prevent spenders from delaying payment in the hope
@@ -1985,11 +2108,13 @@ to request an additional payment or to issue a refund.   Longer
 expiration periods increase the chance that the exchange rate will
 fluctuate a significant amount before payment is received.
 
+{% endautocrossref %}
 
 
 
 
 ### Requesting Payments Using Bitcoin
+{% autocrossref %}
 
 Before requesting payment, your application must create a [Bitcoin
 address][address], or acquire an address from another program such as
@@ -2023,27 +2148,32 @@ compatible ways to give the spender the address and amount to be paid:
    QR codes directly, although they do often generate QR codes for
    accepting payment.
 
+{% endautocrossref %}
 
 
 
 
 #### Requesting Payment Using Plain Text
+{% autocrossref %}
 
 To specify an amount directly for copying and pasting, you must provide
 the address, the amount, and the [denomination][]. An expiration time for
 the offer may also be specified.  For example:
 
 (Note: all examples in this section use [Testnet][] addresses.)
+{% endautocrossref %}
 
     Pay: mjSk1Ny9spzU2fouzYgLqGUD8U41iR35QN
     Amount: 100 BTC
     You must pay by: 2014-04-01 at 23:00 UTC
 
+{% autocrossref %}
 Indicating the [denomination][]{:#term-denomination}{:.term} is critical. As of this writing, all popular
 Bitcoin wallet software defaults to denominating amounts in either [bitcoins][]{:#term-bitcoins}{:.term} (BTC)
 or [millibits][]{:#term-millibits}{:.term} (mBTC). Choosing between BTC and mBTC is widely supported,
 but other software also lets its users select denomination amounts from
 some or all of the following options:
+{% endautocrossref %}
 
 | Bitcoins    | Unit (Abbreviation) |
 |-------------|---------------------|
@@ -2053,31 +2183,39 @@ some or all of the following options:
 | 0.000001    | microbit (uBTC)     |
 | 0.00000001  | [satoshi][]{:#term-satoshi}{:.term}             |
 
+
+{% autocrossref %}
 Because of the widespread popularity of BTC and mBTC, it may be more
 useful to specify the amount in both denominations when the text is
 meant to be copied and pasted. For example:
+{% endautocrossref %}
 
     Pay: mjSk1Ny9spzU2fouzYgLqGUD8U41iR35QN
     Amount: 100 BTC  (100000 mBTC)
     You must pay by: 2014-04-01 at 23:00 UTC
 
+{% autocrossref %}
 Plain-text payment requests should, whenever possible, be sent over
 secure medium (such as HTTPS) to prevent a man-it-the-middle attack from
 replacing your application's addresses with some other addresses.
+{% endautocrossref %}
 
 
 
 
 #### Requesting Payment Using The `bitcoin:` URI
+{% autocrossref %}
 
 The [`bitcoin:` URI][bitcoin URI]{:#term-bitcoin-uri}{:.term} scheme defined in [BIP21][] eliminates denomination
 confusion and saves the spender from copying and pasting two separate
 values. It also lets the payment request provide some additional
 information to the spender. An example:
 
+{% endautocrossref %}
+
     bitcoin:mjSk1Ny9spzU2fouzYgLqGUD8U41iR35QN?amount=100
 
-[BIP21]: https://github.com/bitcoin/bips/blob/master/bip-0021.mediawiki
+{% autocrossref %}
 
 Only the address is required, and if it is the only thing specified,
 wallets will pre-fill a payment request with it and let the spender enter
@@ -2088,10 +2226,12 @@ only for whole bitcoins (as in the example above), may omit the decimal
 point. The amount field must not contain any commas. Fractional bitcoins
 may be specified with or without a leading zero; for example, either of
 the URIs below requesting one millibit are valid:
+{% endautocrossref %}
 
     bitcoin:mjSk1Ny9spzU2fouzYgLqGUD8U41iR35QN?amount=.001
     bitcoin:mjSk1Ny9spzU2fouzYgLqGUD8U41iR35QN?amount=0.001
 
+{% autocrossref %}
 Two other parameters are widely supported. The [`label`][label]{:#term-label}{:.term} parameter is
 generally used to provide wallet software with the recipient's name. The
 [`message`][message]{:#term-message}{:.term} parameter is generally used to describe the payment request to
@@ -2102,6 +2242,8 @@ the message must be [URI encoded][].
 
 All four parameters used together, with appropriate URI encoding, can be
 seen in the line-wrapped example below.
+
+{% endautocrossref %}
 
     bitcoin:mjSk1Ny9spzU2fouzYgLqGUD8U41iR35QN\
     ?amount=0.10\
@@ -2123,6 +2265,8 @@ Which produces:
 
 > <a href="bitcoin:mjSk1Ny9spzU2fouzYgLqGUD8U41iR35QN?amount=0.10&label=Example+Merchant&message=Order+of+flowers+%26+chocolates">Order flowers & chocolates using Bitcoin</a> (Pay 0.10 BTC [100 mBTC] to mjSk1Ny9spzU2fouzYgLqGUD8U41iR35QN by 2014-04-01 at 23:00 UTC)
 
+{% autocrossref %}
+
 Some payment processors use Javascript to display countdown timers
 indicating the number of minutes and seconds until the offer expires.
 
@@ -2131,7 +2275,7 @@ section below, with both new optional and required parameters. As of this
 writing, the only widely-used parameter besides the four described above
 is the payment protocol's [`r`][r] parameter.
 
-Programs accepting URIs in any form must ask the user for confirmation
+Programs accepting URIs in any form must ask the user for permission
 before paying unless the user has explicitly disabled prompting (as
 might be the case for micropayments).
 
@@ -2140,8 +2284,10 @@ possible, be sent over secure medium (such as HTTPS) to prevent a
 man-in-the-middle attack from replacing your application's addresses
 with some other addresses.
 
+{% endautocrossref %}
 
 #### Requesting Payment Using QR-Encoded `bitcoin:` URIs
+{% autocrossref %}
 
 QR codes are a popular way to exchange `bitcoin:` URIs in person, in
 images, or in videos. Most mobile Bitcoin wallet apps, and some desktop
@@ -2149,7 +2295,7 @@ wallets, support scanning QR codes to pre-fill their payment screens.
 
 The figure below shows the same `bitcoin:` URI code encoded as four
 different [Bitcoin QR codes][URI QR code]{:#term-uri-qr-code}{:.term} at different error correction levels (described
-below the image). The QR code can include the [label][] and [message][]
+below the image). The QR code can include the `label` and `message`
 parameters---and any other optional parameters---but they were
 omitted here to keep the QR code small and easy to scan with unsteady
 or low-resolution mobile cameras.
@@ -2169,7 +2315,7 @@ QR encoders offer four possible levels of error correction:
 4. High: corrects up to 30% damage but results in approximately 26%
    larger images over low-level damage correction.
 
-The error correction is combined with a checksum to ensure the QR code
+The error correction is combined with a checksum to ensure the Bitcoin QR code
 cannot be successfully decoded with data missing or accidentally altered,
 so your applications should choose the appropriate level of error
 correction based on the space you have available to display the code.
@@ -2178,12 +2324,14 @@ quartile-level damage correction helps ensure fast scanning when
 displayed on high-resolution screens.
 
 To the degree possible, your applications should discourage the
-transmission of QR codes via images or videos which could be modified to
+transmission of Bitcoin QR codes via images or videos which could be modified to
 replace the intended QR code with an alternative QR code.
 
+{% endautocrossref %}
 
 
 #### Requesting Payment With The Payment Protocol
+{% autocrossref %}
 
 Bitcoin Core 0.9 supports the new [payment protocol][]{:#term-payment-protocol}{:.term}. The payment protocol
 lets receivers provide more detail about the requested payment to
@@ -2197,6 +2345,7 @@ as "www.bitcoin.org".
 
 To request payment using the payment protocol, you use an extended (but
 backwards-compatible) [`bitcoin:` URI][bitcoin URI].  For example:
+{% endautocrossref %}
 
     bitcoin:mjSk1Ny9spzU2fouzYgLqGUD8U41iR35QN\
     ?amount=0.10\
@@ -2204,6 +2353,7 @@ backwards-compatible) [`bitcoin:` URI][bitcoin URI].  For example:
     &message=Order+of+flowers+%26+chocolates\
     &r=http://example.com/pay.php/invoice%3Dda39a3ee
 
+{% autocrossref %}
 None of the parameters provided above, except `r`, are required for the
 payment protocol---but your applications may include them for backwards
 compatibility with [wallet][] programs which don't yet handle the payment
@@ -2219,21 +2369,21 @@ The browser, QR code reader, or other program processing the URI opens
 the spender's Bitcoin wallet program on the URI. If the wallet program is
 aware of the payment protocol, it accesses the URL specified in the `r`
 parameter, which should provide it with a serialized [PaymentRequest][]
-served with the [MIME][] type `application/bitcoin-paymentrequest`.
-
+served with the [MIME][] type {% endautocrossref %} `application/bitcoin-paymentrequest`.
 
 
 
 
 ##### PaymentRequest & PaymentDetails In The Payment Protocol
+{% autocrossref %}
 
 The [PaymentRequest][]{:#term-paymentrequest}{:.term} is created with data structures built using
 [Google's Protocol Buffers][protobuf]. [BIP70][] describes these data
 structures in the non-sequential way they're defined in the payment
 request protocol buffer code, but the text below will describe them in
 a more linear order using a simple (but functional) Python CGI
-script. (For brevity and clarity, many normal CGI best practices are
-not used in this script.)
+program. (For brevity and clarity, many normal CGI best practices are
+not used in this program.)
 
 The full sequence of events is illustrated below, starting with the
 spender clicking a `bitcoin:` URI or scanning a `bitcoin:` QR code.
@@ -2246,10 +2396,12 @@ modern Linux package managers and [directly from Google.][protobuf] Non-Google
 protocol buffer compilers are also available for a variety of other
 programming languages. You will also need a copy of the PaymentRequest
 Protocol Buffer description, which is available in [BIP70][] or as
-`src/qt/paymentrequest.proto` in the Bitcoin Core source code.
+<!--[-->`src/qt/paymentrequest.proto`<!--]--> in the Bitcoin Core source code.
 
-With the Python code generated from `paymentrequest.proto`, we can start
-our simple CGI script.
+With the Python code generated by `protoc`, we can start our simple
+CGI program.
+
+{% endautocrossref %}
 
 {% highlight python %}
 #!/usr/bin/env python
@@ -2322,7 +2474,7 @@ x509.certificate.append(file("/etc/apache2/example.com-cert.der", "r").read())
 #x509.certificate.append(file("/some/intermediary/cert.der", "r").read())
 
 ## (Required if pki_type != none) You will need a private SSL key in a
-## format your CGI script supports. In this script, we'll load it from a
+## format your CGI program supports. In this script, we'll load it from a
 ## PEM file. (Obviously, embedding your passphrase in your CGI code, as
 ## done here with the password "test", is a bad idea in real life.)
 #
@@ -2332,12 +2484,13 @@ priv_key_file           = "/etc/apache2/example.com-key.pem"
 private_key = load_privatekey(FILETYPE_PEM, file(priv_key_file, "r").read(), "test")
 {% endhighlight %}
 
+{% autocrossref %}
 The configuration code above pushes a few settings into the `request`
 ([PaymentRequest][]) and `details` (PaymentDetails) objects. When we
 serialize them, [PaymentDetails][]{:#term-paymentdetails}{:.term} will be contained within the
 PaymentRequest.
 
-The [Public-Key Infrastructure][PKI]{:#term-pki}{:.term} types let you define how you want to
+The [Public-Key Infrastructure][PKI]{:#term-pki}{:.term} (PKI) types let you define how you want to
 cryptographically sign your PaymentRequest so that it can't be modified
 by a man-in-the-middle attack. If you don't want to sign the
 PaymentRequest, you can choose a [`pki_type`][pp pki
@@ -2366,7 +2519,7 @@ software, such as a certificate from the Mozilla root store.
 
 The certificates must be provided in a specific order---the same order
 used by Apache's `SSLCertificateFile` directive and other server
-software.   The figure below shows the signature chain of the
+software.   The figure below shows the sig&#8288;nature chain of the
 www.bitcoin.org X.509 certificate and how each certificate (except the
 root certificate) would be loaded into the [X509Certificates][]{:#term-x509certificates}{:.term} protocol
 buffer message.
@@ -2375,11 +2528,11 @@ buffer message.
 
 To be specific, the first certificate provided must be the [DER-formatted][DER]
 X.509 certificate corresponding to the private SSL key which will make the
-signature, called the [leaf certificate][]{:#term-leaf-certificate}{:.term}. Any [intermediate
+sig&#8288;nature, called the [leaf certificate][]{:#term-leaf-certificate}{:.term}. Any [intermediate
 certificates][intermediate certificate]{:#term-intermediate-certificate}{:.term} necessary to link that signed public SSL
 key to the [root
 certificate][]{:#term-root-certificate}{:.term} (the certificate authority) are attached separately, with each
-certificate in DER format bearing the signature of the certificate that
+certificate in DER format bearing the sig&#8288;nature of the certificate that
 follows it all the way to (but not including) the root certificate.
 
 If you accidentally include the root certificate, no known [X.509][x509]
@@ -2389,12 +2542,13 @@ less than 50 KB) and bandwidth for no good reason---if the spender's
 software does not already have a copy of the root certificate, it will
 never consider your certificate chain valid.
 
-Unlike the requirement that certificates be in DER format, the private
-key can be in any format your CGI script can use to generate a
-signature. 
+Unlike the requirement that certificates be in DER format, the private SSL
+key can be in any format your CGI program can use to generate a
+sig&#8288;nature. 
 
-Now let's look at the variables your CGI script will likely set for
+Now let's look at the variables your CGI program will likely set for
 each payment.
+{% endautocrossref %}
 
 {% highlight python %}
 ## Variables just for this payment ##
@@ -2443,17 +2597,18 @@ details.memo            = "Flowers & chocolates"
 details.merchant_data   = "Invoice #123"
 {% endhighlight %}
 
+{% autocrossref %}
 In the code above, we tell the spender's wallet how to pay. It's
-possible to specify multiple [`scripts`][pp script]{:#term-pp-script}{:.term} and amounts as part of a
+possible to specify multiple [`script`][pp script]{:#term-pp-script}{:.term}s and `amount`s as part of a
 [merge avoidance][] strategy, described later in the [Merge Avoidance
 subsection][]. However, effective merge avoidance is not possible under
 the base [BIP70][] rules in which the spender pays each `script` the exact
 amount specified by its paired `amount`. If the amounts are omitted
-from all amount/output pairs, the spender will be prompted to choose an
+from all `amount`/`script` pairs, the spender will be prompted to choose an
 amount to pay.
 
 In the example above, we used a standard [P2PH][] output script, but your
-CGI script can use any valid output script. Of course, you should stick
+CGI program can use any valid output script. Of course, you should stick
 to [standard script types](#standard-transactions) such as P2PH,
 [multisig][], and [P2SH multisig][].
 
@@ -2464,8 +2619,9 @@ given over to storing the [certificate chain][]. As will be described in a
 later subsection, the `memo` field can be used by the spender after
 payment as part of a cryptographically-proven [receipt][].
 
-Next, let's look at some information your CGI script can
+Next, let's look at some information your CGI program can
 automatically derive.
+{% endautocrossref %}
 
 <a name="term-pp-expires"></a> <!-- TODO: break up code block -->
 <a name="term-pp-amount"></a> <!-- TODO: break up code block -->
@@ -2544,6 +2700,7 @@ created by the script above appears in the GUI from Bitcoin Core 0.9.
 
 
 ##### Payment In The Payment Protocol
+{% autocrossref %}
 
 If the spender declines to pay, the [wallet][] program will not send any
 further messages to the receiver's server unless the spender clicks
@@ -2589,18 +2746,21 @@ The URL should be a HTTPS address to prevent a man-in-the-middle attack
 from modifying the spender's `refund_to` output scripts. When sending the
 Payment, the wallet program must set the following HTTP client headers:
 
+{% endautocrossref %}
+
     Content-Type: application/bitcoin-payment
     Accept: application/bitcoin-paymentack
 
 ##### PaymentACK In The Payment Protocol
+{% autocrossref %}
 
-The receiver's CGI script at the [`payment_url`][pp payment url] receives the [Payment][pp payment] and
+The receiver's CGI program at the [`payment_url`][pp payment url] receives the [Payment][pp payment] and
 decodes it using its Protocol Buffers code. The [`transactions`][pp transactions] are
-checked to see if they pay the [output] [scripts][script] the receiver requested in
+checked to see if they pay the output [scripts][script] the receiver requested in
 [PaymentDetails][] and are then [broadcast][] to the [network][] (unless the network
 already has them).
 
-The CGI script checks the [`merchant_data`][pp merchant data] parameter if necessary and issues
+The CGI program checks the [`merchant_data`][pp merchant data] parameter if necessary and issues
 a [PaymentACK][]{:#term-paymentack}{:.term} (acknowledgment) with the following HTTP headers:
 
     Content-Type: application/bitcoin-paymentack
@@ -2626,10 +2786,13 @@ However, the spender's [wallet][] program should indicate to the spender that
 the payment was accepted for processing so the spender can direct his or
 her attention elsewhere.
 
+{% endautocrossref %}
 
 
 
 ##### Receipts In The Payment Protocol
+
+{% autocrossref %}
 
 Unlike [PaymentRequest][], [PaymentDetails][], [Payment][pp payment], and [PaymentACK][], there is
 no specific [receipt][]{:#term-receipt}{:.term} object.  However, a cryptographically-verifyable
@@ -2644,9 +2807,11 @@ transactions were generated.  Together, this information provides
 verifiable proof that the spender paid somebody with the
 receiver's private SSL key.
 
+{% endautocrossref %}
 
 
 ### Verifying Payment
+{% autocrossref %}
 
 As explained in the [Transactions][] and [Block Chain][] sections, [broadcasting][]
 a transaction to the [network][] doesn't ensure that the receiver gets
@@ -2735,9 +2900,11 @@ savvy merchants manually flag them as high risk. Your program can provide a
 safe mode which stops automatic payment acceptance on a global or per-customer 
 basis.
 
+{% endautocrossref %}
 
 
 ### Issuing Refunds
+{% autocrossref %}
 
 Occasionally receivers using your applications will need to issue
 refunds. The obvious way to do that, which is very unsafe, is simply
@@ -2776,9 +2943,11 @@ spender directly if the refund is being issued a long time after the
 original payment was made.
 
 
+{% endautocrossref %}
 
 
 ### Disbursing Income (Limiting Forex Risk)
+{% autocrossref %}
 
 Many receivers worry that their [satoshis][] will be less valuable in the
 future than they are now, called foreign exchange (forex) risk. To limit
@@ -2802,11 +2971,13 @@ which can lead to different results.
   first, which can help ensure that the receiver's payments always
   [confirm][], although this has utility only in a few edge cases.
 
+{% endautocrossref %}
 
 
 
 
 ##### Merge Avoidance
+{% autocrossref %}
 
 When a receiver receives [satoshis][] in an [output][], the spender can track
 (in a crude way) how the receiver spends those satoshis. But the spender
@@ -2837,11 +3008,14 @@ to the [payment protocol][] which will allow payers to avoid merging by
 intelligently distributing their payments among multiple outputs
 provided by the receiver.
 
+{% endautocrossref %}
+
 
 
 
 
 ##### Last In, First Out (LIFO)
+{% autocrossref %}
 
 [Outputs][] can be spent as soon as they're received---even before they're
 [confirmed][]. Since recent outputs are at the greatest risk of being
@@ -2874,9 +3048,11 @@ reputation might be at stake, such as when paying employees. In these
 cases, it's better to wait for transactions to be fully verified (see
 the [Verification subsection][] above) before using them to make payments.
 
+{% endautocrossref %}
 
 
 ##### First In, First Out (FIFO)
+{% autocrossref %}
 
 The oldest [outputs][] are the most reliable, as the longer it's been since
 they were received, the more blocks would need to be modified to [double
@@ -2911,10 +3087,11 @@ a receiver who holds each payment for six [confirmations][], and then
 spends 100% of [verified payments][] to vendors and a savings account on
 a bi-hourly schedule.
 
-
+{% endautocrossref %}
 
 
 ### Rebilling Recurring Payments
+{% autocrossref %}
 
 Automated recurring payments are not possible with decentralized Bitcoin
 [wallets][]. Even if a wallet supported automatically sending non-reversible
@@ -2930,7 +3107,7 @@ the same centralized server choose the appropriate exchange rate.
 Non-automated rebilling can be managed by the same mechanism used before
 credit-card recurring payments became common: contact the spender and
 ask them to pay again---for example, by sending them a [PaymentRequest][]
-[`bitcoin:` URI][bitcoin uri] in an HTML email.
+`bitcoin:` URI in an HTML email.
 
 In the future, extensions to the [payment protocol][] and new wallet
 features may allow some wallet programs to manage a list of recurring
@@ -2938,6 +3115,8 @@ transactions. The spender will still need to start the program on a
 regular basis and authorize payment---but it should be easier and more
 secure for the spender than clicking an emailed invoice, increasing the
 chance receivers get paid on time.
+
+{% endautocrossref %}
 
 
 
@@ -3157,6 +3336,7 @@ Bitcoin Core.
 [X509Certificates]: #term-x509certificates
 
 <!-- Non-terminology links which may be used multiple times (case-insensitive alphabetical order) -->
+[BIP21]: https://github.com/bitcoin/bips/blob/master/bip-0021.mediawiki
 [BIP32]: https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki
 [BIP70]: https://github.com/bitcoin/bips/blob/master/bip-0070.mediawiki
 [bitcoinpdf]: http://bitcoin.org/bitcoin.pdf
@@ -3170,6 +3350,7 @@ Bitcoin Core.
 [raw transaction format]: #raw-transaction-format
 [rpc decoderawtransaction]: /en/api-reference#TK
 [rpc getblock]: /en/api-reference#TK
+[rpc getblockhash]: /en/api-reference#TK
 [rpc getrawtransaction]: /en/api-reference#TK
 [rpc keypoolrefill]: /en/api-reference#TK
 [rpc listunspent]: /en/api-reference#TK
