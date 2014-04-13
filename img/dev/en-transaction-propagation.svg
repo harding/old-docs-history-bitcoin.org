@@ -134,7 +134,7 @@
 <g id="edge25" class="edge"><title>tx3_output0&#45;&gt;utxo0</title>
 <path fill="none" stroke="black" stroke-dasharray="5,2" d="M444.204,-337C498.689,-337 598.917,-337 632.049,-337"/>
 <polygon fill="black" stroke="black" points="632.145,-340.5 642.145,-337 632.145,-333.5 632.145,-340.5"/>
-<text text-anchor="middle" x="540" y="-358.4" font-family="Times Roman,serif" font-size="14.00">20k BTC Unspent TX</text>
+<text text-anchor="middle" x="540" y="-358.4" font-family="Times Roman,serif" font-size="14.00">20k Unspent TX</text>
 <text text-anchor="middle" x="540" y="-341.4" font-family="Times Roman,serif" font-size="14.00">Output (UTXO)</text>
 </g>
 <!-- tx4_output0 -->
