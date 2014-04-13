@@ -734,7 +734,7 @@ will see the non-standard redeemScript and reject it. It will be
 impossible to spend that output until you find a miner who disables the
 default settings.
 
-As of Bitcoin 0.9, standard transactions must also meet the following
+As of Bitcoin Core 0.9, standard transactions must also meet the following
 conditions:
 
 * The transaction must be finalized: either its [locktime][] must be in the
