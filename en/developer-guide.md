@@ -146,8 +146,8 @@ of the first and last of those last 2,016 blocks. The ideal value is
   [difficulty][] value is decreased proportionally (by as much as 75%) for
   the same reason.
 
-(Note: an off-by-one error in the implementation causes the difficulty
-to be updated every 2,01*6* blocks using timestamps from only
+(Note: an off-by-one error in the Bitcoin Core implementation causes the
+difficulty to be updated every 2,01*6* blocks using timestamps from only
 2,01*5* blocks, creating a slight skew.)
 
 Because each [block header][] must hash to a value below the [target][]
@@ -1159,7 +1159,7 @@ The op codes used in standard transactions are,
   Otherwise, it returns false.
 
     The "one extra value" it consumes is the result of an off-by-one
-    error in the implementation. This value is not used, so
+    error in the Bitcoin Core implementation. This value is not used, so
     [scriptSigs][scriptSig] prefix the signatures with a single OP_0 (0x00).
 
 * [`OP_RETURN`][op_return]{:#term-op-return}{:.term} terminates the [script][] in failure. However, this will not
