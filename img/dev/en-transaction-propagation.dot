@@ -3,7 +3,7 @@ digraph blockchain {
 //splines = "ortho";
 rankdir=LR;
 ranksep=0.1;
-size=6.66;
+size=6.25;
 
 node [ shape = box ]
 
@@ -72,15 +72,15 @@ utxo0 [ style = "invis", label = "", width = 0, height = 0 ];
 //tx6_input0 -> utxo0 [style = invis];
 utxo1 [ style = "invis", label = "", width = 0, height = 0 ];
 
-txold -> tx0_input0 [ label = "1010\nBTC", style = dotted ]
-tx0_output0 -> tx1_input0 [ label = "600\nBTC" ]
-tx0_output1 -> tx2_input0 [ label = "400\nBTC" ]
-tx1_output0 -> tx3_input0 [ label = "590\nBTC" ]
-tx2_output0 -> tx4_input0 [ label = "290\nBTC" ]
-tx2_output1 -> tx5_input0 [ label = "100\nBTC"]
-tx4_output0 -> tx6_input0 [ label = "280\nBTC" ]
-tx5_output0 -> tx6_input1 [ label = "90\nBTC" ]
-tx3_output0 -> utxo0 [ style=dashed, labelfloat = true, minlen = 2, label = "580 BTC Unspent TX\nOutput (UTXO)" ]
-tx6_output0 -> utxo1 [ style=dashed, label = "360\nBTC\nUTXO" ]
+txold -> tx0_input0 [ label = "100,000\n(100k)\nsatoshis", style = dotted ]
+tx0_output0 -> tx1_input0 [ label = "40k" ]
+tx0_output1 -> tx2_input0 [ label = "50k" ]
+tx1_output0 -> tx3_input0 [ label = "30k" ]
+tx2_output0 -> tx4_input0 [ label = "20k" ]
+tx2_output1 -> tx5_input0 [ label = "20k"]
+tx4_output0 -> tx6_input0 [ label = "10k" ]
+tx5_output0 -> tx6_input1 [ label = "10k" ]
+tx3_output0 -> utxo0 [ style=dashed, labelfloat = true, minlen = 2, label = "20k BTC Unspent TX\nOutput (UTXO)" ]
+tx6_output0 -> utxo1 [ style=dashed, label = "10k\nUTXO" ]
 label = "Triple-Entry Bookkeeping (Transaction-To-Transaction Payments) As Used By Bitcoin"
 }

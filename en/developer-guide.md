@@ -85,8 +85,8 @@ Satoshis cannot be left in a UTXO after a transaction: they will be
 irretrievably lost. So any difference between the number of bitcoins in a
 transaction's inputs and outputs is given as a [transaction fee][]{:#term-transaction-fee}{:.term} to 
 the Bitcoin [miner][]{:#term-miner}{:.term} who creates the block containing that transaction. 
-For example, in the figure above, each transaction spends 10 satoshis
-fewer than it receives from its combined inputs, effectively paying a 10
+For example, in the figure above, each transaction spends 10,000 satoshis (0.01 millibits)
+fewer than it receives from its combined inputs, effectively paying a 10,000
 satoshi transaction fee.
 
 The spenders propose a transaction fee with each transaction; miners
