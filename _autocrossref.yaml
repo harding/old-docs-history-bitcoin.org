@@ -47,7 +47,7 @@ bitcoin QR codes: URI QR code
 '`bitcoin:` URIs': bitcoin uri
 block:
 block chain:
-block-chain:
+block-chain: block chain
 block header:
 block height:
 block reward:
@@ -59,6 +59,7 @@ broadcasting:
 certificate chain:
 chain code:
 change output:
+change outputs: change output
 child public key:
 coinbase: coinbase transaction
 coinbase transaction:
@@ -142,6 +143,7 @@ op codes: op code
 '`op_return`': op_return
 '`op_verify`': op_verify
 orphan:
+orphan: orphaned
 outputs: output
 output:
 output index:

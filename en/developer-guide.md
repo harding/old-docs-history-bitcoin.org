@@ -40,10 +40,10 @@ using block chain data.
 {% endautocrossref %}
 
 ### Block Chain Overview
+{% autocrossref %}
 
 ![Block Chain Overview](/img/dev/en-blockchain-overview.svg)
 
-{% autocrossref %}
 The figure above shows a simplified version of a three-block block chain.
 A [block]{:#term-block}{:.term} of new transactions, which can vary from one transaction to
 over a thousand, is collected into the transaction data part of a block.
@@ -111,7 +111,7 @@ result, the cost to modify a particular block increases with every new block
 added to the block chain.
 
 The [proof of work][]{:#term-proof-of-work}{:.term} used in Bitcoin
-takes advantage of the apparently random output of cryptographic hashes.
+takes advantage of the apparently random nature of cryptographic hashes.
 A good cryptographic hash algorithm converts arbitrary data into a
 seemingly-random number. If the data is modified in any way and
 the hash re-run, a new seemingly-random number is produced, so there is
@@ -165,6 +165,7 @@ dedicated [nonce field][header nonce], so obtaining new hashes doesn't require w
 for new transactions. Also, only the 80-byte block header is hashed for
 [proof-of-work][proof of work], so adding more bytes of transaction data to
 a block does not slow down hashing with extra I/O.
+{% endautocrossref %}
 
 #### Block Height And Forking
 {% autocrossref %}
@@ -208,7 +209,7 @@ This section describes [version 2 blocks][v2 block]{:#term-v2-block}{:.term}, wh
 intermingled for some time before that point.) Future block versions may
 break compatibility with the information in this section. You can determine
 the version of any block by checking its `version` field using
-[bitcoind RPC calls](#example-block-and-coinbase-transaction).
+bitcoind RPC calls.
 
 As of version 2 blocks, each block consists of four root elements:
 
@@ -600,7 +601,7 @@ script, the script is:
     OP_DUP OP_HASH160 <PubkeyHash> OP_EQUALVERIFY OP_CHECKSIG
 
 {% autocrossref %}
-The spender's [scriptSig][] is [evaluated](#scriptsig-evaluation) and prefixed to the beginning of the
+The spender's [scriptSig][] is evaluated and prefixed to the beginning of the
 [script][]. In a [P2PH][] transaction, the scriptSig contains a [signature][] (sig)
 and full [public key][] (pubkey), creating the following concatenation:
 {% endautocrossref %}
@@ -793,10 +794,6 @@ conditions:
 * The transaction's [scriptSig][] must only push data to the [script][]
   evaluation stack. It cannot push new [OP codes][op code], with the exception of
   OP codes which solely push data to the stack.
-
-<!-- what's a canonical push?  It's forbidden:
-https://github.com/bitcoin/bitcoin/blob/acfe60677c9bb4e75cf2e139b2dee4b642ee6a0c/src/main.cpp#L527
--->
 
 * If any of the transaction's [outputs][] spend less than a minimal value
   (currently 546 satoshis---0.005 millibits), the transaction must pay
@@ -1086,6 +1083,7 @@ outputs be sent to a new P2PH or P2SH [address][].
 {% endautocrossref %}
 
 ### Avoiding Key Reuse
+{% autocrossref %}
 
 In a transaction, the spender and receiver each reveal to each other all
 public keys or addresses used in the transaction. This allows either
@@ -1120,6 +1118,8 @@ applications to avoid public key reuse and, when possible, to discourage
 users from reusing addresses. If your application needs to provide a
 fixed URI to which payments should be sent, please see Bitcoin the
 [`Bitcoin:` URI section][section bitcoin URI] below.
+
+{% endautocrossref %}
 
 ### Transaction Malleability
 {% autocrossref %}
@@ -1224,11 +1224,10 @@ The op codes used in standard transactions are,
   bytes following [`OP_RETURN`][op_return] no more than once per transaction.
 
 A complete list of OP codes can be found on the Bitcoin Wiki [Script
-Page](https://en.bitcoin.it/wiki/Script), with an authoritative list in the `opcodetype` enum of the
-Bitcoin Core [script header
-file](https://github.com/bitcoin/bitcoin/blob/master/src/script.h).
+Page][wiki script], with an authoritative list in the `opcodetype` enum
+of the Bitcoin Core [script header file][core script.h]
 
-<span id="scriptsig-evaluation">Note:</span> non-standard transactions can add non-data-pushing op codes to
+Note: non-standard transactions can add non-data-pushing op codes to
 their [scriptSig][], but scriptSig is run separately from the [script][] (with a
 shared stack), so scriptSig can't use arguments such as [`OP_RETURN`][op_return] to
 prevent the script from working as expected.
@@ -1265,7 +1264,7 @@ bytes commonly used by Bitcoin are:
    correctly.
 
 4. Append the checksum to the version and hash, and encode it as a [base58][base58check]
-   string: `BASE58(version . hash . checksum)`
+   string: <!--[-->`BASE58(version . hash . checksum)`<!--]-->
  
 Bitcoin's base58 encoding, called [Base58Check][]{:#term-base58check}{:.term} may not match other implementations. Tier
 Nolan provided the following example encoding algorithm to the Bitcoin
@@ -1296,7 +1295,7 @@ output_string.reverse();
 
 {% autocrossref %}
 Bitcoin's own code can be traced using the [base58 header
-file](https://github.com/bitcoin/bitcoin/blob/master/src/base58.h).
+file][core base58.h].
 
 To convert [addresses][] back into hashes, reverse the base58 encoding, extract
 the checksum, repeat the steps to create the checksum and compare it
@@ -1678,13 +1677,13 @@ In order to make copying of [private keys][private key] less prone to error, [Wa
 
 2. Add a 0x80 byte in front of it for [mainnet][] addresses or 0xef for [testnet][] addresses.
 
-3. Perform a SHA-256 hash on the extended key.
+3. Perform a SHA-256 hash on the extended&nbsp;key.
 
 4. Performa SHA-256 hash on result of SHA-256 hash.
 
 5. Take the first 4 bytes of the second SHA-256 hash; this is the checksum.
 
-6. Add the 4 checksum bytes from point 5 at the end of the extended key from point 2.
+6. Add the 4 checksum bytes from point 5 at the end of the extended&nbsp;key from point 2.
 
 7. Convert the result from a byte string into a Base58 string using Base58Check encoding.
 
@@ -1700,13 +1699,14 @@ Mini private key format is a method for encoding a [private key][] in under 30 c
 
 2. In order to determine if a mini private key is well-formatted, a question mark is added to the private key.
 
-3. The SHA256 hash calculated. If the first byte output is a `00’, it is well-formatted. This key restriction acts as a typo-checking mechanism. A user brute forces the process using random numbers until a well-formatted mini private key is output. 
+3. The SHA256 hash calculated. If the first byte produced is a `00’, it is well-formatted. This key restriction acts as a typo-checking mechanism. A user brute forces the process using random numbers until a well-formatted mini private key is produced. 
 
 4. In order to derive the full [private key][], the user simply takes a single SHA256 hash of the original mini private key. This process is one-way: it is intractible to compute the mini private key format from the derived key.
 
 Many implementations disallow the character '1' in the mini private key due to its visual similarity to 'l'.
 
-**Resource:** A common tool to create and redeem these keys is the [Casascius Bitcoin Address Utility](https://github.com/casascius/Bitcoin-Address-Utility).
+**Resource:** A common tool to create and redeem these keys is the [Casascius Bitcoin Address Utility][casascius
+address utility].
 
 {% endautocrossref %}
 
@@ -2715,10 +2715,12 @@ already has them).
 
 The CGI program checks the [`merchant_data`][pp merchant data] parameter if necessary and issues
 a [PaymentACK][]{:#term-paymentack}{:.term} (acknowledgment) with the following HTTP headers:
+{% endautocrossref %}
 
     Content-Type: application/bitcoin-paymentack
     Content-Transfer-Encoding: binary
 
+{% autocrossref %}
 Then it sends another Protocol-Buffers-encoded message with one or two
 fields:
 
@@ -3073,10 +3075,13 @@ chance receivers get paid on time.
 
 
 ## Operating modes
+{% autocrossref %}
 
 Currently there are two primary methods of validating the block chain as a client: Full nodes, and SPV clients. Other methods, such as server-trusting methods, are not discussed as they are not recommended.
+{% endautocrossref %}
 
 ### Full Node
+{% autocrossref %}
 
 The first and most secure model is the one followed by Bitcoin Core, also known as a “thick” or “full chain” client. This security model assures the validity of the ledger by downloading and validating blocks from the genesis block all the way to the most recently discovered block. This is known as using the *height* of a particular block to verify the client’s view of the network. 
 
@@ -3084,15 +3089,21 @@ For a client to be fooled, an adversary would have had to give a complete altern
 
 ![Block Height Compared To Block Depth](/img/dev/en-block-height-vs-depth.svg)
 
-### Simplified Payment Verification (SPV) 
+{% endautocrossref %}
 
-An alternative approach detailed in the original Satoshi white paper is a client that only downloads the headers of blocks during the initial syncing process, and requesting transactions from full nodes as needed. This scales linearly with the height of the block chain, but at only 80 bytes per block header, or up to 4.2MB per year, regardless of total block size. 
+### Simplified Payment Verification (SPV) 
+{% autocrossref %}
+
+An alternative approach detailed in the [original Bitcoin paper][bitcoinpdf] is a client that only downloads the headers of blocks during the initial syncing process, and requesting transactions from full nodes as needed. This scales linearly with the height of the block chain, but at only 80 bytes per block header, or up to 4.2MB per year, regardless of total block size. 
 
 As described in the white paper, the Merkle root in the block header along with a Merkle branch can prove to the SPV client that the transaction in question is embedded in a block in the block chain. This does not guarantee validity of the transactions that are embedded. Instead it demonstrates the amount of work required to perform a double-spend attack. 
 
-The block's depth in the block chain corresponds to the cumulative difficulty that has been performed to build on top of that particular block. The SPV client knows the Merkel root and associated transaction information, and requests the respective Merkle branch from a full node. Once the Merkle branch has been retrieved, proving the existance of the transaction in the block, the SPV client can then look to block *depth* for the security of the transaction.
+The block's depth in the block chain corresponds to the cumulative difficulty that has been performed to build on top of that particular block. The SPV client knows the Merkle root and associated transaction information, and requests the respective Merkle branch from a full node. Once the Merkle branch has been retrieved, proving the existance of the transaction in the block, the SPV client can then look to block *depth* for the security of the transaction.
+
+{% endautocrossref %}
 
 #### Potential SPV Weaknesses
+{% autocrossref %}
 
 If implemented naively, an SPV client has a few important weaknesses. 
 
@@ -3101,14 +3112,16 @@ First, while the SPV client can not be easily fooled into thinking a transaction
 Second, the SPV client only requests transactions from full nodes corresponding to keys it owns. If the SPV client downloads all blocks then discards unneeded ones, this can be extremely bandwidth intensive. If they simply ask full nodes for blocks with specific transactions, this allows full nodes a complete view of the public addresses that correspond to the user. This is a large privacy leak, and allows for tactics such as denial of service for clients, users, or addresses that are disfavored by those running full nodes, as well as trivial linking of funds. A client could simply spam many fake transaction requests, but this creates a large strain on the SPV client, and can end up defeating the purpose of thin clients altogether. 
 
 To mitigate the latter issue, Bloom filters have been implemented as a method of obfuscation and compression of block requests. 
+{% endautocrossref %}
 
 #### Bloom Filters
+{% autocrossref %}
 
 A Bloom filter is a space-efficient probabilistic data structure that is used to test membership of an element. The data structure achieves great data compression at the expense of a prescribed false positive rate. 
 
-A Bloom filter starts out as an array of n bits set to 0. A set of k random hash functions are chosen that each output a single integer between the range of 1 and n.
+A Bloom filter starts out as an array of n bits set to 0. A set of k random hash functions are chosen that each out&#8288;put a single integer between the range of 1 and n.
 
-When adding an element to the Bloom filter, the element is hashed k times separately, and for each of the k outputs, the corresponding Bloom filter bit at that index are set to 1. 
+When adding an element to the Bloom filter, the element is hashed k times separately, and for each of the k out&#8288;puts, the corresponding Bloom filter bit at that index are set to 1. 
 
 <!-- Add picture here from wikipedia to explain the bits -->
 
@@ -3116,7 +3129,10 @@ Querying of the Bloom filter is done by using the same hash functions as before.
 
 Removal of elements can only be done by scrapping the bloom filter and re-creating it from scratch.
 
+{% endautocrossref %}
+
 #### Application of Bloom Filters 
+{% autocrossref %}
 
 Rather than viewing the false positive rates as a liability, it is used to create a tunable parameter that represents the desired privacy level and bandwidth tradeoff. A SPV client creates their Bloom filter, and sends it to a full node using the message `filterload`, which sets the filter for which transactions are desired. The command `filteradd` allows addition of desired data to the filter without needing to send a totally new Bloom filter, and `filterclear` allows the connection to revert to standard block discovery mechanisms. If the filter has been loaded, then full nodes will send a modified form of blocks, called a merkleblock. The merkleblock is simply the block header with the merkle branch associated with the set Bloom filter. 
 
@@ -3128,17 +3144,20 @@ If a user is more private-conscious, he can set the Bloom filter to include more
 
 Bloom filters were standardized for use via [BIP0037](https://github.com/bitcoin/bips/blob/master/bip-0037.mediawiki). Review the BIP for implementation details.
 
+{% endautocrossref %}
 
 
 <!-- As mentioned before, this could certainly be cut as it's still future work -->
 
 ### Future Proposals 
+{% autocrossref %}
 
 There are future proposals such as Unused Output Tree in the block chain (UOT) to find a more satisfactory middle-ground for clients between needing a complete copy of the block chain, or trusting that a majority of your connected peers are not lying. UOT would enable a very secure client using a finite amount of storage using a data structure that is authenticated in the block chain. These type of proposals are however in very early stages, and will require soft forks in the network. 
 
 Until these types of operating modes are implemented, modes should be chosen based on the likely threat model, computing and bandwidth constraints, and liability in bitcoin value.  
 
 **Resources:** [Original Thread on UOT](https://bitcointalk.org/index.php?topic=88208.0), [UOT Prefix Tree BIP Proposal](https://github.com/maaku/bips/blob/master/drafts/auth-trie.mediawiki)
+{% endautocrossref %}
 
 ## P2P Network
 
@@ -3346,6 +3365,9 @@ Bitcoin Core.
 [BIP70]: https://github.com/bitcoin/bips/blob/master/bip-0070.mediawiki
 [bitcoinpdf]: http://bitcoin.org/bitcoin.pdf
 [block170]: http://blockexplorer.com/block/00000000d1145790a8694403d4063f323d499e655c83426834d4ce2f8dd4a2ee
+[casascius address utility]: https://github.com/casascius/Bitcoin-Address-Utility
+[core base58.h]: https://github.com/bitcoin/bitcoin/blob/master/src/base58.h
+[core script.h]: https://github.com/bitcoin/bitcoin/blob/master/src/script.h
 [DER]: https://en.wikipedia.org/wiki/Abstract_Syntax_Notation_One
 [ECDSA]: https://en.wikipedia.org/wiki/Elliptic_Curve_DSA
 [MIME]: https://en.wikipedia.org/wiki/Internet_media_type
@@ -3366,7 +3388,9 @@ Bitcoin Core.
 [SHA256]: https://en.wikipedia.org/wiki/SHA-2
 [URI encoded]: https://tools.ietf.org/html/rfc3986
 [Verification subsection]: #verifying-payment
+[wiki script]: https://en.bitcoin.it/wiki/Script
 [x509]: https://en.wikipedia.org/wiki/X.509
+
 
 <!--#md#</div>#md#-->
 
