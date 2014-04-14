@@ -302,6 +302,9 @@ var update=function(){
 		if(t[i].nodeName=='A'&&t[i].getAttribute('href')=='#'+closer[0].id)a=t[i];
 	}
 	if(a===false)return;
+	if(window.history&&window.history.replaceState){
+		window.history.replaceState(null,null,'#'+closer[0].id);
+	}
 	while(a.parentNode.nodeName=='LI'||a.parentNode.nodeName=='UL'){
 		a.className='active';
 		a=a.parentNode;
