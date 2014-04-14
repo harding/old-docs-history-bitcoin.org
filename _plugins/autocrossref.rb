@@ -35,6 +35,7 @@ require 'yaml'
             #{term[0]}  ## Find our key
             (?![^\[]*\])  ## No subst if key inside [brackets]
             (?![^\{]*\})  ## No subst if key inside {braces}
+            (?!<!--noref-->)  ## No subst if <!--noref--> after key
             (?![^\(]*(\.svg|\.png))  ## No subst if key inside an image name. This 
 		     ## simple regex has the side effect that we can't
 		     ## use .svg or .png in non-image base text; if that
@@ -43,6 +44,7 @@ require 'yaml'
             (?!\w)  ## Don't match inside words
           /xmi, "[\\&][#{term[1]}]")
       }
+      output.gsub!('<!--noref-->','')  ## Remove all <!--noref--> comments
 
       output
     end # terms.sort_by
