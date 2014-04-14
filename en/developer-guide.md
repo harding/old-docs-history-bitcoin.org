@@ -697,7 +697,7 @@ scriptSig: <sig> <pubkey>
 
 P2SH is used to send a transaction to a script hash. Each of the standard
 scripts can be used inside a P2SH redeemScript, but in practice only the
-multisig script makes sense until more transactions types are made standard.
+multisig script makes sense until more transaction types are made standard.
 {% endautocrossref %}
 
 ~~~
@@ -775,7 +775,7 @@ will see the non-standard redeemScript and reject it. It will be
 impossible to spend that output until you find a miner who disables the
 default settings.
 
-As of Bitcoin 0.9, standard transactions must also meet the following
+As of Bitcoin Core 0.9, standard transactions must also meet the following
 conditions:
 
 * The transaction must be finalized: either its locktime must be in the
