@@ -55,9 +55,12 @@ block time:
 block version:
 blocks: block
 broadcast:
+broadcasts: broadcast
 broadcasting:
 certificate chain:
 chain code:
+change address:
+change addresses: change address
 change output:
 change outputs: change output
 child public key:
@@ -84,6 +87,7 @@ ECDSA:
 escrow contract:
 '`expires`': pp expires
 extended key:
+extended keys: extended key
 extended private key:
 extended public key:
 fiat:
@@ -99,6 +103,7 @@ high-priority transaction: high-priority transactions
 high-priority transactions:
 inputs: input
 input:
+intermediate certificate:
 intermediate certificates: intermediate certificate
 key fingerprint:
 key index:
@@ -160,6 +165,7 @@ payment protocol:
 PaymentACK:
 PaymentDetails:
 PaymentRequest:
+PaymentRequests: paymentrequest
 '`payment_url`': pp payment url
 peer:
 peers: peer
@@ -173,6 +179,7 @@ proof-of-work: proof of work
 protocol buffer: protobuf
 protocol buffers: protobuf
 pubkey hash:
+pubkey hashes: pubkey hash
 public key:
 public keys: public key
 public key infrastructure: pki
@@ -228,6 +235,7 @@ txid:
 txids: txid
 unconfirmed:
 unconfirmed transactions:
+unique address: unique addresses
 unique addresses:
 utxo:
 utxos: utxo
