@@ -2472,7 +2472,7 @@ software, such as a certificate from the Mozilla root store.
 
 The certificates must be provided in a specific order---the same order
 used by Apache's `SSLCertificateFile` directive and other server
-software.   The figure below shows the sig&#8288;nature chain of the
+software.   The figure below shows the signature<!--noref--> chain of the
 www.bitcoin.org X.509 certificate and how each certificate (except the
 root certificate) would be loaded into the [X509Certificates][]{:#term-x509certificates}{:.term} protocol
 buffer message.
@@ -2481,11 +2481,11 @@ buffer message.
 
 To be specific, the first certificate provided must be the [DER-formatted][DER]
 X.509 certificate corresponding to the private SSL key which will make the
-sig&#8288;nature, called the [leaf certificate][]{:#term-leaf-certificate}{:.term}. Any [intermediate
+signature<!--noref-->, called the [leaf certificate][]{:#term-leaf-certificate}{:.term}. Any [intermediate
 certificates][intermediate certificate]{:#term-intermediate-certificate}{:.term} necessary to link that signed public SSL
 key to the [root
 certificate][]{:#term-root-certificate}{:.term} (the certificate authority) are attached separately, with each
-certificate in DER format bearing the sig&#8288;nature of the certificate that
+certificate in DER format bearing the signature<!--noref--> of the certificate that
 follows it all the way to (but not including) the root certificate.
 
 If you accidentally include the root certificate, no known [X.509][x509]
@@ -2497,7 +2497,7 @@ never consider your certificate chain valid.
 
 Unlike the requirement that certificates be in DER format, the private SSL
 key can be in any format your CGI program can use to generate a
-sig&#8288;nature. 
+signature<!--noref-->. 
 
 Now let's look at the variables your CGI program will likely set for
 each payment.
@@ -3119,9 +3119,9 @@ To mitigate the latter issue, Bloom filters have been implemented as a method of
 
 A Bloom filter is a space-efficient probabilistic data structure that is used to test membership of an element. The data structure achieves great data compression at the expense of a prescribed false positive rate. 
 
-A Bloom filter starts out as an array of n bits set to 0. A set of k random hash functions are chosen that each out&#8288;put a single integer between the range of 1 and n.
+A Bloom filter starts out as an array of n bits set to 0. A set of k random hash functions are chosen that each output<!--noref--> a single integer between the range of 1 and n.
 
-When adding an element to the Bloom filter, the element is hashed k times separately, and for each of the k out&#8288;puts, the corresponding Bloom filter bit at that index are set to 1. 
+When adding an element to the Bloom filter, the element is hashed k times separately, and for each of the k outputs<!--noref-->, the corresponding Bloom filter bit at that index are set to 1. 
 
 <!-- Add picture here from wikipedia to explain the bits -->
 
