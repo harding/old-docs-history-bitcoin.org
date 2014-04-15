@@ -3260,6 +3260,8 @@ templates from multiple pools.  If multiple ASICs are available, some
 ASICs can be assigned to hash headers for one pool while the other ASICs
 hash headers for the other pool simultaneously.
 
+<!-- SOMEDAY: describe p2pool -->
+
 **Resources:** For more information, please see the [BFGMiner][] mining
 software licensed under GPLv3 or the [Eloipool][] mining pool software
 licensed under AGPLv3. A number of other mining and pool programs
