@@ -303,7 +303,8 @@ var update=function(){
 	}
 	if(a===false)return;
 	if(window.history&&window.history.replaceState&&!new RegExp('#'+closer[0].id+'$').test(window.location.href.toString())){
-		window.history.replaceState(null,null,'#'+closer[0].id);
+		var htimeout=toc.getAttribute('data-htimeout');
+		if(htimeout==null||htimeout<new Date().getTime()-1000)window.history.replaceState(null,null,'#'+closer[0].id);
 	}
 	while(a.parentNode.nodeName=='LI'||a.parentNode.nodeName=='UL'){
 		a.className='active';
@@ -315,7 +316,12 @@ var timeout=function(){
 	clearTimeout(toc.getAttribute('timeout'));
 	toc.setAttribute('timeout',setTimeout(update,1));
 }
+var historytimeout=function(){
+	var toc=document.getElementById('toc');
+	toc.setAttribute('data-htimeout',new Date().getTime())
+}
 addEvent(window,'scroll',timeout);
+addEvent(window,'popstate',historytimeout);
 update();
 }
 
