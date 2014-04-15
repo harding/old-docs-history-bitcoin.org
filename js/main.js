@@ -302,7 +302,7 @@ var update=function(){
 		if(t[i].nodeName=='A'&&t[i].getAttribute('href')=='#'+closer[0].id)a=t[i];
 	}
 	if(a===false)return;
-	if(window.history&&window.history.replaceState&&!new RegExp('#'+closer[0].id+'$').test(window.location.href.toString())){
+	if(window.history&&window.history.replaceState&&!new RegExp('#'+closer[0].id+'$').test(window.location.href.toString())&&offset>first[1]){
 		var htimeout=toc.getAttribute('data-htimeout');
 		if(htimeout==null||htimeout<new Date().getTime()-1000)window.history.replaceState(null,null,'#'+closer[0].id);
 	}
