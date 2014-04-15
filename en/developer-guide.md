@@ -45,10 +45,14 @@ default on mainnet.
 To use testnet, use the argument `-testnet`<!--noref--> with each program or add
 `testnet=1`<!--noref--> to your `bitcoin.conf` file.  To get
 free satoshis for testing, use [Piotr Piasecki's testnet faucet][].
-
 Testnet is a public resource provided for free by members of the
-community, so please don't abuse it.  If you need to perform
-dangerous or high-volume testing, please use the [regression test mode][]
+community, so please don't abuse it.  
+
+You can speed up development further using the [regression test mode][]
+which creates a new testnet local to your computer. This regtest mode
+will let you generate blocks almost instantly with a RPC command so you
+can generate your own satoshis and add transactions to the block chain
+immediately.
 
 * `bitcoin-qt` provides a combination full Bitcoin peer and wallet
   frontend. From the Help menu, you can access a console where you can
