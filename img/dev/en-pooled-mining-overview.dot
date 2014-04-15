@@ -1,0 +1,36 @@
+digraph {
+
+size=6.25;
+rankdir=LR
+node [ shape = "box" ]
+splines = ortho;
+//ranksep = 10;
+nodesep = 0.5;
+
+p2pnetwork [ label = "P2P\nNetwork" ]
+asic0 [ label = "ASIC 0" ];
+asic1 [ label = "ASIC 1" ];
+asic2 [ label = "ASIC 2" ];
+software [ label = "Mining\nSoftware" ]
+pool0 [ label = "Mining\nPool 0" ];
+pool1 [ label = "Mining\nPool 1" ];
+
+pool0 -> software [ label = "Block\nTemplate→" ];
+pool1 -> software [ label = "Block\nTemplate→" ];
+p2pnetwork -> pool0 [ label = "TXes→" ];
+p2pnetwork -> pool1 [ label = "TXes→" ];
+pool0 -> p2pnetwork [ label = "←Blocks" ];
+pool1 -> p2pnetwork [ label = "←Blocks" ];
+
+software -> asic0 [ label = "Block\nHeader &\nTarget→" ];
+software -> asic1 [ label = "Block\nHeader &\nTarget→" ];
+software -> asic2 [ label = "Block\nHeader &\nTarget→" ];
+asic0 -> software [ label = "←Header\nBelow\nTarget" ];
+asic1 -> software [ label = "←Header\nBelow\nTarget" ];
+asic2 -> software [ label = "←Header\nBelow\nTarget" ];
+
+software -> pool0 [ constraint = false, label = "←Shares" ];
+software -> pool1 [ constraint = false, label = "←Shares" ];
+
+label = "Pool-Based Bitcoin Mining"
+}

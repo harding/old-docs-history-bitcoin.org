@@ -3185,6 +3185,94 @@ Bitcoin Core.
 
 ### Alerts
 
+## Mining
+{% autocrossref %}
+
+Mining adds new blocks to the block chain, making transaction history
+hard to modify.  Mining today takes on two common forms:
+
+* Solo mining, where the miner is also a full peer on the network.
+
+* Pooled mining, where the mining pool is a full peer and the miner just
+  generates and checks block header hashes.
+
+As illustrated below, solo miners typically use `bitcoind` to get new
+transactions from the network. Their mining software periodically polls
+`bitcoind` for new transactions using the `getblocktemplate` RPC, which
+provides the list of new transactions plus the public key to which the
+coinbase transaction should be sent.
+
+![Solo Bitcoin Mining](/img/dev/en-solo-mining-overview.svg)
+
+The mining software constructs a block using the template and creates a
+block header. It then sends the 80-byte block header to its mining
+hardware (an ASIC) along with a target threshold (difficulty setting).
+The mining hardware iterates through every possible value for the block
+header nonce and generates the corresponding hash.
+
+If none of the hashes are below the threshold, the mining hardware gets
+an updated block header with a new Merkle root from the mining software;
+this new block header is created by adding extra nonce data to the
+coinbase field of the coinbase transaction.
+
+On the other hand, if a hash is found below the target threshold, the
+mining hardware returns the block header with the successful nonce to
+the mining software. The mining software combines the header with the
+block and sends the completed block to the network for addition to the
+block chain.
+
+Pool miners follow a similar workflow, illustrated below, which allows
+mining pool operators to pay miners based on their share of the work
+done.  The mining pool gets new transactions from the network using
+`bitcoind`.  The miner's mining software then periodically polls the
+pool for new transactions using the `getblocktemplate` RPC, the same
+RPC solo miners use, and constructs a block and block header the same as
+before.
+
+![Pooled Bitcoin Mining](/img/dev/en-pooled-mining-overview.svg)
+
+What changes is the target threshold the mining software sends to the
+mining hardware. In solo mining, the target threshold used is the same
+as the network difficulty. In pooled mining, the mining pool sets the
+threshold a few orders of magnitude higher (less
+[difficult][difficulty]) that the network difficulty. This causes the
+mining hardware to return many block headers which don't hash to a value
+eligible for inclusion on the block chain but which prove (on average)
+that the miner checked a percentage of the possible hash values.
+
+Any blocks with headers that hash below the mining pool's target
+threshold are called shares. The shares are sent to the mining pool,
+which checks them for accuracy. By chance, some shares will also be
+below the network target---the mining pool sends these to the
+network to be added to the block chain.
+
+The block reward and transaction fees that come from mining that block
+are paid to the mining pool. The mining pool then pays out a portion of
+the proceeds to miners based on how many shares they generated. For
+example, if the mining pool's target threshold is 100 times lower than
+the network target threshold, 100 shares will need to be generated on
+average to create a successful block, so the mining pool can pay 1/100th
+of its payout for each share received.  Different mining pools use
+different reward distribution systems based on this basic share system.
+
+As shown in the illustration above, some mining software can get block
+templates from multiple pools.  If multiple ASICs are available, some
+ASICs can be assigned to hash headers for one pool while the other ASICs
+hash headers for the other pool simultaneously.
+
+**Resources:** For more information, please see the [BFGMiner][] mining
+software licensed under GPLv3 or the [Eloipool][] mining pool software
+licensed under AGPLv3. A number of other mining and pool programs
+exist, although many are forks of BFGMiner or Eloipool.
+{% endautocrossref %}
+
+
+
+
+
+
+
+
 <!-- Links to terms used in this document (case-insensitive alphabetic order)
 ---- * Link text is case insensitive in markdown so [Block Chain] and
 ----   [block chain] are equivalent
@@ -3360,6 +3448,7 @@ Bitcoin Core.
 [X509Certificates]: #term-x509certificates
 
 <!-- Non-terminology links which may be used multiple times (case-insensitive alphabetical order) -->
+[BFGMiner]: https://github.com/luke-jr/bfgminer
 [BIP21]: https://github.com/bitcoin/bips/blob/master/bip-0021.mediawiki
 [BIP32]: https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki
 [BIP70]: https://github.com/bitcoin/bips/blob/master/bip-0070.mediawiki
@@ -3370,6 +3459,7 @@ Bitcoin Core.
 [core script.h]: https://github.com/bitcoin/bitcoin/blob/master/src/script.h
 [DER]: https://en.wikipedia.org/wiki/Abstract_Syntax_Notation_One
 [ECDSA]: https://en.wikipedia.org/wiki/Elliptic_Curve_DSA
+[Eloipool]: https://gitorious.org/bitcoin/eloipool
 [MIME]: https://en.wikipedia.org/wiki/Internet_media_type
 [Merge Avoidance subsection]: #merge-avoidance
 [mozrootstore]: https://www.mozilla.org/en-US/about/governance/policies/security-group/certs/
