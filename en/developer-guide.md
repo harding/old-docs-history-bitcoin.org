@@ -3189,12 +3189,23 @@ Bitcoin Core.
 {% autocrossref %}
 
 Mining adds new blocks to the block chain, making transaction history
-hard to modify.  Mining today takes on two common forms:
+hard to modify.  Mining today takes on two forms:
 
-* Solo mining, where the miner is also a full peer on the network.
+* Solo mining, where the miner attempts to generate new blocks on his
+  own, with the proceeds from the block reward and transaction fees
+  going entirely to himself, allowing him to receive large (but
+  infrequent) payments.
 
-* Pooled mining, where the mining pool is a full peer and the miner just
-  generates and checks block header hashes.
+* Pooled mining, where the miner pools resources with other miners to
+  find blocks more often, with the proceeds being shared among the pool
+  miners in rough correlation to the amount of hashing power
+  they each contributed, allowing the miner to receive small (but
+  frequent) payments.
+
+{% endautocrossref %}
+
+### Solo Mining
+{% autocrossref %}
 
 As illustrated below, solo miners typically use `bitcoind` to get new
 transactions from the network. Their mining software periodically polls
@@ -3204,7 +3215,7 @@ coinbase transaction should be sent.
 
 ![Solo Bitcoin Mining](/img/dev/en-solo-mining-overview.svg)
 
-The mining software constructs a block using the template and creates a
+The mining software constructs a block using the template (described below) and creates a
 block header. It then sends the 80-byte block header to its mining
 hardware (an ASIC) along with a target threshold (difficulty setting).
 The mining hardware iterates through every possible value for the block
@@ -3221,44 +3232,142 @@ the mining software. The mining software combines the header with the
 block and sends the completed block to the network for addition to the
 block chain.
 
+{% endautocrossref %}
+
+### Pool Mining
+{% autocrossref %}
+
 Pool miners follow a similar workflow, illustrated below, which allows
 mining pool operators to pay miners based on their share of the work
-done.  The mining pool gets new transactions from the network using
-`bitcoind`.  The miner's mining software then periodically polls the
-pool for new transactions using the `getblocktemplate` RPC, the same
-RPC solo miners use, and constructs a block and block header the same as
-before.
+done. The mining pool gets new transactions from the network using
+`bitcoind`. Using one of the method discussed later, the miner's mining
+software connects to the pool and requests the information it needs to
+construct block headers.
 
 ![Pooled Bitcoin Mining](/img/dev/en-pooled-mining-overview.svg)
 
-What changes is the target threshold the mining software sends to the
-mining hardware. In solo mining, the target threshold used is the same
-as the network difficulty. In pooled mining, the mining pool sets the
-threshold a few orders of magnitude higher (less
-[difficult][difficulty]) that the network difficulty. This causes the
-mining hardware to return many block headers which don't hash to a value
-eligible for inclusion on the block chain but which prove (on average)
-that the miner checked a percentage of the possible hash values.
+In pooled mining, the mining pool sets the target threshold a few orders
+of magnitude higher (less [difficult][difficulty]) that the network
+difficulty. This causes the mining hardware to return many block headers
+which don't hash to a value eligible for inclusion on the block chain
+but which do hash below the pool's target, proving (on average) that the
+miner checked a percentage of the possible hash values.
 
-Any blocks with headers that hash below the mining pool's target
-threshold are called shares. The shares are sent to the mining pool,
-which checks them for accuracy. By chance, some shares will also be
-below the network target---the mining pool sends these to the
-network to be added to the block chain.
+The miner then sends to the pool a copy of the information the pool
+needs to validate that the header will hash below the target and that
+the the block of transactions referred to by the header Merkle root field
+is valid for the pool's purposes. (This usually means that the coinbase
+transaction must pay the pool.)
+
+The information the miner sends to the pool is called a share because it
+proves the miner did a share of the work. By chance, some shares the
+pool receives will also be below the network target---the mining pool
+sends these to the network to be added to the block chain.
 
 The block reward and transaction fees that come from mining that block
-are paid to the mining pool. The mining pool then pays out a portion of
-the proceeds to miners based on how many shares they generated. For
+are paid to the mining pool. The mining pool pays out a portion of
+these proceeds to individual miners based on how many shares they generated. For
 example, if the mining pool's target threshold is 100 times lower than
 the network target threshold, 100 shares will need to be generated on
 average to create a successful block, so the mining pool can pay 1/100th
 of its payout for each share received.  Different mining pools use
 different reward distribution systems based on this basic share system.
+{% endautocrossref %}
 
-As shown in the illustration above, some mining software can get block
-templates from multiple pools.  If multiple ASICs are available, some
-ASICs can be assigned to hash headers for one pool while the other ASICs
-hash headers for the other pool simultaneously.
+### Block Prototypes
+{% autocrossref %}
+
+In both solo and pool mining, the mining software needs to get the
+information necessary to construct block headers. This subsection
+describes, in a linear way, how that information is transmitted and
+used. However, in actual implementations, parallel threads and queuing
+are used to keep ASIC hashers working at maximum capacity,
+
+{% endautocrossref %}
+
+#### `getwork` RPC
+{% autocrossref %}
+
+The simplest and earliest method was the now-deprecated Bitcoin Core
+`getwork` RPC, which constructs a header for the miner directly. Since a
+header only contains a single 4-byte nonce good for about 4 gigahashes,
+many modern miners need to make dozens or hundreds of `getwork` requests
+a second. Solo miners may still use `getwork`, but most pools today
+discourage or disallow its use.
+{% endautocrossref %}
+
+#### `getblocktemplate` RPC
+{% autocrossref %}
+
+An improved method is the Bitcoin Core `getblocktemplate` RPC. This
+provides the mining software with much more information:
+
+1. The information necessary to construct a coinbase transaction
+   paying the pool or the solo miner's `bitcoind` wallet.
+
+2. A complete dump of the transactions `bitcoind` or the mining pool
+   suggests including in the block, allowing the mining software to
+   inspect the transactions and, if it wants, add additional
+   transactions.
+
+3. Other information necessary to construct a block header for the next
+   block: the block version, previous block hash, and bits (target).
+
+4. The mining pool's current target threshold for accepting shares. (For
+   solo miners, this is the network target.)
+
+Using the transactions received, the mining software adds a nonce to the
+coinbase extra nonce field and then converts all the transactions into a
+Merkle tree to derive a Merkle root it can use in a block header.
+Whenever the extra nonce field needs to be changed, the mining software
+rebuilds the necessary parts of the Merkle tree and updates the time and
+Merkle root fields in the block header.
+
+Like all `bitcoind` RPCs, `getblocktemplate` is sent over HTTP. To
+ensure they get the most recent work, most miners use [HTTP longpoll][] to
+leave a `getblocktemplate` request open at all times. This allows the
+mining pool to push a new `getblocktemplate` to the miner as soon as any
+miner on the peer-to-peer network publishes a new block or the pool
+wants to send more transactions to the mining software.
+{% endautocrossref %}
+
+#### Stratum
+{% autocrossref %}
+
+A widely used alternative to `getblocktemplate` is the [Stratum mining
+protocol][]. Stratum focuses on giving miners the minimal information they
+need to construct block headers on their own:
+
+1. The information necessary to construct a coinbase transaction
+   paying the pool.
+
+2. The parts of the Merkle tree which need to be re-hashed to
+   create a new Merkle root when the coinbase transaction is
+   updated with a new extra nonce. The other parts of the Merkle
+   tree, if any, are not sent, limiting the amount of data which needs
+   to be sent to (at most) about a kilobyte at current transaction
+   volume.
+
+3. All of the other non-Merkle root information necessary to construct a
+   block header for the next block.
+
+4. The mining pool's current target threshold for accepting shares.
+
+Using the coinbase transaction received, the mining software adds a
+nonce to the coinbase extra nonce field, hashes the coinbase
+transaction, and adds the hash to the received parts of the Merkle tree.
+The tree is hashed as necessary to create a Merkle root, which is added
+to the block header information received. Whenever the extra nonce field
+needs to be changed, the mining software updates and re-hashes the
+coinbase transaction, rebuilds the Merkle root, and updates the header
+Merkle root field.
+
+Unlike `getblocktemplate`, miners using Stratum cannot inspect or add
+transactions to the block they're currently mining. Also unlike
+`getblocktemplate`, the Stratum protocol uses a two-way TCP socket which
+stays open, so miners don't need to use longpoll to ensure they receive
+immediate updates from mining pools when a new block is broadcast to the
+peer-to-peer network.
 
 <!-- SOMEDAY: describe p2pool -->
 
@@ -3266,8 +3375,8 @@ hash headers for the other pool simultaneously.
 software licensed under GPLv3 or the [Eloipool][] mining pool software
 licensed under AGPLv3. A number of other mining and pool programs
 exist, although many are forks of BFGMiner or Eloipool.
-{% endautocrossref %}
 
+{% endautocrossref %}
 
 
 
@@ -3462,6 +3571,7 @@ exist, although many are forks of BFGMiner or Eloipool.
 [DER]: https://en.wikipedia.org/wiki/Abstract_Syntax_Notation_One
 [ECDSA]: https://en.wikipedia.org/wiki/Elliptic_Curve_DSA
 [Eloipool]: https://gitorious.org/bitcoin/eloipool
+[HTTP longpoll]: https://en.wikipedia.org/wiki/Push_technology#Long_polling
 [MIME]: https://en.wikipedia.org/wiki/Internet_media_type
 [Merge Avoidance subsection]: #merge-avoidance
 [mozrootstore]: https://www.mozilla.org/en-US/about/governance/policies/security-group/certs/
@@ -3478,6 +3588,7 @@ exist, although many are forks of BFGMiner or Eloipool.
 [secp256k1]: http://www.secg.org/index.php?action=secg,docs_secg
 [section bitcoin URI]: #requesting-payment-using-the-bitcoin-uri
 [SHA256]: https://en.wikipedia.org/wiki/SHA-2
+[Stratum mining protocol]: http://mining.bitcoin.cz/stratum-mining
 [URI encoded]: https://tools.ietf.org/html/rfc3986
 [Verification subsection]: #verifying-payment
 [wiki script]: https://en.bitcoin.it/wiki/Script
