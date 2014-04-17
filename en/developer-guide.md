@@ -751,10 +751,17 @@ scriptSig: <sig> [sig] [sig...] <redeemscript>
 Although P2SH is now generally used for multisig transactions, this script
 can be used to require multiple signatures before a UTXO can be spent.
 
-(m is the *minimum* subset size---the number of public keys
-which must match a signature; n is the *number* of public keys being
-provided. Both m and n should be op codes `OP_1` through `OP_16`,
-corresponding to the number desired.)
+In multisig scripts, called m-of-n, *m* is the *minimum* number of signatures
+which must match a public key; *n* is the *number* of public keys being
+provided. Both *m* and *n* should be op codes `OP_1` through `OP_16`,
+corresponding to the number desired.
+
+Because of an off-by-one error in the original Bitcoin implementation
+which must be preserved for compatability, `OP_CHECKMULTISIG`
+consumes one more value from the stack than indicated by *m*, so the
+list of signatures in the scriptSig must be prefaced with an extra value
+(`OP_0`) which will be consumed but not used.
+
 {% endautocrossref %}
 
 ~~~
@@ -768,8 +775,8 @@ Although it’s not a separate transaction type, this is a P2SH multisig with 2-
 
 ~~~
 script: OP_HASH160 <redeemscripthash> OP_EQUAL
-redeemScript: OP_0 <OP_2> <pubkey> <pubkey> <pubkey> <OP_3> OP_CHECKMULTISIG
-scriptSig: <sig> <sig> <redeemscript>
+redeemScript: <OP_2> <pubkey> <pubkey> <pubkey> <OP_3> OP_CHECKMULTISIG
+scriptSig: OP_0 <sig> <sig> <redeemscript>
 ~~~
 
 
@@ -1380,13 +1387,12 @@ To create a multiple-signature ([multisig][]{:#term-multisig}{:.term})
 output, they each give the others a public key. Then Bob creates the
 following [P2SH multisig][]{:#term-p2sh-multisig}{:.term} redeemScript:
 
-    OP_0 OP_2 [A's pubkey] [B's pubkey] [C's pubkey] OP_3 OP_CHECKMULTISIG
+    OP_2 [A's pubkey] [B's pubkey] [C's pubkey] OP_3 OP_CHECKMULTISIG
 
 (Op codes to push the public keys onto the stack are not shown.)
 
-`OP_0`, `OP_2`, and `OP_3` push the actual numbers 0, 2, and 3 onto the
-stack. `OP_0` is a workaround for an off-by-one error in the original
-implementation which must be preserved for compatibility. `OP_2`
+`OP_2` and `OP_3` push the actual numbers 2 and 3 onto the
+stack. `OP_2`
 specifies that 2 signatures are required to sign; `OP_3` specifies that
 3 public keys (unhashed) are being provided. This is a 2-of-3 multisig
 script, more generically called a m-of-n script (where *m* is the
@@ -1416,10 +1422,11 @@ both Bob and Charlie.  Either one of them can complete it by replacing
 the placeholder byte with his signature, creating the following input
 script:
 
-    [A's signature] [B's or C's signature] [serialized redeemScript]
+    OP_0 [A's signature] [B's or C's signature] [serialized redeemScript]
 
 (Op codes to push the signatures and redeemScript onto the stack are
-not shown.)
+not shown. `OP_0` is a workaround for an off-by-one error in the original
+implementation which must be preserved for compatibility.)
 
 When the transaction is broadcast to the network, each peer checks the
 input script against the P2SH output Charlie previously created,
