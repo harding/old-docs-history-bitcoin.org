@@ -801,6 +801,8 @@ script: OP_RETURN <data>
 (Null data scripts cannot be spent, so there's no scriptSig)
 ~~~
 
+#### Non-Standard Transactions
+
 {% autocrossref %}
 If you use anything besides a standard script in an output, peers
 and miners using the default Bitcoin Core settings will neither
