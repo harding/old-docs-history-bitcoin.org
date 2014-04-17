@@ -674,6 +674,46 @@ problems with it).
 
 {% endautocrossref %}
 
+### P2SH Scripts
+{% autocrossref %}
+
+Output scripts are created by spenders who have little interest in the
+long-term security or usefulness of the particular satoshis they're
+currently spending. Receivers do care about the conditions imposed on
+the satoshis by the output script and, if they want, they can ask
+spenders to use a particular script. Unfortunately, custom scripts are
+less convenient than short Bitcoin addresses and more difficult to
+secure than P2PH pubkey hashes.
+
+To solve these problems, pay-to-script-hash
+([P2SH][]{:#term-p2sh}{:.term}) transactions were created in 2012 to let
+a spender create an output script containing a [hash of a second
+script][script hash]{:#term-script-hash}{:.term}, the
+[redeemScript][]{:#term-redeemscript}{:.term}.
+
+The basic P2SH workflow, illustrated below, looks almost identical to
+the P2PH workflow. Bob creates a redeemScript with whatever script he
+wants, hashes the redeemScript, and provides the [redeemScript
+hash][script hash] to Alice. Alice creates a P2SH-style output containing
+Bob's redeemScript hash.
+
+![P2SH Transaction Workflow](/img/dev/en-p2sh-workflow.svg)
+
+When Bob wants to spend the output, he provides his signature along with
+the full (serialized) redeemScript in the input scriptSig. The
+peer-to-peer network ensures the full redeemScript hashes to the same
+value as the script hash Alice put in her output; it then processes the
+redeemScript exactly as it would if it were the primary script, letting
+Bob spend the output if the redeemScript returns true.
+
+The hash of the redeemScript has the same properties as a pubkey
+hash---so it can be transformed into the standard Bitcoin address format
+with only one small change to differentiate it from a standard address.
+This makes collecting a P2SH-style address as simple as collecting a
+P2PH-style address. The hash also obfuscates any public keys in the
+redeemScript, so P2SH scripts are as secure as P2PH pubkey hashes.
+{% endautocrossref %}
+
 ### Standard Transactions
 {% autocrossref %}
 
@@ -706,16 +746,6 @@ scriptSig: <sig> [sig] [sig...] <redeemscript>
 ~~~
 
 {% autocrossref %}
-Although it’s not a separate transaction type, this is a P2SH multisig with 2-of-3:
-{% endautocrossref %}
-
-~~~
-script: OP_HASH160 <redeemscripthash> OP_EQUAL
-scriptSig: <sig> <sig> <redeemscript>
-redeemScript: OP_0 <OP_2> <pubkey> <pubkey> <pubkey> <OP_3> OP_CHECKMULTISIG
-~~~
-
-{% autocrossref %}
 **Multisig**
 
 Although P2SH is now generally used for multisig transactions, this script
@@ -731,6 +761,17 @@ corresponding to the number desired.)
 script: <m> <pubkey> [pubkey] [pubkey...] <n> OP_CHECKMULTISIG
 scriptSig: OP_0 <sig> [sig] [sig...]
 ~~~
+
+{% autocrossref %}
+Although it’s not a separate transaction type, this is a P2SH multisig with 2-of-3:
+{% endautocrossref %}
+
+~~~
+script: OP_HASH160 <redeemscripthash> OP_EQUAL
+redeemScript: OP_0 <OP_2> <pubkey> <pubkey> <pubkey> <OP_3> OP_CHECKMULTISIG
+scriptSig: <sig> <sig> <redeemscript>
+~~~
+
 
 {% autocrossref %}
 **Pubkey**
@@ -914,135 +955,6 @@ Locktime itself is an unsigned 4-byte number which can be parsed two ways:
   1970-01-01T00:00 UTC---currently over 1.395 billion). The transaction
   can be added to any block whose block header's [time][block time] field is greater
   than the locktime.
-{% endautocrossref %}
-
-### P2SH And Multisig
-{% autocrossref %}
-
-<!--TODO: P2SH and multisig could be separated;
-for details, please read
-https://github.com/saivann/bitcoin.org/pull/45-->
-
-Outputs can use their script to require signatures from more than one
-private key, called multi-signature or [multisig][]{:#term-multisig}{:.term}. A multisig script
-provides a list of public keys and indicates how many of those public keys 
-must match signatures in the input's scriptSig.
-
-A standard multisig transaction looks similar to [pay-to-pubkey-hash][P2PH],
-except that full public keys (not hashes) are provided and
-`OP_CHECKMULTISIG` is used instead of plain [checksig][op_checksig].
-`OP_CHECKMULTISIG` takes multiple public keys and multiple
-signatures, so it's necessary to tell it how many public keys are
-being provided (n) and how many signatures are required (m). See the
-prototype script below for an example:
-{% endautocrossref %}
-
-    <m> [pubkey] [pubkey...] <n> OP_CHECKMULTISIG
-
-{% autocrossref %}
-The values m and n would be replaced with op codes which push the
-corresponding number to the stack, such as `OP_2` and `OP_2` for an
-output which could only be spent if two public keys were used, or `OP_2`
-and `OP_3` for an output which requires signatures from only two of the
-public keys listed. For example, a 2-of-3 script:
-{% endautocrossref %}
-
-    OP_2 [pubkey] [pubkey] [pubkey] OP_3 OP_CHECKMULTISIG
-
-{% autocrossref %}
-Recipients who want their satoshis to be secured with multiple
-signatures must get the spender to create a multisig script.
-This creates several problems:
-
-1. The spender must collect each of the full public keys to be used,
-   which is more complicated than collecting a single Bitcoin address.
-   Almost none of the existing add-on Bitcoin payment tools, such as [QR
-   encoded addresses][URI QR Code], currently work with multisig.
-
-2. The spender must pay the transaction fee, which is partly based on
-   the number of bytes in a transaction.  Each additional public key in
-   a multisig script increases the size of that transaction by at least 65 bytes,
-   possibly costing the spender more satoshis but providing all the
-   benefit to the receiver.
-
-3. Including full public keys in a script is not as secure as including
-   public keys protected by a hash. As mentioned earlier, the hash
-   obfuscates the public key, providing security against unanticipated
-   problems which might allow reconstruction of private keys from public
-   key data at some later point.
-
-To solve these problems, pay-to-script-hash ([P2SH][]{:#term-p2sh}{:.term}) transactions were
-created in 2012 to let a spender create an output script containing a
-[hash of a second script][script hash]{:#term-script-hash}{:.term}, the [redeemScript][]{:#term-redeemscript}{:.term}. This solves each of the
-problems quite handily:
-
-1. The hash of the redeemScript is identical to a pubkey hash---so it
-   can be transformed into the standard Bitcoin address format with only
-   one small change to differentiate it from a standard address. This
-   makes collecting a P2SH-style address as simple as collecting a
-   P2PH-style address.
-
-2. The hash of the redeemScript is the exact same size as a pubkey
-   hash, so the spender won't need to increase the transaction fee no
-   matter how many public keys are required.
-
-3. The hash of the redeemScript obfuscates the [public keys, so
-   P2SH scripts are as secure as P2PH scripts.
-
-The basic P2SH workflow, illustrated below, looks almost identical to
-the P2PH workflow.  Bob no longer provides a pubkey hash to Alice;
-instead he embeds his public key in a redeemScript, hashes
-the redeemScript, and provides the [redeemScript hash[script hash] to Alice.  Alice creates
-a P2SH-style output containing Bob's redeemScript hash.
-
-![P2SH Transaction Workflow](/img/dev/en-p2sh-workflow.svg)
-
-When Bob wants to spend the output, he provides the full redeemScript
-along with his signature in the normal input scriptSig. The
-peer-to-peer network ensures the full redeemScript hashes to the
-same value as the script hash Alice put in her output; it then processes the
-redeemScript exactly as it would if it were the primary script, letting
-Bob spend the output if the redeemScript returns true.
-
-The extra steps seen in the example above don't really help Bob when he
-could just create a P2PH script instead. But when Bob's business
-partner, Charlie, decides he wants all of their business income to
-require two signatures to spend, P2SH-style outputs become quite handy.
-
-As seen in the figure below, Bob and Charlie each create separate
-[private][private key] and public keys on their own computers, and Charlie gives a copy
-of his public key to Bob. Bob then creates a [P2SH multisig][]{:#term-p2sh-multisig}{:.term} redeemScript
-using the both his and Charlie's public keys.  When Alice, one their
-clients, wants to pay an invoice, Bob gives her a hash of the redeemScript.
-
-![P2SH 2-of-2 Multisig Transaction Workflow](/img/dev/en-p2sh-multisig-workflow.svg)
-
-Because it's just a hash, Alice can't see what the script says.  But she
-doesn't care---she just knows that Bob and Charlie will mark her invoice
-as paid if she pays to that hash.
-
-When Bob and Charlie want to spend Alice's output, Bob creates
-transaction #2. He fills in the output details and creates a scriptSig
-containing his signature, a placeholder byte (0x00), and the redeemScript. Bob
-gives this incomplete transaction to Charlie, who checks the output
-details and replaces the placeholder byte with his own signature,
-completing the signatures. Either Bob or Charlie can broadcast this
-fully-signed transaction to the peer-to-peer network.
-
-Previous P2PH and P2SH illustrations showed Bob signing using the
-`SIGHASH_ALL` procedure, but this P2SH multisig figure does not
-illustrate any particular signature hash procedure. Bob and Charlie can each
-independently choose their own signature types. For example, if the
-output created by Alice contains only a few satoshis and Charlie
-doesn't care how Bob spends them, Charlie can sign the second
-transaction's input with `SIGHASH_NONE` and give it back to Bob. Bob can
-now change the output script to anything he wants without further
-consulting Charlie.
-
-A lone [NONE][sighash_none] hash type would usually allow unscrupulous miners to modify
-the output to pay themselves.  But because the multisig input requires
-both Charlie and Bob's signatures, Bob can sign his signature with
-`SIGHASH_ALL` to fully protect the transaction.
 {% endautocrossref %}
 
 ### Transaction Fees And Change
@@ -1445,51 +1357,82 @@ page](https://en.bitcoin.it/wiki/Contracts) of the Bitcoin Wiki.
 ### Escrow And Arbitration
 {% autocrossref %}
 
-Bob and Charlie have a nasty falling out and want to terminate their
-business, but they can't agree how to split their saved satoshis, which
-are stored in 2-of-2 multisig outputs. They both trust Alice The Arbitrator
-to sort the issue out---but they're each worried that the other person
-won't abide by any ruling Alice makes. The losing party might even
-delete his private key out of spite so the satoshis are lost forever.
+Charlie-the-customer wants to buy a product from Bob-the-businessman,
+but neither of them trusts the other person, so they use a contract to
+help ensure Charlie gets his merchandise and Bob gets his payment.
 
-The common [escrow contract][]{:#term-escrow-contract}{:.term} fixes this mess. Alice creates a new 2-of-3
-multisig redeemScript and sends it to both Bob and Charlie for
-examination. The redeemScript requires Alice, Bob, and Charlie each
-provide a public key, with signatures from any two of those public keys
-satisfying the redeemScript conditions.
+A simple contract could say that Charlie will spend satoshis to an
+output which can only be spent if Charlie and Bob both sign the input
+spending it. That means Bob won't get paid unless Charlie gets his
+merchandise, but Charlie can't get the merchandise and keep his payment.
 
-Bob and Charlie each understands the implication: Alice will be able to
-sign a transaction which will be valid if either Bob or Charlie also
-signs it. Alice can't steal their satoshis, so there's no new risk, but she
-can give the winning party the ability to enforce her ruling.
+This simple contract isn't much help if there's a dispute, so Bob and
+Charlie enlist the help of Alice-the-arbitrator to create an [escrow
+contract][]{:#term-escrow-contract}{:.term}. Charlie spends his satoshis
+to an output which can only be spent if two of the three people sign the
+input. Now Charlie can pay Bob if everything is ok, Bob can refund
+Charlie's money if there's a problem, or Alice can arbitrate and decide
+who should get the satoshis if there's a dispute.
 
-All three of them then give their public keys to each other and
-independently hash the redeemScript, creating a P2SH address. Then Bob
-and Charlie together sign a transaction spending all of their shared
-satoshis to that P2SH address.
+To create a multiple-signature ([multisig][]{:#term-multisig}{:.term})
+output, they each give the others a public key. Then Bob creates the
+following [P2SH multisig][]{:#term-p2sh-multisig}{:.term} redeemScript:
 
-Alice looks at the business's books and makes a ruling. She creates and
-signs a transaction that spends 60% of the satoshis to Bob's public key
-and 40% to Charlie's public key. 
+    OP_0 OP_2 [A's pubkey] [B's pubkey] [C's pubkey] OP_3 OP_CHECKMULTISIG
 
-Either Bob and Charlie can sign the transaction and broadcast it to the
-peer-to-peer network, actually spending the satoshis. If Alice creates
-and signs a transaction neither of them will agree to, such as spending
-all the satoshis to herself, they can find a new arbitrator and repeat
-the procedure.
+(Op codes to push the public keys onto the stack are not shown.)
 
-Merchants can use the 2-of-3 escrow contract to get customers to trust
-them. Customers choose what they want to buy, but instead of paying
-the merchant directly, they spend their satoshis to a 2-of-3 P2SH
-multisig output using one public key each from the customer, the
-merchant, and an arbitrator both the customer and merchant trust.
+`OP_0`, `OP_2`, and `OP_3` push the actual numbers 0, 2, and 3 onto the
+stack. `OP_0` is a workaround for an off-by-one error in the original
+implementation which must be preserved for compatibility. `OP_2`
+specifies that 2 signatures are required to sign; `OP_3` specifies that
+3 public keys (unhashed) are being provided. This is a 2-of-3 multisig
+script, more generically called a m-of-n script (where *m* is the
+*minimum* matching signatures required and *n* in the *number* of public
+keys provided).
 
-If the product or service is provided as expected, the customer and the
-merchant work together to release the payment to the merchant.  If the
-merchant needs to offer a refund, he and the customer work together to
-release the payment to the customer.  If there's a dispute, the
-arbitrator makes a ruling and either the customer or the merchant signs
-it to release the payment according to the ruling.
+Bob gives the redeemScript to Charlie, who checks to make sure his
+public key and Alice's public key are included. Then he hashes the
+redeemScript, puts it in a P2SH output, and pays the satoshis to it. Bob
+sees the payment get added to the block chain and ships the merchandise.
+
+Unfortunately, the merchandise gets slightly damaged in transit. Charlie
+wants a full refund, but Bob thinks a 10% refund is sufficient. They
+turn to Alice to resolve the issue. Alice asks for photo evidence from
+Charlie along with a copy of the unhashed redeemScript Bob created and
+Charlie checked. 
+
+After looking at the evidence, Alice thinks a 40% refund is sufficient,
+so she creates and signs a transaction with two outputs, one that spends 60%
+of the satoshis to Bob's public key and one that spends the remaining
+40% to Charlie's public key.
+
+In the input section of the script, Alice puts her signature, a 0x00
+placeholder byte, and a copy of the unhashed serialized redeemScript
+that Bob created.  She gives a copy of the incomplete transaction to
+both Bob and Charlie.  Either one of them can complete it by replacing
+the placeholder byte with his signature, creating the following input
+script:
+
+    [A's signature] [B's or C's signature] [serialized redeemScript]
+
+(Op codes to push the signatures and redeemScript onto the stack are
+not shown.)
+
+When the transaction is broadcast to the network, each peer checks the
+input script against the P2SH output Charlie previously created,
+ensuring that the redeemScript matches the redeemScript hash previously
+provided. Then the redeemScript is evaluated, with the two signatures
+being used as input<!--noref--> data. Assuming the redeemScript
+validates, the two transaction outputs show up in Bob's and Charlie's
+wallets as spendable balances.
+
+However, if Alice created and signed a transaction neither of them would
+agree to, such as spending all the satoshis to herself, Bob and Charlie
+can find a new arbitrator and sign a transaction spending the satoshis
+to another 2-of-3 multisig redeemScript hash, this one including public
+key from that second arbitrator. This means that Bob and Charlie never
+need to worry about their arbitrator stealing their money.
 
 **Resource:** [BitRated](https://www.bitrated.com/) provides a multisig arbitration
 service interface using HTML/JavaScript on a GNU AGPL-licensed website.
