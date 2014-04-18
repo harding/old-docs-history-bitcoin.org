@@ -3177,7 +3177,7 @@ Until these types of operating modes are implemented, modes should be chosen bas
 
 {% autocrossref %}
 
-Bitcoin the network uses a simple communication to comminicate between nodes, as well as perform peer discovery. The following section section applies to both full nodes and SPV clients, with the caveat of SPV's Bloom filters taking the role of block discovery.
+The Bitcoin network uses simple methods to comminicate between nodes, as well as perform peer discovery. The following section applies to both full nodes and SPV clients, with the caveat of SPV's Bloom filters taking the role of block discovery.
 
 {% endautocrossref %}
 
@@ -3187,11 +3187,11 @@ Bitcoin the network uses a simple communication to comminicate between nodes, as
 
 Bitcoind maintains a list of peers to connect to on startup. When a bitcoind node is started for the first time, it must be bootstrapped to the network. This is done automatically today in Bitcoin Core by a short list of trusted DNS seeds. The option `-dnsseed` can be set to define this behavior, though the default is `1`. DNS requests return a list of IP addresses that can be connected to. From there, the client can start connecting the Bitcoin network.
 
-Alternatively, bootstrapping can be done by using the option `-seednode=<ip>`, allowing the user to predefine who to peer with, then disconnect after building a peer list. Alternatively, starting bitcoind with `-connect=<ip>` disallows the node from connecting to any peers except those specified. Lastly, the argument `-addnode=<ip>` simply allows the user to add a single node to his peer list.
+Alternatively, bootstrapping can be done by using the option `-seednode=<ip>`, allowing the user to predefine who to seed server to connect to, then disconnect after building a peer list. Another method is starting bitcoind with `-connect=<ip>` which disallows the node from connecting to any peers except those specified. Lastly, the argument `-addnode=<ip>` simply allows the user to add a single node to his peer list.
 
-After bootstrapping, nodes send out a `addr` message containing their own IP to peers. Each peer of that node then forwards this message to a couple of their own peers, to expand the possible pool of connections.  
+After bootstrapping, nodes send out a `addr` message containing their own IP to peers. Each peer of that node then forwards this message to a couple of their own peers to expand the possible pool of connections.  
 
-To see which peers one is connected with and associated data, simply call `bitcoind getpeerinfo`.
+To see which peers one is connected with and associated data, simply call `getpeerinfo` from bitcoind.
 
 {% endautocrossref %}
 
@@ -3199,11 +3199,11 @@ To see which peers one is connected with and associated data, simply call `bitco
 
 {% autocrossref %}
 
-Connecting to a peer is done over TCP by sending a `version` message, which contains your version number, block, and current time to the remote node. Once the message is received by the remote node, it must respond with a `verack` message followed by its own `version` message if the node desires to peer. 
+Connecting to a peer is done over by sending a `version` message, which contains your version number, block, and current time to the remote node. Once the message is received by the remote node, it must respond with a `verack` message followed by its own `version` message if the node desires to peer. 
 
 Once connected, the client can send the remote node `getaddr` and `addr` messages to gather additional peers.
 
-In order to maintain a connection with a peer, nodes will send a message to peers within 30 minutes of inactivity. If 90 minutes passes without a message being received by a peer, the client will assume the connection has closed.
+In order to maintain a connection with a peer, nodes by default will send a message to peers before 30 minutes of inactivity. If 90 minutes passes without a message being received by a peer, the client will assume that connection has closed.
 
 {% endautocrossref %}
 
@@ -3211,11 +3211,9 @@ In order to maintain a connection with a peer, nodes will send a message to peer
 
 {% autocrossref %}
 
-At the start of a connection with a peer, both nodes send `getblocks` messages containing the hash of the latest known block. If a peer believes they have newer blocks or a longer chain, that peer will send an `inv` message stating that it has the superior chain, which includes a vector of up to 500 hashes of newer blocks. The receiving node would then request these blocks using the command `getdata`, and the remote peer would send via `block` messages. After all 500 blocks have been processed, the node can request another set with `getblocks`, until the node is caught up with the network. 
+At the start of a connection with a peer, both nodes send `getblocks` messages containing the hash of the latest known block. If a peer believes they have newer blocks or a longer chain, that peer will send an `inv` message which includes a list of up to 500 hashes of newer blocks, stating that it has the longer chain. The receiving node would then request these blocks using the command `getdata`, and the remote peer would send via `block` messages. After all 500 blocks have been processed, the node can request another set with `getblocks`, until the node is caught up with the network. Blocks are only accepted when validated by the node.
 
-New blocks are also discovered as miners publish their found block, and these messages are propogated in the same manner, although not just during initial connection. 
-
-In all cases, blocks are only transmitted when valid. Headers can be requested using `getheaders` messages and headers sent with `headers` messages. 
+New blocks are also discovered as miners publish their found blocks, and these messages are propogated in a similar manner. Through previously established connections, an `inv` message is sent with the new block hashed, and the receiving node requests the block via the `getdata` message. 
 
 {% endautocrossref %}
 
@@ -3223,7 +3221,7 @@ In all cases, blocks are only transmitted when valid. Headers can be requested u
 
 {% autocrossref %}
 
-In order to send a transaction to a peer, an `inv` message is sent. If a `getdata` response message is received the transaction is sent using `tx`. The peer receiving this transaction also forwards the transaction in the same manner, given that it is a valid transaction. If the transaction is not put into a block for an extended period of time, it will be dropped from mempool, and the sending client will have to re-broadcast the message. 
+In order to send a transaction to a peer, an `inv` message is sent. If a `getdata` response message is received the transaction is sent using `tx`. The peer receiving this transaction also forwards the transaction in the same manner, given that it is a valid transaction. If the transaction is not put into a block for an extended period of time, it will be dropped from mempool, and the client of origin will have to re-broadcast the message. 
 
 {% endautocrossref %}
 
@@ -3231,7 +3229,7 @@ In order to send a transaction to a peer, an `inv` message is sent. If a `getdat
 
 {% autocrossref %}
 
-Take note that for both types of broadcasting, mechanisms are in place to punish misbehaving peers from taking up bandwidth and computing resources by sending false information. If a peer gets a score above the `-banscore=<n>` threshold, he will be banned for the number of seconds defined by `-bantime=<n>`, which is 86,400 by default.
+Take note that for both types of broadcasting, mechanisms are in place to punish misbehaving peers who take up bandwidth and computing resources by sending false information. If a peer gets a banscore above the `-banscore=<n>` threshold, he will be banned for the number of seconds defined by `-bantime=<n>`, which is 86,400 by default.
 
 {% endautocrossref %}
 
