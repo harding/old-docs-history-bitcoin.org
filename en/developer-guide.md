@@ -3133,7 +3133,7 @@ To mitigate the latter issue, Bloom filters have been implemented as a method of
 
 A Bloom filter is a space-efficient probabilistic data structure that is used to test membership of an element. The data structure achieves great data compression at the expense of a prescribed false positive rate. 
 
-A Bloom filter starts out as an array of n bits set to 0. A set of k random hash functions are chosen that each output<!--noref--> a single integer between the range of 1 and n.
+A Bloom filter starts out as an array of n bits all set to 0. A set of k random hash functions are chosen, each of which output<!--noref--> a single integer between the range of 1 and n.
 
 When adding an element to the Bloom filter, the element is hashed k times separately, and for each of the k outputs<!--noref-->, the corresponding Bloom filter bit at that index are set to 1. 
 
