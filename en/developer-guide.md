@@ -3185,13 +3185,13 @@ The Bitcoin network uses simple methods to comminicate between nodes, as well as
 
 {% autocrossref %}
 
-Bitcoind maintains a list of peers to connect to on startup. When a bitcoind node is started for the first time, it must be bootstrapped to the network. This is done automatically today in Bitcoin Core by a short list of trusted DNS seeds. The option `-dnsseed` can be set to define this behavior, though the default is `1`. DNS requests return a list of IP addresses that can be connected to. From there, the client can start connecting the Bitcoin network.
+Bitcoin Core maintains a list of peers to connect to on startup. When a full node is started for the first time, it must be bootstrapped to the network. This is done automatically today in Bitcoin Core by a short list of trusted DNS seeds. The option `-dnsseed` can be set to define this behavior, though the default is `1`. DNS requests return a list of IP addresses that can be connected to. From there, the client can start connecting the Bitcoin network.
 
-Alternatively, bootstrapping can be done by using the option `-seednode=<ip>`, allowing the user to predefine who to seed server to connect to, then disconnect after building a peer list. Another method is starting bitcoind with `-connect=<ip>` which disallows the node from connecting to any peers except those specified. Lastly, the argument `-addnode=<ip>` simply allows the user to add a single node to his peer list.
+Alternatively, bootstrapping can be done by using the option `-seednode=<ip>`, allowing the user to predefine who to seed server to connect to, then disconnect after building a peer list. Another method is starting Bitcoin Core with `-connect=<ip>` which disallows the node from connecting to any peers except those specified. Lastly, the argument `-addnode=<ip>` simply allows the user to add a single node to his peer list.
 
 After bootstrapping, nodes send out a `addr` message containing their own IP to peers. Each peer of that node then forwards this message to a couple of their own peers to expand the possible pool of connections.  
 
-To see which peers one is connected with and associated data, simply call `getpeerinfo` from bitcoind.
+To see which peers one is connected with and associated data, simply call `getpeerinfo` from the Bitcoin Core RPC.
 
 {% endautocrossref %}
 
