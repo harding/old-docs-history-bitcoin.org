@@ -757,7 +757,7 @@ provided. Both *m* and *n* should be op codes `OP_1` through `OP_16`,
 corresponding to the number desired.
 
 Because of an off-by-one error in the original Bitcoin implementation
-which must be preserved for compatability, `OP_CHECKMULTISIG`
+which must be preserved for compatibility, `OP_CHECKMULTISIG`
 consumes one more value from the stack than indicated by *m*, so the
 list of signatures in the scriptSig must be prefaced with an extra value
 (`OP_0`) which will be consumed but not used.
