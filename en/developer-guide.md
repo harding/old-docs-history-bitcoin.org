@@ -3175,9 +3175,15 @@ Until these types of operating modes are implemented, modes should be chosen bas
 
 ## P2P Network
 
+{% autocrossref %}
+
 Bitcoin the network uses a simple communication to comminicate between nodes, as well as perform peer discovery. The following section section applies to both full nodes and SPV clients, with the caveat of SPV's Bloom filters taking the role of block discovery.
 
+{% endautocrossref %}
+
 ### Peer Discovery
+
+{% autocrossref %}
 
 Bitcoind maintains a list of peers to connect to on startup. When a bitcoind node is started for the first time, it must be bootstrapped to the network. This is done automatically today in Bitcoin Core by a short list of trusted DNS seeds. The option `-dnsseed` can be set to define this behavior, though the default is `1`. DNS requests return a list of IP addresses that can be connected to. From there, the client can start connecting the Bitcoin network.
 
@@ -3187,7 +3193,11 @@ After bootstrapping, nodes send out a `addr` message containing their own IP to 
 
 To see which peers one is connected with and associated data, simply call `bitcoind getpeerinfo`.
 
+{% endautocrossref %}
+
 ### Connecting to Peers
+
+{% autocrossref %}
 
 Connecting to a peer is done over TCP by sending a `version` message, which contains your version number, block, and current time to the remote node. Once the message is received by the remote node, it must respond with a `verack` message followed by its own `version` message if the node desires to peer. 
 
@@ -3195,7 +3205,11 @@ Once connected, the client can send the remote node `getaddr` and `addr` message
 
 In order to maintain a connection with a peer, nodes will send a message to peers within 30 minutes of inactivity. If 90 minutes passes without a message being received by a peer, the client will assume the connection has closed.
 
+{% endautocrossref %}
+
 ### Block Broadcasting
+
+{% autocrossref %}
 
 At the start of a connection with a peer, both nodes send `getblocks` messages containing the hash of the latest known block. If a peer believes they have newer blocks or a longer chain, that peer will send an `inv` message stating that it has the superior chain, which includes a vector of up to 500 hashes of newer blocks. The receiving node would then request these blocks using the command `getdata`, and the remote peer would send via `block` messages. After all 500 blocks have been processed, the node can request another set with `getblocks`, until the node is caught up with the network. 
 
@@ -3203,15 +3217,27 @@ New blocks are also discovered as miners publish their found block, and these me
 
 In all cases, blocks are only transmitted when valid. Headers can be requested using `getheaders` messages and headers sent with `headers` messages. 
 
+{% endautocrossref %}
+
 ### Transaction Broadcasting
+
+{% autocrossref %}
 
 In order to send a transaction to a peer, an `inv` message is sent. If a `getdata` response message is received the transaction is sent using `tx`. The peer receiving this transaction also forwards the transaction in the same manner, given that it is a valid transaction. If the transaction is not put into a block for an extended period of time, it will be dropped from mempool, and the sending client will have to re-broadcast the message. 
 
+{% endautocrossref %}
+
 ### Misbehaving Nodes
+
+{% autocrossref %}
 
 Take note that for both types of broadcasting, mechanisms are in place to punish misbehaving peers from taking up bandwidth and computing resources by sending false information. If a peer gets a score above the `-banscore=<n>` threshold, he will be banned for the number of seconds defined by `-bantime=<n>`, which is 86,400 by default.
 
+{% endautocrossref %}
+
 ### Alerts
+
+{% autocrossref %}
 
 In the case of a bug or attack, bad news about Bitcoin spreads fast, so
 merchants may hear about problems. The Bitcoin Foundation provides a
@@ -3224,7 +3250,9 @@ These messages are aggressively broadcasted using the `alert` message, being sen
 
 These messages are signed by a specific ECDSA private key that only Satoshi Nakamoto, Gavin Andressn, and Theymos control. 
 
-**Resource:** More details about the structure of messages can be found at the [Protocol Specification](https://en.bitcoin.it/wiki/Protocol_specification) page of the Bitcoin Wiki.
+**Resource:** More details about the structure of messages and full list of message types can be found at the [Protocol Specification](https://en.bitcoin.it/wiki/Protocol_specification) page of the Bitcoin Wiki.
+
+{% endautocrossref %}
 
 <!-- Links to terms used in this document (case-insensitive alphabetic order)
 ---- * Link text is case insensitive in markdown so [Block Chain] and
