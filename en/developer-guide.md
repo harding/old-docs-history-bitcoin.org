@@ -3175,10 +3175,14 @@ Until these types of operating modes are implemented, modes should be chosen bas
 
 ## P2P Network
 
-TODO, Relevant links:
+Bitcoin the network uses a simple communication to comminicate between nodes, as well as perform peer discovery. The following section section applies to both full nodes and SPV clients, with the caveat of bloom filters taking the block discovery and transaction discovery role.
 
-* [https://en.bitcoin.it/wiki/Network](https://en.bitcoin.it/wiki/Network)
-* [https://github.com/bitcoin/bips/blob/master/bip-0037.mediawiki (Bloom filters)](https://github.com/bitcoin/bips/blob/master/bip-0037.mediawiki)
+### Connecting to Peers
+
+### Block Broadcasting
+
+### Transaction Broadcasting
+
 
 <!--
 
