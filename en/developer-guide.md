@@ -3250,7 +3250,7 @@ These messages are aggressively broadcasted using the `alert` message, being sen
 
 These messages are signed by a specific ECDSA private key that only Satoshi Nakamoto, Gavin Andressn, and Theymos control. 
 
-**Resource:** More details about the structure of messages and full list of message types can be found at the [Protocol Specification](https://en.bitcoin.it/wiki/Protocol_specification) page of the Bitcoin Wiki.
+**Resource:** More details about the structure of messages and a complete list of message types can be found at the [Protocol Specification](https://en.bitcoin.it/wiki/Protocol_specification) page of the Bitcoin Wiki.
 
 {% endautocrossref %}
 
