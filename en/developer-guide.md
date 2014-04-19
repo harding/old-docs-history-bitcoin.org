@@ -3397,14 +3397,14 @@ Bitcoin Core.
 [protobuf]: https://developers.google.com/protocol-buffers/
 [raw transaction format]: #raw-transaction-format
 [regression test mode]: https://code.google.com/p/bitcoinj/wiki/Testing
-[rpc decoderawtransaction]: /en/api-reference#TK
-[rpc getblock]: /en/api-reference#TK
-[rpc getblockhash]: /en/api-reference#TK
-[rpc getrawtransaction]: /en/api-reference#TK
-[rpc keypoolrefill]: /en/api-reference#TK
-[rpc listunspent]: /en/api-reference#TK
-[RPC]: /en/api-reference
-[RPCs]: /en/api-reference
+[rpc decoderawtransaction]: /en/api-reference#TK#FIXME
+[rpc getblock]: /en/api-reference#TK#FIXME
+[rpc getblockhash]: /en/api-reference#TK#FIXME
+[rpc getrawtransaction]: /en/api-reference#TK#FIXME
+[rpc keypoolrefill]: /en/api-reference#TK#FIXME
+[rpc listunspent]: /en/api-reference#TK#FIXME
+[RPC]: /en/api-reference#FIXME
+[RPCs]: /en/api-reference#FIXME
 [secp256k1]: http://www.secg.org/index.php?action=secg,docs_secg
 [section bitcoin URI]: #requesting-payment-using-the-bitcoin-uri
 [SHA256]: https://en.wikipedia.org/wiki/SHA-2
