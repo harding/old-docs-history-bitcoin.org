@@ -289,6 +289,7 @@ var update=function(){
 	for(var i=0,t=document.getElementsByTagName('H2'),n=t.length;i<n;i++)nodes.push(t[i]);
 	for(var i=0,t=document.getElementsByTagName('H3'),n=t.length;i<n;i++)nodes.push(t[i]);
 	for(var i=0,t=document.getElementsByTagName('H4'),n=t.length;i<n;i++)nodes.push(t[i]);
+	for(var i=0,t=document.getElementsByTagName('H5'),n=t.length;i<n;i++)nodes.push(t[i]);
 	for(var i=0,n=nodes.length;i<n;i++){
 		if(!nodes[i].id)continue;
 		var top=getTop(nodes[i]);
