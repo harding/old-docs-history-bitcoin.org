@@ -3177,7 +3177,7 @@ Until these types of operating modes are implemented, modes should be chosen bas
 
 {% autocrossref %}
 
-The Bitcoin network uses simple methods to comminicate between nodes, as well as perform peer discovery. The following section applies to both full nodes and SPV clients, with the caveat of SPV's Bloom filters taking the role of block discovery.
+The Bitcoin network uses simple methods to communicate between nodes, as well as perform peer discovery. The following section applies to both full nodes and SPV clients, with the caveat of SPV's Bloom filters taking the role of block discovery.
 
 {% endautocrossref %}
 
