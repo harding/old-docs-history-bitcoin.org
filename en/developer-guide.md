@@ -3238,7 +3238,7 @@ Take note that for both types of broadcasting, mechanisms are in place to punish
 {% autocrossref %}
 
 In case of a bug or attack,
-the Bitcoin Foundation provides a
+the Bitcoin Core deverlopers provide a
 [Bitcoin alert service](https://bitcoin.org/en/alerts) with an RSS feed
 and users of Bitcoin Core can check the error field of the `getinfo` RPC
 results to get currently active alerts for their specific version of
@@ -3246,7 +3246,7 @@ Bitcoin Core.
 
 These messages are aggressively broadcasted using the `alert` message, being sent to each peer upon connect for the duration of the alert. 
 
-These messages are signed by a specific ECDSA private key that only Satoshi Nakamoto, Gavin Andressn, and Michael Marquardt control. 
+These messages are signed by a specific ECDSA private key that only a small number of active developers control. 
 
 **Resource:** More details about the structure of messages and a complete list of message types can be found at the [Protocol Specification](https://en.bitcoin.it/wiki/Protocol_specification) page of the Bitcoin Wiki.
 
