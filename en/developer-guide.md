@@ -2120,7 +2120,7 @@ compatible ways to give the spender the address and amount to be paid:
 
 
 
-#### Requesting Payment Using Plain Text
+#### Plain Text
 {% autocrossref %}
 
 To specify an amount directly for copying and pasting, you must provide
@@ -2170,7 +2170,7 @@ replacing your application's addresses with some other addresses.
 
 
 
-#### Requesting Payment Using The `bitcoin:` URI
+#### `bitcoin:` URI
 {% autocrossref %}
 
 The [`bitcoin:` URI][bitcoin URI]{:#term-bitcoin-uri}{:.term} scheme defined in BIP21 eliminates denomination
@@ -2253,7 +2253,7 @@ with some other addresses.
 
 {% endautocrossref %}
 
-#### Requesting Payment Using QR-Encoded `bitcoin:` URIs
+#### QR Codes
 {% autocrossref %}
 
 QR codes are a popular way to exchange `bitcoin:` URIs in person, in
@@ -2341,7 +2341,7 @@ served with the [MIME][] type {% endautocrossref %} `application/bitcoin-payment
 
 
 
-##### PaymentRequest & PaymentDetails In The Payment Protocol
+##### PaymentRequest & PaymentDetails
 {% autocrossref %}
 
 The [PaymentRequest][]{:#term-paymentrequest}{:.term} is created with data structures built using
@@ -2665,7 +2665,7 @@ created by the script above appears in the GUI from Bitcoin Core 0.9.
 
 
 
-##### Payment In The Payment Protocol
+##### Payment
 {% autocrossref %}
 
 If the spender declines to pay, the wallet program will not send any
@@ -2717,7 +2717,7 @@ Payment, the wallet program must set the following HTTP client headers:
     Content-Type: application/bitcoin-payment
     Accept: application/bitcoin-paymentack
 
-##### PaymentACK In The Payment Protocol
+##### PaymentACK
 {% autocrossref %}
 
 The receiver's CGI program at the `payment_url` receives the [Payment][pp payment] and
@@ -2758,7 +2758,7 @@ her attention elsewhere.
 
 
 
-##### Receipts In The Payment Protocol
+##### Receipts
 
 {% autocrossref %}
 
