@@ -39,11 +39,9 @@ Create an unsigned transaction in hex rawtransaction format that spends a
 previous output to an new output with a P2PH or P2SH address. The
 transaction is not stored in the wallet or transmitted to the network.
 
-{% endautocrossref %}
 
-##### Argument: Previous Output
+**Argument #1: References To Previous Outputs**
 
-{% autocrossref %}
 *String; required:* A JSON array of JSON objects. Each object in the
 array references a previous output by its *txid* (string; required) and
 output index number, called *vout* (number; required).
@@ -60,7 +58,7 @@ output index number, called *vout* (number; required).
 ~~~
 {:.rpc-argument}
 
-##### Argument: New Output 
+**Argument #2: P2PH Or P2SH Addresses For New Outputs**
 
 {% autocrossref %}
 *String; required:* A JSON object with P2PH or P2SH addresses to pay as
@@ -76,14 +74,14 @@ in decimal bitcoins.
 ~~~
 {:.rpc-argument}
 
-##### Result
+**Result: Unsigned Raw Transaction (In Hex)**
 
 {% autocrossref %}
 *String:* The resulting unsigned transaction in hex-encoded
 rawtransaction format, or a JSON error if any value provided was invalid.
 {% endautocrossref %}
 
-##### Example
+**Example**
 
 ~~~
 > bitcoin-cli -testnet createrawtransaction '''

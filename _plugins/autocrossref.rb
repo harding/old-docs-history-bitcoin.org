@@ -42,7 +42,7 @@ require 'yaml'
 		     ## becomes an issue, we can devise a more complex
 		     ## regex
             (?!\w)  ## Don't match inside words
-          /xmi, "[\\&][#{term[1]}]")
+          /xmi, "[\\&][#{term[1]}]{:.auto-link}")
       }
       output.gsub!('<!--noref-->','')  ## Remove all <!--noref--> comments
 
