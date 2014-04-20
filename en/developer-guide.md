@@ -2458,14 +2458,19 @@ within the PaymentRequest.
 {% highlight python %}
 ## SSL Signature method
 request.pki_type = "x509+sha256"  ## Default: none
+
 ## Mainnet or Testnet?
 details.network = "test"  ## Default: main
+
 ## Postback URL
 details.payment_url = "https://example.com/pay.py"
+
 ## PaymentDetails version number
 request.payment_details_version = 1  ## Default: 1
+
 ## Certificate chain
 x509.certificate.append(file("/etc/apache2/example.com-cert.der", "r").read())
+
 #x509.certificate.append(file("/some/intermediate/cert.der", "r").read())
 ## Load private SSL key into memory for signing later
 priv_key = "/etc/apache2/example.com-key.pem"
@@ -2635,17 +2640,22 @@ each payment.
 {% highlight python %}
 ## Amount of the request
 amount = 10000000  ## In satoshis (=100 mBTC)
+
 ## P2PH pubkey hash
 pubkey_hash = "2b14950b8d31620c6cc923c5408a701b1ec0a020"
+
 ## P2PH output script entered as hex and converted to binary
 # OP_DUP OP_HASH160 <push 20 bytes> <pubKey hash> OP_EQUALVERIFY OP_CHECKSIG
 #   76       a9            14       <pubKey hash>        88          ac
 hex_script = "76" + "a9" + "14" + pubkey_hash + "88" + "ac"
 serialized_script = hex_script.decode("hex")
+
 ## Load amount and script into PaymentDetails
 details.outputs.add(amount = amount, script = serialized_script)
+
 ## Memo to display to the spender
 details.memo = "Flowers & chocolates"
+
 ## Data which should be returned to you with the payment
 details.merchant_data = "Invoice #123"
 {% endhighlight python %}
@@ -2756,14 +2766,19 @@ automatically derive.
 {% highlight python %}
 ## Request creation time
 details.time = int(time()) ## Current epoch (Unix) time
+
 ## Request expiration time
 details.expires = int(time()) + 60 * 10  ## 10 minutes from now
+
 ## PaymentDetails complete; serialize it and store it in PaymentRequest
 request.serialized_payment_details = details.SerializeToString()
+
 ## Serialized certificate chain
 request.pki_data = x509.SerializeToString()
+
 ## Initialize signature field so we can sign the full PaymentRequest
 request.signature = ""
+
 ## Sign PaymentRequest
 request.signature = sign(private_key, request.SerializeToString(), "sha256")
 {% endhighlight %}
