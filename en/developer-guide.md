@@ -2442,25 +2442,48 @@ The startup code above is quite simple, requiring nothing but the epoch
 (Unix date) time function, the standard out file descriptor, a few
 functions from the OpenSSL library, and the data structures and
 functions created by `protoc`.
+{% endautocrossref %}
 
 ###### Configuration Code
 
+{% autocrossref %}
 Next, we'll set configuration settings which will typically only change
 when the receiver wants to do something differently. The code pushes a
 few settings into the `request` (PaymentRequest) and `details`
 (PaymentDetails) objects. When we serialize them,
 [PaymentDetails][]{:#term-paymentdetails}{:.term} will be contained
-within the PaymentRequest. Some of the settings are optional; others
-are required.
+within the PaymentRequest.
+{% endautocrossref %}
 
-*Optional:* Tell the receiving wallet program what [Public-Key
+{% highlight python %}
+## SSL Signature method
+request.pki_type = "x509+sha256"  ## Default: none
+## Mainnet or Testnet?
+details.network = "test"  ## Default: main
+## Postback URL
+details.payment_url = "https://example.com/pay.py"
+## PaymentDetails version number
+request.payment_details_version = 1  ## Default: 1
+## Certificate chain
+x509.certificate.append(file("/etc/apache2/example.com-cert.der", "r").read())
+#x509.certificate.append(file("/some/intermediate/cert.der", "r").read())
+## Load private SSL key into memory for signing later
+priv_key = "/etc/apache2/example.com-key.pem"
+pw = "test"  ## Key password
+private_key = load_privatekey(FILETYPE_PEM, file(priv_key, "r").read(), pw)
+{% endhighlight %}
+
+Each line is described below.
+
+{% highlight python %}
+request.pki_type = "x509+sha256"  ## Default: none
+{% endhighlight %}
+
+{% autocrossref %}
+`pki_type`: (optional) tell the receiving wallet program what [Public-Key
 Infrastructure][PKI]{:#term-pki}{:.term} (PKI) type you're using to
 cryptographically sign your PaymentRequest so that it can't be modified
 by a man-in-the-middle attack. 
-
-{% highlight python %}
-request.pki_type        = "x509+sha256"  ## Default: none
-{% endhighlight %}
 
 If you don't want to sign the PaymentRequest, you can choose a
 [`pki_type`][pp pki type]{:#term-pp-pki-type}{:.term} of `none`
@@ -2484,47 +2507,44 @@ your webserver, it will work for your PaymentRequests.
 
 
 
+{% highlight python %}
+details.network = "test"  ## Default: main
+{% endhighlight %}
+
 {% autocrossref %}
-<br />*Optional:* Tell the spender's wallet program what Bitcoin network you're
+`network`:<!--noref--> (optional) tell the spender's wallet program what Bitcoin network you're
 using; BIP70 defines "main" for mainnet (actual payments) and "test" for
 testnet (like mainnet, but fake satoshis are used). If the wallet
 program doesn't run on the network you indicate, it will reject the
 PaymentRequest.
 {% endautocrossref %}
 
+
 {% highlight python %}
-details.network         = "test"  ## Default: main
+details.payment_url = "https://example.com/pay.py"
 {% endhighlight %}
 
 {% autocrossref %}
-<br />*Required:* Tell the spender's wallet program where to send the Payment
+`payment_url`: (required) tell the spender's wallet program where to send the Payment
 message (described later). This can be a static URL, as in this example,
 or a variable URL such as `https://example.com/pay.py?invoice=123.`
 It should usually be an HTTPS address to prevent man-in-the-middle
 attacks from modifying the message.
-
 {% endautocrossref %}
 
-{% highlight python %}
-details.payment_url     = "https://example.com/pay.py"
-{% endhighlight %}
-
-
-{% autocrossref %}
-<br />*Optional:* Tell the spender's wallet program what version of the
-PaymentDetails you're using. As of this writing, the only version is
-version 1.
-{% endautocrossref %}
 
 {% highlight python %}
 request.payment_details_version = 1  ## Default: 1
 {% endhighlight %}
 
-
 {% autocrossref %}
-<br />*Required:* You must provide the public SSL key/certificate
-corresponding to the private SSL key you'll use to sign the
-PaymentRequest. The certificate must be in ASN.1/DER format.
+`payment_details_version`: (optional) tell the spender's wallet program what version of the
+PaymentDetails you're using. As of this writing, the only version is
+version 1.
+{% endautocrossref %}
+
+
+
 
 {% highlight python %}
 ## This is the pubkey/certificate corresponding to the private SSL key
@@ -2532,11 +2552,14 @@ PaymentRequest. The certificate must be in ASN.1/DER format.
 x509.certificate.append(file("/etc/apache2/example.com-cert.der", "r").read())
 {% endhighlight %}
 
-You must also provide any intermediate certificates necessary to link
-your certificate to the root certificate of a certificate authority
-trusted by the spender's software, such as a certificate from the
-Mozilla root store.
+{% autocrossref %}
+`x509certificates`<!--noref--> (required for signed PaymentRequests) you must
+provide the public SSL key/certificate corresponding to the private SSL
+key you'll use to sign the PaymentRequest. The certificate must be in
+ASN.1/DER format.
 {% endautocrossref %}
+
+
 
 {% highlight python %}
 ## If the pubkey/cert above didn't have the signature of a root
@@ -2546,6 +2569,11 @@ Mozilla root store.
 {% endhighlight %}
 
 {% autocrossref %}
+You must also provide any intermediate certificates necessary to link
+your certificate to the root certificate of a certificate authority
+trusted by the spender's software, such as a certificate from the
+Mozilla root store.
+
 The certificates must be provided in a specific order---the same order
 used by Apache's `SSLCertificateFile` directive and other server
 software.   The figure below shows the signature<!--noref--> chain of the
@@ -2577,23 +2605,23 @@ follows it all the way to (but not including) the root certificate.
 
 
 
-
-{% autocrossref %}
-<br />*Required for signed PaymentRequests:* You will need a private SSL key in
-a format your SSL library supports (DER format is not required). In this
-program, we'll load it from a PEM file. (Embedding your passphrase in
-your CGI code, as done here, is obviously a bad idea in real life.)
-
-The private SSL key will not be transmitted with your request. We're
-only loading it into memory here.
-
-{% endautocrossref %}
-
 {% highlight python %}
 priv_key = "/etc/apache2/example.com-key.pem"
 pw = "test"  ## Key password
 private_key = load_privatekey(FILETYPE_PEM, file(priv_key, "r").read(), pw)
 {% endhighlight %}
+
+{% autocrossref %}
+(Required for signed PaymentRequests) you will need a private SSL key in
+a format your SSL library supports (DER format is not required). In this
+program, we'll load it from a PEM file. (Embedding your passphrase in
+your CGI code, as done here, is obviously a bad idea in real life.)
+
+The private SSL key will not be transmitted with your request. We're
+only loading it into memory here so we can use it to sign the request
+later.
+
+{% endautocrossref %}
 
 
 
@@ -2602,68 +2630,77 @@ private_key = load_privatekey(FILETYPE_PEM, file(priv_key, "r").read(), pw)
 
 Now let's look at the variables your CGI program will likely set for
 each payment.
+{% endautocrossref %}
 
-*Optional:* The [amount][pp amount]{:#term-pp-amount}{:.term} you want the spender to pay. You'll probably get
+{% highlight python %}
+## Amount of the request
+amount = 10000000  ## In satoshis (=100 mBTC)
+## P2PH pubkey hash
+pubkey_hash = "2b14950b8d31620c6cc923c5408a701b1ec0a020"
+## P2PH output script entered as hex and converted to binary
+# OP_DUP OP_HASH160 <push 20 bytes> <pubKey hash> OP_EQUALVERIFY OP_CHECKSIG
+#   76       a9            14       <pubKey hash>        88          ac
+hex_script = "76" + "a9" + "14" + pubkey_hash + "88" + "ac"
+serialized_script = hex_script.decode("hex")
+## Load amount and script into PaymentDetails
+details.outputs.add(amount = amount, script = serialized_script)
+## Memo to display to the spender
+details.memo = "Flowers & chocolates"
+## Data which should be returned to you with the payment
+details.merchant_data = "Invoice #123"
+{% endhighlight python %}
+
+Each line is described below.
+
+{% highlight python %}
+amount = 10000000  ## In satoshis (=100 mBTC)
+{% endhighlight %}
+
+{% autocrossref %}
+`amount`: (optional) the [amount][pp amount]{:#term-pp-amount}{:.term} you want the spender to pay. You'll probably get
   this value from your shopping cart application or fiat-to-BTC exchange
   rate conversion tool. If you leave the amount blank, the wallet
   program will prompt the spender how much to pay (which can be useful
   for donations).
 {% endautocrossref %}
 
-{% highlight python %}
-amount = 10000000  ## In satoshis (=100 mBTC)
-{% endhighlight %}
 
 
-
-{% autocrossref %}
-<br />*Required:* Specify the output script you want the spender to
-pay---any valid script is acceptable.. In this example, we'll request
-payment to a P2SH output script
-
-First we'll get a pubkey hash. The hash below is the hash form
-of the address used in the URI examples above,
-mjSk1Ny9spzU2fouzYgLqGUD8U41iR35QN.
-{% endautocrossref %}
 
 {% highlight python %}
 pubkey_hash = "2b14950b8d31620c6cc923c5408a701b1ec0a020"
-{% endhighlight %}
-
-
-{% autocrossref %}
-Next, we'll plug that hash into the standard P2PH output script using hex,
-as illustrated by the code comments below.
-{% endautocrossref %}
-
-{% highlight python %}
 # OP_DUP OP_HASH160 <push 20 bytes> <pubKey hash> OP_EQUALVERIFY OP_CHECKSIG
 #   76       a9            14       <pubKey hash>        88          ac
 hex_script = "76" + "a9" + "14" + pubkey_hash + "88" + "ac"
-{% endhighlight %}
-
-
-{% autocrossref %}
-Finally, we'll convert the output script from hex into its serialized form.
-{% endautocrossref %}
-
-{% highlight python %}
 serialized_script = hex_script.decode("hex")
 {% endhighlight %}
 
-
-
-
 {% autocrossref %}
-<br />*Required:* Add the output script and (optional) amount to the
-PaymentDetails outputs array. 
+`script`: (required) You must specify the output script you want the spender to
+pay---any valid script is acceptable. In this example, we'll request
+payment to a P2SH output script.  
+
+First we get a pubkey hash. The hash above is the hash form of the
+address used in the URI examples throughout this section,
+mjSk1Ny9spzU2fouzYgLqGUD8U41iR35QN.
+
+Next, we plug that hash into the standard P2PH output script using hex,
+as illustrated by the code comments.
+
+Finally, we convert the output script from hex into its serialized form.
 {% endautocrossref %}
+
+
+
 
 {% highlight python %}
 details.outputs.add(amount = amount, script = serialized_script)
 {% endhighlight %}
 
 {% autocrossref %}
+`outputs`:<!--noref--> (required) add the output script and (optional) amount to the
+PaymentDetails outputs<!--noref--> array. 
+
 It's possible to specify multiple [`scripts`][pp
 script]{:#term-pp-script}{:.term} and `amounts` as part of a merge
 avoidance strategy, described later in the [Merge Avoidance
@@ -2677,55 +2714,80 @@ amount to pay.
 
 
 
-{% autocrossref %}
-<br />*Optional:* Add a memo which will be displayed to the spender as
-plain UTF-8 text. Embedded HTML or other markup will not be processed.
-{% endautocrossref %}
-
 {% highlight python %}
 details.memo = "Flowers & chocolates"
 {% endhighlight %}
 
-
-
 {% autocrossref %}
-<br />*Optional:* Add arbitrary data which will be sent back to the
-receiver when the invoice is paid. You can use this to track your
-invoices, although you can more reliably track payments by generating a
-unique address for each payment and then tracking when it gets paid. 
+`memo` (optional) add a memo which will be displayed to the spender as
+plain UTF-8 text. Embedded HTML or other markup will not be processed.
 {% endautocrossref %}
+
+
 
 {% highlight python %}
 details.merchant_data = "Invoice #123"
 {% endhighlight %}
 
 {% autocrossref %}
+`merchant_data` (optional) add arbitrary data which will be sent back to the
+receiver when the invoice is paid. You can use this to track your
+invoices, although you can more reliably track payments by generating a
+unique address for each payment and then tracking when it gets paid. 
+
 The [`memo`][pp memo]{:#term-pp-memo}{:.term} field and the [`merchant_data`][pp merchant data]{:#term-pp-merchant-data}{:.term} field can be arbitrarily long,
 but if you make them too long, you'll run into the 50,000 byte limit on
 the entire PaymentRequest, which includes the often several kilobytes
 given over to storing the certificate chain. As will be described in a
 later subsection, the `memo` field can be used by the spender after
 payment as part of a cryptographically-proven receipt.
+{% endautocrossref %}
 
 
 
 
 ###### Derivable Data
+{% autocrossref %}
 
 Next, let's look at some information your CGI program can
 automatically derive.
-
-*Required:* PaymentRequests must indicate when they were created
-in number of seconds elapsed since 1970-01-01T00:00 UTC (Unix
-epoch time format).
 {% endautocrossref %}
+
+{% highlight python %}
+## Request creation time
+details.time = int(time()) ## Current epoch (Unix) time
+## Request expiration time
+details.expires = int(time()) + 60 * 10  ## 10 minutes from now
+## PaymentDetails complete; serialize it and store it in PaymentRequest
+request.serialized_payment_details = details.SerializeToString()
+## Serialized certificate chain
+request.pki_data = x509.SerializeToString()
+## Initialize signature field so we can sign the full PaymentRequest
+request.signature = ""
+## Sign PaymentRequest
+request.signature = sign(private_key, request.SerializeToString(), "sha256")
+{% endhighlight %}
+
+Each line is described below.
 
 {% highlight python %}
 details.time = int(time()) ## Current epoch (Unix) time
 {% endhighlight %}
 
 {% autocrossref %}
-<br />*Optional:* The PaymentRequest may also set an [`expires`][pp
+`time`: (required) PaymentRequests must indicate when they were created
+in number of seconds elapsed since 1970-01-01T00:00 UTC (Unix
+epoch time format).
+{% endautocrossref %}
+
+
+
+{% highlight python %}
+details.expires = int(time()) + 60 * 10  ## 10 minutes from now
+{% endhighlight %}
+
+{% autocrossref %}
+`expires`: (optional) the PaymentRequest may also set an [`expires`][pp
 expires]{:#term-pp-expires}{:.term} time after
 which they're no longer valid. You probably want to give receivers
 the ability to configure the expiration time delta; here we used the
@@ -2734,62 +2796,57 @@ total based on a fiat-to-satoshis exchange rate, you probably want to
 base this on a delta from the time you got the exchange rate. 
 {% endautocrossref %}
 
-{% highlight python %}
-details.expires = int(time()) + 60 * 10  ## 10 minutes from now
-{% endhighlight %}
 
-
-
-{% autocrossref %}
-<br />*Required:* We've now set everything we need to create the
-PaymentDetails, so we'll use the SerializeToString function from the
-protocol buffer code to store the PaymetDetails in the appropriate
-field of the PaymentRequest.
-{% endautocrossref %}
 
 {% highlight python %}
 request.serialized_payment_details = details.SerializeToString()
 {% endhighlight %}
 
-
-
 {% autocrossref %}
-<br />*Required for signed PaymentRequests:* Serialize the certificate chain
-[PKI data][pp PKI data]{:#term-pp-pki-data}{:.term} and store it in the
-PaymentRequest
+`serialized_payment_details`: (required) we've now set everything we need to create the
+PaymentDetails, so we'll use the SerializeToString function from the
+protocol buffer code to store the PaymentDetails in the appropriate
+field of the PaymentRequest.
 {% endautocrossref %}
+
+
 
 {% highlight python %}
 request.pki_data = x509.SerializeToString()
 {% endhighlight %}
 
-
-
 {% autocrossref %}
-<br />*Required for signed PaymentRequests:* We've filled out everything in the
-PaymentRequest except the signature, but before we sign it, we have
-to initialize the signature field by setting it to a zero-byte
-placeholder.
+`pki_data` (required for signed PaymentRequests) serialize the certificate chain
+[PKI data][pp PKI data]{:#term-pp-pki-data}{:.term} and store it in the
+PaymentRequest
 {% endautocrossref %}
+
+
 
 {% highlight python %}
 request.signature = ""
 {% endhighlight %}
 
-
-
-
 {% autocrossref %}
-<br />*Required for signed PaymentRequests:* Now we make the [signature][ssl
-signature]{:#term-ssl-signature}{:.term} by signing the completed and serialized
-PaymentRequest. We'll use the private key we stored in memory in the
-configuration section and the same hashing formula we specified in
-`pki_type` (sha256 in this case) 
+We've filled out everything in the PaymentRequest except the signature,
+but before we sign it, we have to initialize the signature field by
+setting it to a zero-byte placeholder.
 {% endautocrossref %}
+
+
+
 
 {% highlight python %}
 request.signature = sign(private_key, request.SerializeToString(), "sha256")
 {% endhighlight %}
+
+{% autocrossref %}
+`signature`:<!--noref--> (required for signed PaymentRequests) now we
+make the [signature][ssl signature]{:#term-ssl-signature}{:.term} by
+signing the completed and serialized PaymentRequest. We'll use the
+private key we stored in memory in the configuration section and the
+same hashing formula we specified in `pki_type` (sha256 in this case) 
+{% endautocrossref %}
 
 
 
@@ -2799,9 +2856,6 @@ request.signature = sign(private_key, request.SerializeToString(), "sha256")
 
 Now that we have PaymentRequest all filled out, we can serialize it and
 send it along with the HTTP headers, as shown in the code below.
-
-*Required:* BIP71 defines the content types for PaymentRequests,
-Payments, and PaymentACKs.
 {% endautocrossref %}
 
 {% highlight python %}
@@ -2810,21 +2864,23 @@ print "Content-Transfer-Encoding: binary"
 print ""
 {% endhighlight %}
 
-
-
-
 {% autocrossref %}
-<br />*Required:* Now, to finish, we just dump out the serialized
-PaymentRequest (which contains the serialized PaymentDetails). The
-serialized data is in binary, so we can't use Python's print()
-because it would add an extraneous newline.
+(Required) BIP71 defines the content types for PaymentRequests,
+Payments, and PaymentACKs.
 {% endautocrossref %}
+
+
 
 {% highlight python %}
 file.write(stdout, request.SerializeToString())
 {% endhighlight %}
 
 {% autocrossref %}
+`request`: (required) now, to finish, we just dump out the serialized
+PaymentRequest (which contains the serialized PaymentDetails). The
+serialized data is in binary, so we can't use Python's print()
+because it would add an extraneous newline.
+
 The following screenshot shows how the authenticated PaymentDetails
 created by the program above appears in the GUI from Bitcoin Core 0.9.
 
