@@ -2470,8 +2470,8 @@ request.payment_details_version = 1  ## Default: 1
 
 ## Certificate chain
 x509.certificate.append(file("/etc/apache2/example.com-cert.der", "r").read())
-
 #x509.certificate.append(file("/some/intermediate/cert.der", "r").read())
+
 ## Load private SSL key into memory for signing later
 priv_key = "/etc/apache2/example.com-key.pem"
 pw = "test"  ## Key password
@@ -2643,7 +2643,6 @@ amount = 10000000  ## In satoshis (=100 mBTC)
 
 ## P2PH pubkey hash
 pubkey_hash = "2b14950b8d31620c6cc923c5408a701b1ec0a020"
-
 ## P2PH output script entered as hex and converted to binary
 # OP_DUP OP_HASH160 <push 20 bytes> <pubKey hash> OP_EQUALVERIFY OP_CHECKSIG
 #   76       a9            14       <pubKey hash>        88          ac
