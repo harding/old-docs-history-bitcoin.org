@@ -305,7 +305,7 @@ var update=function(){
 	if(a===false)return;
 	if(window.history&&window.history.replaceState&&!new RegExp('#'+closer[0].id+'$').test(window.location.href.toString())&&offset>first[1]){
 		var htimeout=toc.getAttribute('data-htimeout');
-		if(htimeout==null||htimeout<new Date().getTime()-1000)window.history.replaceState(null,null,'#'+closer[0].id);
+		if(toc.hasAttribute('data-htimeout')&&htimeout<new Date().getTime()-1000)window.history.replaceState(null,null,'#'+closer[0].id);
 	}
 	while(a.parentNode.nodeName=='LI'||a.parentNode.nodeName=='UL'){
 		a.className='active';
@@ -319,10 +319,16 @@ var timeout=function(){
 }
 var historytimeout=function(){
 	var toc=document.getElementById('toc');
-	toc.setAttribute('data-htimeout',new Date().getTime())
+	if(toc.hasAttribute('data-htimeout'))toc.setAttribute('data-htimeout',new Date().getTime());
+}
+var historystarttimeout=function(){
+	var toc=document.getElementById('toc');
+	toc.setAttribute('data-htimeout',new Date().getTime());
+	removeEvent(window,'load',historystarttimeout);
 }
 addEvent(window,'scroll',timeout);
 addEvent(window,'popstate',historytimeout);
+addEvent(window,'load',historystarttimeout);
 update();
 }
 
