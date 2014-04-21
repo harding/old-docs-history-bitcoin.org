@@ -2360,7 +2360,7 @@ Google's Protocol Buffer compiler (`protoc`), which is available in most
 modern Linux package managers and [directly from Google.][protobuf] Non-Google
 protocol buffer compilers are also available for a variety of other
 programming languages. You will also need a copy of the PaymentRequest
-[Protocol Buffer description](https://github.com/bitcoin/bitcoin/blob/master/src/qt/paymentrequest.proto)<!--noref--> in the Bitcoin Core source code.
+[Protocol Buffer description][core paymentrequest.proto] in the Bitcoin Core source code.
 
 ###### Initialization Code
 

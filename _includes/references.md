@@ -184,6 +184,7 @@
 [core base58.h]: https://github.com/bitcoin/bitcoin/blob/master/src/base58.h
 [core executable]: /en/download
 [core git]: https://github.com/bitcoin/bitcoin
+[core paymentrequest.proto]: https://github.com/bitcoin/bitcoin/blob/master/src/qt/paymentrequest.proto
 [core script.h]: https://github.com/bitcoin/bitcoin/blob/master/src/script.h
 [DER]: https://en.wikipedia.org/wiki/Abstract_Syntax_Notation_One
 [docs issue]: https://github.com/saivann/bitcoin.org/issues
