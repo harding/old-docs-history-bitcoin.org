@@ -5,8 +5,6 @@ id: developer-guide
 title: "Developer Guide - Bitcoin"
 ---
 
-[transaction malleability]: #term-transaction-malleability
-
 # Bitcoin Developer Guide
 
 <p class="summary">Find detailed information about the Bitcoin protocol and related specifications.</p>
