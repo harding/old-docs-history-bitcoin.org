@@ -2138,6 +2138,9 @@ receiver's perspective, starting with a new order. The following
 subsections will each address the three common steps and the three
 occasional or optional steps.
 
+It is worth mentioning that each of these steps can be outsourced by
+using third party APIs and services.
+
 {% endautocrossref %}
 
 ### Calculating Order Totals In Satoshis
