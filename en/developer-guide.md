@@ -2225,10 +2225,9 @@ compatible ways to give the spender the address and amount to be paid:
    web-based wallets unless the spender installs a browser extension or
    manually configures a URI handler.
 
-3. Some desktop wallets and most mobile wallets support `bitcoin:` URIs
-   encoded in a [QR code][URI QR Code]. Most web-based wallets do not support reading
-   QR codes directly, although they do often generate QR codes for
-   accepting payment.
+3. Most mobile wallets support scanning `bitcoin:` URIs encoded in a
+   [QR code][URI QR Code]. While also handy for online orders displayed
+   on a screen, QR Codes are especially useful for real-life purchases.
 
 {% endautocrossref %}
 
