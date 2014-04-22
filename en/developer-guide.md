@@ -2160,7 +2160,7 @@ accept too few satoshis for the product or service being sold.
 Alternatively, they could ask for too many satoshis, driving potential
 spenders away.
 
-To minimize problems, you applications may want to collect data from at
+To minimize problems, your applications may want to collect data from at
 least two separate sources and compare them to see how much they differ.
 If the difference is substantial, your applications can enter a safe mode
 until a human is able to evaluate the situation.
