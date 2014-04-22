@@ -2143,7 +2143,7 @@ using third party APIs and services.
 
 {% endautocrossref %}
 
-### Calculating Order Totals In Satoshis
+### Pricing Orders
 
 {% autocrossref %}
 
@@ -2177,12 +2177,6 @@ Exchange rates lie outside the control of Bitcoin and related
 technologies, so there are no new or planned technologies which
 will make it significantly easier for your program to correctly convert
 order totals from fiat into satoshis.
-
-{% endautocrossref %}
-
-#### Expiring Old Order Totals
-
-{% autocrossref %}
 
 Because the exchange rate fluctuates over time, order totals pegged to
 fiat must expire to prevent spenders from delaying payment in the hope
