@@ -2290,7 +2290,7 @@ replacing your application's addresses with some other addresses.
 
 {% endautocrossref %}
 
-#### `bitcoin:` URI
+#### bitcoin: URI
 
 {% autocrossref %}
 
@@ -3696,7 +3696,7 @@ are used to keep ASIC hashers working at maximum capacity,
 
 {% endautocrossref %}
 
-#### `getwork` RPC
+#### getwork RPC
 
 {% autocrossref %}
 
@@ -3709,7 +3709,7 @@ discourage or disallow its use.
 
 {% endautocrossref %}
 
-#### `getblocktemplate` RPC
+#### getblocktemplate RPC
 
 {% autocrossref %}
 

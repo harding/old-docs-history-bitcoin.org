@@ -27,7 +27,7 @@ title: "API Reference - Bitcoin"
 ### Remote Procedure Calls (RPCs)
 
 
-#### `createrawtransaction`
+#### createrawtransaction
 
 ~~~
 createrawtransaction <previous output(s)> <new output(s)>
