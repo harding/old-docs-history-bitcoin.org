@@ -2437,9 +2437,17 @@ replace the intended QR code with an alternative QR code.
 {% autocrossref %}
 
 Bitcoin Core 0.9 supports the new [payment protocol][]{:#term-payment-protocol}{:.term}. The payment protocol
-lets receivers provide more detail about the requested payment to
-spenders. It also lets them use X.509 certificates and SSL encryption to
-verify their identity to spenders and help prevent man-in-the-middle attacks.
+adds many important features to payment requests:
+
+- Supports X.509 certificates and SSL encryption to verify merchants' identity
+  and help prevent man-in-the-middle attacks.
+
+- Provide more detail about the requested payment to spenders.
+
+- Lets merchants receive off-chain transactions directly, allowing for faster
+  payment processing with no delay caused by propagation time on the P2P
+  network, and opening the door to future compatibility with offline payments
+  over bluetooth.
 
 Instead of being asked to pay a meaningless address, such as
 "mjSk1Ny9spzU2fouzYgLqGUD8U41iR35QN", spenders are asked to pay the
