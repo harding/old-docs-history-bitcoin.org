@@ -2194,7 +2194,7 @@ fluctuate a significant amount before payment is received.
 
 {% endautocrossref %}
 
-### Requesting Payments Using Bitcoin
+### Requesting Payments
 
 {% autocrossref %}
 
@@ -2212,8 +2212,10 @@ applications need only track the association between a particular payment
 request and the address used in it, and then scan the block chain for
 transactions matching that address.
 
-The next subsections will describe in detail the following three
-compatible ways to give the spender the address and amount to be paid:
+The next subsections will describe in detail the following four
+compatible ways to give the spender the address and amount to be paid.
+For increased compatibility, providing all of these options in your
+payment requests is recommended.
 
 1. All wallet software lets its users paste in or manually enter an
    address and amount into a payment screen. This is, of course,
@@ -2229,6 +2231,10 @@ compatible ways to give the spender the address and amount to be paid:
    encoded in a [QR code][URI QR Code]. Most web-based wallets do not support reading
    QR codes directly, although they do often generate QR codes for
    accepting payment.
+
+4. Recent wallet updates add support for the new payment protocol providing
+   improved security with merchant authentication using X.509 certificates
+   as well as other important features like refunds and off-chain transactions.
 
 {% endautocrossref %}
 
@@ -2432,7 +2438,7 @@ replace the intended QR code with an alternative QR code.
 
 {% endautocrossref %}
 
-#### Requesting Payment With The Payment Protocol
+#### Payment Protocol
 
 {% autocrossref %}
 
