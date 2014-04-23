@@ -2214,7 +2214,7 @@ transactions matching that address.
 
 The next subsections will describe in detail the following four
 compatible ways to give the spender the address and amount to be paid.
-For increased compatibility, providing all of these options in your
+For increased convenience and compatibility, providing all of these options in your
 payment requests is recommended.
 
 1. All wallet software lets its users paste in or manually enter an
