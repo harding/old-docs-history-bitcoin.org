@@ -2226,8 +2226,9 @@ compatible ways to give the spender the address and amount to be paid:
    manually configures a URI handler.
 
 3. Most mobile wallets support scanning `bitcoin:` URIs encoded in a
-   [QR code][URI QR Code]. While also handy for online orders displayed
-   on a screen, QR Codes are especially useful for real-life purchases.
+   [QR code][URI QR Code] and almost all wallets can display them for
+   accepting payment. While also handy for online orders, QR Codes are
+   especially useful for real-life purchases.
 
 {% endautocrossref %}
 
