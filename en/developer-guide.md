@@ -2233,8 +2233,8 @@ payment requests is recommended.
    accepting payment.
 
 4. Recent wallet updates add support for the new payment protocol providing
-   improved security with merchant authentication using X.509 certificates
-   as well as other important features like refunds and off-chain transactions.
+   increased security and authentication of a receiver's identity using X.509 certificates
+   as well as other important features like refunds.
 
 {% endautocrossref %}
 
