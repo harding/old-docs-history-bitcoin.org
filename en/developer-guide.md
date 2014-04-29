@@ -2138,9 +2138,12 @@ receiver's perspective, starting with a new order. The following
 subsections will each address the three common steps and the three
 occasional or optional steps.
 
+It is worth mentioning that each of these steps can be outsourced by
+using third party APIs and services.
+
 {% endautocrossref %}
 
-### Calculating Order Totals In Satoshis
+### Pricing Orders
 
 {% autocrossref %}
 
@@ -2175,12 +2178,6 @@ technologies, so there are no new or planned technologies which
 will make it significantly easier for your program to correctly convert
 order totals from fiat into satoshis.
 
-{% endautocrossref %}
-
-#### Expiring Old Order Totals
-
-{% autocrossref %}
-
 Because the exchange rate fluctuates over time, order totals pegged to
 fiat must expire to prevent spenders from delaying payment in the hope
 that satoshis will drop in price. Most widely-used payment processing
@@ -2194,7 +2191,7 @@ fluctuate a significant amount before payment is received.
 
 {% endautocrossref %}
 
-### Requesting Payments Using Bitcoin
+### Requesting Payments
 
 {% autocrossref %}
 
@@ -2212,8 +2209,10 @@ applications need only track the association between a particular payment
 request and the address used in it, and then scan the block chain for
 transactions matching that address.
 
-The next subsections will describe in detail the following three
-compatible ways to give the spender the address and amount to be paid:
+The next subsections will describe in detail the following four
+compatible ways to give the spender the address and amount to be paid.
+For increased convenience and compatibility, providing all of these options in your
+payment requests is recommended.
 
 1. All wallet software lets its users paste in or manually enter an
    address and amount into a payment screen. This is, of course,
@@ -2225,10 +2224,14 @@ compatible ways to give the spender the address and amount to be paid:
    web-based wallets unless the spender installs a browser extension or
    manually configures a URI handler.
 
-3. Some desktop wallets and most mobile wallets support `bitcoin:` URIs
-   encoded in a [QR code][URI QR Code]. Most web-based wallets do not support reading
-   QR codes directly, although they do often generate QR codes for
-   accepting payment.
+3. Most mobile wallets support scanning `bitcoin:` URIs encoded in a
+   [QR code][URI QR Code] and almost all wallets can display them for
+   accepting payment. While also handy for online orders, QR Codes are
+   especially useful for in-person purchases.
+
+4. Recent wallet updates add support for the new payment protocol providing
+   increased security and authentication of a receiver's identity using X.509 certificates
+   as well as other important features like refunds.
 
 {% endautocrossref %}
 
@@ -2290,7 +2293,7 @@ replacing your application's addresses with some other addresses.
 
 {% endautocrossref %}
 
-#### `bitcoin:` URI
+#### bitcoin: URI
 
 {% autocrossref %}
 
@@ -2432,14 +2435,22 @@ replace the intended QR code with an alternative QR code.
 
 {% endautocrossref %}
 
-#### Requesting Payment With The Payment Protocol
+#### Payment Protocol
 
 {% autocrossref %}
 
 Bitcoin Core 0.9 supports the new [payment protocol][]{:#term-payment-protocol}{:.term}. The payment protocol
-lets receivers provide more detail about the requested payment to
-spenders. It also lets them use X.509 certificates and SSL encryption to
-verify their identity to spenders and help prevent man-in-the-middle attacks.
+adds many important features to payment requests:
+
+- Supports X.509 certificates and SSL encryption to verify receivers' identity
+  and help prevent man-in-the-middle attacks.
+
+- Provides more detail about the requested payment to spenders.
+
+- Allows spenders to submit transactions directly to receivers without going
+  through the peer-to-peer network. This can speed up payment processing and
+  work with planned features such as child-pays-for-parent transaction fees
+  and offline NFC or Bluetooth-based payments.
 
 Instead of being asked to pay a meaningless address, such as
 "mjSk1Ny9spzU2fouzYgLqGUD8U41iR35QN", spenders are asked to pay the
@@ -3696,7 +3707,7 @@ are used to keep ASIC hashers working at maximum capacity,
 
 {% endautocrossref %}
 
-#### `getwork` RPC
+#### getwork RPC
 
 {% autocrossref %}
 
@@ -3709,7 +3720,7 @@ discourage or disallow its use.
 
 {% endautocrossref %}
 
-#### `getblocktemplate` RPC
+#### getblocktemplate RPC
 
 {% autocrossref %}
 
