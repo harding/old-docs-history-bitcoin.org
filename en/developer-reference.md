@@ -7,7 +7,7 @@ title: "Developer Reference - Bitcoin"
 
 # Bitcoin Developer Reference
 
-<p class="summary">Find techncial specifications and APIs.</p>
+<p class="summary">Find technical specifications and API documentation.</p>
 
 <div markdown="1" id="toc" class="toc"><div markdown="1">
 
@@ -1114,7 +1114,6 @@ Result:
 
 ## Other APIs
    
-
 <!--#md#</div>#md#-->
 {% include references.md %}
 <script>updateToc();</script>
