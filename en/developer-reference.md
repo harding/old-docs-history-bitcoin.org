@@ -267,9 +267,7 @@ addmultisigaddress <num required> <addresses|pubkeys> [account]
 {:.rpc-prototype}
 
 {% autocrossref %}
-Add a nrequired-to-sign multisignature address to the wallet.
-Each key is a Bitcoin address or hex-encoded public key.
-If 'account' is specified, assign address to that account.
+Add a P2SH multisig address to the wallet. 
 
 Related RPCs: `createmultisig`
 {% endautocrossref %}
@@ -278,7 +276,7 @@ Related RPCs: `createmultisig`
 
 {% autocrossref %}
 *Number; required:* the *minimum* (*m*) number of signatures required to
-spend satoshis sent to this m-of-n multisig script.
+spend satoshis sent to this m-of-n P2SH multisig script.
 {% endautocrossref %}
 
 ~~~
@@ -516,7 +514,7 @@ rawtransaction format, or a JSON error if any value provided was invalid.
 Result:
 
 ~~~
-010000000189957b01aed596d3b361b576234eaeed3249246f14562d6bc60851
+010000000189957b01aed596d3b361b576234eaeed3249246f14562d6bc60851\
 66cd247d5a0000000000ffffffff0180969800000000001976a9140dfc8bafc8\
 419853b34d5e072ad37d1a5159f58488ac00000000
 ~~~
@@ -527,17 +525,12 @@ Result:
 #### getblocktemplate
 
 ~~~
-getblocktemplate [client capabilites]
+getblocktemplate [client capabilities]
 ~~~
 
 {% autocrossref %}
-If the request parameters include a 'mode' key, that is used to
-explicitly select between the default 'template' request or a
-'proposal'.
-
-It returns data needed to construct a block to work on.
-
-See https://en.bitcoin.it/wiki/BIP_0022 for full specification.
+Get a block template or proposal which mining software can use to
+construct a block and hash its header, as defined by BIP22.
 {% endautocrossref %}
 
 **Argument: Client Capabilities**
@@ -644,7 +637,7 @@ false.
 ~~~
 
 {% autocrossref %}
-Hex-encoded *data* indentified by *flag* which should be included in the
+Hex-encoded *data* identified by *flag* which should be included in the
 coinbase field of the coinbase transaction.  The flag is for the
 benefit of mining software---only the data is included.
 {% endautocrossref %}
@@ -655,7 +648,7 @@ benefit of mining software---only the data is included.
 
 {% autocrossref %}
 The *coinbasevalue*, the maximum number of satoshis which the coinbase
-transaction can spend (inculding the block reward) if all the transactions provided in
+transaction can spend (including the block reward) if all the transactions provided in
 the transaction array are included in the block. 
 {% endautocrossref %}
 
@@ -815,12 +808,12 @@ lockunspent <true|false> <outputs>
 {% autocrossref %}
 Updates list of temporarily unspendable outputs.
 
-Temporarily lock (lock=true) or unlock (lock=false) specified
-transaction outputs. A locked transaction output will not be chosen by
-automatic coin selection, when spending bitcoins. Locks are stored in
-memory only. Nodes start with zero locked outputs, and the locked output
-list is always cleared (by virtue of process exit) when a node stops or
-fails. Also see the listunspent call
+Temporarily lock or unlock specified transaction outputs. A locked
+transaction output will not be chosen by automatic coin selection when
+spending bitcoins. Locks are stored in memory only, so nodes start with
+zero locked outputs and the locked output list is always cleared when a
+node stops or fails.
+
 {% endautocrossref %}
 
 **Argument #1: Lock (True) Or Unlock (False)**
@@ -906,11 +899,11 @@ true
 #### sendmany
 
 ~~~
-sendmany "<account>" <addresses & amounts> [minimum confirmations] "[comment]"
+sendmany <account> <addresses & amounts> [min. confirmations] [memo]
 ~~~
 
 {% autocrossref %}
-Create and broadcast a transaction with outputs to multiple addresses.
+Create and broadcast a transaction which spends outputs to multiple addresses.
 {% endautocrossref %}
 
 **Argument #1: Account From Which The Satoshis Should Be Sent**
@@ -930,7 +923,7 @@ withdrawn.  Can be "" for the default account.
 ~~~
 {
   "<address>":<amount in decimal bitcoins>
-  ,...
+  ,[...]
 }
 ~~~
 
@@ -988,15 +981,9 @@ signrawtransaction <raw transaction hex> [previous transactions] [private keys] 
 ~~~
 
 {% autocrossref %}
-Sign inputs for raw transaction (serialized, hex-encoded).
+Sign inputs of a transaction in rawtransaction format using private keys
+stored in the wallet or provided in the call.
 
-The second optional argument (may be null) is an array of previous
-transaction outputs that this transaction depends on but may not yet be
-in the block chain.
-
-The third optional argument (may be null) is an array of base58-encoded
-private keys that, if given, will be the only keys used to sign the
-transaction.
 {% endautocrossref %}
 
 **Argument #1: The Transaction To Sign**
@@ -1107,6 +1094,51 @@ Result:
 ~~~
 
 
+#### submitblock
+
+~~~
+submitblock <new block>  [extra parameters]
+~~~
+
+Attempts to broadcast a new block to network.  Extra parameters are ignored
+by Bitcoin Core but may be used by mining pools or other programs.
+
+**Argument #1: The New Block In Hex**
+
+*String; required:* the hex-encoded block data to broadcast to the
+peer-to-peer network.
+
+**Argument #2: Extra Parameters**
+
+*String; optional:*  A JSON object containing extra parameters for
+mining pools and other software, such as a work identifier (workid).
+The extra parameters will not be broadcast to the network.
+
+~~~
+{
+  "<key>" : "<value>"
+}
+~~~
+
+**Result: None**
+
+No output if successful.  An error message if failed.
+
+**Example**
+
+Submit the following block with the workid, "test".
+
+~~~
+> bitcoin-cli -testnet submitblock 0b110907be0000000200000099f5a\
+              66370b9958f7d382f7269b9d3ab9bc387237a34f236af9a000\
+              00000000021e9af375b9ef13ba5bfb843afb99527b19689d30\
+              df3e251e5c0ce9557436820d7b42f53122f061bbaddaf71010\
+              10000000100000000000000000000000000000000000000000\
+              00000000000000000000000ffffffff0e03e12b03024e05062\
+              f503253482fffffffff0100f2052a01000000232103f0daa9e\
+              2ea23c3cb07a36dbf1151b2da02897463428d30aa254fa3efc\
+              a898a62ac00000000  '{ "workid": "test" }'
+~~~
 
 
 
