@@ -9,13 +9,13 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="32"
-   height="32"
+   width="48"
+   height="48"
    id="svg2"
    version="1.1"
    inkscape:version="0.48.4 r9939"
-   sodipodi:docname="ico_guide.svg"
-   inkscape:export-filename="/media/X/bitcoin.org/current/img/ico_blockchain.png"
+   sodipodi:docname="main_ico_guide.svg"
+   inkscape:export-filename="/media/X/bitcoin.org/current/img/main_ico_guide.png"
    inkscape:export-xdpi="90"
    inkscape:export-ydpi="90">
   <defs
@@ -27,9 +27,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="45.254834"
-     inkscape:cx="14.131611"
-     inkscape:cy="21.147056"
+     inkscape:zoom="11.313709"
+     inkscape:cx="3.38338"
+     inkscape:cy="18.062111"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -54,40 +54,40 @@
      inkscape:label="Calque 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(0,-1020.3622)">
+     transform="translate(0,-1004.3622)">
     <rect
        style="fill:#000000;fill-opacity:1;stroke:none"
        id="rect4335"
-       width="20.053202"
-       height="24.114691"
-       x="8.0650463"
-       y="1022.3624"
-       ry="0.97862637" />
+       width="30.286461"
+       height="36.420547"
+       x="11.046303"
+       y="1007.4249"
+       ry="1.4780247" />
     <rect
        style="fill:#ffffff;fill-opacity:1;stroke:none"
        id="rect4335-0"
-       width="20.053202"
-       height="24.114691"
-       x="6.3766503"
-       y="1024.1023"
-       ry="0.97862637" />
+       width="30.286461"
+       height="36.420547"
+       x="8.4963093"
+       y="1010.0525"
+       ry="1.4780247" />
     <rect
        style="fill:#000000;fill-opacity:1;stroke:none"
        id="rect4335-0-5"
-       width="20.053202"
-       height="24.114691"
-       x="4.6478405"
-       y="1025.8118"
-       ry="0.97862637" />
+       width="30.286461"
+       height="36.420547"
+       x="5.8852773"
+       y="1012.6344"
+       ry="1.4780247" />
     <path
        style="fill:#000000;fill-opacity:1;stroke:none"
-       d="m 10.053051,1023.8884 -2.5557351,2.5771 -2.8000475,0.031 c 0,0 0.1025768,-0.8551 1.4354203,-2.3314 1.332844,-1.4762 2.5665311,-1.7239 2.5665311,-1.7239 z"
+       d="m 14.048796,1009.7295 -3.859939,3.8922 -4.2289284,0.047 c 0,0 0.1549223,-1.2914 2.1679231,-3.5211 2.0130023,-2.2295 3.8762463,-2.6035 3.8762463,-2.6035 z"
        id="path4375"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="ccczcc" />
     <path
        style="fill:#ffffff;fill-opacity:1;stroke:none"
-       d="m 10.849942,1025.1141 0.03074,10.2545 2.560798,-1.82 2.476603,1.8618 -0.04469,-10.3327 z"
+       d="m 15.252345,1011.5807 0.04642,15.4874 3.867588,-2.7487 3.740427,2.8119 -0.0675,-15.6055 z"
        id="path4377"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cccccc" />

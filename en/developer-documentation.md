@@ -10,7 +10,7 @@ title: "Developer Documentation - Bitcoin"
 <p class="summary">Find useful resources, guides and references for developers.</p>
 
 <div class="docreference">
-<a href="/en/developer-guide"><img src="/img/ico_guide.svg" alt="icon">Developer Guide</a>
+<a href="/en/developer-guide"><img src="/img/main_ico_guide.svg" alt="icon">Developer Guide</a>
 <a href="/en/developer-reference"><img src="/img/ico_invoice.svg" alt="icon">Developer Reference</a>
 </div>
 
