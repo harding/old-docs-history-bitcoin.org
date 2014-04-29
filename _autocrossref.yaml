@@ -229,6 +229,7 @@ testnet:
 transaction fee:
 transaction fees: transaction fee
 transaction malleability:
+transaction object format:
 transaction version number:
 '`transactions`': pp transactions
 txid:

@@ -158,6 +158,7 @@
 [transaction malleability]: /en/developer-guide#transaction-malleability "The ability of an attacker to change the transaction identifier (txid) of unconfirmed transactions, making dependent transactions invalid"
 [txid]: /en/developer-guide#term-txid "A hash of a completed transaction which allows other transactions to spend its outputs"
 [transaction]: /en/developer-guide#transactions "A transaction spending satoshis"
+[transaction object format]: /en/api-reference#term-transaction-object-format
 [transaction version number]: /en/developer-guide#term-transaction-version-number "A version number prefixed to transactions to allow upgrading""
 [transactions]: /en/developer-guide#transactions "A transaction spending satoshis"
 [unconfirmed]: /en/developer-guide#term-unconfirmed-transactions "A transaction which has not yet been added to the block chain"
