@@ -12,7 +12,6 @@ title: "Developer Documentation - Bitcoin"
 <div class="docreference">
 <a href="/en/developer-guide"><img src="/img/ico_guide.svg" alt="icon">Developer Guide</a>
 <a href="/en/developer-reference"><img src="/img/ico_invoice.svg" alt="icon">Developer Reference</a>
-<a href="/en/api-reference"><img src="/img/ico_invoice.svg" alt="icon">API Reference</a>
 </div>
 
 <div class="resources">
@@ -22,6 +21,7 @@ title: "Developer Documentation - Bitcoin"
     </div><div>
       <h2><img src="/img/ico_micro.svg" class="titleicon" alt="Icon">Transactions</h2>
       <p><a href="/en/developer-guide#transactions">Transaction Guide</a></p>
+      <p><a href="/en/developer-reference#transaction-reference">Transaction Reference</a></p>
     </div>
   </div>
   <div>
