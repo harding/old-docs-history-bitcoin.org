@@ -2235,8 +2235,9 @@ payment requests is recommended.
 
 **Warning**: Special care must be taken to avoid the theft of incoming
 payments. In particular, private keys should not be stored on web servers,
-and payment requests should be sent over HTTPS or using other secured ways
-to prevent man-in-the-middle attacks from replacing your Bitcoin addresses.
+and payment requests should be sent over HTTPS or using other secure methods
+to prevent man-in-the-middle attacks from replacing your Bitcoin address
+with the attacker's address.
 
 {% endautocrossref %}
 
