@@ -2233,6 +2233,11 @@ payment requests is recommended.
    increased security and authentication of a receiver's identity using X.509 certificates
    as well as other important features like refunds.
 
+**Warning**: Special care must be taken to avoid the theft of incoming
+payments. In particular, private keys should not be stored on web servers,
+and payment requests should be sent over HTTPS or using other secured ways
+to prevent man-in-the-middle attacks from replacing your Bitcoin addresses.
+
 {% endautocrossref %}
 
 #### Plain Text
@@ -2284,14 +2289,6 @@ Pay: mjSk1Ny9spzU2fouzYgLqGUD8U41iR35QN
 Amount: 100 BTC  (100000 mBTC)
 You must pay by: 2014-04-01 at 23:00 UTC
 ~~~
-
-{% autocrossref %}
-
-Plain-text payment requests should, whenever possible, be sent over
-secure medium (such as HTTPS) to prevent a man-in-the-middle attack from
-replacing your application's addresses with some other addresses.
-
-{% endautocrossref %}
 
 #### bitcoin: URI
 
@@ -2384,11 +2381,6 @@ Programs accepting URIs in any form must ask the user for permission
 before paying unless the user has explicitly disabled prompting (as
 might be the case for micropayments).
 
-Like pain-text payment requests, URI payment requests should, whenever
-possible, be sent over secure medium (such as HTTPS) to prevent a
-man-in-the-middle attack from replacing your application's addresses
-with some other addresses.
-
 {% endautocrossref %}
 
 #### QR Codes
@@ -2428,10 +2420,6 @@ correction based on the space you have available to display the code.
 Low-level damage correction works well when space is limited, and
 quartile-level damage correction helps ensure fast scanning when
 displayed on high-resolution screens.
-
-To the degree possible, your applications should discourage the
-transmission of Bitcoin QR codes via images or videos which could be modified to
-replace the intended QR code with an alternative QR code.
 
 {% endautocrossref %}
 
