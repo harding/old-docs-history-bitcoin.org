@@ -26,7 +26,7 @@ title: "Developer Documentation - Bitcoin"
   </div>
   <div>
     <div>
-      <h2><img src="/img/ico_invoice.svg" class="titleicon" alt="Icon">Contracts</h2>
+      <h2><img src="/img/ico_contract.svg" class="titleicon" alt="Icon">Contracts</h2>
       <p><a href="/en/developer-guide#contracts">Contracts Guide</a></p>
     </div><div>
       <h2><img src="/img/ico_key.svg" class="titleicon" alt="Icon">Wallets</h2>
