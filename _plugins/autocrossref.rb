@@ -1,3 +1,11 @@
+#autocrossref.rb automatically adds cross reference links in documentation
+#texts using the list of words defined in _autocrossref.yaml.
+
+#Example:
+# {% autocrossref %}
+# ...content...
+# {% endautocrossref %}
+
 module Jekyll
 
 require 'yaml'
