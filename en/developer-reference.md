@@ -1163,6 +1163,255 @@ Result:
 ]
 ~~~
 
+#### getaddressesbyaccount
+
+~~~
+getaddressesbyaccount <account>
+~~~
+
+{% autocrossref %}
+Returns a list of every address assigned to a particular account.
+{% endautocrossref %}
+
+**Argument: Account Name**
+
+{% autocrossref %}
+*String; required:* the name of the account.
+{% endautocrossref %}
+
+**Result: A List Of Addresses**
+
+{% autocrossref %}
+*String:* A JSON array of strings, with each string being a single Bitcoin address.
+{% endautocrossref %}
+
+~~~
+[
+  "<address>"
+  ,[...]
+]
+~~~
+
+**Example**
+
+{% autocrossref %}
+Get the addresses assigned to the account "doc test":
+{% endautocrossref %}
+
+~~~
+> bitcoin-cli -testnet getaddressesbyaccount "doc test"
+~~~
+
+Result:
+
+~~~
+[
+    "mjSk1Ny9spzU2fouzYgLqGUD8U41iR35QN"
+]
+~~~
+
+
+#### getbalance
+
+~~~
+getbalance [account] [confirmations]
+~~~
+
+{% autocrossref %}
+Get the balance in decimal bitcoins across all accounts or for a
+particular account.  Specify the number of confirmations to only show
+satoshis which have been confirmed at least thet many times.
+{% endautocrossref %}
+
+**Argument #1: Account Name**
+
+{% autocrossref %}
+*String; optional:* the name of the account to get a balance for or "*"
+to get the balance for all accounts (the default).  The default (primary)
+account can be specified using "", which is not the same as specifying
+"*" for all accounts.
+{% endautocrossref %}
+
+**Argument #2: Minimum Number Of Confirmations**
+
+{% autocrossref %}
+*Number; optional:* the minimum number of confirmations an incoming
+transaction must have before it is counted towards the balance.
+(Outgoing transactions are subtracted from the balance immediately.)
+
+The default is one confirmation, so transactions are not counted towards
+the balance until they confirm.
+{% endautocrossref %}
+
+**Result: The Balance In Decimal Bitcoins**
+
+{% autocrossref %}
+The balance for the account indicated (or all accounts) in decimal
+satoshis.  May be negative if the account has spent more satoshis than
+it received.
+{% endautocrossref %}
+
+**Examples**
+
+{% autocrossref %}
+Four balances: one for the current balance of the "doc test" account and
+one for that account with more than 1,000 confirmations.  Then a balance
+for the default account and a balance for all accounts.
+{% endautocrossref %}
+
+~~~
+> bitcoin-cli -testnet getbalance "doc test"
+0.30000000
+~~~
+
+~~~
+> bitcoin-cli -testnet getbalance "doc test" 1000
+0.20000000
+~~~
+
+~~~
+> bitcoin-cli -testnet getbalance ""
+-1.30050000
+~~~
+
+~~~
+> bitcoin-cli -testnet getbalance "*"
+0.89850000
+~~~
+
+
+#### getblock
+
+~~~
+getblock <hash> [true|false]
+~~~
+
+{% autocrossref %}
+Get a block with a particular header hash from the block chain either as
+a JSON object (if *true*) or a raw hex string (if *false*)
+{% endautocrossref %}
+
+**Argument: Header Hash**
+
+{% autocrossref %}
+*String; required:* the SHA256(SHA256()) hash of the block header to get.
+{% endautocrossref %}
+
+**Argument: JSON Or Hex Output**
+
+{% autocrossref %}
+*Boolean; optional:* by default, *true* to return a JSON object
+describing the block.  *False* for just the hex-encoded block.
+{% endautocrossref %}
+
+**Result**
+
+{% autocrossref %}
+A hex-encoded block or the following JSON object descibed in segments.
+{% endautocrossref %}
+
+~~~
+{
+  "hash" : "<hash>",
+  "confirmations" : <number>,
+  "size" : <bytes>,
+  "height" : <number>,
+  "version" : <number>,
+  "merkleroot" : "<hash>",
+~~~
+
+{% autocrossref %}
+The block header *hash* (same as you provided); the number of
+*confirmations* (subsequent blocks), the *size* of the block in bytes,
+the block *height*, the block *version*, and the *Merkle root* hash.
+{% endautocrossref %}
+
+~~~
+  "tx" : [
+     "<txid>"
+     ,[...]
+  ],
+~~~
+
+{% autocrossref %}
+A JSON array of transaction identifiers (txids).
+{% endautocrossref %}
+
+~~~
+  "time" : <epoch time>,
+  "nonce" : <number>,
+  "bits" : "<hex>",
+  "difficulty" : <number>,
+  "previousblockhash" : "<hash>",
+  "nextblockhash" : "<hash>"
+}
+~~~
+
+{% autocrossref %}
+The block *time* in Unix epoch time, the block *nonce*, the target
+threshold in compressed *bits* format, the target threshold in
+*difficulty* format, the *previous block (header) hash*, and the *next
+block (header) hash*.
+{% endautocrossref %}
+
+**Example**
+
+{% autocrossref %}
+A block in raw hex:
+{% endautocrossref %}
+
+~~~
+bitcoin-cli -testnet getblock \
+            000000000fe549a89848c76070d4132872cfb6efe5315d01d7ef77e4900f2d39 \
+            false
+~~~
+
+Result:
+
+~~~
+02000000df11c014a8d798395b5059c722ebdf3171a4217ead71bf6e0e99f4c7\
+000000004a6f6a2db225c81e77773f6f0457bcb05865a94900ed11356d0b7522\
+8efb38c7785d6053ffff001d005d437001010000000100000000000000000000\
+00000000000000000000000000000000000000000000ffffffff0d03b4770301\
+64062f503253482fffffffff0100f9029500000000232103adb7d8ef6b63de74\
+313e0cd4e07670d09a169b13e4eda2d650f529332c47646dac00000000
+~~~
+
+{% autocrossref %}
+Get the same block in JSON:
+{% endautocrossref %}
+
+~~~
+bitcoin-cli -testnet getblock \
+            000000000fe549a89848c76070d4132872cfb6efe5315d01d7ef77e4900f2d39 \
+            true
+~~~
+
+Result:
+
+~~~
+{
+    "hash" : "000000000fe549a89848c76070d4132872cfb6efe5315d01d7ef77e4900f2d39",
+    "confirmations" : 2,
+    "size" : 189,
+    "height" : 227252,
+    "version" : 2,
+    "merkleroot" : "c738fb8e22750b6d3511ed0049a96558b0bc57046f3f77771ec825b22d6a6f4a",
+    "tx" : [
+        "c738fb8e22750b6d3511ed0049a96558b0bc57046f3f77771ec825b22d6a6f4a"
+    ],
+    "time" : 1398824312,
+    "nonce" : 1883462912,
+    "bits" : "1d00ffff",
+    "difficulty" : 1.00000000,
+    "chainwork" : "000000000000000000000000000000000000000000000000083ada4a4009841a",
+    "previousblockhash" : "00000000c7f4990e6ebf71ad7e21a47131dfeb22c759505b3998d7a814c011df",
+    "nextblockhash" : "00000000afe1928529ac766f1237657819a11cfcc8ca6d67f119e868ed5b6188"
+}
+~~~
+
+
+
 
 #### getblocktemplate
 
@@ -1439,6 +1688,781 @@ Result (long lines have been wrapped (\\) and some data has been omitted
     "height" : 227051
 }
 ~~~
+
+
+
+
+#### getnetworkhashps
+
+~~~
+getnetworkhashps [blocks] [height]
+~~~
+
+{% autocrossref %}
+Returns the estimated current or historical network hashes per second
+based on the last n blocks
+{% endautocrossref %}
+
+**Argument #1: Number Of Blocks To Average**
+
+{% autocrossref %}
+*Number; optional:* the number of blocks to average together for
+calculating the estimated hashes per second.  Defaults to 120.  Use -1
+to average all blocks prouduced since the last difficulty change.
+{% endautocrossref %}
+
+**Argument #2: Block Height**
+
+{% autocrossref %}
+*Number; optional:* the block height of the last block to use for calculating the average.
+Defaults to -1 (the most recent block).
+{% endautocrossref %}
+
+**Result: Estimated Hashes Per Second**
+
+{% autocrossref %}
+*Number:* the estimated hashes per second.
+{% endautocrossref %}
+
+**Example**
+
+{% autocrossref %}
+Get the average hashes per second for all the blocks since the last
+difficult change before block 227255.
+{% endautocrossref %}
+
+~~~
+bitcoin-cli -testnet getnetworkhashps -1 227255
+~~~
+
+Result:
+
+~~~
+79510076167
+~~~
+
+
+
+#### getnewaddress
+
+~~~
+getnewaddress [account]
+~~~
+
+{% autocrossref %}
+Returns a new Bitcoin address for receiving payments. If account is
+specified, payments received with the address will be credited to
+that account.
+{% endautocrossref %}
+
+**Argument: An Account Name**
+
+{% autocrossref %}
+*String; optional:* the name of an account with which to associate the
+new account.  If the account doesn't exist, it will be created.  If
+account isn't specified, the default account ("") will be used.
+{% endautocrossref %}
+
+**Result: A New Bitcoin Address**
+
+{% autocrossref %}
+A new Bitcoin address is returned.  
+{% endautocrossref %}
+
+**Example**
+
+{% autocrossref %}
+Create a new address in the "doc test" account:
+{% endautocrossref %}
+
+~~~
+> /bitcoin-cli -testnet getnewaddress "doc test"
+~~~
+
+Result:
+
+~~~
+mft61jjkmiEJwJ7Zw3r1h344D6aL1xwhma
+~~~
+
+#### getrawmempool
+
+~~~
+getrawmempool [true|false]
+~~~
+
+{% autocrossref %}
+Returns all transaction identifiers (txids) in the memory pool as a JSON
+array or detailed information each transaction in the memory pool as a
+JSON object.
+{% endautocrossref %}
+
+**Argument: Detailed JSON Object Or JSON Array Of Txids**
+
+{% autocrossref %}
+*Boolean; optional:* for a detailed JSON object describing each
+transaction in the memory pool, *true*.  For a JSON array with each txid
+as a string, *false* (the default).
+{% endautocrossref %}
+
+**Result For *False*: An Array Of Txids**
+
+{% autocrossref %}
+A JSON array of txids:
+{% endautocrossref %}
+
+~~~
+[
+  "<txid>"
+  ,[...]
+]
+~~~
+
+**Result For *True*: A JSON Object Describing Each Transaction**
+
+{% autocrossref %}
+A JSON object containing a list of JSON objects, with each object's key
+being a *txid* and its value being a JSON object containing the
+following information: the transaction *size* in bytes, the *fee* paid,
+the *time* the transaction entered the pool (in Unix epoch time), the
+block *height* when the transaction entered the pool, the *starting
+priority* when the transaction entered the pool and its *current
+priority*, plus an array of unconfirmed txid's this transaction
+*depends* on.
+{% endautocrossref %}
+
+{
+  "transactionid" : {
+    "size" :
+    "fee" :
+    "time" :
+    "height" :
+    "startingpriority" :
+    "currentpriority" :
+    "depends" : [
+        "<txid>",
+       ... ]
+  }, ...
+]
+
+**Examples**
+
+The default (*false*):
+
+~~~
+> bitcoin-cli -testnet getrawmempool
+~~~
+
+~~~
+[
+    "2b1f41d6f1837e164d6d6811d3d8dad2e66effbd1058cd9ed7bdbe1cab20ae03",
+    "2baa1f49ac9b951fa781c4c95814333a2f3eda71ed3d0245cd76c2829b3ce354"
+]
+~~~
+
+Verbose output (*true*):
+
+~~~
+> bitcoin-cli -testnet getrawmempool
+~~~
+
+~~~
+{
+    "2b1f41d6f1837e164d6d6811d3d8dad2e66effbd1058cd9ed7bdbe1cab20ae03" : {
+        "size" : 3176,
+        "fee" : 0.00040000,
+        "time" : 1398867801,
+        "height" : 227310,
+        "startingpriority" : 97456429.70512821,
+        "currentpriority" : 97456429.70512821,
+        "depends" : [
+        ]
+    },
+    "2baa1f49ac9b951fa781c4c95814333a2f3eda71ed3d0245cd76c2829b3ce354" : {
+        "size" : 191,
+        "fee" : 0.00020000,
+        "time" : 1398867772,
+        "height" : 227310,
+        "startingpriority" : 54545454.54545455,
+        "currentpriority" : 54545454.54545455,
+        "depends" : [
+        ]
+    }
+}
+~~~
+
+#### getrawtransaction
+
+~~~
+getrawtransaction <txid> [true|false]
+~~~
+
+{% autocrossref %}
+Get the rawtransaction-format data for a transaction or a JSON object
+describing the transaction. By default, `bitcoind` only stores complete
+transaction data for UTXOs and your own transactions, so the RPC may
+fail on historic transactions unless you use the non-default `txindex=1`
+in your `bitcoind` startup settings.
+
+See also: `decoderawtransaction`
+{% endautocrossref %}
+
+**Argument #1: The Transaction Txid**
+
+{% autocrossref %}
+*String; required:* the txid (hash) of the transaction to get.
+{% endautocrossref %}
+
+**Argument #2: Get Hex Or JSON Object**
+
+{% autocrossref %}
+*Number; optional:* either *0* (the default) to get the transaction in
+rawtransaction format (hex), or *1* to get a JSON object describing the
+transaction.
+{% endautocrossref %}
+
+**Result: Rawtransaction Hex Or Description In JSON**
+
+{% autocrossref %}
+If *0*, a hex string with the complete (signed) transaction as it
+appears in the block chain or memory pool.
+
+If *1*, a JSON object describing the transaction.  See
+`decoderawtransaction` for a format description.
+{% endautocrossref %}
+
+**Examples:**
+
+{% autocrossref %}
+A transaction in rawtransaction format:
+{% endautocrossref %}
+
+~~~
+> bitcoin-cli -testnet getrawtransaction \
+              ef7c0cbf6ba5af68d2ea239bba709b26ff7b0b669839a63bb01c2cb8e8de481e
+~~~
+
+Result: 
+
+~~~
+0100000001268a9ad7bfb21d3c086f0ff28f73a064964aa069ebb69a9e437da8\
+5c7e55c7d7000000006b483045022100ee69171016b7dd218491faf6e13f53d4\
+0d64f4b40123a2de52560feb95de63b902206f23a0919471eaa1e45a0982ed28\
+8d374397d30dff541b2dd45a4c3d0041acc0012103a7c1fd1fdec50e1cf3f0cc\
+8cb4378cd8e9a2cee8ca9b3118f3db16cbbcf8f326ffffffff0350ac60020000\
+00001976a91456847befbd2360df0e35b4e3b77bae48585ae06888ac80969800\
+000000001976a9142b14950b8d31620c6cc923c5408a701b1ec0a02088ac002d\
+3101000000001976a9140dfc8bafc8419853b34d5e072ad37d1a5159f58488ac\
+00000000
+~~~
+
+{% autocrossref %}
+Get the same transaction in JSON:
+{% endautocrossref %}
+
+~~~
+bitcoin-cli -testnet getrawtransaction
+            ef7c0cbf6ba5af68d2ea239bba709b26ff7b0b669839a63bb01c2cb8e8de481e \
+            1
+~~~
+
+Result:
+
+~~~
+
+{
+    "hex" : "0100000001268a9ad7bfb21d3c086f0ff28f73a064964aa069e\
+             bb69a9e437da85c7e55c7d7000000006b483045022100ee6917\
+             1016b7dd218491faf6e13f53d40d64f4b40123a2de52560feb9\
+             5de63b902206f23a0919471eaa1e45a0982ed288d374397d30d\
+             ff541b2dd45a4c3d0041acc0012103a7c1fd1fdec50e1cf3f0c\
+             c8cb4378cd8e9a2cee8ca9b3118f3db16cbbcf8f326ffffffff\
+             0350ac6002000000001976a91456847befbd2360df0e35b4e3b\
+             77bae48585ae06888ac80969800000000001976a9142b14950b\
+             8d31620c6cc923c5408a701b1ec0a02088ac002d31010000000\
+             01976a9140dfc8bafc8419853b34d5e072ad37d1a5159f58488\
+             ac00000000",
+    "txid" : "ef7c0cbf6ba5af68d2ea239bba709b26ff7b0b669839a63bb01c2cb8e8de481e",
+    "version" : 1,
+    "locktime" : 0,
+    "vin" : [
+        {
+            "txid" : "d7c7557e5ca87d439e9ab6eb69a04a9664a0738ff20f6f083c1db2bfd79a8a26",
+            "vout" : 0,
+            "scriptSig" : {
+                "asm" : "3045022100ee69171016b7dd218491faf6e13f5\
+                3d40d64f4b40123a2de52560feb95de63b902206f23a0919\
+                471eaa1e45a0982ed288d374397d30dff541b2dd45a4c3d0\
+                041acc001 03a7c1fd1fdec50e1cf3f0cc8cb4378cd8e9a2\
+                cee8ca9b3118f3db16cbbcf8f326",
+                "hex" : "483045022100ee69171016b7dd218491faf6e13\
+                f53d40d64f4b40123a2de52560feb95de63b902206f23a09\
+                19471eaa1e45a0982ed288d374397d30dff541b2dd45a4c3\
+                d0041acc0012103a7c1fd1fdec50e1cf3f0cc8cb4378cd8e\
+                9a2cee8ca9b3118f3db16cbbcf8f326"
+            },
+            "sequence" : 4294967295
+        }
+    ],
+    "vout" : [
+        {
+            "value" : 0.39890000,
+            "n" : 0,
+            "scriptPubKey" : {
+                "asm" : "OP_DUP OP_HASH160 56847befbd2360df0e35b\
+                4e3b77bae48585ae068 OP_EQUALVERIFY OP_CHECKSIG",
+                "hex" : "76a91456847befbd2360df0e35b4e3b77bae48585ae06888ac",
+                "reqSigs" : 1,
+                "type" : "pubkeyhash",
+                "addresses" : [
+                    "moQR7i8XM4rSGoNwEsw3h4YEuduuP6mxw7"
+                ]
+            }
+        },
+        {
+            "value" : 0.10000000,
+            "n" : 1,
+            "scriptPubKey" : {
+                "asm" : "OP_DUP OP_HASH160 2b14950b8d31620c6cc92\
+                3c5408a701b1ec0a020 OP_EQUALVERIFY OP_CHECKSIG",
+                "hex" : "76a9142b14950b8d31620c6cc923c5408a701b1ec0a02088ac",
+                "reqSigs" : 1,
+                "type" : "pubkeyhash",
+                "addresses" : [
+                    "mjSk1Ny9spzU2fouzYgLqGUD8U41iR35QN"
+                ]
+            }
+        },
+        {
+            "value" : 0.20000000,
+            "n" : 2,
+            "scriptPubKey" : {
+                "asm" : "OP_DUP OP_HASH160 0dfc8bafc8419853b34d5\
+                e072ad37d1a5159f584 OP_EQUALVERIFY OP_CHECKSIG",
+                "hex" : "76a9140dfc8bafc8419853b34d5e072ad37d1a5159f58488ac",
+                "reqSigs" : 1,
+                "type" : "pubkeyhash",
+                "addresses" : [
+                    "mgnucj8nYqdrPFh2JfZSB1NmUThUGnmsqe"
+                ]
+            }
+        }
+    ],
+    "blockhash" : "00000000103e0091b7d27e5dc744a305108f0c752be249893c749e19c1c82317",
+    "confirmations" : 216,
+    "time" : 1398734825,
+    "blocktime" : 1398734825
+}
+~~~
+
+
+
+
+#### getreceivedbyaccount
+
+~~~
+getreceivedbyaccount <account> <confirmations>
+~~~
+
+{% autocrossref %}
+Returns the total amount received by addresses in a particular account
+from transactions with the specified number of confirmations.
+{% endautocrossref %}
+
+**Argument #1: The Account Name**
+
+{% autocrossref %}
+*String; required:* the name of the account.  Use "" for the default
+account.
+{% endautocrossref %}
+
+**Argument #2: The Mininum Number Of Confirmations**
+
+{% autocrossref %}
+*Number; optional:* the mininum number of confirmations a transaction
+must have before it is counted.
+{% endautocrossref %}
+
+**Result: Decimal Bitcoins**
+
+{% autocrossref %}
+*Number:* the number of satoshis received in decimal bitcoins.
+{% endautocrossref %}
+
+**Example**
+
+{% autocrossref %}
+Get the satoshis received by the "doc test" account with six or more
+confirmations:
+{% endautocrossref %}
+
+~~~
+bitcoin-cli -testnet getreceivedbyaccount "doc test" 6
+~~~
+
+Result:
+
+~~~
+0.30000000
+~~~
+
+
+#### getreceivedbyaddress
+
+~~~
+getreceivedbyaddress <address> [confirmations]
+~~~
+
+{% autocrossref %}
+Returns the total amount received by the specified address in
+transactions with at least the indicated number of confirmations.
+{% endautocrossref %}
+
+**Argument #1: A Bitcoin Address**
+
+{% autocrossref %}
+*String; required:* a Bitcoin address to check.  Must be an address 
+belonging to the wallet unless `txindex=1` was added to the `bitcoind`
+startup options.
+{% endautocrossref %}
+
+**Argument #2: The Minimum Number Of Confirmations**
+
+{% autocrossref %}
+*Number; optional:* the minimum number of confirmations a transaction
+must have before it is counted towards the total.  1 is the default; use
+0 to also count unconfirmed transactions.
+{% endautocrossref %}
+
+**Result: The Number Of Decimal Bitcoins Received**
+
+{% autocrossref %}
+The number of decimal bitcoins received by the address. 
+{% endautocrossref %}
+
+**Example**
+
+{% autocrossref %}
+Get the amount of satoshis received by the following address with at
+least six confirmations.
+{% endautocrossref %}
+
+~~~
+bitcoin-cli -testnet getreceivedbyaddress mjSk1Ny9spzU2fouzYgLqGUD8U41iR35QN 6
+~~~
+
+Result:
+
+~~~
+0.30000000
+~~~
+
+
+
+#### gettransaction
+
+~~~
+gettransaction <txid>
+~~~
+
+{% autocrossref %}
+Get detailed information about an in-wallet transaction.
+{% endautocrossref %}
+
+**Argument: A Transaction Identifier (txid)**
+
+{% autocrossref %}
+*String; required:* a transaction identifier (txid) for the transaction
+to get information about.
+{% endautocrossref %}
+
+**Result: A Description Of The Transaction**
+
+{% autocrossref %}
+*String:* a JSON object describing the transaction: the *amount* of the
+transaction in decimal bitcoins, the number of *confirmations* the
+transaction has, the *blockhash* (if any) the transaction appeared in
+and also that block's height (*blockindex*) and *blocktime*, the *txid*
+(same as you provided), and an array of *details* about each input and
+output in the transaction.
+
+The *details* array includes the *account* the transaction belongs to
+("" for the default account), the *address* used in the input or output,
+the *category* (input or output), and the *amount* of the particular
+input or output.
+
+Last is the rawtransaction format *hex* of the transaction.
+{% endautocrossref %}
+
+~~~
+{
+  "amount" : x.xxx,        (numeric) The transaction amount in btc
+  "confirmations" : n,     (numeric) The number of confirmations
+  "blockhash" : "hash",  (string) The block hash
+  "blockindex" : xx,       (numeric) The block index
+  "blocktime" : ttt,       (numeric) The time in seconds since epoch (1 Jan 1970 GMT)
+  "txid" : "transactionid",   (string) The transaction id, see also https://blockchain.info/tx/[transactionid]
+  "time" : ttt,            (numeric) The transaction time in seconds since epoch (1 Jan 1970 GMT)
+  "timereceived" : ttt,    (numeric) The time received in seconds since epoch (1 Jan 1970 GMT)
+  "details" : [
+    {
+      "account" : "accountname",  (string) The account name involved in the transaction, can be "" for the default account.
+      "address" : "bitcoinaddress",   (string) The bitcoin address involved in the transaction
+      "category" : "send|receive",    (string) The category, either 'send' or 'receive'
+      "amount" : x.xxx                  (numeric) The amount in btc
+    }
+    ,...
+  ],
+  "hex" : "data"         (string) Raw data for transaction
+}
+~~~
+
+**Example**
+
+~~~
+bitcoin-cli -testnet gettransaction \
+            5a7d24cd665108c66b2d56146f244932edae4e2376b561b3d396d5ae017b9589
+~~~
+
+Result:
+
+~~~
+{
+    "amount" : 0.00000000,
+    "fee" : 0.00000000,
+    "confirmations" : 18707,
+    "blockhash" : "000000008b630b3aae99b6fe215548168bed92167c47a2f7ad4df41e571bcb51",
+    "blockindex" : 1,
+    "blocktime" : 1396321351,
+    "txid" : "5a7d24cd665108c66b2d56146f244932edae4e2376b561b3d396d5ae017b9589",
+    "walletconflicts" : [
+    ],
+    "time" : 1396318587,
+    "timereceived" : 1396318587,
+    "details" : [
+        {
+            "account" : "",
+            "address" : "mjSk1Ny9spzU2fouzYgLqGUD8U41iR35QN",
+            "category" : "send",
+            "amount" : -0.10000000,
+            "fee" : 0.00000000
+        },
+        {
+            "account" : "doc test",
+            "address" : "mjSk1Ny9spzU2fouzYgLqGUD8U41iR35QN",
+            "category" : "receive",
+            "amount" : 0.10000000
+        }
+    ],
+    "hex" : "0100000001cde58f2e37d000eabbb60d9cf0b79ddf67cede6db\
+             a58732539983fa341dd5e6c010000006a47304402201feaf129\
+             08260f666ab369bb8753cdc12f78d0c8bdfdef997da17acff50\
+             2d321022049ba0b80945a7192e631c03bafd5c6dc3c7cb35ac5\
+             c1c0ffb9e22fec86dd311c01210321eeeb46fd878ce8e62d5e0\
+             f408a0eab41d7c3a7872dc836ce360439536e423dffffffff01\
+             80969800000000001976a9142b14950b8d31620c6cc923c5408\
+             a701b1ec0a02088ac00000000"
+}
+~~~
+
+
+
+
+#### gettxout
+
+~~~
+gettxout <txid> <output index number> [true|false]
+~~~
+
+{% autocrossref %}
+Returns details about an unspent transaction output (UTXO).
+{% endautocrossref %}
+
+**Argument #1:** A Transaction Identifier (txid)
+
+{% autocrossref %}
+*String; required:* the txid of the transaction the UTXO belongs to.
+{% endautocrossref %}
+
+**Argument #2:** An Output Index Number
+
+{% autocrossref %}
+*Number; required:* the output index number (vout) of the UTXO.
+{% endautocrossref %}
+
+**Argument #3:** Whether To Display Outputs From The Memory Pool
+
+{% autocrossref %}
+*Boolean; optional:* display UTXOs from the memory pool with *true*, or
+only to display UTXOs on the block chain with *false* (the default).
+{% endautocrossref %}
+
+**Result: A Description Of The Output**
+
+{% autocrossref %}
+*String:* A JSON object describing the output, with *bestblock*
+providing the header hash of the block which includes the UTXO (if any),
+the number of *confirmations* the UTXO has, the *value* of the output in
+decimal bitcoins, and a JSON object describing the output script,
+including the script in script psuedocode (*asm*), the script in *hex*,
+the number of *required signatures*, the *type* of output script, and
+the *addresses* it references (if known).  Also provided are the
+UTXO's transaction *version* number and whether or not it's a *coinbase*
+transaction.
+{% endautocrossref %}
+
+~~~
+{
+  "bestblock" : "<hash>",
+  "confirmations" : <number>,
+  "value" : <decimal bitcoins>,
+  "scriptPubKey" : {
+     "asm" : "<psuedo code>",
+     "hex" : "<rawtransaction hex>",
+     "reqSigs" : <number>,
+     "type" : "<type>",
+     "addresses" : [
+        "<address>"
+        ,[...]
+     ]
+  },
+  "version" : <number>,
+  "coinbase" : <true|false>
+}
+~~~
+
+**Example**
+
+{% autocrossref %}
+Get the UTXO from the following transaction from the third output index ("2"),
+searching the memory pool if necessary.
+{% endautocrossref %}
+
+~~~
+> bitcoin-cli -testnet gettxout \
+              ef7c0cbf6ba5af68d2ea239bba709b26ff7b0b669839a63bb01c2cb8e8de481e \
+              2 true
+~~~
+
+Result:
+
+~~~
+{
+    "bestblock" : "0000000020183137a80225af8ee2a523220af75c96e06b63f9dcd7eb7b059688",
+    "confirmations" : 240,
+    "value" : 0.20000000,
+    "scriptPubKey" : {
+        "asm" : "OP_DUP OP_HASH160 \
+        0dfc8bafc8419853b34d5e072ad37d1a5159f584 OP_EQUALVERIFY OP_CHECKSIG",
+        "hex" : "76a9140dfc8bafc8419853b34d5e072ad37d1a5159f58488ac",
+        "reqSigs" : 1,
+        "type" : "pubkeyhash",
+        "addresses" : [
+            "mgnucj8nYqdrPFh2JfZSB1NmUThUGnmsqe"
+        ]
+    },
+    "version" : 1,
+    "coinbase" : false
+}
+~~~
+
+
+#### getwork
+
+~~~
+getwork [data]
+~~~
+
+{% autocrossref %}
+Provides a block header which can be hashed to attempt to find the next
+block, and lets a miner return a successful header.
+{% endautocrossref %}
+
+**Argument: A Header Hash**
+
+{% autocrossref %}
+*String; optional:* if header data is provided, it will be checked to
+see if it meets the target threshold (difficulty) and then affixed to a
+block of transactions (which produces a matching Merkle root).  Then the
+complete block will be broadcast to the network.  Data is in the same
+format as provided by the *data* output parameter (see below).
+{% endautocrossref %}
+
+**Result #1: Hashing Data**
+
+{% autocrossref %}
+*String:* A JSON object with four key/value pairs is returned.  *data*
+is the block data used by mining software and *target* is the hash
+target either for the network or for the mining pool.  The other two
+parameters, *midstate* and *hash1*, are deprecated.
+{% endautocrossref %}
+
+~~~
+{
+  "midstate" : "<hash>",   (string) The precomputed hash state after hashing the first half of the data (DEPRECATED)
+  "data" : "<hex data>",      (string) The block data
+  "hash1" : "<hex data>",     (string) The formatted hash buffer for second hash (DEPRECATED)
+  "target" : "<target hex>"      (string) The little endian hash target
+}
+~~~
+
+**Result #2: Whether The Block Was Accepted**
+
+{% autocrossref %}
+*Boolean:* either *true* or *false* depending on whether or not the data
+was accepted.
+{% endautocrossref %}
+
+**Examples**
+
+Get work:
+
+~~~
+bitcoin-cli -testnet getwork
+~~~
+
+Result:
+
+~~~
+{
+    "midstate" : "c9c4c5ce837b181be3c8f1de27657eeadba9d4860be9b8f82db0b6c061e2d9da",
+    "data" : "000000026d49c668f433f5ed3e0c8357466f0416818f7aa29b\
+              c8d8d8d158d63b000000007cf7260312d8d5bfc098d066d600\
+              62c09776c9595521aeb6eb2c552f7174df0a536158061b0196\
+              8c000000000000008000000000000000000000000000000000\
+              00000000000000000000000000000000000000000000000080\
+              020000",
+    "hash1" : "0000000000000000000000000000000000000000000000000\
+               0000000000000000000008000000000000000000000000000\
+               000000000000000000000000010000",
+    "target" : "000000000000000000000000000000000000000000000000\
+                8c96010000000000"
+}
+~~~
+
+{% autocrossref %}
+Submit data:  (we'll submit the data we just received, which is highly
+unlikely to hash to a value below the target threshold)
+{% endautocrossref %}
+
+~~~
+bitcoin-cli -testnet getwork 000000026d49c668f433f5ed3e0c8357466\
+            f0416818f7aa29bc8d8d8d158d63b000000007cf7260312d8d5b\
+            fc098d066d60062c09776c9595521aeb6eb2c552f7174df0a536\
+            158061b01968c000000000000008000000000000000000000000\
+            0000000000000000000000000000000000000000000000000000\
+            0000080020000
+~~~
+
+Result:
+
+~~~
+false
+~~~
+
+
+
+
 
 
 #### lockunspent
@@ -1742,19 +2766,25 @@ Result:
 submitblock <new block>  [extra parameters]
 ~~~
 
+{% autocrossref %}
 Attempts to broadcast a new block to network.  Extra parameters are ignored
 by Bitcoin Core but may be used by mining pools or other programs.
+{% endautocrossref %}
 
 **Argument #1: The New Block In Hex**
 
+{% autocrossref %}
 *String; required:* the hex-encoded block data to broadcast to the
 peer-to-peer network.
+{% endautocrossref %}
 
 **Argument #2: Extra Parameters**
 
+{% autocrossref %}
 *String; optional:*  A JSON object containing extra parameters for
 mining pools and other software, such as a work identifier (workid).
 The extra parameters will not be broadcast to the network.
+{% endautocrossref %}
 
 ~~~
 {
@@ -1768,18 +2798,20 @@ No output if successful.  An error message if failed.
 
 **Example**
 
+{% autocrossref %}
 Submit the following block with the workid, "test".
+{% endautocrossref %}
 
 ~~~
-> bitcoin-cli -testnet submitblock 0b110907be0000000200000099f5a\
-              66370b9958f7d382f7269b9d3ab9bc387237a34f236af9a000\
-              00000000021e9af375b9ef13ba5bfb843afb99527b19689d30\
-              df3e251e5c0ce9557436820d7b42f53122f061bbaddaf71010\
-              10000000100000000000000000000000000000000000000000\
-              00000000000000000000000ffffffff0e03e12b03024e05062\
-              f503253482fffffffff0100f2052a01000000232103f0daa9e\
-              2ea23c3cb07a36dbf1151b2da02897463428d30aa254fa3efc\
-              a898a62ac00000000  '{ "workid": "test" }'
+> bitcoin-cli -testnet submitblock 02000000df11c014a8d798395b505\
+              9c722ebdf3171a4217ead71bf6e0e99f4c7000000004a6f6a2\
+              db225c81e77773f6f0457bcb05865a94900ed11356d0b75228\
+              efb38c7785d6053ffff001d005d43700101000000010000000\
+              00000000000000000000000000000000000000000000000000\
+              0000000ffffffff0d03b477030164062f503253482ffffffff\
+              f0100f9029500000000232103adb7d8ef6b63de74313e0cd4e\
+              07670d09a169b13e4eda2d650f529332c47646dac00000000\
+              '{ "workid": "test" }'
 ~~~
 
 
