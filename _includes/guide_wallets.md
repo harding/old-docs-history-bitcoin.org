@@ -6,7 +6,7 @@ Bitcoin wallets at their core are a collection of private keys. These collection
 
 {% endautocrossref %}
 
-### Private key formats
+### Private Key Formats
 
 {% autocrossref %}
 
@@ -61,7 +61,7 @@ address utility].
 
 {% endautocrossref %}
 
-### Deterministic wallets formats
+### Deterministic wallets Formats
 
 {% autocrossref %}
 
@@ -129,7 +129,7 @@ As standard conversion functions, we assume:
 
 {% endautocrossref %}
 
-#### Extended keys
+#### Extended Keys
 
 {% autocrossref %}
 
@@ -141,7 +141,7 @@ Each [extended key][]{:#term-extended-key}{:.term} has 2<sup>31</sup> [normal ch
 
 {% endautocrossref %}
 
-#### Child key derivation (CKD) functions
+#### Child Key Derivation (CKD) Functions
 
 {% autocrossref %}
 
@@ -149,7 +149,7 @@ Given a parent extended key and an index i, it is possible to compute the corres
 
 {% endautocrossref %}
 
-##### Private parent key &rarr; private child key
+##### Private Parent Key &rarr; Private Child Key
 
 {% autocrossref %}
 
@@ -173,7 +173,7 @@ The HMAC-SHA512 function is specified in [RFC 4231](http://tools.ietf.org/html/r
 
 {% endautocrossref %}
 
-##### Public parent key &rarr; public child key
+##### Public Parent Key &rarr; Public Child Key
 
 {% autocrossref %}
 
@@ -195,7 +195,7 @@ The function CKDpub((K<sub>par</sub>, c<sub>par</sub>), i) &rarr; (K<sub>i</sub>
 
 {% endautocrossref %}
 
-##### Private parent key &rarr; public child key
+##### Private Parent Key &rarr; Public Child Key
 
 {% autocrossref %}
 
@@ -215,11 +215,11 @@ The fact that they are equivalent is what makes non-hardened keys useful (one ca
 
 {% endautocrossref %}
 
-##### Public parent key &rarr; private child key
+##### Public Parent Key &rarr; Private Child Key
 
 This is not possible, as is expected.
 
-#### The key tree
+#### The Key Tree
 
 {% autocrossref %}
 
@@ -237,7 +237,7 @@ Each leaf node in the tree corresponds to an actual key, while the internal node
 
 {% endautocrossref %}
 
-#### Key identifiers
+#### Key Identifiers
 
 {% autocrossref %}
 
@@ -247,7 +247,7 @@ The first 32 bits of the identifier are called the [key fingerprint][]{:#term-ke
 
 {% endautocrossref %}
 
-#### Serialization format
+#### Serialization Format
 
 {% autocrossref %}
 
@@ -273,7 +273,7 @@ When importing a serialized extended public key, implementations must verify whe
 
 {% endautocrossref %}
 
-#### Master key generation
+#### Master Key Generation
 
 {% autocrossref %}
 
@@ -301,7 +301,7 @@ The previous sections specified key trees and their nodes. The next step is impo
 
 {% endautocrossref %}
 
-#### The default wallet layout
+#### The Default Wallet Layout
 
 {% autocrossref %}
 
@@ -344,7 +344,7 @@ Consequently:
 
 {% endautocrossref %}
 
-### JBOK (Just a bunch of keys) wallets formats (deprecated)
+### JBOK (Just A Bunch Of Keys) Wallets Formats
 
 {% autocrossref %}
 

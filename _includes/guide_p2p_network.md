@@ -20,7 +20,7 @@ To see which peers one is connected with and associated data, use the `getpeerin
 
 {% endautocrossref %}
 
-### Connecting to Peers
+### Connecting To Peers
 
 {% autocrossref %}
 

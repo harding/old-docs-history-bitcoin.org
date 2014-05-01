@@ -1,4 +1,4 @@
-## Operating modes
+## Operating Modes
 
 {% autocrossref %}
 
@@ -62,7 +62,7 @@ Removal of elements can only be done by scrapping the bloom filter and re-creati
 
 {% endautocrossref %}
 
-#### Application of Bloom Filters 
+#### Application Of Bloom Filters 
 
 {% autocrossref %}
 
