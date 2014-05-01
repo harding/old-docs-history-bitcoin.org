@@ -10,8 +10,8 @@ title: "Developer Documentation - Bitcoin"
 <p class="summary">Find useful resources, guides and references for developers.</p>
 
 <div class="docreference">
-<a href="/en/developer-guide"><img src="/img/main_ico_guide.svg" alt="icon">Developer Guide</a>
-<a href="/en/developer-reference"><img src="/img/ico_invoice.svg" alt="icon">Developer Reference</a>
+<a href="/en/developer-guide"><img src="/img/main_ico_guide.svg" alt="icon">Developer Guide<br><span>(How Bitcoin works)</span></a>
+<a href="/en/developer-reference"><img src="/img/main_ico_guide.svg" alt="icon">Developer Reference<br><span>(Specifications and APIs)</span></a>
 </div>
 
 <div class="resources">
@@ -26,16 +26,16 @@ title: "Developer Documentation - Bitcoin"
   </div>
   <div>
     <div>
-      <h2><img src="/img/ico_invoice.svg" class="titleicon" alt="Icon">Contracts</h2>
+      <h2><img src="/img/ico_contract.svg" class="titleicon" alt="Icon">Contracts</h2>
       <p><a href="/en/developer-guide#contracts">Contracts Guide</a></p>
     </div><div>
-      <h2><img src="/img/ico_invoice.svg" class="titleicon" alt="Icon">Wallets</h2>
+      <h2><img src="/img/ico_key.svg" class="titleicon" alt="Icon">Wallets</h2>
       <p><a href="/en/developer-guide#wallets">Wallets Guide</a></p>
     </div>
   </div>
   <div>
     <div>
-      <h2><img src="/img/ico_invoice.svg" class="titleicon" alt="Icon">Payment Processing</h2>
+      <h2><img src="/img/ico_bill.svg" class="titleicon" alt="Icon">Payment Processing</h2>
       <p><a href="/en/developer-guide#payment-processing">Payment Processing Guide</a></p>
     </div><div>
       <h2><img src="/img/ico_conf.svg" class="titleicon" alt="Icon">Operating Modes</h2>

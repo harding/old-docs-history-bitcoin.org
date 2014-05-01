@@ -1,3 +1,11 @@
+#autocrossref.rb automatically adds cross reference links in documentation
+#texts using the list of words defined in _autocrossref.yaml.
+
+#Example:
+# {% autocrossref %}
+# ...content...
+# {% endautocrossref %}
+
 module Jekyll
 
 require 'yaml'
@@ -11,14 +19,19 @@ require 'yaml'
     def render(context)
       output = super
 
+      ## Workaround for inconsistent relative directory
+      path = File.expand_path(File.dirname(__FILE__)) + "/.."
       ## Load terms from file
-      terms = YAML.load_file("_autocrossref.yaml")
+      site = context.registers[:site].config
+      if !site.has_key?("crossref")
+        site['crossref'] = YAML.load_file(path + "/_autocrossref.yaml")
+      end
 
       ## Sort terms by reverse length, so longest matches get linked
       ## first (e.g. "block chain" before "block"). Otherwise short
       ## terms would get linked first and there'd be nothing for long
       ## terms to link to.
-      terms.sort_by { |k, v| -k.length }.each { |term|
+      site['crossref'].sort_by { |k, v| -k.length }.each { |term|
         term[0] = Regexp.escape(term[0])
 
         ## Replace literal space with \s to match across newlines. This
@@ -47,7 +60,7 @@ require 'yaml'
       output.gsub!('<!--noref-->','')  ## Remove all <!--noref--> comments
 
       output
-    end # terms.sort_by
+    end # site['crossref'].sort_by
   end # render(content)
 end # AutoCrossRefBlock class 
 

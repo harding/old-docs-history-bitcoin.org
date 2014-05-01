@@ -270,67 +270,95 @@ removeEvent(window,'scroll',mobileWHide);
 }
 
 function updateToc(){
-//Update table of content style on scroll.
-var update=function(){
-	var toc=document.getElementById('toc');
-	var div=toc.getElementsByTagName('DIV')[0];
-	var offset=getPageYOffset();
-	var windowy=getWindowY();
-	if(offset>getTop(toc)){
-		div.className='scroll';
-		div.style.top='20px';
-		div.style.bottom=Math.max((offset+windowy)-(getHeight(toc.parentNode)+getTop(toc.parentNode)),20)+'px';
-	}
-	else div.className='';
-	var fallback=document.getElementsByTagName('H2')[0];
-	var first=[fallback,getTop(fallback)];
-	var closer=[fallback,getTop(fallback)];
+//Update table of content active entry and browser url on scroll
+var pageoffset;
+var windowy;
+var toc;
+var first;
+var last;
+var closer;
+var init=function(){
+	setenv();
+	updatehistory();
+	updatetoc();
+}
+//Set variables
+var setenv=function(){
+	pageoffset=getPageYOffset();
+	windowy=getWindowY();
+	toc=document.getElementById('toc');
+	fallback=document.getElementsByTagName('H2')[0];
+	first=[fallback,getTop(fallback)];
+	last=[fallback,getTop(fallback)];
+	closer=[fallback,getTop(fallback)];
+	//Find all titles
 	var nodes=[];
-	for(var i=0,t=document.getElementsByTagName('H2'),n=t.length;i<n;i++)nodes.push(t[i]);
-	for(var i=0,t=document.getElementsByTagName('H3'),n=t.length;i<n;i++)nodes.push(t[i]);
-	for(var i=0,t=document.getElementsByTagName('H4'),n=t.length;i<n;i++)nodes.push(t[i]);
-	for(var i=0,t=document.getElementsByTagName('H5'),n=t.length;i<n;i++)nodes.push(t[i]);
-	for(var i=0,t=document.getElementsByTagName('H6'),n=t.length;i<n;i++)nodes.push(t[i]);
+	var tags=['H2','H3','H4','H5','H6'];
+	for(var i=0,n=tags.length;i<n;i++){
+		for(var ii=0,t=document.getElementsByTagName(tags[i]),nn=t.length;ii<nn;ii++)nodes.push(t[ii]);
+	}
+	//Find first title, last title and closer title
 	for(var i=0,n=nodes.length;i<n;i++){
 		if(!nodes[i].id)continue;
 		var top=getTop(nodes[i]);
 		if(top<first[1])first=[nodes[i],top];
-		if(top<offset+10&&top>closer[1])closer=[nodes[i],top];
+		if(top>last[1])last=[nodes[i],top];
+		if(top<pageoffset+10&&top>closer[1])closer=[nodes[i],top];
 	}
-	if(offset<first[1])closer=[first[0],first[1]];
+	//Set closer title to first or last title if at the top or bottom of the page
+	if(pageoffset<first[1])closer=[first[0],first[1]];
+	if(windowy+pageoffset>=getHeight(document.body))closer=[last[0],last[1]];
+}
+//Update toc position and set active toc entry
+var updatetoc=function(){
+	//Set bottom and top to fit within window and not overflow its parent node
+	var div=toc.getElementsByTagName('DIV')[0];
+	if(pageoffset>getTop(toc)){
+		div.className='scroll';
+		div.style.top='20px';
+		div.style.bottom=Math.max((pageoffset+windowy)-(getHeight(toc.parentNode)+getTop(toc.parentNode)),20)+'px';
+	}
+	else div.className='';
+	//Remove .active class from toc and find new active toc entry
 	var a=false;
 	for(var i=0,t=toc.getElementsByTagName('*'),n=t.length;i<n;i++){
 		if(t[i].className&&t[i].className.indexOf('active')!==-1)t[i].className='';
 		if(t[i].nodeName=='A'&&t[i].getAttribute('href')=='#'+closer[0].id)a=t[i];
 	}
 	if(a===false)return;
-	if(window.history&&window.history.replaceState&&!new RegExp('#'+closer[0].id+'$').test(window.location.href.toString())&&offset>first[1]){
-		var htimeout=toc.getAttribute('data-htimeout');
-		if(toc.hasAttribute('data-htimeout')&&htimeout<new Date().getTime()-1000)window.history.replaceState(null,null,'#'+closer[0].id);
-	}
+	//Set .active class on new active toc entry
 	while(a.parentNode.nodeName=='LI'||a.parentNode.nodeName=='UL'){
 		a.className='active';
 		a=a.parentNode;
 	}
 }
-var timeout=function(){
-	var toc=document.getElementById('toc');
-	clearTimeout(toc.getAttribute('timeout'));
-	toc.setAttribute('timeout',setTimeout(update,1));
+//Update browser url
+var updatehistory=function(){
+	//Don't call window.history if not supported
+	if(!window.history||!window.history.replaceState)return;
+	//Don't update window url when it doesn't need to be updated
+	if(new RegExp('#'+closer[0].id+'$').test(window.location.href.toString()))return;
+	//Don't update window url when the window is over the first title in the page
+	if(pageoffset<first[1])return;
+	//Don't update window url when page is not loaded, or user just clicked a url
+	if(!toc.hasAttribute('data-timestamp')||toc.getAttribute('data-timestamp')>new Date().getTime()-1000)return;
+	window.history.replaceState(null,null,'#'+closer[0].id);
 }
-var historytimeout=function(){
-	var toc=document.getElementById('toc');
-	if(toc.hasAttribute('data-htimeout'))toc.setAttribute('data-htimeout',new Date().getTime());
+//Update the toc when the page stops scrolling
+var evtimeout=function(){
+	toc=document.getElementById('toc');
+	clearTimeout(toc.getAttribute('data-timeout'));
+	toc.setAttribute('data-timeout',setTimeout(init,1));
 }
-var historystarttimeout=function(){
-	var toc=document.getElementById('toc');
-	toc.setAttribute('data-htimeout',new Date().getTime());
-	removeEvent(window,'load',historystarttimeout);
+//Reset timestamp on page load and each time the user clicks a url
+var evtimestamp=function(){
+	toc=document.getElementById('toc');
+	document.getElementById('toc').setAttribute('data-timestamp',new Date().getTime());
 }
-addEvent(window,'scroll',timeout);
-addEvent(window,'popstate',historytimeout);
-addEvent(window,'load',historystarttimeout);
-update();
+addEvent(window,'scroll',evtimeout);
+addEvent(window,'popstate',evtimestamp);
+addEvent(window,'load',evtimestamp);
+init();
 }
 
 function makeEditable(e){
