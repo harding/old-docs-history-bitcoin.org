@@ -20,7 +20,11 @@ require 'yaml'
       output = super
 
       ## Load terms from file
-      terms = YAML.load_file("_autocrossref.yaml")
+      if File.exists?("./_autocrossref.yaml")
+        terms = YAML.load_file("./_autocrossref.yaml") 
+      else
+        terms = YAML.load_file("../_autocrossref.yaml")
+      end
 
       ## Sort terms by reverse length, so longest matches get linked
       ## first (e.g. "block chain" before "block"). Otherwise short
