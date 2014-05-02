@@ -63,7 +63,7 @@ Take note that for both types of broadcasting, mechanisms are in place to punish
 {% autocrossref %}
 
 In case of a bug or attack,
-the Bitcoin Core deverlopers provide a
+the Bitcoin Core developers provide a
 [Bitcoin alert service](https://bitcoin.org/en/alerts) with an RSS feed
 and users of Bitcoin Core can check the error field of the `getinfo` RPC
 results to get currently active alerts for their specific version of
