@@ -179,13 +179,9 @@ such as some miners diligently working to extend the block chain at the
 same time other miners are attempting a 51 percent attack to revise
 transaction history.
 
-Each block must place its height as the first parameter in the coinbase
-field of the coinbase transaction (introduced below), so block height
-can be determined without access to previous blocks. However, since
-multiple blocks can have the same height during a chain fork, block
-height should not be used as a globally unique identifier.
- 
-Blocks are usually referenced by the SHA256(SHA256()) hash of their header.
+Since multiple blocks can have the same height during a block chain fork, block
+height should not be used as a globally unique identifier. Instead, blocks
+are usually referenced by the SHA256(SHA256()) hash of their header.
 Although this hash must be below the target threshold, leading to an increased
 (but still minuscule) chance of eventual hash collision.
 
