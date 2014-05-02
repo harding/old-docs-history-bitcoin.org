@@ -38,7 +38,7 @@ In order to maintain a connection with a peer, nodes by default will send a mess
 
 At the start of a connection with a peer, both nodes send `getblocks` messages containing the hash of the latest known block. If a peer believes they have newer blocks or a longer chain, that peer will send an `inv` message which includes a list of up to 500 hashes of newer blocks, stating that it has the longer chain. The receiving node would then request these blocks using the command `getdata`, and the remote peer would send via `block`<!--noref--> messages. After all 500 blocks have been processed, the node can request another set with `getblocks`, until the node is caught up with the network. Blocks are only accepted when validated by the receiving node.
 
-New blocks are also discovered as miners publish their found blocks, and these messages are propogated in a similar manner. Through previously established connections, an `inv` message is sent with the new block hashed, and the receiving node requests the block via the `getdata` message. 
+New blocks are also discovered as miners publish their found blocks, and these messages are propagated in a similar manner. Through previously established connections, an `inv` message is sent with the new block hashed, and the receiving node requests the block via the `getdata` message. 
 
 {% endautocrossref %}
 
