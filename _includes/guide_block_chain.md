@@ -71,7 +71,7 @@ higher proposed transaction fee are likely to be processed faster.
 
 {% endautocrossref %}
 
-#### Proof Of Work
+### Proof Of Work
 
 {% autocrossref %}
 
@@ -145,7 +145,7 @@ a block does not slow down hashing with extra I/O.
 
 {% endautocrossref %}
 
-#### Block Height And Forking
+### Block Height And Forking
 
 {% autocrossref %}
 
@@ -179,121 +179,30 @@ such as some miners diligently working to extend the block chain at the
 same time other miners are attempting a 51 percent attack to revise
 transaction history.
 
-{% endautocrossref %}
-
-### Block Contents
-
-{% autocrossref %}
-
-This section describes [version 2 blocks][v2 block]{:#term-v2-block}{:.term}, which are any blocks with a
-block height greater than 227,835. (Version 1 and version 2 blocks were
-intermingled for some time before that point.) Future block versions may
-break compatibility with the information in this section. You can determine
-the version of any block by checking its `version` field using
-bitcoind RPC calls.
-
-As of version 2 blocks, each block consists of four root elements:
-
-1. A [magic number][block header magic]{:#term-block-header-magic}{:.term} (0xd9b4bef9).
-
-2. A 4-byte unsigned integer indicating how many bytes follow until the
-   end of the block. Although this field would suggest maximum block
-   sizes of 4 GiB, max block size is currently capped at 1 MiB and the
-   default max block size (used by most miners) is 350 KiB (although
-   this will likely increase over time).
-
-3. An 80-byte block header described in the section below.
-
-4. One or more [transactions][].
-
-Blocks are usually referenced by the SHA256(SHA256()) hash of their header, but
-because this hash must be below the target threshold, there exists an
-increased (but still minuscule) chance of eventual hash collision.
-
-Blocks can also be referenced by their block height, but multiple blocks
-can have the same height during a block chain fork, so block height
-should not be used as a globally unique identifier. In version 2 blocks,
-each block must place its height as the first parameter in the coinbase
-field of the coinbase transaction (described below), so block height
-can be determined without access to previous blocks.
+Each block must place its height as the first parameter in the coinbase
+field of the coinbase transaction (introduced below), so block height
+can be determined without access to previous blocks. However, since
+multiple blocks can have the same height during a chain fork, block
+height should not be used as a globally unique identifier.
+ 
+Blocks are usually referenced by the SHA256(SHA256()) hash of their header.
+Although this hash must be below the target threshold, leading to an increased
+(but still minuscule) chance of eventual hash collision.
 
 {% endautocrossref %}
 
-#### Block Header
+### Transaction Data
 
 {% autocrossref %}
 
-The 80-byte block header contains the following six fields:
-
-| Field             | Bytes  | Format                         |
-|-------------------|--------|--------------------------------|
-| 1. Version        | 4      | Unsigned Int                   |
-| 2. hashPrevBlock  | 32     | Unsigned Int (SHA256 Hash)     |
-| 3. hashMerkleRoot | 32     | Unsigned Int (SHA256 Hash)     |
-| 4. Time           | 4      | Unsigned Int (Epoch Time)      |
-| 5. Bits           | 4      | Internal Bitcoin Target Format |
-| 6. Nonce          | 4      | (Arbitrary Data)               |
-
-1. The *[block version][]{:#term-block-version}{:.term}* number indicates which set of block validation rules
-   to follow so Bitcoin Core developers can add features or
-   fix bugs. As of block height 227,836, all blocks use version number
-   2.
-
-2. The *hash of the previous block header* puts this block on the
-   block chain and ensures no previous block can be changed without also
-   changing this block's header.
-
-3. The *Merkle root* is a hash derived from hashes of all the
-   transactions included in this block. It ensures no transactions can
-   be modified in this block without changing the block header.
-
-4. The *[block time][]{:#term-block-time}{:.term}* is the approximate time when this block was created in
-   Unix Epoch time format (number of seconds elapsed since
-   1970-01-01T00:00 UTC). The time value must be greater than the
-   time of the previous block. No peer will accept a block with a
-   time currently more than two hours in the future according to the
-   peer's clock.
-
-5. *Bits* translates into the target threshold value -- the maximum allowed
-   value for this block's hash. The bits value must match the network
-   difficulty at the time the block was mined.
-
-6. The *[header nonce][]{:#term-header-nonce}{:.term}* is an arbitrary input that miners can change to test different
-   hash values for the header until they find a hash value less than or
-   equal to the target threshold. If all values within the nonce's four
-   bytes are tested, the time can be updated or the
-   coinbase transaction (described below) can be changed and the Merkle
-   root updated.
-
-{% endautocrossref %}
-
-#### Transaction Data
-
-{% autocrossref %}
-
-Every block must include one or more [transactions][]. Exactly one of these
+Every block must include one or more transactions. Exactly one of these
 transactions must be a coinbase transaction which should collect and
-spend any transaction fees paid by transactions included in this block.
-All blocks with a block height less than 6,930,000 are entitled to
-receive a [block reward][]{:#term-block-reward}{:.term} of newly created bitcoin value, which also
-should be spent in the coinbase transaction. (The block reward started
-at 50 bitcoins and is being halved approximately every four years. As of
-april 2014, it's 25 bitcoins.) A coinbase transaction is invalid if it 
-tries to spend more value than is available from the transaction 
-fees and block reward.
+spend the block reward and any transaction fees paid by transactions included in this block.
 
-The [coinbase transaction][]{:#term-coinbase-tx}{:.term} has the same basic format as any other
-transaction, but it references a single non-existent UTXO and a special
-[coinbase field][]{:#term-coinbase-field}{:.term} replaces the field that would normally hold a scriptSig and
-signature. In version 2 blocks, the coinbase parameter must begin with
-the current block's block height and may contain additional arbitrary
-data or a script up to a maximum total of 100 bytes.
-
-The UTXO of a coinbase transaction has the special condition that it
-cannot be spent (used as an input) for at least 100 blocks. This
-helps prevent a miner from spending the transaction fees and block
-reward from a block that will later be orphaned (destroyed) after a
-block chain fork.
+The UTXO of a coinbase transaction has the special condition that
+it cannot be spent (used as an input) for at least 100 blocks. This helps
+prevent a miner from spending the transaction fees and block reward from a
+block that will later be orphaned (destroyed) after a block chain fork.
 
 Blocks are not required to include any non-coinbase transactions, but
 miners almost always do include additional transactions in order to
