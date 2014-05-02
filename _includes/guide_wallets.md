@@ -83,6 +83,8 @@ Type 1 deterministic wallets are the simpler of the two, which can create a sing
 
 Type 2 wallets, specified in BIP32, are the currently favored format for generating, storing and managing private keys. Hierarchical deterministic wallets allow selective sharing by supporting multiple key-pair chains in a tree structure, derived from a single root. This selective sharing enables many advanced arrangements. An additional goal of the BIP32 standard is to encourage interoperability between wallet software using the same wallet format, rather than having to manually convert wallet types. The suggested minimal interoperability is the ability to import extended [public][public key] and private keys, to give access to the descendants as wallet keys. 
 
+![Overview Of Heirarchical Deterministic Key Derivation](/img/dev/en-hd-overview.svg) <!-- NEW -->
+
 _Seamless interoperability is still a work in progress. It is possible for another implementation to not see non-zero valued addresses, depending on wallet parameters. For safe recovery of wallets, it is recommended to use the same wallet software. Another concern is the saving of HD wallet meta-data such as transaction notes and [labels][label], which has not been standardized._  
 
 <!-- BEGIN The following text largely taken from the BIP0032 specification --> 
@@ -135,6 +137,8 @@ As standard conversion functions, we assume:
 
 In what follows, we will define a function that derives a number of [child keys][child key]{:#term-child-key}{:.term} from a [parent key][]{:#term-parent-key}{:.term}. In order to prevent these from depending solely on the key itself, we extend both [private][private keys] and public keys first with an extra 256 bits of entropy. This extension, called the [chain code][]{:#term-chain-code}{:.term}, is identical for corresponding private and public keys, and consists of 32 bytes.
 
+![Creating A Root Extended Key Pair](/img/dev/en-hd-root-keys.svg) <!-- NEW -->
+
 We represent an [extended private key][]{:#term-extended-private-key}{:.term} as (k, c), with k the normal private key, and c the chain code. An [extended public key][]{:#term-extended-public-key}{:.term} is represented as (K, c), with K = point(k) and c the chain code.
 
 Each [extended key][]{:#term-extended-key}{:.term} has 2<sup>31</sup> [normal child keys][normal child key]{:#term-normal-child-key}{:.term}, and 2<sup>31</sup> [hardened child keys][hardened child key]{:#term-hardened-child-key}{:.term}. Each of these child keys has an [index][key index]{:#term-key-index}{:.term}. The normal child keys use indices 0 through 2<sup>31</sup>-1. The hardened child keys use indices 2<sup>31</sup> through 2<sup>32</sup>-1. To ease notation for hardened key indices, a number i<sub>H</sub> represents i+2<sup>31</sup>.
@@ -152,6 +156,8 @@ Given a parent extended key and an index i, it is possible to compute the corres
 ##### Private Parent Key &rarr; Private Child Key
 
 {% autocrossref %}
+
+![Creating Child Public Keys From An Extended Private Key](/img/dev/en-hd-private-parent-to-private-child.svg) <!-- NEW -->
 
 The function CKDpriv((k<sub>par</sub>, c<sub>par</sub>), i) &rarr; (k<sub>i</sub>, c<sub>i</sub>) computes a child extended private key from the parent extended private key:
 
@@ -177,6 +183,8 @@ The HMAC-SHA512 function is specified in [RFC 4231](http://tools.ietf.org/html/r
 
 {% autocrossref %}
 
+![Creating Child Public Keys From An Extended Public Key](/img/dev/en-hd-public-child-from-public-parent.svg) <!-- NEW -->
+
 The function CKDpub((K<sub>par</sub>, c<sub>par</sub>), i) &rarr; (K<sub>i</sub>, c<sub>i</sub>) computes a child extended public key from the parent extended public key. It is only defined for non-hardened child keys.
 
 * Check whether i ≥ 2<sup>31</sup> (whether the child is a hardened key).
@@ -198,6 +206,8 @@ The function CKDpub((K<sub>par</sub>, c<sub>par</sub>), i) &rarr; (K<sub>i</sub>
 ##### Private Parent Key &rarr; Public Child Key
 
 {% autocrossref %}
+
+![Creating Equivalent Public Keys From Either Extended Private Or Extended Public Keys](/img/dev/en-hd-public-child-from-public-or-private-parent.svg) <!-- NEW -->
 
 The function N((k, c)) &rarr; (K, c) computes the extended public key corresponding to an extended private key (the "neutered" version, as it removes the ability to sign transactions).
 
@@ -289,7 +299,7 @@ The total number of possible extended keypairs is almost 2<sup>512</sup>, but th
 
 In case I<sub>L</sub> is 0 or ≥n, the master key is invalid.
 
-![Example](/img/dev/derivation.png)
+![Example HD Wallet Tree Using "Prime" Notation](/img/dev/en-hd-tree.svg) <!-- NEW -->
 
 {% endautocrossref %}
 

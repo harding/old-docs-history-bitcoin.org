@@ -45,7 +45,7 @@ type. [P2PH][]{:#term-p2ph}{:.term} lets Alice spend satoshis to a typical Bitco
 and then lets Bob further spend those satoshis using a simple
 cryptographic key pair.
 
-![P2PH Transaction Workflow](/img/dev/en-p2ph-workflow.svg)
+![Creating A P2PH Public Key Hash To Receive Payment](/img/dev/en-creating-p2ph-output.svg)
 
 Bob must generate a private/public [key pair][]{:#term-key-pair}{:.term} before Alice can create the
 first transaction. Standard Bitcoin [private keys][private
@@ -92,6 +92,8 @@ index number ([output index][]{:#term-output-index}{:.term}). He must then creat
 collection of data parameters which satisfy the conditions Alice placed
 in the previous output's script.
 
+![Unlocking A P2PH Output For Spending](/img/dev/en-unlocking-p2ph-output.svg)
+
 Bob does not need to communicate with Alice to do this; he must simply
 prove to the Bitcoin peer-to-peer network that he can satisfy the
 [script's][script] conditions.  For a P2PH-style output, Bob's scriptSig will
@@ -109,8 +111,7 @@ Bob's signature doesn't just prove Bob controls his private key; it also
 makes the rest of his transaction tamper-proof so Bob can safely
 broadcast it over the peer-to-peer network.
 
-<!-- Editors: please keep "amount of bitcoins" (instead of "number of
-bitcoins") in the paragraph below to match the text in the figure above.  -harding -->
+![Some Things Signed When Spending An Output](/img/dev/en-signing-output-to-spend.svg)
 
 As illustrated in the figure above, the data Bob [signs][signature] includes the
 txid and output index of the previous transaction, the previous
@@ -244,7 +245,7 @@ wants, hashes the redeemScript, and provides the [redeemScript
 hash][script hash] to Alice. Alice creates a P2SH-style output containing
 Bob's redeemScript hash.
 
-![P2SH Transaction Workflow](/img/dev/en-p2sh-workflow.svg)
+![Creating A P2SH RedeemScript And Hash](/img/dev/en-creating-p2sh-output.svg)
 
 When Bob wants to spend the output, he provides his signature along with
 the full (serialized) redeemScript in the input scriptSig. The
@@ -252,6 +253,8 @@ peer-to-peer network ensures the full redeemScript hashes to the same
 value as the script hash Alice put in her output; it then processes the
 redeemScript exactly as it would if it were the primary script, letting
 Bob spend the output if the redeemScript returns true.
+
+![Unlocking A P2SH Output For Spending](/img/dev/en-unlocking-p2sh-output.svg)
 
 The hash of the redeemScript has the same properties as a pubkey
 hash---so it can be transformed into the standard Bitcoin address format
