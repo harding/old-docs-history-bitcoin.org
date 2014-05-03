@@ -155,11 +155,17 @@ Given a parent extended key and an index i, it is possible to compute the corres
 
 The function CKDpriv((k<sub>par</sub>, c<sub>par</sub>), i) &rarr; (k<sub>i</sub>, c<sub>i</sub>) computes a child extended private key from the parent extended private key:
 
+* Let:
+    
+    * Key = c<sub>par</sub>.
+
+    * Data = ser<sub>256</sub>(k<sub>par</sub>) \|\| ser<sub>32</sub>(i).
+
 * Check whether i ≥ 2<sup>31</sup> (whether the child is a hardened key).
+   
+    * If hardened: let I = HMAC-SHA512(Key, 0x00 \|\| Data).(Note: The 0x00 pads the private key to make it 33 bytes long.)
 
-    * If so (hardened child): let I = HMAC-SHA512(Key = c<sub>par</sub>, Data = 0x00 \|\| ser<sub>256</sub>(k<sub>par</sub>) \|\| ser<sub>32</sub>(i)). (Note: The 0x00 pads the private key to make it 33 bytes long.)
-
-    * If not (normal child): let I = HMAC-SHA512(Key = c<sub>par</sub>, Data = ser<sub>P</sub>(point(k<sub>par</sub>)) \|\| ser<sub>32</sub>(i)).
+    * If not: let I = HMAC-SHA512(Key, Data).
 
 * Split I into two 32-byte sequences, I<sub>L</sub> and I<sub>R</sub>.
 
