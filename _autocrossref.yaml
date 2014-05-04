@@ -160,7 +160,6 @@ parent private key: parent key
 ## Recommend manually linking payment protocol's [Payment][pp payment]
 Payment message: pp payment
 payment protocol:
-"payment protocol's": payment protocol
 PaymentACK:
 PaymentDetails:
 PaymentRequest:
