@@ -494,7 +494,7 @@ invalid if the new transaction is added to the block chain before
 the time lock expires.
 
 Care must be taken near the expiry time of a time lock. The peer-to-peer
-network allows block time on the block chain to be up to two hours ahead of
+network allows block time to be up to two hours ahead of
 real time, so a locktime transaction can be added to the block chain up
 to two hours before its time lock officially expires. Also, blocks are
 not created at guaranteed intervals, so any attempt to cancel a valuable
