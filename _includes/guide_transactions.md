@@ -67,7 +67,7 @@ different states of a public key and to help the text better match the
 space-constrained diagrams where "public-key hash" wouldn't fit. -harding -->
 
 Bob provides the [pubkey hash][]{:#term-pubkey-hash}{:.term} to Alice. Pubkey hashes are almost always
-sent encoded as Bitcoin [addresses][]{:#term-address}{:.term}, which are [base-58 encoded][base58check] strings
+sent encoded as Bitcoin [addresses][]{:#term-address}{:.term}, which are base58 encoded strings
 containing an address version number, the hash, and an error-detection
 checksum to catch typos. The address can be transmitted
 through any medium, including one-way mediums which prevent the spender
@@ -96,11 +96,11 @@ in the previous output's script.
 
 Bob does not need to communicate with Alice to do this; he must simply
 prove to the Bitcoin peer-to-peer network that he can satisfy the
-[script's][script] conditions.  For a P2PH-style output, Bob's scriptSig will
+script's conditions.  For a P2PH-style output, Bob's scriptSig will
 contain the following two pieces of data:
 
 1. His full (unhashed) public key, so the script can check that it
-   hashes to the same value as the [hashed pubkey][pubkey hash] provided by Alice.
+   hashes to the same value as the pubkey hash provided by Alice.
 
 2. A [signature][]{:#term-signature}{:.term} made by using the ECDSA cryptographic formula to combine
    certain transaction data (described below) with Bob's private key.
@@ -113,7 +113,7 @@ broadcast it over the peer-to-peer network.
 
 ![Some Things Signed When Spending An Output](/img/dev/en-signing-output-to-spend.svg)
 
-As illustrated in the figure above, the data Bob [signs][signature] includes the
+As illustrated in the figure above, the data Bob signs includes the
 txid and output index of the previous transaction, the previous
 output's script, the script Bob creates which will let the next
 recipient spend this transaction's output, and the amount of satoshis to
@@ -241,8 +241,8 @@ script][script hash]{:#term-script-hash}{:.term}, the
 
 The basic P2SH workflow, illustrated below, looks almost identical to
 the P2PH workflow. Bob creates a redeemScript with whatever script he
-wants, hashes the redeemScript, and provides the [redeemScript
-hash][script hash] to Alice. Alice creates a P2SH-style output containing
+wants, hashes the redeemScript, and provides the redeemScript
+hash to Alice. Alice creates a P2SH-style output containing
 Bob's redeemScript hash.
 
 ![Creating A P2SH RedeemScript And Hash](/img/dev/en-creating-p2sh-output.svg)
@@ -270,7 +270,7 @@ redeemScript, so P2SH scripts are as secure as P2PH pubkey hashes.
 {% autocrossref %}
 
 Care must be taken to avoid non-standard output scripts. As of Bitcoin Core
-0.9, the [standard output script][standard script] types are:
+0.9, the standard script types are:
 
 **Pubkey hash (P2PH)**
 
@@ -400,7 +400,7 @@ conditions:
 * Each of the transaction's inputs must be smaller than 500 bytes.
   That's large enough to allow 3-of-3 multisig transactions in P2SH.
   Multisig transactions which require more than 3 public keys are
-  currently non-[standard][standard script].
+  currently non-standard.
 
 * The transaction's scriptSig must only push data to the script
   evaluation stack. It cannot push new OP codes, with the exception of
@@ -418,7 +418,7 @@ conditions:
 
 `OP_CHECKSIG` extracts a non-stack argument from each signature it
 evaluates, allowing the signer to decide which parts of the transaction
-to [sign][signature]. Since the signature protects those parts of the transaction
+to sign. Since the signature protects those parts of the transaction
 from modification, this lets signers selectively choose to let other
 people modify their transactions.
 
@@ -458,10 +458,10 @@ pay) flag, creating three new combined types:
 
 Because each input is signed, a transaction with multiple inputs can
 have multiple signature hash types signing different parts of the transaction. For
-example, a single-input transaction signed with [`NONE`][sighash_none] could have its
+example, a single-input transaction signed with `NONE` could have its
 output changed by the miner who adds it to the block chain. On the other
-hand, if a two-input transaction has one input signed with [`NONE`][sighash_none] and
-one input signed with [`ALL`][sighash_all], the `ALL` signer can choose where to spend
+hand, if a two-input transaction has one input signed with `NONE` and
+one input signed with `ALL`, the `ALL` signer can choose where to spend
 the satoshis without consulting the `NONE` signer---but nobody else can
 modify the transaction.
 
@@ -478,7 +478,7 @@ hash types sign, including the procedure for inserting the subscript -->
 
 {% autocrossref %}
 
-One thing all signature hash types [sign][signature] is the transaction's [locktime][]{:#term-locktime}{:.term}.
+One thing all signature hash types sign is the transaction's [locktime][]{:#term-locktime}{:.term}.
 The locktime indicates the earliest time a transaction can be added to
 the block chain.  
 
@@ -494,7 +494,7 @@ invalid if the new transaction is added to the block chain before
 the time lock expires.
 
 Care must be taken near the expiry time of a time lock. The peer-to-peer
-network allows [times][block time] on the block chain to be up to two hours ahead of
+network allows block time on the block chain to be up to two hours ahead of
 real time, so a locktime transaction can be added to the block chain up
 to two hours before its time lock officially expires. Also, blocks are
 not created at guaranteed intervals, so any attempt to cancel a valuable
@@ -526,7 +526,7 @@ Locktime itself is an unsigned 4-byte number which can be parsed two ways:
 * If greater than or equal to 500 million, locktime is parsed using the
   Unix epoch time format (the number of seconds elapsed since
   1970-01-01T00:00 UTC---currently over 1.395 billion). The transaction
-  can be added to any block whose block header's [time][block time] field is greater
+  can be added to any block whose block time is greater
   than the locktime.
 
 {% endautocrossref %}
@@ -549,7 +549,7 @@ time.  The remaining space in each block is allocated to transactions
 based on their fee per byte, with higher-paying transactions being added
 in sequence until all of the available space is filled.
 
-As of Bitcoin Core 0.9, transactions which do not count as [high priority][high-priority transactions]
+As of Bitcoin Core 0.9, transactions which do not count as high-priority transactions
 need to pay a [minimum fee][]{:#term-minimum-fee}{:.term} of 10,000 satoshis (0.01 millibits) to be
 broadcast across the network. Any transaction paying the minimum fee
 should be prepared to wait a long time before there's enough spare space
@@ -562,7 +562,7 @@ UTXOs must be spent or given to a miner as a transaction fee.  Few
 people will have UTXOs that exactly match the amount they want to pay,
 so most transactions include a change output.
 
-[Change outputs][change output]{:#term-change-output} are regular outputs which spend the surplus satoshis
+[Change outputs][change output]{:#term-change-output}{:.term} are regular outputs which spend the surplus satoshis
 from the UTXOs back to the spender.  They can reuse the same P2PH pubkey hash
 or P2SH script hash as was used in the UTXO, but for the reasons
 described in the [next section](#avoiding-key-reuse), it is highly recommended that change
@@ -589,7 +589,7 @@ twice---once to receive a payment and once to spend that payment---the
 user can gain a significant amount of financial privacy.
 
 Even better, using new public keys or [unique
-addresses][]{:#term-unique-address} when accepting payments or creating
+addresses][]{:#term-unique-address}{:.term} when accepting payments or creating
 change outputs can be combined with other techniques discussed later,
 such as CoinJoin or merge avoidance, to make it extremely difficult to
 use the block chain by itself to reliably track how users receive and

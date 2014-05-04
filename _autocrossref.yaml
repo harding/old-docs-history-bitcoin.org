@@ -41,8 +41,6 @@ base58: base58check
 base58check:
 ## bitcoin -- Recommend against bitcoin (singular) because of confusion between protocol, software, denomination
 bitcoins: 
-bitcoin QR code: URI QR code
-bitcoin QR codes: URI QR code
 '`bitcoin:` URI': bitcoin uri
 '`bitcoin:` URIs': bitcoin uri
 block:
@@ -135,8 +133,9 @@ millibit: millibits
 millibits:
 multisig:
 network:
-null data: 
+nonce field: header nonce
 normal child key:
+null data: 
 '`op_checkmultisig`': op_checkmultisig
 '`op_checksig`': op_checksig
 op code:
@@ -159,7 +158,7 @@ parent extended private key: extended key
 parent key:
 parent private key: parent key
 ## Recommend manually linking payment protocol's [Payment][pp payment]
-'`payment`': pp payment
+Payment message: pp payment
 payment protocol:
 "payment protocol's": payment protocol
 PaymentACK:
@@ -183,12 +182,15 @@ pubkey hashes: pubkey hash
 public key:
 public keys: public key
 public key infrastructure: pki
+QR code: URI QR code
+QR codes: URI QR code
 '`r`': r
 raw format:
 rawtransaction format: raw format
 receipt:
 recurrent rebilling:
 redeemScript:
+redeemScript hash: script hash
 refund: 
 refunds: refund
 '`refund_to`': pp refund to
@@ -238,6 +240,7 @@ unconfirmed:
 unconfirmed transactions:
 unique address: unique addresses
 unique addresses:
+unspent outputs: utxo
 utxo:
 utxos: utxo
 verified payments:
