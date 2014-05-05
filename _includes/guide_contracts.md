@@ -231,7 +231,7 @@ Each contributor looks through their collection of Unspent Transaction
 Outputs (UTXOs) for 100 millibits they can spend. They then each generate
 a brand new public key and give UTXO details and pubkey hashes to the
 facilitator.  In this case, the facilitator is AnonGirl; she creates
-a transaction spending each of the UTXOs to three equally-sized [outputs].
+a transaction spending each of the UTXOs to three equally-sized outputs.
 One output goes to each of the contributors' pubkey hashes.
 
 AnonGirl then signs her inputs using `SIGHASH_ALL` to ensure nobody can

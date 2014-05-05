@@ -48,7 +48,7 @@ The op codes used in standard transactions are,
     scriptSigs prefix the signatures with a single OP_0 (0x00).
 
 * [`OP_RETURN`][op_return]{:#term-op-return}{:.term} terminates the script in failure. However, this will not
-  invalidate a [null-data-type][null data] transaction which contains no more than 40
+  invalidate a null data transaction which contains no more than 40
   bytes following `OP_RETURN` no more than once per transaction.
 
 A complete list of OP codes can be found on the Bitcoin Wiki [Script

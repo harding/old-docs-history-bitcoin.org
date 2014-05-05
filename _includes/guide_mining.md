@@ -63,7 +63,7 @@ construct block headers.
 ![Pooled Bitcoin Mining](/img/dev/en-pooled-mining-overview.svg)
 
 In pooled mining, the mining pool sets the target threshold a few orders
-of magnitude higher (less [difficult][difficulty]) that the network
+of magnitude higher (less difficult) that the network
 difficulty. This causes the mining hardware to return many block headers
 which don't hash to a value eligible for inclusion on the block chain
 but which do hash below the pool's target, proving (on average) that the
