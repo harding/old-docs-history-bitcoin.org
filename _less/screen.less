@@ -674,6 +674,9 @@ table td,table th{
 	border-right:1px solid #e0e0e0;
 	padding:0 19px 0 0;
 }
+.toc ul li{
+	padding:0 0 10px 0;
+}
 .toc ul li ul{
 	position:relative;
 	top:0;
@@ -683,9 +686,6 @@ table td,table th{
 }
 .toc ul li.active ul{
 	display:block;
-}
-.toc ul li{
-	padding:0 0 10px 0;
 }
 .toc ul li ul li{
 	padding:0 0 4px 0;
@@ -1629,6 +1629,9 @@ h2 .rssicon{
 		border:2px dashed #4892b2;
 		display:inline-block;
 	}
+	.toc div{
+		width:auto;
+	}
 	.toc div.scroll{
 		position:static;
 	}
@@ -1647,16 +1650,16 @@ h2 .rssicon{
 	.toc ul li a{
 		padding:0;
 	}
+	.toc ul li ul li a:hover:before,
+	.toc ul li ul li a.active:before{
+		content:"";
+	}
 	.toccontent{
 		width:auto;
 	}
 	.toccontent a.auto-link:link,
 	.toccontent a.auto-link:visited{
 		color:#2c6fad;
-	}
-	.toc ul li ul li a:hover:before,
-	.toc ul li ul li a.active:before{
-		content:"";
 	}
 	.contributors{
 		width:auto;
