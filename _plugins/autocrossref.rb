@@ -1,10 +1,21 @@
-#autocrossref.rb automatically adds cross reference links in documentation
-#texts using the list of words defined in _autocrossref.yaml.
+## autocrossref.rb automatically adds cross reference links in documentation
+## texts using the list of words defined in _autocrossref.yaml.
 
-#Example:
-# {% autocrossref %}
-# ...content...
-# {% endautocrossref %}
+## Example:
+## {% autocrossref %}
+## ...content...
+## {% endautocrossref %}
+
+## If you have a patten you usually want to match (such as "satoshi"
+## (currency)) but which may appear a few times where you don't want it
+## to match (such as "Satoshi" (name)), append a <!--noref--> HTML comment.
+## E.g.: Bitcoin was invented by Satoshi<!--noref--> Nakamoto.
+
+## An alternative match-prevention method, useful for strings inside ``
+## (code) is to make it look to the parser like the string is inside of
+## a do-not-parse [bracket] expression. E.g. [paymentrequest][] would
+## otherwise match this:
+## <!--[-->`src/qt/paymentrequest.proto`<!--]-->
 
 module Jekyll
 
@@ -63,8 +74,8 @@ require 'yaml'
       output.gsub!('<!--noref-->','')  ## Remove all <!--noref--> comments
 
       output
-    end # site['crossref'].sort_by
-  end # render(content)
-end # AutoCrossRefBlock class 
+    end
+  end
+end
 
 Liquid::Template.register_tag('autocrossref', Jekyll::AutoCrossRefBlock)

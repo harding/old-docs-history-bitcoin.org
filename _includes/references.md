@@ -1,10 +1,3 @@
-<!-- Links to terms used in this document (case-insensitive alphabetic order)
----- * Link text is case insensitive in markdown so [Block Chain] and
-----   [block chain] are equivalent
----- * If nothing uses one of the below reference links, the reference
-----   link must be commented out or it will appear in the rendered page
--->
-
 [51 percent attack]: /en/developer-guide#term-51-attack "The ability of someone controlling a majority of hashing power to revise transactions history and prevent new transactions from confirming"
 [accidental fork]: /en/developer-guide#term-accidental-fork "When two or more blocks have the same block height, forking the block chain.  Happens occasionally by accident"
 [addresses]: /en/developer-guide#term-address "A 20-byte hash formatted as a P2PH or P2SH Bitcoin Address"
@@ -178,7 +171,6 @@
 [wallets]: /en/developer-guide#wallets "Software which stores private keys to allow users to spend and receive satoshis"
 [X509Certificates]: /en/developer-guide#term-x509certificates
 
-<!-- Non-terminology links which may be used multiple times (case-insensitive alphabetical order) -->
 [BFGMiner]: https://github.com/luke-jr/bfgminer
 [BIP21]: https://github.com/bitcoin/bips/blob/master/bip-0021.mediawiki
 [BIP32]: https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki
