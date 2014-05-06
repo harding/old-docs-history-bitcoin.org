@@ -70,6 +70,7 @@ For consistent word ordering:
 -->
 
 {% autocrossref %}
+
 The hierarchical deterministic key creation and transfer protocol ([HD
 protocol][]{:#term-hd-protocol}{:.term}) greatly simplifies wallet
 backups, eliminates the need for repeated communication between multiple
@@ -84,11 +85,13 @@ The HD protocol takes advantage of the ECDSA public key creation
 function, [`point()`][point function]{:#term-point-function}{:.term},
 which takes a large integer (the private key) and turns it into a graph
 point (the public key):
+
 {% endautocrossref %}
 
     point(private_key) == public_key
 
 {% autocrossref %}
+
 Because of the way `point()` functions, it's possible to create a [child
 public key][]{:#term-child-public-key}{:.term} by combining an
 existing [(parent) public key][parent public
@@ -97,11 +100,13 @@ integer (*i*) value. This child public key is the same public key which
 would be created by the `point()` function if you added the *i* value to
 the original (parent) private key and then found the remainder of that
 sum divided by a global constant used by all Bitcoin software (*G*):
+
 {% endautocrossref %}
 
     point( (parent_private_key + i) % G ) == parent_public_key + point(i)
 
 {% autocrossref %}
+
 This means that two or more independent programs which agree on a
 sequence of integers can create a series of unique child key pairs from
 a single parent key pair without any further communication.
@@ -113,11 +118,13 @@ a public web server.
 Child public keys can also create their own child public keys
 (grandchild public keys) by repeating the child key derivation
 operations:
+
 {% endautocrossref %}
 
     point( (child_private_key + i) % G ) == child_public_key + point(i)
 
 {% autocrossref %}
+
 Whether creating child public keys or further-descended public keys, a
 predictable sequence of integer values would be no better than using a
 single public key for all transactions, as anyone who knew one child
@@ -159,12 +166,14 @@ used as a new child chain code. The seemingly-random 256 bits on the
 lefthand side of the hash output are used as the integer value to be combined
 with either the parent private key or parent public key to,
 respectively, create either a child private key or child public key:
+
 {% endautocrossref %}
 
     point( (parent_private_key + lefthand_hash_output) % G ) == child_public_key
     point(child_private_key) == parent_public_key + point(lefthand_hash_output)
 
 {% autocrossref %}
+
 Specifying different index numbers will create different unlinkable
 child keys from the same parent keys.  Repeating the procedure for the
 child keys using the child chain code will create unlinkable grandchild keys.
@@ -199,11 +208,13 @@ with the master chain code, is the master extended public
 key. The master extended keys are functionally equivalent to other
 extended keys; it is only their location at the top of the hierarchy
 which makes them special.
+
 {% endautocrossref %}
 
 #### Hardened Keys
 
 {% autocrossref %}
+
 Deriving child extended keys from parent extended keys is more nuanced
 than described earlier due to the presence of two extended private key
 derivation formulas. The normal formula, described above, combines
@@ -268,9 +279,8 @@ The HD protocol also describes a serialization format for extended
 public keys and extended private keys.  For details, please see the
 [wallet section in the developer reference][devref wallets] or BIP32
 for the full HD protocol specification.
+
 {% endautocrossref %}
-
-
 
 ### JBOK (Just A Bunch Of Keys) Wallets Formats
 
