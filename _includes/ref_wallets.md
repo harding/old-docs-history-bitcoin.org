@@ -13,11 +13,11 @@ sharing is extremely limited.
 
 {% endautocrossref %}
 
-#### Type 2: Heirarchical Deterministic (HD) Wallets
+#### Type 2: Hierarchical Deterministic (HD) Wallets
 
 {% autocrossref %}
 
-![Overview Of Heirarchical Deterministic Key Derivation](/img/dev/en-hd-overview.svg)
+![Overview Of Hierarchical Deterministic Key Derivation](/img/dev/en-hd-overview.svg)
 
 For an overview of HD wallets, please see the [developer guide
 section][devguide wallets].  For details, please see BIP32.
