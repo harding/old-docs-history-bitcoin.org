@@ -69,7 +69,7 @@ and users of Bitcoin Core can check the error field of the `getinfo` RPC
 results to get currently active alerts for their specific version of
 Bitcoin Core.
 
-These messages are aggressively broadcasted using the `alert` message, being sent to each peer upon connect for the duration of the alert. 
+These messages are aggressively broadcast using the `alert` message, being sent to each peer upon connect for the duration of the alert. 
 
 These messages are signed by a specific ECDSA private key that only a small number of active developers control. 
 
