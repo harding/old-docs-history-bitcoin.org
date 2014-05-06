@@ -21,6 +21,7 @@ PNG images here were generated using graphviz version 2.26.3
     do 
         dot -N$fn -G$fn -E$fn -o ${f/.dot}.svg -T svg $f
         dot -N$fn -G$fn -E$fn -o ${f/.dot}.png -T png $f
+        optipng -o7 ${f/.dot}.png
     done
 
 For improved compatability between Graphviz versions, files created or
