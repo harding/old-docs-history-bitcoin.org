@@ -64,7 +64,7 @@ address utility].
 {% endautocrossref %}
 
 
-### Heirarchical Deterministic Key Creation
+### Hierarchical Deterministic Key Creation
 
 <!-- 
 For consistent word ordering:
@@ -91,7 +91,7 @@ point (the public key):
     point(private_key) == public_key
 
 {% autocrossref %}
-Because of the way `point()` functions, it's possble to a create [child
+Because of the way `point()` functions, it's possible to a create [child
 public key][]{:#term-child-public-key}{:.term} by combining an
 existing [(parent) public key][parent public
 key]{:#term-parent-public-key}{:.term} with another public key created from any
@@ -140,7 +140,7 @@ code][]{:#term-master-chain-code}{:.term} to continue being useful
 even if, for example, a web-based public key distribution program
 gets hacked.
 
-![Overview Of Heirarchical Deterministic Key Derivation](/img/dev/en-hd-overview.svg)
+![Overview Of Hierarchical Deterministic Key Derivation](/img/dev/en-hd-overview.svg)
 
 As illustrated above, HD key derivation takes four inputs<!--noref-->:
 

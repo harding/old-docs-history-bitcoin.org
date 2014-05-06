@@ -9,7 +9,7 @@
 <g id="graph1" class="graph" transform="scale(0.889328 0.889328) rotate(0) translate(4 333)">
 <title>extended</title>
 <polygon fill="white" stroke="white" points="-4,5 -4,-333 503,-333 503,5 -4,5"/>
-<text text-anchor="middle" x="249" y="-8.4" font-family="Times Roman,serif" font-size="14.00">Heirarchical Deterministic Key Derivation</text>
+<text text-anchor="middle" x="249" y="-8.4" font-family="Times Roman,serif" font-size="14.00">Hierarchical Deterministic Key Derivation</text>
 <g id="graph2" class="cluster"><title>cluster_0p</title>
 <polygon fill="none" stroke="black" stroke-width="1.75" points="8,-72 8,-207 91,-207 91,-72 8,-72"/>
 <text text-anchor="middle" x="49.5" y="-190.4" font-family="Times Roman,serif" font-size="14.00">Hardened</text>

@@ -13,7 +13,7 @@ sharing is extremely limited.
 
 {% endautocrossref %}
 
-#### Type 2: Hierarchical Deterministic (HD) Wallets
+#### Type 2: Heirarchical Deterministic (HD) Wallets
 
 {% autocrossref %}
 

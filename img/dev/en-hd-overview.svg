@@ -10,7 +10,7 @@
 <title>extended</title>
 <polygon fill="white" stroke="white" points="-4,5 -4,-244 713,-244 713,5 -4,5"/>
 <text text-anchor="middle" x="354" y="-25.4" font-family="Times Roman,serif" font-size="14.00"> </text>
-<text text-anchor="middle" x="354" y="-8.4" font-family="Times Roman,serif" font-size="14.00">Normal Heirarchical Deterministic (HD) Key Derivation (BIP32)</text>
+<text text-anchor="middle" x="354" y="-8.4" font-family="Times Roman,serif" font-size="14.00">Normal Hierarchical Deterministic (HD) Key Derivation (BIP32)</text>
 <g id="graph2" class="cluster"><title>cluster_parent</title>
 </g>
 <!-- parent_private_key -->

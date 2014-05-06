@@ -61,6 +61,6 @@ M0p_0 -> M0p_0_0 [ label = "Normal extended\npublic keys\ncan derive child\npubl
 m0p_1p -> m0p_1p_0 [ label = "Only derivation from\nextended private keys\nis possible for\nhardened keys" ];
 
 
-label = "Heirarchical Deterministic Key Derivation"
+label = "Hierarchical Deterministic Key Derivation"
 
 }

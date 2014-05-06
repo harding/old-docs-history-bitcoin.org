@@ -47,5 +47,5 @@ hmac -> child_public_key;
 hmac -> child_private_key;
 hmac -> child_chain_code;
 
-label = " \nNormal Heirarchical Deterministic (HD) Key Derivation (BIP32)"
+label = " \nNormal Hierarchical Deterministic (HD) Key Derivation (BIP32)"
 }

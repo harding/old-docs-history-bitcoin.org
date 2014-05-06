@@ -42,7 +42,7 @@
 [fiat]: /en/developer-guide#term-fiat "National currencies such as the dollar or euro"
 [genesis block]: /en/developer-guide#term-genesis-block "The first block created; also called block 0"
 [hardened extended private key]: /en/developer-guide#term-hardened-child-key "A private key whose corresponding public key cannot derive child keys"
-[HD protocol]: /en/developer-guide#term-hd-protocol "The Heirarchical Deterministic (HD) key creation and transfer protocol"
+[HD protocol]: /en/developer-guide#term-hd-protocol "The Hierarchical Deterministic (HD) key creation and transfer protocol"
 [header nonce]: /en/developer-reference#term-header-nonce "Four bytes of arbitrary data in a block header used to let miners create headers with different hashes for proof of work"
 [high-priority transactions]: /en/developer-guide#term-high-priority-transactions "Transactions which don't pay a transaction fee; only transactions spending long-idle outputs are eligible"
 [input]: /en/developer-guide#term-input "The input to a transaction linking to the output of a previous transaction which permits spending of satoshis"
