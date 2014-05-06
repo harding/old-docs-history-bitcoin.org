@@ -606,7 +606,7 @@ So, for both privacy and security, we encourage you to build your
 applications to avoid public key reuse and, when possible, to discourage
 users from reusing addresses. If your application needs to provide a
 fixed URI to which payments should be sent, please see Bitcoin the
-[`Bitcoin:` URI section][section bitcoin URI] below.
+[`bitcoin:` URI section][bitcoin URI subsection] below.
 
 {% endautocrossref %}
 
