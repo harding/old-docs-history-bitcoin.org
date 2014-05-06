@@ -30,11 +30,11 @@ you may want to install the current version of Bitcoin Core, either from
 
 Once installed, you'll have access to three programs: `bitcoind`,
 `bitcoin-qt`, and `bitcoin-cli`.  When run with no arguments, all three
-programs default to Bitcoin's main network (mainnet) which will require
+programs default to Bitcoin's main network ([mainnet][mainnet]{:#term-mainnet}{:.term}) which will require
 you purchase satoshis in order to generate transactions.
 
 However, for development, it's safer and cheaper to use Bitcoin's test
-network (testnet) where the satoshis spent have no real-world value.
+network ([testnet][testnet]{:#term-testnet}{:.term}) where the satoshis spent have no real-world value.
 Testnet also relaxes some restrictions (such as standard transaction
 checks) so you can test functions which might currently be disabled by
 default on mainnet.  
