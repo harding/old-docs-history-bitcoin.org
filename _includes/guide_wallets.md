@@ -266,9 +266,8 @@ firewalls.
 
 The HD protocol also describes a serialization format for extended
 public keys and extended private keys.  For details, please see the
-[wallet section in the developer reference][devref wallets] or BIP32.
-
-**Resources:** Refer to BIP32 for the full HD protocol specification.
+[wallet section in the developer reference][devref wallets] or BIP32
+for the full HD protocol specification.
 {% endautocrossref %}
 
 
