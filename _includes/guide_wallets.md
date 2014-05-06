@@ -1,7 +1,5 @@
 ## Wallets
 
-[HMAC-SHA512]: https://en.wikipedia.org/wiki/HMAC
-
 {% autocrossref %}
 
 Bitcoin wallets at their core are a collection of private keys. These collections are stored digitally in a file, or can even be physically stored on pieces of paper. 
@@ -252,8 +250,6 @@ numbers from 0x80000001 to 0x100000000 will generate a hardened key. To
 make descriptions easy, many developers use the [prime symbol][] to indicate
 hardened keys, so the first normal key (0x00) is 0 and the first hardened
 key (0x80000001) is 0´.
-
-[prime symbol]: https://en.wikipedia.org/wiki/Prime_%28symbol%29
 
 (Bitcoin developers typically use the ASCII apostrophe rather than
 the unicode prime symbol, a convention we will henceforth follow.)

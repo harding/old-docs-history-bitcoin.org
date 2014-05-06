@@ -191,12 +191,14 @@
 [ECDSA]: https://en.wikipedia.org/wiki/Elliptic_Curve_DSA
 [Eloipool]: https://gitorious.org/bitcoin/eloipool
 [forum tech support]: https://bitcointalk.org/index.php?board=4.0
+[HMAC-SHA512]: https://en.wikipedia.org/wiki/HMAC
 [HTTP longpoll]: https://en.wikipedia.org/wiki/Push_technology#Long_polling
 [irc channels]: https://en.bitcoin.it/wiki/IRC_channels
 [MIME]: https://en.wikipedia.org/wiki/Internet_media_type
 [Merge Avoidance subsection]: #merge-avoidance
 [mozrootstore]: https://www.mozilla.org/en-US/about/governance/policies/security-group/certs/
 [Piotr Piasecki's testnet faucet]: https://tpfaucet.appspot.com/
+[prime symbol]: https://en.wikipedia.org/wiki/Prime_%28symbol%29
 [protobuf]: https://developers.google.com/protocol-buffers/
 [raw transaction format]: #raw-transaction-format
 [regression test mode]: https://code.google.com/p/bitcoinj/wiki/Testing
@@ -216,3 +218,4 @@
 [Verification subsection]: #verifying-payment
 [wiki script]: https://en.bitcoin.it/wiki/Script
 [x509]: https://en.wikipedia.org/wiki/X.509
+
