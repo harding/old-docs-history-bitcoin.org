@@ -9,21 +9,21 @@
 <g id="graph1" class="graph" transform="scale(0.929752 0.929752) rotate(0) translate(4 205)">
 <title>extended</title>
 <polygon fill="white" stroke="white" points="-4,5 -4,-205 481,-205 481,5 -4,5"/>
-<text text-anchor="middle" x="238" y="-25.4" font-family="Times Roman,serif" font-size="14.00">Creation Of The Root Keys And Root Extended Keys</text>
-<text text-anchor="middle" x="238" y="-8.4" font-family="Times Roman,serif" font-size="14.00">(Solid Line = Copy; Dashed Line = Transform)</text>
+<text text-anchor="middle" x="238" y="-25.4" font-family="Sans" font-size="14.00">Creation Of The Root Keys And Root Extended Keys</text>
+<text text-anchor="middle" x="238" y="-8.4" font-family="Sans" font-size="14.00">(Solid Line = Copy; Dashed Line = Transform)</text>
 <g id="graph2" class="cluster"><title>cluster_entropy</title>
 </g>
 <!-- entropy1 -->
 <g id="node2" class="node"><title>entropy1</title>
 <polygon fill="none" stroke="black" stroke-width="1.75" points="90,-156 16,-156 16,-114 90,-114 90,-156"/>
-<text text-anchor="middle" x="53" y="-139.4" font-family="Times Roman,serif" font-size="14.00">256 Bits</text>
-<text text-anchor="middle" x="53" y="-122.4" font-family="Times Roman,serif" font-size="14.00">Entropy</text>
+<text text-anchor="middle" x="53" y="-139.4" font-family="Sans" font-size="14.00">256 Bits</text>
+<text text-anchor="middle" x="53" y="-122.4" font-family="Sans" font-size="14.00">Entropy</text>
 </g>
 <!-- private_key -->
 <g id="node4" class="node"><title>private_key</title>
 <polygon fill="none" stroke="black" stroke-width="1.75" points="221,-156 127,-156 127,-114 221,-114 221,-156"/>
-<text text-anchor="middle" x="174" y="-139.4" font-family="Times Roman,serif" font-size="14.00">Root</text>
-<text text-anchor="middle" x="174" y="-122.4" font-family="Times Roman,serif" font-size="14.00">Private Key</text>
+<text text-anchor="middle" x="174" y="-139.4" font-family="Sans" font-size="14.00">Root</text>
+<text text-anchor="middle" x="174" y="-122.4" font-family="Sans" font-size="14.00">Private Key</text>
 </g>
 <!-- entropy1&#45;&gt;private_key -->
 <g id="edge3" class="edge"><title>entropy1&#45;&gt;private_key</title>
@@ -33,14 +33,14 @@
 <!-- entropy2 -->
 <g id="node3" class="node"><title>entropy2</title>
 <polygon fill="none" stroke="black" stroke-width="1.75" points="90,-100 16,-100 16,-58 90,-58 90,-100"/>
-<text text-anchor="middle" x="53" y="-83.4" font-family="Times Roman,serif" font-size="14.00">256 Bits</text>
-<text text-anchor="middle" x="53" y="-66.4" font-family="Times Roman,serif" font-size="14.00">Entropy</text>
+<text text-anchor="middle" x="53" y="-83.4" font-family="Sans" font-size="14.00">256 Bits</text>
+<text text-anchor="middle" x="53" y="-66.4" font-family="Sans" font-size="14.00">Entropy</text>
 </g>
 <!-- chain_code -->
 <g id="node5" class="node"><title>chain_code</title>
 <polygon fill="none" stroke="black" stroke-width="1.75" points="221,-100 127,-100 127,-58 221,-58 221,-100"/>
-<text text-anchor="middle" x="174" y="-83.4" font-family="Times Roman,serif" font-size="14.00">Root</text>
-<text text-anchor="middle" x="174" y="-66.4" font-family="Times Roman,serif" font-size="14.00">Chain Code</text>
+<text text-anchor="middle" x="174" y="-83.4" font-family="Sans" font-size="14.00">Root</text>
+<text text-anchor="middle" x="174" y="-66.4" font-family="Sans" font-size="14.00">Chain Code</text>
 </g>
 <!-- entropy2&#45;&gt;chain_code -->
 <g id="edge7" class="edge"><title>entropy2&#45;&gt;chain_code</title>
@@ -50,8 +50,8 @@
 <!-- public_key -->
 <g id="node6" class="node"><title>public_key</title>
 <polygon fill="none" stroke="black" stroke-width="1.75" points="349,-201 263,-201 263,-159 349,-159 349,-201"/>
-<text text-anchor="middle" x="306" y="-184.4" font-family="Times Roman,serif" font-size="14.00">Root</text>
-<text text-anchor="middle" x="306" y="-167.4" font-family="Times Roman,serif" font-size="14.00">Public Key</text>
+<text text-anchor="middle" x="306" y="-184.4" font-family="Sans" font-size="14.00">Root</text>
+<text text-anchor="middle" x="306" y="-167.4" font-family="Sans" font-size="14.00">Public Key</text>
 </g>
 <!-- private_key&#45;&gt;public_key -->
 <g id="edge5" class="edge"><title>private_key&#45;&gt;public_key</title>
@@ -61,10 +61,10 @@
 <!-- extended_private_key -->
 <g id="node7" class="node"><title>extended_private_key</title>
 <polygon fill="none" stroke="black" stroke-width="1.75" points="353,-145 259,-145 259,-69 353,-69 353,-145"/>
-<text text-anchor="middle" x="306" y="-128.4" font-family="Times Roman,serif" font-size="14.00">Root</text>
-<text text-anchor="middle" x="306" y="-111.4" font-family="Times Roman,serif" font-size="14.00">Extended</text>
-<text text-anchor="middle" x="306" y="-94.4" font-family="Times Roman,serif" font-size="14.00">Private Key</text>
-<text text-anchor="middle" x="306" y="-77.4" font-family="Times Roman,serif" font-size="14.00">(512 Bits)</text>
+<text text-anchor="middle" x="306" y="-128.4" font-family="Sans" font-size="14.00">Root</text>
+<text text-anchor="middle" x="306" y="-111.4" font-family="Sans" font-size="14.00">Extended</text>
+<text text-anchor="middle" x="306" y="-94.4" font-family="Sans" font-size="14.00">Private Key</text>
+<text text-anchor="middle" x="306" y="-77.4" font-family="Sans" font-size="14.00">(512 Bits)</text>
 </g>
 <!-- private_key&#45;&gt;extended_private_key -->
 <g id="edge13" class="edge"><title>private_key&#45;&gt;extended_private_key</title>
@@ -79,9 +79,9 @@
 <!-- extended_public_key -->
 <g id="node8" class="node"><title>extended_public_key</title>
 <polygon fill="none" stroke="black" stroke-width="1.75" points="476,-142.5 390,-142.5 390,-83.5 476,-83.5 476,-142.5"/>
-<text text-anchor="middle" x="433" y="-125.9" font-family="Times Roman,serif" font-size="14.00">Root</text>
-<text text-anchor="middle" x="433" y="-108.9" font-family="Times Roman,serif" font-size="14.00">Extended</text>
-<text text-anchor="middle" x="433" y="-91.9" font-family="Times Roman,serif" font-size="14.00">Public Key</text>
+<text text-anchor="middle" x="433" y="-125.9" font-family="Sans" font-size="14.00">Root</text>
+<text text-anchor="middle" x="433" y="-108.9" font-family="Sans" font-size="14.00">Extended</text>
+<text text-anchor="middle" x="433" y="-91.9" font-family="Sans" font-size="14.00">Public Key</text>
 </g>
 <!-- chain_code&#45;&gt;extended_public_key -->
 <g id="edge11" class="edge"><title>chain_code&#45;&gt;extended_public_key</title>

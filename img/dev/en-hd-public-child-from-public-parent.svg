@@ -9,11 +9,11 @@
 <g id="graph1" class="graph" transform="scale(0.803571 0.803571) rotate(0) translate(4 239)">
 <title>extended</title>
 <polygon fill="white" stroke="white" points="-4,5 -4,-239 557,-239 557,5 -4,5"/>
-<text text-anchor="middle" x="276" y="-25.4" font-family="Times Roman,serif" font-size="14.00">Creation Of Child Extended Public Keys (Key, Chain Code)</text>
-<text text-anchor="middle" x="276" y="-8.4" font-family="Times Roman,serif" font-size="14.00">(Hardened Child Public Keys Cannot Be Created From A Parent Public Key)</text>
+<text text-anchor="middle" x="276" y="-25.4" font-family="Sans" font-size="14.00">Creation Of Child Extended Public Keys (Key, Chain Code)</text>
+<text text-anchor="middle" x="276" y="-8.4" font-family="Sans" font-size="14.00">(Hardened Child Public Keys Cannot Be Created From A Parent Public Key)</text>
 <g id="graph2" class="cluster"><title>cluster_norm</title>
 <polygon fill="none" stroke="black" stroke-width="1.75" points="8,-50 8,-227 544,-227 544,-50 8,-50"/>
-<text text-anchor="middle" x="276" y="-210.4" font-family="Times Roman,serif" font-size="14.00">Normal Public</text>
+<text text-anchor="middle" x="276" y="-210.4" font-family="Sans" font-size="14.00">Normal Public</text>
 </g>
 <g id="graph3" class="cluster"><title>cluster_n_public_extended_key</title>
 <polygon fill="none" stroke="black" stroke-width="1.75" points="16,-102 16,-194 178,-194 178,-102 16,-102"/>
@@ -24,12 +24,12 @@
 <!-- n_parent_public_key -->
 <g id="node3" class="node"><title>n_parent_public_key</title>
 <polygon fill="none" stroke="black" stroke-width="1.75" points="165,-186 29,-186 29,-150 165,-150 165,-186"/>
-<text text-anchor="middle" x="97" y="-163.9" font-family="Times Roman,serif" font-size="14.00">Parent Public Key</text>
+<text text-anchor="middle" x="97" y="-163.9" font-family="Sans" font-size="14.00">Parent Public Key</text>
 </g>
 <!-- child_public_key_norm -->
 <g id="node6" class="node"><title>child_public_key_norm</title>
 <polygon fill="none" stroke="black" stroke-width="1.75" points="523,-186 399,-186 399,-150 523,-150 523,-186"/>
-<text text-anchor="middle" x="461" y="-163.9" font-family="Times Roman,serif" font-size="14.00">Child Public Key</text>
+<text text-anchor="middle" x="461" y="-163.9" font-family="Sans" font-size="14.00">Child Public Key</text>
 </g>
 <!-- n_parent_public_key&#45;&gt;child_public_key_norm -->
 <g id="edge13" class="edge"><title>n_parent_public_key&#45;&gt;child_public_key_norm</title>
@@ -39,7 +39,7 @@
 <!-- n_parent_chain_code -->
 <g id="node4" class="node"><title>n_parent_chain_code</title>
 <polygon fill="none" stroke="black" stroke-width="1.75" points="170,-146 24,-146 24,-110 170,-110 170,-146"/>
-<text text-anchor="middle" x="97" y="-123.9" font-family="Times Roman,serif" font-size="14.00">Parent Chain Code</text>
+<text text-anchor="middle" x="97" y="-123.9" font-family="Sans" font-size="14.00">Parent Chain Code</text>
 </g>
 <!-- hmac_norm -->
 <g id="node8" class="node"><title>hmac_norm</title>
@@ -48,8 +48,8 @@
 <polyline fill="none" stroke="black" stroke-width="1.75" points="242,-119 254,-107 "/>
 <polyline fill="none" stroke="black" stroke-width="1.75" points="310,-107 322,-119 "/>
 <polyline fill="none" stroke="black" stroke-width="1.75" points="322,-137 310,-149 "/>
-<text text-anchor="middle" x="282" y="-132.4" font-family="Times Roman,serif" font-size="14.00">One&#45;Way</text>
-<text text-anchor="middle" x="282" y="-115.4" font-family="Times Roman,serif" font-size="14.00">Hash</text>
+<text text-anchor="middle" x="282" y="-132.4" font-family="Sans" font-size="14.00">One&#45;Way</text>
+<text text-anchor="middle" x="282" y="-115.4" font-family="Sans" font-size="14.00">Hash</text>
 </g>
 <!-- n_parent_chain_code&#45;&gt;hmac_norm -->
 <g id="edge5" class="edge"><title>n_parent_chain_code&#45;&gt;hmac_norm</title>
@@ -59,7 +59,7 @@
 <!-- child_chain_code_norm -->
 <g id="node7" class="node"><title>child_chain_code_norm</title>
 <polygon fill="none" stroke="black" stroke-width="1.75" points="528,-146 394,-146 394,-110 528,-110 528,-146"/>
-<text text-anchor="middle" x="461" y="-123.9" font-family="Times Roman,serif" font-size="14.00">Child Chain Code</text>
+<text text-anchor="middle" x="461" y="-123.9" font-family="Sans" font-size="14.00">Child Chain Code</text>
 </g>
 <!-- hmac_norm&#45;&gt;child_public_key_norm -->
 <g id="edge9" class="edge"><title>hmac_norm&#45;&gt;child_public_key_norm</title>
@@ -74,7 +74,7 @@
 <!-- i_norm -->
 <g id="node9" class="node"><title>i_norm</title>
 <polygon fill="none" stroke="black" stroke-width="1.75" points="139,-94 55,-94 55,-58 139,-58 139,-94"/>
-<text text-anchor="middle" x="97" y="-71.9" font-family="Times Roman,serif" font-size="14.00">i (Normal)</text>
+<text text-anchor="middle" x="97" y="-71.9" font-family="Sans" font-size="14.00">i (Normal)</text>
 </g>
 <!-- i_norm&#45;&gt;hmac_norm -->
 <g id="edge7" class="edge"><title>i_norm&#45;&gt;hmac_norm</title>

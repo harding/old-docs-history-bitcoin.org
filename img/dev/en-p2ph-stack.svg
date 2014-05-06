@@ -9,47 +9,47 @@
 <g id="graph1" class="graph" transform="scale(0.631579 0.631579) rotate(0) translate(4 551)">
 <title>blockchain</title>
 <polygon fill="white" stroke="white" points="-4,5 -4,-551 757,-551 757,5 -4,5"/>
-<text text-anchor="middle" x="376" y="-8.4" font-family="Times Roman,serif" font-size="14.00">Evaluation Stack Over Time During Succesful P2PH Script Validation</text>
+<text text-anchor="middle" x="376" y="-8.4" font-family="Sans" font-size="14.00">Evaluation Stack Over Time During Succesful P2PH Script Validation</text>
 <g id="graph2" class="cluster"><title>cluster_alice</title>
 <polygon fill="grey" stroke="black" points="8,-462 8,-539 710,-539 710,-462 8,-462"/>
-<text text-anchor="middle" x="359" y="-522.4" font-family="Times Roman,serif" font-size="14.00">Instructions And Data Provided By Alice In Transaction #1&#39;s Output Script</text>
+<text text-anchor="middle" x="359" y="-522.4" font-family="Sans" font-size="14.00">Instructions And Data Provided By Alice In Transaction #1&#39;s Output Script</text>
 </g>
 <g id="graph3" class="cluster"><title>cluster_bob</title>
 <polygon fill="grey" stroke="black" points="8,-377 8,-454 710,-454 710,-377 8,-377"/>
-<text text-anchor="middle" x="359" y="-437.4" font-family="Times Roman,serif" font-size="14.00">Data Provided By Bob In Transaction #2&#39;s Input ScriptSig</text>
+<text text-anchor="middle" x="359" y="-437.4" font-family="Sans" font-size="14.00">Data Provided By Bob In Transaction #2&#39;s Input ScriptSig</text>
 </g>
 <!-- alice_opchecksig -->
 <g id="node2" class="node"><title>alice_opchecksig</title>
 <polygon fill="none" stroke="black" points="702,-506 614,-506 614,-470 702,-470 702,-506"/>
-<text text-anchor="middle" x="658" y="-483.9" font-family="Times Roman,serif" font-size="14.00">CHECKSIG</text>
+<text text-anchor="middle" x="658" y="-483.9" font-family="Sans" font-size="14.00">CHECKSIG</text>
 </g>
 <!-- bob_opchecksig -->
 <!-- alice_opchecksig&#45;&gt;bob_opchecksig -->
 <!-- alice_opequalverify -->
 <g id="node3" class="node"><title>alice_opequalverify</title>
 <polygon fill="none" stroke="black" points="610,-506 468,-506 468,-470 610,-470 610,-506"/>
-<text text-anchor="middle" x="539" y="-483.9" font-family="Times Roman,serif" font-size="14.00">OP_EQUALVERIFY</text>
+<text text-anchor="middle" x="539" y="-483.9" font-family="Sans" font-size="14.00">OP_EQUALVERIFY</text>
 </g>
 <!-- bob_opequalverify -->
 <!-- alice_opequalverify&#45;&gt;bob_opequalverify -->
 <!-- alice_pubkeyhash -->
 <g id="node4" class="node"><title>alice_pubkeyhash</title>
 <ellipse fill="none" stroke="black" cx="414" cy="-488" rx="50.2242" ry="18"/>
-<text text-anchor="middle" x="414" y="-483.9" font-family="Times Roman,serif" font-size="14.00">Pk Hash</text>
+<text text-anchor="middle" x="414" y="-483.9" font-family="Sans" font-size="14.00">Pk Hash</text>
 </g>
 <!-- bob_pubkeyhash -->
 <!-- alice_pubkeyhash&#45;&gt;bob_pubkeyhash -->
 <!-- alice_ophash -->
 <g id="node5" class="node"><title>alice_ophash</title>
 <polygon fill="none" stroke="black" points="360,-506 250,-506 250,-470 360,-470 360,-506"/>
-<text text-anchor="middle" x="305" y="-483.9" font-family="Times Roman,serif" font-size="14.00">OP_HASH160</text>
+<text text-anchor="middle" x="305" y="-483.9" font-family="Sans" font-size="14.00">OP_HASH160</text>
 </g>
 <!-- bob_ophash -->
 <!-- alice_ophash&#45;&gt;bob_ophash -->
 <!-- alice_opdup -->
 <g id="node6" class="node"><title>alice_opdup</title>
 <polygon fill="none" stroke="black" points="246,-506 172,-506 172,-470 246,-470 246,-506"/>
-<text text-anchor="middle" x="209" y="-483.9" font-family="Times Roman,serif" font-size="14.00">OP_DUP</text>
+<text text-anchor="middle" x="209" y="-483.9" font-family="Sans" font-size="14.00">OP_DUP</text>
 </g>
 <!-- bob_opdup -->
 <!-- alice_opdup&#45;&gt;bob_opdup -->
@@ -63,14 +63,14 @@
 <!-- bob_pubkey -->
 <g id="node15" class="node"><title>bob_pubkey</title>
 <ellipse fill="none" stroke="black" cx="121" cy="-403" rx="46.7546" ry="18"/>
-<text text-anchor="middle" x="121" y="-398.9" font-family="Times Roman,serif" font-size="14.00">PubKey</text>
+<text text-anchor="middle" x="121" y="-398.9" font-family="Sans" font-size="14.00">PubKey</text>
 </g>
 <!-- alice_pubkey&#45;&gt;bob_pubkey -->
 <!-- alice_sig -->
 <!-- bob_sig -->
 <g id="node16" class="node"><title>bob_sig</title>
 <ellipse fill="none" stroke="black" cx="43" cy="-403" rx="27" ry="18"/>
-<text text-anchor="middle" x="43" y="-398.9" font-family="Times Roman,serif" font-size="14.00">Sig</text>
+<text text-anchor="middle" x="43" y="-398.9" font-family="Sans" font-size="14.00">Sig</text>
 </g>
 <!-- alice_sig&#45;&gt;bob_sig -->
 <!-- invis5_0 -->
@@ -78,13 +78,13 @@
 <!-- stack7_opchecksig -->
 <g id="node45" class="node"><title>stack7_opchecksig</title>
 <polygon fill="lightgrey" stroke="black" points="723,-205 607,-205 607,-169 723,-169 723,-205"/>
-<text text-anchor="middle" x="665" y="-182.9" font-family="Times Roman,serif" font-size="14.00">OP_CHECKSIG</text>
+<text text-anchor="middle" x="665" y="-182.9" font-family="Sans" font-size="14.00">OP_CHECKSIG</text>
 </g>
 <!-- bob_opchecksig&#45;&gt;stack7_opchecksig -->
 <!-- stack6_opequalverify -->
 <g id="node48" class="node"><title>stack6_opequalverify</title>
 <polygon fill="lightgrey" stroke="black" points="610,-349 468,-349 468,-313 610,-313 610,-349"/>
-<text text-anchor="middle" x="539" y="-326.9" font-family="Times Roman,serif" font-size="14.00">OP_EQUALVERIFY</text>
+<text text-anchor="middle" x="539" y="-326.9" font-family="Sans" font-size="14.00">OP_EQUALVERIFY</text>
 </g>
 <!-- bob_opequalverify&#45;&gt;stack6_opequalverify -->
 <!-- invis4_0 -->
@@ -92,7 +92,7 @@
 <!-- stack5_pubkeyhash -->
 <g id="node53" class="node"><title>stack5_pubkeyhash</title>
 <ellipse fill="none" stroke="black" cx="420" cy="-259" rx="50.2242" ry="18"/>
-<text text-anchor="middle" x="420" y="-254.9" font-family="Times Roman,serif" font-size="14.00">Pk Hash</text>
+<text text-anchor="middle" x="420" y="-254.9" font-family="Sans" font-size="14.00">Pk Hash</text>
 </g>
 <!-- bob_pubkeyhash&#45;&gt;stack5_pubkeyhash -->
 <!-- invis3_0 -->
@@ -100,7 +100,7 @@
 <!-- stack4_ophash -->
 <g id="node57" class="node"><title>stack4_ophash</title>
 <polygon fill="lightgrey" stroke="black" points="365,-277 255,-277 255,-241 365,-241 365,-277"/>
-<text text-anchor="middle" x="310" y="-254.9" font-family="Times Roman,serif" font-size="14.00">OP_HASH160</text>
+<text text-anchor="middle" x="310" y="-254.9" font-family="Sans" font-size="14.00">OP_HASH160</text>
 </g>
 <!-- bob_ophash&#45;&gt;stack4_ophash -->
 <!-- invis2_0 -->
@@ -110,7 +110,7 @@
 <!-- stack2_pubkey -->
 <g id="node64" class="node"><title>stack2_pubkey</title>
 <ellipse fill="none" stroke="black" cx="114" cy="-115" rx="46.7546" ry="18"/>
-<text text-anchor="middle" x="114" y="-110.9" font-family="Times Roman,serif" font-size="14.00">PubKey</text>
+<text text-anchor="middle" x="114" y="-110.9" font-family="Sans" font-size="14.00">PubKey</text>
 </g>
 <!-- bob_pubkey&#45;&gt;stack2_pubkey -->
 <!-- invis0_0 -->
@@ -129,7 +129,7 @@
 <!-- stack1_sig -->
 <g id="node66" class="node"><title>stack1_sig</title>
 <ellipse fill="none" stroke="black" cx="44" cy="-43" rx="27" ry="18"/>
-<text text-anchor="middle" x="44" y="-38.9" font-family="Times Roman,serif" font-size="14.00">Sig</text>
+<text text-anchor="middle" x="44" y="-38.9" font-family="Sans" font-size="14.00">Sig</text>
 </g>
 <!-- invis0_3&#45;&gt;stack1_sig -->
 <!-- invis1_1 -->
@@ -141,7 +141,7 @@
 <!-- stack3_opdup -->
 <g id="node61" class="node"><title>stack3_opdup</title>
 <polygon fill="lightgrey" stroke="black" points="249,-205 175,-205 175,-169 249,-169 249,-205"/>
-<text text-anchor="middle" x="212" y="-182.9" font-family="Times Roman,serif" font-size="14.00">OP_DUP</text>
+<text text-anchor="middle" x="212" y="-182.9" font-family="Sans" font-size="14.00">OP_DUP</text>
 </g>
 <!-- invis2_1&#45;&gt;stack3_opdup -->
 <!-- invis3_0&#45;&gt;stack4_ophash -->
@@ -163,14 +163,14 @@
 <!-- TRUE -->
 <g id="node87" class="node"><title>TRUE</title>
 <polygon fill="none" stroke="black" points="752,-61 698,-61 698,-25 752,-25 752,-61"/>
-<text text-anchor="middle" x="725" y="-38.9" font-family="Times Roman,serif" font-size="14.00">TRUE</text>
+<text text-anchor="middle" x="725" y="-38.9" font-family="Sans" font-size="14.00">TRUE</text>
 </g>
 <!-- invis6_5&#45;&gt;TRUE -->
 <!-- invis6_6 -->
 <!-- stack7_pubkey -->
 <g id="node46" class="node"><title>stack7_pubkey</title>
 <ellipse fill="lightgrey" stroke="black" cx="665" cy="-115" rx="46.7546" ry="18"/>
-<text text-anchor="middle" x="665" y="-110.9" font-family="Times Roman,serif" font-size="14.00">PubKey</text>
+<text text-anchor="middle" x="665" y="-110.9" font-family="Sans" font-size="14.00">PubKey</text>
 </g>
 <!-- stack7_opchecksig&#45;&gt;stack7_pubkey -->
 <!-- stack7_opchecksig&#45;&gt;TRUE -->
@@ -186,7 +186,7 @@
 <!-- stack7_sig -->
 <g id="node47" class="node"><title>stack7_sig</title>
 <ellipse fill="lightgrey" stroke="black" cx="665" cy="-43" rx="27" ry="18"/>
-<text text-anchor="middle" x="665" y="-38.9" font-family="Times Roman,serif" font-size="14.00">Sig</text>
+<text text-anchor="middle" x="665" y="-38.9" font-family="Sans" font-size="14.00">Sig</text>
 </g>
 <!-- stack7_pubkey&#45;&gt;stack7_sig -->
 <!-- stack7_sig&#45;&gt;stack7_pubkey -->
@@ -197,7 +197,7 @@
 <!-- stack6_pubkeyhash -->
 <g id="node49" class="node"><title>stack6_pubkeyhash</title>
 <ellipse fill="lightgrey" stroke="black" cx="539" cy="-259" rx="50.2242" ry="18"/>
-<text text-anchor="middle" x="539" y="-254.9" font-family="Times Roman,serif" font-size="14.00">Pk Hash</text>
+<text text-anchor="middle" x="539" y="-254.9" font-family="Sans" font-size="14.00">Pk Hash</text>
 </g>
 <!-- stack6_opequalverify&#45;&gt;stack6_pubkeyhash -->
 <!-- stack6_pubkeyhash&#45;&gt;stack6_opequalverify -->
@@ -208,7 +208,7 @@
 <!-- stack6_ophash -->
 <g id="node50" class="node"><title>stack6_ophash</title>
 <polygon fill="lightgrey" stroke="black" points="575,-205 503,-205 503,-169 575,-169 575,-205"/>
-<text text-anchor="middle" x="539" y="-182.9" font-family="Times Roman,serif" font-size="14.00">Pk Hash</text>
+<text text-anchor="middle" x="539" y="-182.9" font-family="Sans" font-size="14.00">Pk Hash</text>
 </g>
 <!-- stack6_pubkeyhash&#45;&gt;stack6_ophash -->
 <!-- stack6_ophash&#45;&gt;stack6_pubkeyhash -->
@@ -219,31 +219,31 @@
 <!-- stack6_pubkey -->
 <g id="node51" class="node"><title>stack6_pubkey</title>
 <ellipse fill="none" stroke="black" cx="539" cy="-115" rx="46.7546" ry="18"/>
-<text text-anchor="middle" x="539" y="-110.9" font-family="Times Roman,serif" font-size="14.00">PubKey</text>
+<text text-anchor="middle" x="539" y="-110.9" font-family="Sans" font-size="14.00">PubKey</text>
 </g>
 <!-- stack6_ophash&#45;&gt;stack6_pubkey -->
 <!-- stack6_sig -->
 <g id="node52" class="node"><title>stack6_sig</title>
 <ellipse fill="none" stroke="black" cx="539" cy="-43" rx="27" ry="18"/>
-<text text-anchor="middle" x="539" y="-38.9" font-family="Times Roman,serif" font-size="14.00">Sig</text>
+<text text-anchor="middle" x="539" y="-38.9" font-family="Sans" font-size="14.00">Sig</text>
 </g>
 <!-- stack6_pubkey&#45;&gt;stack6_sig -->
 <!-- stack5_ophash -->
 <g id="node54" class="node"><title>stack5_ophash</title>
 <polygon fill="none" stroke="black" points="456,-205 384,-205 384,-169 456,-169 456,-205"/>
-<text text-anchor="middle" x="420" y="-182.9" font-family="Times Roman,serif" font-size="14.00">Pk Hash</text>
+<text text-anchor="middle" x="420" y="-182.9" font-family="Sans" font-size="14.00">Pk Hash</text>
 </g>
 <!-- stack5_pubkeyhash&#45;&gt;stack5_ophash -->
 <!-- stack5_pubkey -->
 <g id="node55" class="node"><title>stack5_pubkey</title>
 <ellipse fill="none" stroke="black" cx="420" cy="-115" rx="46.7546" ry="18"/>
-<text text-anchor="middle" x="420" y="-110.9" font-family="Times Roman,serif" font-size="14.00">PubKey</text>
+<text text-anchor="middle" x="420" y="-110.9" font-family="Sans" font-size="14.00">PubKey</text>
 </g>
 <!-- stack5_ophash&#45;&gt;stack5_pubkey -->
 <!-- stack5_sig -->
 <g id="node56" class="node"><title>stack5_sig</title>
 <ellipse fill="none" stroke="black" cx="420" cy="-43" rx="27" ry="18"/>
-<text text-anchor="middle" x="420" y="-38.9" font-family="Times Roman,serif" font-size="14.00">Sig</text>
+<text text-anchor="middle" x="420" y="-38.9" font-family="Sans" font-size="14.00">Sig</text>
 </g>
 <!-- stack5_pubkey&#45;&gt;stack5_sig -->
 <!-- stack4_ophash&#45;&gt;stack5_ophash -->
@@ -254,7 +254,7 @@
 <!-- stack4_opdup -->
 <g id="node58" class="node"><title>stack4_opdup</title>
 <polygon fill="lightgrey" stroke="black" points="344,-205 276,-205 276,-169 344,-169 344,-205"/>
-<text text-anchor="middle" x="310" y="-182.9" font-family="Times Roman,serif" font-size="14.00">PubKey</text>
+<text text-anchor="middle" x="310" y="-182.9" font-family="Sans" font-size="14.00">PubKey</text>
 </g>
 <!-- stack4_ophash&#45;&gt;stack4_opdup -->
 <!-- stack4_opdup&#45;&gt;stack4_ophash -->
@@ -265,13 +265,13 @@
 <!-- stack4_pubkey -->
 <g id="node59" class="node"><title>stack4_pubkey</title>
 <ellipse fill="none" stroke="black" cx="310" cy="-115" rx="46.7546" ry="18"/>
-<text text-anchor="middle" x="310" y="-110.9" font-family="Times Roman,serif" font-size="14.00">PubKey</text>
+<text text-anchor="middle" x="310" y="-110.9" font-family="Sans" font-size="14.00">PubKey</text>
 </g>
 <!-- stack4_opdup&#45;&gt;stack4_pubkey -->
 <!-- stack4_sig -->
 <g id="node60" class="node"><title>stack4_sig</title>
 <ellipse fill="none" stroke="black" cx="310" cy="-43" rx="27" ry="18"/>
-<text text-anchor="middle" x="310" y="-38.9" font-family="Times Roman,serif" font-size="14.00">Sig</text>
+<text text-anchor="middle" x="310" y="-38.9" font-family="Sans" font-size="14.00">Sig</text>
 </g>
 <!-- stack4_pubkey&#45;&gt;stack4_sig -->
 <!-- stack3_opdup&#45;&gt;stack4_opdup -->
@@ -282,7 +282,7 @@
 <!-- stack3_pubkey -->
 <g id="node62" class="node"><title>stack3_pubkey</title>
 <ellipse fill="lightgrey" stroke="black" cx="212" cy="-115" rx="46.7546" ry="18"/>
-<text text-anchor="middle" x="212" y="-110.9" font-family="Times Roman,serif" font-size="14.00">PubKey</text>
+<text text-anchor="middle" x="212" y="-110.9" font-family="Sans" font-size="14.00">PubKey</text>
 </g>
 <!-- stack3_opdup&#45;&gt;stack3_pubkey -->
 <!-- stack3_pubkey&#45;&gt;stack3_opdup -->
@@ -293,13 +293,13 @@
 <!-- stack3_sig -->
 <g id="node63" class="node"><title>stack3_sig</title>
 <ellipse fill="none" stroke="black" cx="212" cy="-43" rx="27" ry="18"/>
-<text text-anchor="middle" x="212" y="-38.9" font-family="Times Roman,serif" font-size="14.00">Sig</text>
+<text text-anchor="middle" x="212" y="-38.9" font-family="Sans" font-size="14.00">Sig</text>
 </g>
 <!-- stack3_pubkey&#45;&gt;stack3_sig -->
 <!-- stack2_sig -->
 <g id="node65" class="node"><title>stack2_sig</title>
 <ellipse fill="none" stroke="black" cx="114" cy="-43" rx="27" ry="18"/>
-<text text-anchor="middle" x="114" y="-38.9" font-family="Times Roman,serif" font-size="14.00">Sig</text>
+<text text-anchor="middle" x="114" y="-38.9" font-family="Sans" font-size="14.00">Sig</text>
 </g>
 <!-- stack2_pubkey&#45;&gt;stack2_sig -->
 </g>
