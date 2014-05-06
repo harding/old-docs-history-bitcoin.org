@@ -89,7 +89,7 @@ point (the public key):
     point(private_key) == public_key
 
 {% autocrossref %}
-Because of the way `point()` functions, it's possible to a create [child
+Because of the way `point()` functions, it's possible to create a [child
 public key][]{:#term-child-public-key}{:.term} by combining an
 existing [(parent) public key][parent public
 key]{:#term-parent-public-key}{:.term} with another public key created from any
