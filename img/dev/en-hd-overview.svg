@@ -10,7 +10,7 @@
 <title>extended</title>
 <polygon fill="white" stroke="white" points="-4,5 -4,-244 713,-244 713,5 -4,5"/>
 <text text-anchor="middle" x="354" y="-25.4" font-family="Times Roman,serif" font-size="14.00"> </text>
-<text text-anchor="middle" x="354" y="-8.4" font-family="Times Roman,serif" font-size="14.00">Heirarchial Deterministic (HD) Key Derivation (BIP32)</text>
+<text text-anchor="middle" x="354" y="-8.4" font-family="Times Roman,serif" font-size="14.00">Normal Heirarchical Deterministic (HD) Key Derivation (BIP32)</text>
 <g id="graph2" class="cluster"><title>cluster_parent</title>
 </g>
 <!-- parent_private_key -->
@@ -64,10 +64,9 @@
 </g>
 <!-- rel2 -->
 <g id="node11" class="node"><title>rel2</title>
-<text text-anchor="middle" x="653" y="-180.4" font-family="Times Roman,serif" font-size="14.00">Same</text>
-<text text-anchor="middle" x="653" y="-163.4" font-family="Times Roman,serif" font-size="14.00">Fundamental</text>
-<text text-anchor="middle" x="653" y="-146.4" font-family="Times Roman,serif" font-size="14.00">Mathematical</text>
-<text text-anchor="middle" x="653" y="-129.4" font-family="Times Roman,serif" font-size="14.00">Relationship</text>
+<text text-anchor="middle" x="653" y="-171.9" font-family="Times Roman,serif" font-size="14.00">Derived</text>
+<text text-anchor="middle" x="653" y="-154.9" font-family="Times Roman,serif" font-size="14.00">Mathematical</text>
+<text text-anchor="middle" x="653" y="-137.9" font-family="Times Roman,serif" font-size="14.00">Relationship</text>
 </g>
 <!-- child_private_key&#45;&gt;rel2 -->
 <g id="edge9" class="edge"><title>child_private_key&#45;&gt;rel2</title>
