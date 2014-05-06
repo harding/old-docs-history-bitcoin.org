@@ -11,32 +11,32 @@
 <polygon fill="white" stroke="white" points="-4,5 -4,-290 835,-290 835,5 -4,5"/>
 <g id="graph2" class="cluster"><title>cluster_extended</title>
 <polygon fill="none" stroke="black" points="8,-8 8,-139 822,-139 822,-8 8,-8"/>
-<text text-anchor="middle" x="415" y="-122.4" font-family="Times Roman,serif" font-size="14.00">Rare Extended Forking</text>
+<text text-anchor="middle" x="415" y="-122.4" font-family="Sans" font-size="14.00">Rare Extended Forking</text>
 </g>
 <g id="graph3" class="cluster"><title>cluster_normal</title>
 <polygon fill="none" stroke="black" points="8,-147 8,-278 822,-278 822,-147 8,-147"/>
-<text text-anchor="middle" x="415" y="-261.4" font-family="Times Roman,serif" font-size="14.00">Normal Occassional Forking</text>
+<text text-anchor="middle" x="415" y="-261.4" font-family="Sans" font-size="14.00">Normal Occasional Forking</text>
 </g>
 <!-- block00 -->
 <g id="node2" class="node"><title>block00</title>
 <ellipse fill="none" stroke="black" cx="59" cy="-61" rx="41.8891" ry="18"/>
-<text text-anchor="middle" x="59" y="-56.9" font-family="Times Roman,serif" font-size="14.00">block0</text>
+<text text-anchor="middle" x="59" y="-56.9" font-family="Sans" font-size="14.00">block0</text>
 </g>
 <!-- block01 -->
 <g id="node3" class="node"><title>block01</title>
 <ellipse fill="none" stroke="black" cx="251" cy="-61" rx="41.8891" ry="18"/>
-<text text-anchor="middle" x="251" y="-56.9" font-family="Times Roman,serif" font-size="14.00">block1</text>
+<text text-anchor="middle" x="251" y="-56.9" font-family="Sans" font-size="14.00">block1</text>
 </g>
 <!-- block00&#45;&gt;block01 -->
 <g id="edge11" class="edge"><title>block00&#45;&gt;block01</title>
 <path fill="none" stroke="black" d="M101.611,-61C130.098,-61 167.781,-61 198.173,-61"/>
 <polygon fill="black" stroke="black" points="198.177,-64.5001 208.177,-61 198.177,-57.5001 198.177,-64.5001"/>
-<text text-anchor="middle" x="155" y="-65.4" font-family="Times Roman,serif" font-size="14.00">Header Hash</text>
+<text text-anchor="middle" x="155" y="-65.4" font-family="Sans" font-size="14.00">Header Hash</text>
 </g>
 <!-- block02 -->
 <g id="node4" class="node"><title>block02</title>
 <ellipse fill="none" stroke="black" cx="355" cy="-34" rx="41.8891" ry="18"/>
-<text text-anchor="middle" x="355" y="-29.9" font-family="Times Roman,serif" font-size="14.00">block2</text>
+<text text-anchor="middle" x="355" y="-29.9" font-family="Sans" font-size="14.00">block2</text>
 </g>
 <!-- block01&#45;&gt;block02 -->
 <g id="edge13" class="edge"><title>block01&#45;&gt;block02</title>
@@ -46,7 +46,7 @@
 <!-- block02x -->
 <g id="node9" class="node"><title>block02x</title>
 <ellipse fill="none" stroke="black" cx="355" cy="-88" rx="41.8891" ry="18"/>
-<text text-anchor="middle" x="355" y="-83.9" font-family="Times Roman,serif" font-size="14.00">block2</text>
+<text text-anchor="middle" x="355" y="-83.9" font-family="Sans" font-size="14.00">block2</text>
 </g>
 <!-- block01&#45;&gt;block02x -->
 <g id="edge3" class="edge"><title>block01&#45;&gt;block02x</title>
@@ -56,7 +56,7 @@
 <!-- block03 -->
 <g id="node5" class="node"><title>block03</title>
 <ellipse fill="none" stroke="black" cx="459" cy="-34" rx="41.8891" ry="18"/>
-<text text-anchor="middle" x="459" y="-29.9" font-family="Times Roman,serif" font-size="14.00">block3</text>
+<text text-anchor="middle" x="459" y="-29.9" font-family="Sans" font-size="14.00">block3</text>
 </g>
 <!-- block02&#45;&gt;block03 -->
 <g id="edge15" class="edge"><title>block02&#45;&gt;block03</title>
@@ -66,7 +66,7 @@
 <!-- block04 -->
 <g id="node6" class="node"><title>block04</title>
 <ellipse fill="none" stroke="black" cx="563" cy="-34" rx="41.8891" ry="18"/>
-<text text-anchor="middle" x="563" y="-29.9" font-family="Times Roman,serif" font-size="14.00">block4</text>
+<text text-anchor="middle" x="563" y="-29.9" font-family="Sans" font-size="14.00">block4</text>
 </g>
 <!-- block03&#45;&gt;block04 -->
 <g id="edge17" class="edge"><title>block03&#45;&gt;block04</title>
@@ -76,7 +76,7 @@
 <!-- block05 -->
 <g id="node7" class="node"><title>block05</title>
 <ellipse fill="none" stroke="black" cx="667" cy="-34" rx="41.8891" ry="18"/>
-<text text-anchor="middle" x="667" y="-29.9" font-family="Times Roman,serif" font-size="14.00">block5</text>
+<text text-anchor="middle" x="667" y="-29.9" font-family="Sans" font-size="14.00">block5</text>
 </g>
 <!-- block04&#45;&gt;block05 -->
 <g id="edge19" class="edge"><title>block04&#45;&gt;block05</title>
@@ -86,7 +86,7 @@
 <!-- block06 -->
 <g id="node8" class="node"><title>block06</title>
 <ellipse fill="none" stroke="black" cx="771" cy="-34" rx="41.8891" ry="18"/>
-<text text-anchor="middle" x="771" y="-29.9" font-family="Times Roman,serif" font-size="14.00">block6</text>
+<text text-anchor="middle" x="771" y="-29.9" font-family="Sans" font-size="14.00">block6</text>
 </g>
 <!-- block05&#45;&gt;block06 -->
 <g id="edge21" class="edge"><title>block05&#45;&gt;block06</title>
@@ -96,7 +96,7 @@
 <!-- block03x -->
 <g id="node10" class="node"><title>block03x</title>
 <ellipse fill="none" stroke="black" cx="459" cy="-88" rx="41.8891" ry="18"/>
-<text text-anchor="middle" x="459" y="-83.9" font-family="Times Roman,serif" font-size="14.00">block3</text>
+<text text-anchor="middle" x="459" y="-83.9" font-family="Sans" font-size="14.00">block3</text>
 </g>
 <!-- block02x&#45;&gt;block03x -->
 <g id="edge5" class="edge"><title>block02x&#45;&gt;block03x</title>
@@ -106,7 +106,7 @@
 <!-- block04x -->
 <g id="node11" class="node"><title>block04x</title>
 <ellipse fill="none" stroke="black" cx="563" cy="-88" rx="41.8891" ry="18"/>
-<text text-anchor="middle" x="563" y="-83.9" font-family="Times Roman,serif" font-size="14.00">block4</text>
+<text text-anchor="middle" x="563" y="-83.9" font-family="Sans" font-size="14.00">block4</text>
 </g>
 <!-- block03x&#45;&gt;block04x -->
 <g id="edge7" class="edge"><title>block03x&#45;&gt;block04x</title>
@@ -116,7 +116,7 @@
 <!-- block05x -->
 <g id="node12" class="node"><title>block05x</title>
 <ellipse fill="none" stroke="black" cx="667" cy="-88" rx="41.8891" ry="18"/>
-<text text-anchor="middle" x="667" y="-83.9" font-family="Times Roman,serif" font-size="14.00">block5</text>
+<text text-anchor="middle" x="667" y="-83.9" font-family="Sans" font-size="14.00">block5</text>
 </g>
 <!-- block04x&#45;&gt;block05x -->
 <g id="edge9" class="edge"><title>block04x&#45;&gt;block05x</title>
@@ -126,17 +126,17 @@
 <!-- block2x -->
 <g id="node24" class="node"><title>block2x</title>
 <ellipse fill="none" stroke="black" cx="355" cy="-173" rx="41.8891" ry="18"/>
-<text text-anchor="middle" x="355" y="-168.9" font-family="Times Roman,serif" font-size="14.00">block2</text>
+<text text-anchor="middle" x="355" y="-168.9" font-family="Sans" font-size="14.00">block2</text>
 </g>
 <!-- block5x -->
 <g id="node25" class="node"><title>block5x</title>
 <ellipse fill="none" stroke="black" cx="667" cy="-173" rx="41.8891" ry="18"/>
-<text text-anchor="middle" x="667" y="-168.9" font-family="Times Roman,serif" font-size="14.00">block5</text>
+<text text-anchor="middle" x="667" y="-168.9" font-family="Sans" font-size="14.00">block5</text>
 </g>
 <!-- block1 -->
 <g id="node26" class="node"><title>block1</title>
 <ellipse fill="none" stroke="black" cx="251" cy="-227" rx="41.8891" ry="18"/>
-<text text-anchor="middle" x="251" y="-222.9" font-family="Times Roman,serif" font-size="14.00">block1</text>
+<text text-anchor="middle" x="251" y="-222.9" font-family="Sans" font-size="14.00">block1</text>
 </g>
 <!-- block1&#45;&gt;block2x -->
 <g id="edge24" class="edge"><title>block1&#45;&gt;block2x</title>
@@ -146,7 +146,7 @@
 <!-- block2 -->
 <g id="node33" class="node"><title>block2</title>
 <ellipse fill="none" stroke="black" cx="355" cy="-227" rx="41.8891" ry="18"/>
-<text text-anchor="middle" x="355" y="-222.9" font-family="Times Roman,serif" font-size="14.00">block2</text>
+<text text-anchor="middle" x="355" y="-222.9" font-family="Sans" font-size="14.00">block2</text>
 </g>
 <!-- block1&#45;&gt;block2 -->
 <g id="edge30" class="edge"><title>block1&#45;&gt;block2</title>
@@ -156,7 +156,7 @@
 <!-- block4 -->
 <g id="node28" class="node"><title>block4</title>
 <ellipse fill="none" stroke="black" cx="563" cy="-227" rx="41.8891" ry="18"/>
-<text text-anchor="middle" x="563" y="-222.9" font-family="Times Roman,serif" font-size="14.00">block4</text>
+<text text-anchor="middle" x="563" y="-222.9" font-family="Sans" font-size="14.00">block4</text>
 </g>
 <!-- block4&#45;&gt;block5x -->
 <g id="edge26" class="edge"><title>block4&#45;&gt;block5x</title>
@@ -166,7 +166,7 @@
 <!-- block5 -->
 <g id="node38" class="node"><title>block5</title>
 <ellipse fill="none" stroke="black" cx="667" cy="-227" rx="41.8891" ry="18"/>
-<text text-anchor="middle" x="667" y="-222.9" font-family="Times Roman,serif" font-size="14.00">block5</text>
+<text text-anchor="middle" x="667" y="-222.9" font-family="Sans" font-size="14.00">block5</text>
 </g>
 <!-- block4&#45;&gt;block5 -->
 <g id="edge36" class="edge"><title>block4&#45;&gt;block5</title>
@@ -176,18 +176,18 @@
 <!-- block0 -->
 <g id="node30" class="node"><title>block0</title>
 <ellipse fill="none" stroke="black" cx="59" cy="-227" rx="41.8891" ry="18"/>
-<text text-anchor="middle" x="59" y="-222.9" font-family="Times Roman,serif" font-size="14.00">block0</text>
+<text text-anchor="middle" x="59" y="-222.9" font-family="Sans" font-size="14.00">block0</text>
 </g>
 <!-- block0&#45;&gt;block1 -->
 <g id="edge28" class="edge"><title>block0&#45;&gt;block1</title>
 <path fill="none" stroke="black" d="M101.611,-227C130.098,-227 167.781,-227 198.173,-227"/>
 <polygon fill="black" stroke="black" points="198.177,-230.5 208.177,-227 198.177,-223.5 198.177,-230.5"/>
-<text text-anchor="middle" x="155" y="-231.4" font-family="Times Roman,serif" font-size="14.00">Header Hash</text>
+<text text-anchor="middle" x="155" y="-231.4" font-family="Sans" font-size="14.00">Header Hash</text>
 </g>
 <!-- block3 -->
 <g id="node35" class="node"><title>block3</title>
 <ellipse fill="none" stroke="black" cx="459" cy="-227" rx="41.8891" ry="18"/>
-<text text-anchor="middle" x="459" y="-222.9" font-family="Times Roman,serif" font-size="14.00">block3</text>
+<text text-anchor="middle" x="459" y="-222.9" font-family="Sans" font-size="14.00">block3</text>
 </g>
 <!-- block2&#45;&gt;block3 -->
 <g id="edge32" class="edge"><title>block2&#45;&gt;block3</title>
@@ -202,7 +202,7 @@
 <!-- block6 -->
 <g id="node40" class="node"><title>block6</title>
 <ellipse fill="none" stroke="black" cx="771" cy="-227" rx="41.8891" ry="18"/>
-<text text-anchor="middle" x="771" y="-222.9" font-family="Times Roman,serif" font-size="14.00">block6</text>
+<text text-anchor="middle" x="771" y="-222.9" font-family="Sans" font-size="14.00">block6</text>
 </g>
 <!-- block5&#45;&gt;block6 -->
 <g id="edge38" class="edge"><title>block5&#45;&gt;block6</title>
