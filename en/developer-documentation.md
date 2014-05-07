@@ -21,8 +21,8 @@ title: "Developer Documentation - Bitcoin"
       <p><a href="/en/developer-reference#block-chain">Block Chain Reference</a></p>
     </div><div>
       <h2><img src="/img/ico_micro.svg" class="titleicon" alt="Icon">Transactions</h2>
-      <p><a href="/en/developer-guide#transactions">Transaction Guide</a></p>
-      <p><a href="/en/developer-reference#transaction">Transaction Reference</a></p>
+      <p><a href="/en/developer-guide#transactions">Transactions Guide</a></p>
+      <p><a href="/en/developer-reference#transactions">Transactions Reference</a></p>
     </div>
   </div>
   <div>
