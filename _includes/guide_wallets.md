@@ -282,6 +282,41 @@ for the full HD protocol specification.
 
 {% endautocrossref %}
 
+#### Storing Root Seeds
+
+{% autocrossref %}
+
+Root seeds in the HD protocol are 128, 256, or 512 bits of random data
+which must be backed up precisely. To make it more convenient to use
+non-digital backup methods, such as memorization or hand-copying, BIP39
+defines a method for creating a 512-bit root seed from a pseudo-sentence
+(mnemonic) of common natural-language words which was itself created
+from 128 to 256 bits of entropy and optionally protected by a password.
+
+The number of words generated correlates to the amount of entropy used:
+
+| Entropy Bits |  Words |
+|--------------|--------|
+|  128         |    12  |
+|  160         |    15  |
+|  192         |    18  |
+|  224         |    21  |
+|  256         |    24  |
+
+The passphrase can be of any length.  It is simply appended to the mnemonic
+pseudo-sentence, and then both the mnemonic and password are hashed
+2,048 times using HMAC-SHA512, resulting in a seemingly-random 512-bit seed.  Because any
+input<!--noref--> to the hash function creates a seemingly-random 512-bit seed,
+there is no fundamental way to prove the user entered the correct
+password, possibly allowing the user to protect a seed even when under
+duress.
+
+For implementation details, please see BIP39.
+
+{% endautocrossref %}
+
+
+
 ### Loose-Key Wallets
 
 {% autocrossref %}

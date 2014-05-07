@@ -225,4 +225,5 @@ X509Certificates:
 ## BIPS in numerical order; don't use padding zeros (e.g. BIP70 not BIP0070)
 BIP21:
 BIP32:
+BIP39:
 BIP70:

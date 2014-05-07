@@ -174,6 +174,7 @@
 [BFGMiner]: https://github.com/luke-jr/bfgminer
 [BIP21]: https://github.com/bitcoin/bips/blob/master/bip-0021.mediawiki
 [BIP32]: https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki
+[BIP39]: https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki
 [BIP70]: https://github.com/bitcoin/bips/blob/master/bip-0070.mediawiki
 [bitcoin-documentation mailing list]: https://groups.google.com/forum/#!forum/bitcoin-documentation
 [bitcoinpdf]: https://bitcoin.org/bitcoin.pdf
