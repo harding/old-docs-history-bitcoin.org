@@ -34,15 +34,15 @@ title: "Developer Documentation - Bitcoin"
     </div><div>
       <h2><img src="/img/ico_key.svg" class="titleicon" alt="Icon">Wallets</h2>
       <p><a href="/en/developer-guide#wallets">Wallets Guide</a></p>
-      <p><a href="https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki">BIP-0032</a> - HD Wallets</p>
-      <p><a href="https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki">BIP-0039</a> - Mnemonic Code</p>
+      <p><a href="https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki">BIP-0032</a> - BIP HD Wallets</p>
+      <p><a href="https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki">BIP-0039</a> - BIP Mnemonic Code</p>
     </div>
   </div>
   <div>
     <div>
       <h2><img src="/img/ico_bill.svg" class="titleicon" alt="Icon">Payment Processing</h2>
       <p><a href="/en/developer-guide#payment-processing">Payment Processing Guide</a></p>
-      <p><a href="https://github.com/bitcoin/bips/blob/master/bip-0070.mediawiki">BIP-0070</a> - Payment Protocol</p>
+      <p><a href="https://github.com/bitcoin/bips/blob/master/bip-0070.mediawiki">BIP-0070</a> - BIP Payment Protocol</p>
     </div><div>
       <h2><img src="/img/ico_conf.svg" class="titleicon" alt="Icon">Operating Modes</h2>
       <p><a href="/en/developer-guide#operating-modes">Operating Modes Guide</a></p>
@@ -56,8 +56,8 @@ title: "Developer Documentation - Bitcoin"
     </div><div>
       <h2><img src="/img/ico_mining.svg" class="titleicon" alt="Icon">Mining</h2>
       <p><a href="/en/developer-guide#mining">Mining Guide</a></p>
-      <p><a href="https://github.com/bitcoin/bips/blob/master/bip-0022.mediawiki">BIP-0022</a> - getworktemplate Fundamentals</p>
-      <p><a href="https://github.com/bitcoin/bips/blob/master/bip-0023.mediawiki">BIP-0023</a> - getworktemplate Pooled Mining</p>
+      <p><a href="https://github.com/bitcoin/bips/blob/master/bip-0022.mediawiki">BIP-0022</a> - BIP getworktemplate Fundamentals</p>
+      <p><a href="https://github.com/bitcoin/bips/blob/master/bip-0023.mediawiki">BIP-0023</a> - BIP getworktemplate Pooled Mining</p>
     </div>
   </div>
 </div>
