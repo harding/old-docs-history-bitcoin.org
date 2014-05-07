@@ -1,4 +1,4 @@
-## Block Chain Reference
+## Block Chain
 
 The following subsections briefly document core blocks details.
 

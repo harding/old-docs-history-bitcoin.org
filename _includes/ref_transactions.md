@@ -1,4 +1,4 @@
-## Transaction Reference
+## Transaction
 
 The following subsections briefly document core transaction details.
 
