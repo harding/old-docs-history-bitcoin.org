@@ -5,7 +5,7 @@ rankdir=LR;
 penwidth=1.75;
 node [ penwidth = 1.75, shape = "box" ];
 edge [ penwidth = 1.75, style = "dashed" ];
-nodesep=0.35;
+nodesep=0.15;
 splines = ortho;
 ranksep = 0.70;
 
@@ -61,6 +61,6 @@ M0p_0 -> M0p_0_0 [ label = "Normal extended\npublic keys\ncan derive child\npubl
 m0p_1p -> m0p_1p_0 [ label = "Only derivation from\nextended private keys\nis possible for\nhardened keys" ];
 
 
-label = "m/ = private key           M/ = public key\ni = i (Normal)           i' = i (Hardened)\n \nHD Wallet Key Derivation Using \"Prime\" Notation"
+label = "Hierarchical Deterministic Key Derivation"
 
 }

@@ -20,13 +20,21 @@ title: "Developer Guide - Bitcoin"
 
 {% include guide_intro.md %}
 {% include guide_block_chain.md %}
+
 {% include guide_transactions.md %}
+
 {% include guide_contracts.md %}
+
 {% include guide_wallets.md %}
+
 {% include guide_payment_processing.md %}
+
 {% include guide_operating_modes.md %}
+
 {% include guide_p2p_network.md %}
+
 {% include guide_mining.md %}
+
 {% include references.md %}
 
 </div>

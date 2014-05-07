@@ -6,30 +6,37 @@ penwidth=1.75;
 node [ penwidth = 1.75, shape = "box" ];
 edge [ penwidth = 1.75 ];
 nodesep=0.2;
+ranksep=0.2;
 splines = ortho;
 
-subgraph cluster_entropy {
-style = "invis";
-entropy1 [ label = "256 Bits\nEntropy" ];
-entropy2 [ label = "256 Bits\nEntropy" ];
+entropy [ label = "128, 256,\nOr 512 Bits\nOf Entropy\n(The Seed)" ];
+hmac [ label = "512-Bit\nOne-Way\nHash", style = "diagonals" ];
+
+entropy -> hmac;
+hmac -> private_key [label = "256 Bits" ];
+hmac -> chain_code [label = "256 Bits" ];
+
+
+subgraph cluster_y {
+style = "invis"
+public_key [ label = "Master\nPublic Key" ];
+private_key [ label = "Master\nPrivate Key" ];
+chain_code [ label = "Master\nChain Code" ];
 }
 
+style = "invis"
 
-private_key [ label = "Root\nPrivate Key" ];
-chain_code [ label = "Root\nChain Code" ];
-public_key [ label = "Root\nPublic Key" ];
+subgraph cluster_x {
+extended_private_key [ label = "Master\nExtended\nPrivate Key" ];
+extended_public_key [ label = "Master\nExtended\nPublic Key" ];
+}
 
-extended_private_key [ label = "Root\nExtended\nPrivate Key\n(512 Bits)" ];
-extended_public_key [ label = "Root\nExtended\nPublic Key" ];
-
-entropy1 -> private_key;
-private_key -> public_key [ style = "dashed" ];
-entropy2 -> chain_code;
+private_key -> public_key [ style = "dashed", constraint = 1 ];
 chain_code -> extended_private_key;
 chain_code -> extended_public_key;
 private_key -> extended_private_key;
 public_key -> extended_public_key;
 
-label = "Creation Of The Root Keys And Root Extended Keys\n(Solid Line = Copy; Dashed Line = Transform)"
+label = "Creation Of The Master Keys"
 
 }

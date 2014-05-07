@@ -12,6 +12,8 @@ base58: base58check
 base58check:
 ## bitcoin -- Recommend against bitcoin (singular) because of confusion between protocol, software, denomination
 bitcoins: 
+bitcoin QR code: URI QR code
+bitcoin QR codes: URI QR code
 '`bitcoin:` URI': bitcoin uri
 '`bitcoin:` URIs': bitcoin uri
 block:
@@ -32,7 +34,12 @@ change address:
 change addresses: change address
 change output:
 change outputs: change output
+child extended key:
+child extended keys: child extended key
+child key:
+child keys: child key
 child public key:
+child public keys: child public key
 coinbase: coinbase transaction
 coinbase transaction:
 coinbase transactions: coinbase transaction
@@ -65,8 +72,8 @@ genesis block:
 '`getblock`': rpc getblock
 '`getblockhash`': rpc getblockhash
 '`getrawtransaction` RPC': rpc getrawtransaction
-hardened child key:
-hardened child private key: hardened child key
+hardened extended private key:
+HD protocol:
 header nonce:
 high-priority transaction: high-priority transactions
 high-priority transactions:
@@ -74,7 +81,6 @@ inputs: input
 input:
 intermediate certificate:
 intermediate certificates: intermediate certificate
-key fingerprint:
 key index:
 key pair:
 '`keypoolrefill`': rpc keypoolrefill
@@ -84,8 +90,8 @@ leaf certificate:
 locktime:
 long-term fork:
 mainnet:
-master key:
-master keys: master key
+master chain code:
+master private key:
 '`memo`': pp memo
 '`message`': message
 '`merchant_data`': pp merchant data
@@ -104,8 +110,6 @@ millibit: millibits
 millibits:
 multisig:
 network:
-nonce field: header nonce
-normal child key:
 null data: 
 '`op_checkmultisig`': op_checkmultisig
 '`op_checksig`': op_checksig
@@ -125,11 +129,12 @@ output index:
 p2ph:
 p2sh:
 p2sh multisig:
-parent extended private key: extended key
-parent key:
-parent private key: parent key
+parent chain code:
+parent private key:
+parent public key:
 Payment message: pp payment
 payment protocol:
+"payment protocol's": payment protocol
 PaymentACK:
 PaymentDetails:
 PaymentRequest:
@@ -140,6 +145,7 @@ peers: peer
 peer-to-peer network: network
 pki:
 '`pki_type`': pp pki type
+'`point()`': point function
 private key:
 private keys: private key
 proof of work:
@@ -151,19 +157,17 @@ pubkey hashes: pubkey hash
 public key:
 public keys: public key
 public key infrastructure: pki
-QR code: URI QR code
-QR codes: URI QR code
 '`r`': r
 raw format:
 rawtransaction format: raw format
 receipt:
 recurrent rebilling:
 redeemScript:
-redeemScript hash: script hash
 refund: 
 refunds: refund
 '`refund_to`': pp refund to
 root certificate:
+root seed:
 RPCs: rpc
 RPC:
 satoshi:
@@ -175,7 +179,6 @@ scripts: script
 scriptSig:
 scriptSigs: scriptSig
 secp256k1:
-seed:
 sequence number:
 sequence numbers: sequence number
 SIGHASH: signature hash
@@ -209,7 +212,6 @@ unconfirmed:
 unconfirmed transactions:
 unique address: unique addresses
 unique addresses:
-unspent outputs: utxo
 utxo:
 utxos: utxo
 verified payments:
@@ -223,4 +225,5 @@ X509Certificates:
 ## BIPS in numerical order; don't use padding zeros (e.g. BIP70 not BIP0070)
 BIP21:
 BIP32:
+BIP39:
 BIP70:

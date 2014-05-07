@@ -18,12 +18,12 @@
 [broadcasts]: /en/developer-guide#transaction-broadcasting "Sending transactions or blocks to all other peers on the Bitcoin network (compare to privately transmitting to a single peer or partner"
 [broadcasting]: /en/developer-guide#transaction-broadcasting "Sending transactions or blocks to all other peers on the Bitcoin network (compare to privately transmitting to a single peer or partner)"
 [certificate chain]: /en/developer-guide#FIXME-term-certificate-chain "A chain of certificates connecting a individual's leaf certificate to the certificate authority's root certificate"
-[chain code]: /en/developer-guide#term-chain-code "In HD wallets, 32 bytes of entropy added to the master public and private keys to help them generate secure child keys; the chain code is usually derived from a seed along with the master private key"
+[chain code]: /en/developer-guide#term-chain-code "In HD wallets, 256 bits of entropy added to the master public and private keys to help them generate secure child keys; the chain code is usually derived from a seed along with the master private key"
 [change address]: /en/developer-guide#term-change-output "An output used by a spender to send back to himself some of the satoshis from the inputs"
 [change output]: /en/developer-guide#term-change-output "An output used by a spender to send back to himself some of the satoshis from the inputs"
-[child extended key]: /en/developer-guide#term-child-extended-key "A child key extended so that it can become a parent key and derive its own child keys"
+[child extended key]: /en/developer-guide#term-child-extended-key "A child key extended with a chain code so that it can become a parent key and derive its own child keys"
 [child key]: /en/developer-guide#term-child-key "In HD wallets, a key derived from a parent key"
-[child public key]: /en/developer-guide#term-child-public-key "In HD wallets, a public key derived from a parent public key or a child private key"
+[child public key]: /en/developer-guide#term-child-public-key "In HD wallets, a public key derived from a parent public key or a corresponding child private key"
 [coinbase field]: /en/developer-reference#term-coinbase-field "A special input-like field for coinbase transactions"
 [coinbase transaction]: /en/developer-reference#term-coinbase-tx "A special transaction which miners must create when they generate a block"
 [confirm]: /en/developer-guide#term-confirmation "A transaction included in a block currently on the block chain"
@@ -34,22 +34,19 @@
 [denomination]: /en/developer-guide#term-denomination "bitcoins (BTC), bitcents (cBTC), millibits (mBTC), microbits (uBTC), or satoshis"
 [difficulty]: /en/developer-guide#term-difficulty "A number corresponding to the target threshold which indicates how difficult it will be to find the next block"
 [double spend]: /en/developer-guide#term-double-spend "Attempting to spend the same satoshis which were spent in a previous transaction"
-[extended key]: /en/developer-guide#term-extended-key "A public or private key extended with the chain code, which adds an extra 32 bytes of entropy"
-[extended private key]: /en/developer-guide#term-extended-private-key "A private key extended with the chain code, which adds an extra 32 bytes of entropy"
-[extended public key]: /en/developer-guide#term-extended-public-key "A public key extended with the chain code, which adds an extra 32 bytes of entropy "
-[external chain]: /en/developer-guide#term-external-chain "A default subdivision in HD wallet accounts used for public P2PH addresses and other public keys used by other people"
+[extended key]: /en/developer-guide#term-extended-key "A public or private key extended with the chain code to allow them to derive child keys"
+[extended private key]: /en/developer-guide#term-extended-private-key "A private key extended with the chain code so that it can derive child private keys"
+[extended public key]: /en/developer-guide#term-extended-public-key "A public key extended with the chain code so that it can derive child public keys"
 [escrow contract]: /en/developer-guide#term-escrow-contract "A contract in which the spender and receiver store satoshis in a multisig output until both parties agree to release the satoshis"
 [fiat]: /en/developer-guide#term-fiat "National currencies such as the dollar or euro"
 [genesis block]: /en/developer-guide#term-genesis-block "The first block created; also called block 0"
-[hardened child key]: /en/developer-guide#term-hardened-child-key "In an HD wallet, a child key which can only be derived from a parent private key; it cannot be derived from a parent public key"
-[HD account]: /en/developer-guide#term-hd-account "A sub-chain of the master chain in an HD wallet"
+[hardened extended private key]: /en/developer-guide#term-hardened-extended-private-key "A private key whose corresponding public key cannot derive child keys"
+[HD protocol]: /en/developer-guide#term-hd-protocol "The Hierarchical Deterministic (HD) key creation and transfer protocol"
 [header nonce]: /en/developer-reference#term-header-nonce "Four bytes of arbitrary data in a block header used to let miners create headers with different hashes for proof of work"
 [high-priority transactions]: /en/developer-guide#term-high-priority-transactions "Transactions which don't pay a transaction fee; only transactions spending long-idle outputs are eligible"
 [input]: /en/developer-guide#term-input "The input to a transaction linking to the output of a previous transaction which permits spending of satoshis"
 [inputs]: /en/developer-guide#term-input "The input to a transaction linking to the output of a previous transaction which permits spending of satoshis"
-[internal chain]: /en/developer-guide#term-internal-chain "A default subdivision in HD wallet accounts used for change addresses and other self-created transactions"
 [intermediate certificate]: /en/developer-guide#term-intermediate-certificate "A intermediate certificate authority certificate which helps connect a leaf (receiver) certificate to a root certificate authority"
-[key fingerprint]: /en/developer-guide#term-key-fingerprint "The first 32 bits of an extended key (not including the chain code) used to identify the extended key" 
 [key index]: /en/developer-guide#term-key-index "An index number used in the HD wallet formula to generate child keys from a parent key" 
 [key pair]: /en/developer-guide#term-key-pair "A private key and its derived public key"
 [label]: /en/developer-guide#term-label "The label parameter of a bitcoin: URI which provides the spender with the receiver's name (unauthenticated)" 
@@ -57,7 +54,8 @@
 [locktime]: /en/developer-guide#term-locktime "Part of a transaction which indicates the earliest time or earliest block when that transaction can be added to the block chain"
 [long-term fork]: /en/developer-guide#term-long-term-fork "When a series of blocks have corresponding block heights, indicating a possibly serious problem"
 [mainnet]: /en/developer-guide#term-mainnet "The Bitcoin main network used to transfer satoshis (compare to testnet, the test network)"
-[master key]: /en/developer-guide#term-master-key "In an HD wallet, top-level private key extended by the chaincode; master keys are usually generated by a seed"
+[master chain code]: /en/developer-guide#term-master-chain-code "The chain code derived from the root seed"
+[master private key]: /en/developer-guide#term-master-private-key "A private key derived from the root seed"
 [merge]: /en/developer-guide#term-merge "Spending, in the same transaction, multiple outputs which can be traced back to different previous spenders, leaking information about how many satoshis you control"
 [merge avoidance]: /en/developer-guide#term-merge-avoidance "A strategy for selecting which outputs to spend that avoids merging outputs with different histories that could leak private information"
 [message]: /en/developer-guide#term-message "A parameter of bitcoin: URIs which allows the receiver to optionally specify a message to the spender"
@@ -71,7 +69,6 @@
 [minimum fee]: /en/developer-guide#term-minimum-fee "The minimum fee a transaction must pay in must circumstances to be mined or broadcast by peers across the network"
 [multisig]: /en/developer-guide#term-multisig "An output script using OP_CHECKMULTISIG to check for multiple signatures"
 [network]: /en/developer-guide#term-network "The Bitcoin P2P network which broadcasts transactions and blocks"
-[normal child key]: /en/developer-guide#term-normal-child-key "A standard public or private Bitcoin key which was derived from an extended key"
 [Null data]: /en/developer-guide#term-null-data "A standard transaction type which allows adding 40 bytes of arbitrary data to the block chain up to once per transaction"
 [op_checkmultisig]: /en/developer-reference#term-op-checkmultisig "Op code which returns true if one or more provided signatures (m) sign the correct parts of a transaction and match one or more provided public keys (n)"
 [op_checksig]: /en/developer-reference#term-op-checksig "Op code which returns true if a signature signs the correct parts of a transaction and matches a provided public key"
@@ -89,7 +86,9 @@
 [P2PH]: /en/developer-guide#term-p2ph "A script which Pays To Pubkey Hashes (P2PH), allowing spending of satoshis to anyone with a Bitcoin address"
 [P2SH]: /en/developer-guide#term-p2sh "A script which Pays To Script Hashes (P2SH), allowing convenient spending of satoshis to an address referencing a script"
 [P2SH multisig]: /en/developer-guide#term-p2sh-multisig "A multisig script embedded in the redeemScript of a pay-to-script-hash (P2SH) transaction"
-[parent key]: /en/developer-guide#term-parent-key "An extended private or public key capable of forming child keys"
+[parent chain code]: /en/developer-guide#term-parent-chain-code "A chain code which has helped create child public or private keys"
+[parent private key]: /en/developer-guide#term-parent-private-key "A private key which has created child private keys"
+[parent public key]: /en/developer-guide#term-parent-public-key "A public key corresponding to a parent private key which has child private keys"
 [payment protocol]: /en/developer-guide#term-payment-protocol "The protocol defined in BIP70 which lets spenders get signed payment details from receivers"
 [PaymentACK]: /en/developer-guide#term-paymentack "The PaymentACK of the payment protocol which allows the receiver to indicate to the spender that the payment is being processed"
 [PaymentDetails]: /en/developer-guide#term-paymentdetails "The PaymentDetails of the payment protocol which allows the receiver to specify the payment details to the spender"
@@ -98,6 +97,7 @@
 [peer]: /en/developer-guide#term-peer "Peer on the P2P network who receives and broadcasts transactions and blocks"
 [peers]: /en/developer-guide#term-peer "Peers on the P2P network who receive and broadcast transactions and blocks"
 [PKI]: /en/developer-guide#term-pki "Public Key Infrastructure; usually meant to indicate the X.509 certificate system used for HTTP Secure (https)."
+[point function]: /en/developer-guide#term-point-function "The ECDSA function used to create a public key from a private key"
 [private key]: /en/developer-guide#term-private-key "The private portion of a keypair which can create signatures which other people can verify using the public key"
 [private keys]: /en/developer-guide#term-private-key "The private portion of a keypair which can create signatures which other people can verify using the public key"
 [pubkey hash]: /en/developer-guide#term-pubkey-hash "The hash of a public key which can be included in a P2PH output"
@@ -123,6 +123,7 @@
 [redeemScript]: /en/developer-guide#term-redeemscript "A script created by the recipient, hashed, and given to the spender for use in a P2SH output"
 [refund]: /en/developer-guide#issuing-refunds "A transaction which refunds some or all satoshis received in a previous transaction"
 [root certificate]: /en/developer-guide#term-root-certificate "A certificate belonging to a certificate authority (CA)"
+[root seed]: /en/developer-guide#term-root-seed "A potentially-short value used as a seed to generate a master private key and master chain code for an HD wallet"
 [satoshi]: /en/developer-guide#term-satoshi "The smallest unit of Bitcoin value; 0.00000001 bitcoins.  Also used generically for any value of bitcoins"
 [satoshis]: /en/developer-guide#term-satoshi "The smallest unit of Bitcoin value; 0.00000001 bitcoins.  Also used generically for any value of bitcoins"
 [sequence number]: /en/developer-guide#term-sequence-number "A number intended to allow time locked transactions to be updated before being finalized; not currently used except to disable locktime in a transaction"
@@ -130,7 +131,6 @@
 [scripts]: /en/developer-guide#term-script "The part of an output which sets the conditions for spending of the satoshis in that output"
 [scriptSig]: /en/developer-guide#term-scriptsig "Data generated by a spender which is almost always used as variables to satisfy an output script"
 [script hash]: /en/developer-guide#term-script-hash "The hash of a redeemScript used to create a P2SH output"
-[seed]: /en/developer-guide#term-master-key-seed "A potentially-short value used as a seed to generate a master private key and chain code for an HD wallet"
 [sha_shacp]: /en/developer-guide#term-sighash-all-sighash-anyonecanpay "Signature hash type which allows other people to contribute satoshis without changing the number of satoshis sent nor where they go"
 [shacp]: /en/developer-guide#term-sighash-anyonecanpay "A signature hash type which modifies the behavior of other signature hash types"
 [shn_shacp]: /en/developer-guide#term-sighash-none-sighash-anyonecanpay "Signature hash type which allows unfettered modification of a transaction"
@@ -169,6 +169,7 @@
 [BFGMiner]: https://github.com/luke-jr/bfgminer
 [BIP21]: https://github.com/bitcoin/bips/blob/master/bip-0021.mediawiki
 [BIP32]: https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki
+[BIP39]: https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki
 [BIP70]: https://github.com/bitcoin/bips/blob/master/bip-0070.mediawiki
 [bitcoin-documentation mailing list]: https://groups.google.com/forum/#!forum/bitcoin-documentation
 [bitcoinpdf]: https://bitcoin.org/bitcoin.pdf
@@ -180,16 +181,20 @@
 [core paymentrequest.proto]: https://github.com/bitcoin/bitcoin/blob/master/src/qt/paymentrequest.proto
 [core script.h]: https://github.com/bitcoin/bitcoin/blob/master/src/script.h
 [DER]: https://en.wikipedia.org/wiki/Abstract_Syntax_Notation_One
+[devguide wallets]: /en/developer-guide#wallets
+[devref wallets]: /en/developer-reference#wallets
 [docs issue]: https://github.com/saivann/bitcoin.org/issues
 [ECDSA]: https://en.wikipedia.org/wiki/Elliptic_Curve_DSA
 [Eloipool]: https://gitorious.org/bitcoin/eloipool
 [forum tech support]: https://bitcointalk.org/index.php?board=4.0
+[HMAC-SHA512]: https://en.wikipedia.org/wiki/HMAC
 [HTTP longpoll]: https://en.wikipedia.org/wiki/Push_technology#Long_polling
 [irc channels]: https://en.bitcoin.it/wiki/IRC_channels
 [MIME]: https://en.wikipedia.org/wiki/Internet_media_type
 [Merge Avoidance subsection]: /en/developer-guide#merge-avoidance
 [mozrootstore]: https://www.mozilla.org/en-US/about/governance/policies/security-group/certs/
 [Piotr Piasecki's testnet faucet]: https://tpfaucet.appspot.com/
+[prime symbol]: https://en.wikipedia.org/wiki/Prime_%28symbol%29
 [protobuf]: https://developers.google.com/protocol-buffers/
 [raw transaction format]: /en/developer-reference#raw-transaction-format
 [regression test mode]: https://bitcoinj.github.io/testing
@@ -209,3 +214,4 @@
 [Verification subsection]: /en/developer-guide#verifying-payment
 [wiki script]: https://en.bitcoin.it/wiki/Script
 [x509]: https://en.wikipedia.org/wiki/X.509
+
