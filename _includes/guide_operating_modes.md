@@ -26,7 +26,7 @@ An alternative approach detailed in the [original Bitcoin paper][bitcoinpdf] is 
 
 As described in the white paper, the Merkle root in the block header along with a Merkle branch can prove to the SPV client that the transaction in question is embedded in a block in the block chain. This does not guarantee validity of the transactions that are embedded. Instead it demonstrates the amount of work required to perform a double-spend attack. 
 
-The block's depth in the block chain corresponds to the cumulative difficulty that has been performed to build on top of that particular block. The SPV client knows the Merkle root and associated transaction information, and requests the respective Merkle branch from a full node. Once the Merkle branch has been retrieved, proving the existance of the transaction in the block, the SPV client can then look to block *depth* for the security of the transaction.
+The block's depth in the block chain corresponds to the cumulative difficulty that has been performed to build on top of that particular block. The SPV client knows the Merkle root and associated transaction information, and requests the respective Merkle branch from a full node. Once the Merkle branch has been retrieved, proving the existence of the transaction in the block, the SPV client can then look to block *depth* for the security of the transaction.
 
 {% endautocrossref %}
 
@@ -66,7 +66,7 @@ Removal of elements can only be done by scrapping the bloom filter and re-creati
 
 {% autocrossref %}
 
-Rather than viewing the false positive rates as a liability, it is used to create a tunable parameter that represents the desired privacy level and bandwidth tradeoff. A SPV client creates their Bloom filter, and sends it to a full node using the message `filterload`, which sets the filter for which transactions are desired. The command `filteradd` allows addition of desired data to the filter without needing to send a totally new Bloom filter, and `filterclear` allows the connection to revert to standard block discovery mechanisms. If the filter has been loaded, then full nodes will send a modified form of blocks, called a merkleblock. The merkleblock is simply the block header with the merkle branch associated with the set Bloom filter. 
+Rather than viewing the false positive rates as a liability, it is used to create a tunable parameter that represents the desired privacy level and bandwidth trade-off. A SPV client creates their Bloom filter, and sends it to a full node using the message `filterload`, which sets the filter for which transactions are desired. The command `filteradd` allows addition of desired data to the filter without needing to send a totally new Bloom filter, and `filterclear` allows the connection to revert to standard block discovery mechanisms. If the filter has been loaded, then full nodes will send a modified form of blocks, called a merkleblock. The merkleblock is simply the block header with the merkle branch associated with the set Bloom filter. 
 
 An SPV client can not only add transactions as elements to the filter, but also public keys, data from input and outputs scripts, and more. This enables P2SH transaction finding.
 

@@ -2,7 +2,7 @@
 
 {% autocrossref %}
 
-The Bitcoin network uses simple methods to communicate between nodes, as well as perform peer discovery. The following section applies to both full nodes and SPV clients, with the caveat of SPV's Bloom filters taking the role of block discovery.
+The Bitcoin [network][network]{:#term-network}{:.term} uses simple methods to communicate between nodes, as well as perform peer discovery. The following section applies to both full nodes and SPV clients, with the caveat of SPV's Bloom filters taking the role of block discovery.
 
 {% endautocrossref %}
 
@@ -10,7 +10,7 @@ The Bitcoin network uses simple methods to communicate between nodes, as well as
 
 {% autocrossref %}
 
-Bitcoin Core maintains a list of peers to connect to on startup. When a full node is started for the first time, it must be bootstrapped to the network. This is done automatically today in Bitcoin Core by a short list of trusted DNS seeds. The option `-dnsseed` can be set to define this behavior, though the default is `1`. DNS requests return a list of IP addresses that can be connected to. From there, the client can start connecting the Bitcoin network.
+Bitcoin Core maintains a list of [peers][peer]{:#term-peer}{:.term} to connect to on startup. When a full node is started for the first time, it must be bootstrapped to the network. This is done automatically today in Bitcoin Core by a short list of trusted DNS seeds. The option `-dnsseed` can be set to define this behavior, though the default is `1`. DNS requests return a list of IP addresses that can be connected to. From there, the client can start connecting the Bitcoin network.
 
 Alternatively, bootstrapping can be done by using the option `-seednode=<ip>`, allowing the user to predefine what seed server to connect to, then disconnect after building a peer list. Another method is starting Bitcoin Core with `-connect=<ip>` which disallows the node from connecting to any peers except those specified. Lastly, the argument `-addnode=<ip>` simply allows the user to add a single node to his peer list.
 
@@ -69,7 +69,7 @@ and users of Bitcoin Core can check the error field of the `getinfo` RPC
 results to get currently active alerts for their specific version of
 Bitcoin Core.
 
-These messages are aggressively broadcasted using the `alert` message, being sent to each peer upon connect for the duration of the alert. 
+These messages are aggressively broadcast using the `alert` message, being sent to each peer upon connect for the duration of the alert. 
 
 These messages are signed by a specific ECDSA private key that only a small number of active developers control. 
 

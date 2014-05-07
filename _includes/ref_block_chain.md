@@ -1,4 +1,4 @@
-## Block Chain Reference
+## Block Chain
 
 The following subsections briefly document core blocks details.
 
@@ -25,7 +25,7 @@ As of version 2 blocks, each block consists of four root elements:
 
 3. An 80-byte block header described in the section below.
 
-4. One or more [transactions][].
+4. One or more transactions.
 
 Every block must include a [coinbase transaction][]{:#term-coinbase-tx}{:.term} which should collect and
 spend any transaction fees paid by transactions included in this block.

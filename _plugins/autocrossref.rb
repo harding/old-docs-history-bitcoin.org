@@ -1,10 +1,21 @@
-#autocrossref.rb automatically adds cross reference links in documentation
-#texts using the list of words defined in _autocrossref.yaml.
+## autocrossref.rb automatically adds cross reference links in documentation
+## texts using the list of words defined in _autocrossref.yaml.
 
-#Example:
-# {% autocrossref %}
-# ...content...
-# {% endautocrossref %}
+## Example:
+## {% autocrossref %}
+## ...content...
+## {% endautocrossref %}
+
+## If you have a patten you usually want to match (such as "satoshi"
+## (currency)) but which may appear a few times where you don't want it
+## to match (such as "Satoshi" (name)), append a <!--noref--> HTML comment.
+## E.g.: Bitcoin was invented by Satoshi<!--noref--> Nakamoto.
+
+## An alternative match-prevention method, useful for strings inside ``
+## (code) is to make it look to the parser like the string is inside of
+## a do-not-parse [bracket] expression. E.g. [paymentrequest][] would
+## otherwise match this:
+## <!--[-->`src/qt/paymentrequest.proto`<!--]-->
 
 module Jekyll
 
@@ -32,6 +43,9 @@ require 'yaml'
       ## terms would get linked first and there'd be nothing for long
       ## terms to link to.
       site['crossref'].sort_by { |k, v| -k.length }.each { |term|
+
+        term[1] = term[0] if term[1].nil? || term[1].empty?
+
         term[0] = Regexp.escape(term[0])
 
         ## Replace literal space with \s to match across newlines. This
@@ -45,7 +59,7 @@ require 'yaml'
 
         output.gsub!(/
             (?<!\w)  ## Don't match inside words
-            #{term[0]}  ## Find our key
+            #{term[0]}('s)?  ## Find our key
             (?![^\[]*\])  ## No subst if key inside [brackets]
             (?![^\{]*\})  ## No subst if key inside {braces}
             (?![^\s]*<!--noref-->)  ## No subst if <!--noref--> after key
@@ -60,8 +74,8 @@ require 'yaml'
       output.gsub!('<!--noref-->','')  ## Remove all <!--noref--> comments
 
       output
-    end # site['crossref'].sort_by
-  end # render(content)
-end # AutoCrossRefBlock class 
+    end
+  end
+end
 
 Liquid::Template.register_tag('autocrossref', Jekyll::AutoCrossRefBlock)

@@ -192,10 +192,10 @@ For larger payments, Bitcoin transaction fees are very low as a
 percentage of the total transaction value, so it makes more sense to
 protect payments with immediately-broadcast separate transactions.
 
-**Resource:** The [bitcoinj](https://code.google.com/p/bitcoinj/) Java library
+**Resource:** The [bitcoinj](http://bitcoinj.org) Java library
 provides a complete set of micropayment functions, an example
 implementation, and [a
-tutorial](https://code.google.com/p/bitcoinj/wiki/WorkingWithMicropayments)
+tutorial](https://bitcoinj.github.io/working-with-micropayments)
 all under an Apache license.
 
 {% endautocrossref %}
@@ -231,7 +231,7 @@ Each contributor looks through their collection of Unspent Transaction
 Outputs (UTXOs) for 100 millibits they can spend. They then each generate
 a brand new public key and give UTXO details and pubkey hashes to the
 facilitator.  In this case, the facilitator is AnonGirl; she creates
-a transaction spending each of the UTXOs to three equally-sized [outputs].
+a transaction spending each of the UTXOs to three equally-sized outputs.
 One output goes to each of the contributors' pubkey hashes.
 
 AnonGirl then signs her inputs using `SIGHASH_ALL` to ensure nobody can

@@ -110,7 +110,7 @@ hash attempts, on average, will need to be tried.
 
 New blocks will only be added to the block chain if their hash is at
 least as challenging as a [difficulty][]{:#term-difficulty}{:.term} value expected by the peer-to-peer
-network. Every 2,016 blocks, the network uses [timestamps][block time] stored in each
+network. Every 2,016 blocks, the network uses timestamps stored in each
 block header to calculate the number of seconds elapsed between generation
 of the first and last of those last 2,016 blocks. The ideal value is
 1,209,600 seconds (two weeks).
@@ -138,7 +138,7 @@ could you reliably execute such a [51 percent attack][]{:#term-51-attack}{:.term
 transaction history.
 
 The block header provides several easy-to-modify fields, such as a
-dedicated [nonce field][header nonce], so obtaining new hashes doesn't require waiting
+dedicated nonce field, so obtaining new hashes doesn't require waiting
 for new transactions. Also, only the 80-byte block header is hashed for
 proof-of-work, so adding more bytes of transaction data to
 a block does not slow down hashing with extra I/O.
@@ -235,8 +235,8 @@ A  B  C  D  E .........Transactions
 
 {% autocrossref %}
 
-As discussed in the [Simplified Payment Verification (SPV)][spv] subsection,
-<!-- not written yet --> the Merkle tree allows clients to verify for
+As discussed in the Simplified Payment Verification (SPV) subsection,
+the Merkle tree allows clients to verify for
 themselves that a transaction was included in a block by obtaining the
 Merkle root from a block header and a list of the intermediate hashes
 from a full peer. The full peer does not need to be trusted: it is

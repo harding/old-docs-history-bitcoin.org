@@ -1,37 +1,8 @@
 ---
-## "pattern to match in file" => "reference to give it",
-## ^^^^ produces \/\/\/
-## [pattern to match in file][reference to give it]
-#
-## If you have a patten you usually want to match (such as "satoshi"
-## (currency)) but which may appear a few times where you don't want it
-## to match (such as "Satoshi" (name)), use the zero-space word-joiner
-## character (&#8288;) in the middle of the term you don't want to
-## match. E.g.:
-### Bitcoin was invented by Sa&#8288;toshi Nakamoto.
-## This is ugly, but it gets the job done.
-#
-## An alternative match-prevention method, useful for strings inside ``
-## (code) is to make it look to the parser like the string is inside of
-## a do-not-parse [bracket] expression. E.g. [paymentrequest][] would
-## otherwise match this:
-### <!--[-->`src/qt/paymentrequest.proto`<!--]-->
+## List of words to match with references in _includes/references.md
+## in developer documentation, used by autocrossref.rb plugin.
+## "pattern to match in file" => "reference to give it"
 
-## Terms sorted alphabetically (for the sake of human editors)
-#
-## Recommendation: use base ("") for singular; use references for
-## plurals. E.g.: block: "", blocks: block
-#
-## Mandatory: terms that will be used by themselves inside `` need to
-## have their `` form defined. E.g.: "script" => "", "`script`" =>
-## "script"
-#
-## Terms inside longer `` spans won't work. You'll have to stop
-## using autocrossref mode to get them to work correctly. E.g.:
-## `you can't put script here` unless you prefix it with
-## {% endautocrossref %}
-
-## account Recommend against autoxref for 
 51 percent attack:
 address: 
 addresses: address
@@ -63,7 +34,12 @@ change address:
 change addresses: change address
 change output:
 change outputs: change output
+child extended key:
+child extended keys: child extended key
+child key:
+child keys: child key
 child public key:
+child public keys: child public key
 coinbase: coinbase transaction
 coinbase transaction:
 coinbase transactions: coinbase transaction
@@ -73,7 +49,6 @@ confirmed:
 confirmation:
 confirmations:
 confirmed transactions:
-'`decoderawtransaction`': rpc decoderawtransaction
 denomination:
 denominations: denomination
 DER format: der
@@ -93,11 +68,8 @@ extended public key:
 fiat:
 fork: accidental fork
 genesis block:
-'`getblock`': rpc getblock
-'`getblockhash`': rpc getblockhash
-'`getrawtransaction` RPC': rpc getrawtransaction
-hardened child key:
-hardened child private key: hardened child key
+hardened extended private key:
+HD protocol:
 header nonce:
 high-priority transaction: high-priority transactions
 high-priority transactions:
@@ -105,18 +77,15 @@ inputs: input
 input:
 intermediate certificate:
 intermediate certificates: intermediate certificate
-key fingerprint:
 key index:
 key pair:
-'`keypoolrefill`': rpc keypoolrefill
 '`label`': label
 leaf certificate:
-'`listunspent` RPC': rpc listunspent
 locktime:
 long-term fork:
 mainnet:
-master key:
-master keys: master key
+master chain code:
+master private key:
 '`memo`': pp memo
 '`message`': message
 '`merchant_data`': pp merchant data
@@ -136,7 +105,6 @@ millibits:
 multisig:
 network:
 null data: 
-normal child key:
 '`op_checkmultisig`': op_checkmultisig
 '`op_checksig`': op_checksig
 op code:
@@ -155,11 +123,10 @@ output index:
 p2ph:
 p2sh:
 p2sh multisig:
-parent extended private key: extended key
-parent key:
-parent private key: parent key
-## Recommend manually linking payment protocol's [Payment][pp payment]
-'`payment`': pp payment
+parent chain code:
+parent private key:
+parent public key:
+Payment message: pp payment
 payment protocol:
 "payment protocol's": payment protocol
 PaymentACK:
@@ -172,6 +139,7 @@ peers: peer
 peer-to-peer network: network
 pki:
 '`pki_type`': pp pki type
+'`point()`': point function
 private key:
 private keys: private key
 proof of work:
@@ -193,6 +161,7 @@ refund:
 refunds: refund
 '`refund_to`': pp refund to
 root certificate:
+root seed:
 RPCs: rpc
 RPC:
 satoshi:
@@ -204,7 +173,6 @@ scripts: script
 scriptSig:
 scriptSigs: scriptSig
 secp256k1:
-seed:
 sequence number:
 sequence numbers: sequence number
 SIGHASH: signature hash
@@ -251,10 +219,10 @@ X509Certificates:
 ## BIPS in numerical order; don't use padding zeros (e.g. BIP70 not BIP0070)
 BIP21:
 BIP32:
+BIP39:
 BIP70:
 
-
-
+## RPCs
 '`addmultisigaddress`': rpc addmultisigaddress
 '`addnode`': rpc addnode
 '`backupwallet`': rpc backupwallet

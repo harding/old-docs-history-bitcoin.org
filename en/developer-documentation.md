@@ -18,11 +18,11 @@ title: "Developer Documentation - Bitcoin"
   <div><div>
       <h2><img src="/img/ico_blockchain.svg" class="titleicon" alt="Icon">Block Chain</h2>
       <p><a href="/en/developer-guide#block-chain">Block Chain Guide</a></p>
-      <p><a href="/en/developer-reference#block-chain-reference">Block Chain Reference</a></p>
+      <p><a href="/en/developer-reference#block-chain">Block Chain Reference</a></p>
     </div><div>
       <h2><img src="/img/ico_micro.svg" class="titleicon" alt="Icon">Transactions</h2>
       <p><a href="/en/developer-guide#transactions">Transaction Guide</a></p>
-      <p><a href="/en/developer-reference#transaction-reference">Transaction Reference</a></p>
+      <p><a href="/en/developer-reference#transaction">Transaction Reference</a></p>
     </div>
   </div>
   <div>
@@ -32,6 +32,7 @@ title: "Developer Documentation - Bitcoin"
     </div><div>
       <h2><img src="/img/ico_key.svg" class="titleicon" alt="Icon">Wallets</h2>
       <p><a href="/en/developer-guide#wallets">Wallets Guide</a></p>
+      <p><a href="/en/developer-reference#wallets">Wallets Reference</a></p>
     </div>
   </div>
   <div>

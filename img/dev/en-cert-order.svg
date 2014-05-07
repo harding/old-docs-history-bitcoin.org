@@ -9,28 +9,28 @@
 <g id="graph1" class="graph" transform="scale(0.814941 0.814941) rotate(0) translate(4 317)">
 <title>paymentchannel</title>
 <polygon fill="white" stroke="white" points="-4,5 -4,-317 586,-317 586,5 -4,5"/>
-<text text-anchor="middle" x="290.5" y="-42.4" font-family="Times Roman,serif" font-size="14.00">(Certificates are loaded into X509Certificates() in reverse signing order)</text>
-<text text-anchor="middle" x="290.5" y="-25.4" font-family="Times Roman,serif" font-size="14.00"> </text>
-<text text-anchor="middle" x="290.5" y="-8.4" font-family="Times Roman,serif" font-size="14.00">Example Certificate Loading Order For Payment Requests From Bitcoin.org</text>
+<text text-anchor="middle" x="290.5" y="-42.4" font-family="Sans" font-size="14.00">(Certificates are loaded into X509Certificates() in reverse signing order)</text>
+<text text-anchor="middle" x="290.5" y="-25.4" font-family="Sans" font-size="14.00"> </text>
+<text text-anchor="middle" x="290.5" y="-8.4" font-family="Sans" font-size="14.00">Example Certificate Loading Order For Payment Requests From Bitcoin.org</text>
 <g id="graph2" class="cluster"><title>cluster_signing</title>
 <polygon fill="none" stroke="black" points="8,-67 8,-305 229,-305 229,-67 8,-67"/>
-<text text-anchor="middle" x="118.5" y="-288.4" font-family="Times Roman,serif" font-size="14.00"> Certificates In Signing Order </text>
-<text text-anchor="middle" x="118.5" y="-271.4" font-family="Times Roman,serif" font-size="14.00"> </text>
+<text text-anchor="middle" x="118.5" y="-288.4" font-family="Sans" font-size="14.00"> Certificates In Signing Order </text>
+<text text-anchor="middle" x="118.5" y="-271.4" font-family="Sans" font-size="14.00"> </text>
 </g>
 <g id="graph3" class="cluster"><title>cluster_loading</title>
 <polygon fill="none" stroke="black" points="237,-139 237,-305 573,-305 573,-139 237,-139"/>
-<text text-anchor="middle" x="405" y="-288.4" font-family="Times Roman,serif" font-size="14.00">Certificates In Loading Order</text>
-<text text-anchor="middle" x="405" y="-271.4" font-family="Times Roman,serif" font-size="14.00">(Root CA Certificate Is Not Loaded)</text>
+<text text-anchor="middle" x="405" y="-288.4" font-family="Sans" font-size="14.00">Certificates In Loading Order</text>
+<text text-anchor="middle" x="405" y="-271.4" font-family="Sans" font-size="14.00">(Root CA Certificate Is Not Loaded)</text>
 </g>
 <!-- btcorg -->
 <g id="node2" class="node"><title>btcorg</title>
 <polygon fill="none" stroke="black" points="183,-111 53,-111 53,-75 183,-75 183,-111"/>
-<text text-anchor="middle" x="118" y="-88.9" font-family="Times Roman,serif" font-size="14.00">www.bitcoin.org</text>
+<text text-anchor="middle" x="118" y="-88.9" font-family="Sans" font-size="14.00">www.bitcoin.org</text>
 </g>
 <!-- rapidssl -->
 <g id="node3" class="node"><title>rapidssl</title>
 <polygon fill="none" stroke="black" points="170,-183 66,-183 66,-147 170,-147 170,-183"/>
-<text text-anchor="middle" x="118" y="-160.9" font-family="Times Roman,serif" font-size="14.00">RapidSSL CA</text>
+<text text-anchor="middle" x="118" y="-160.9" font-family="Sans" font-size="14.00">RapidSSL CA</text>
 </g>
 <!-- rapidssl&#45;&gt;btcorg -->
 <g id="edge4" class="edge"><title>rapidssl&#45;&gt;btcorg</title>
@@ -40,7 +40,7 @@
 <!-- geotrust -->
 <g id="node4" class="node"><title>geotrust</title>
 <polygon fill="none" stroke="black" points="194,-255 42,-255 42,-219 194,-219 194,-255"/>
-<text text-anchor="middle" x="118" y="-232.9" font-family="Times Roman,serif" font-size="14.00">GeoTrust Global CA</text>
+<text text-anchor="middle" x="118" y="-232.9" font-family="Sans" font-size="14.00">GeoTrust Global CA</text>
 </g>
 <!-- geotrust&#45;&gt;rapidssl -->
 <g id="edge3" class="edge"><title>geotrust&#45;&gt;rapidssl</title>
@@ -50,12 +50,12 @@
 <!-- one -->
 <g id="node7" class="node"><title>one</title>
 <polygon fill="none" stroke="black" points="565,-255 245,-255 245,-219 565,-219 565,-255"/>
-<text text-anchor="middle" x="405" y="-232.9" font-family="Times Roman,serif" font-size="14.00"> &#160;&#160;&#160;x509.certificate.append(bitcoin_org&#45;cert) </text>
+<text text-anchor="middle" x="405" y="-232.9" font-family="Sans" font-size="14.00"> &#160;&#160;&#160;x509.certificate.append(bitcoin_org&#45;cert) </text>
 </g>
 <!-- two -->
 <g id="node8" class="node"><title>two</title>
 <polygon fill="none" stroke="black" points="564,-183 246,-183 246,-147 564,-147 564,-183"/>
-<text text-anchor="middle" x="405" y="-160.9" font-family="Times Roman,serif" font-size="14.00"> &#160;&#160;&#160;x509.certificate.append(rapidssl_ca&#45;cert) </text>
+<text text-anchor="middle" x="405" y="-160.9" font-family="Sans" font-size="14.00"> &#160;&#160;&#160;x509.certificate.append(rapidssl_ca&#45;cert) </text>
 </g>
 <!-- one&#45;&gt;two -->
 <g id="edge7" class="edge"><title>one&#45;&gt;two</title>

@@ -108,7 +108,7 @@ payment requests is recommended.
    manually configures a URI handler.
 
 3. Most mobile wallets support scanning `bitcoin:` URIs encoded in a
-   [QR code][URI QR Code] and almost all wallets can display them for
+   QR code and almost all wallets can display them for
    accepting payment. While also handy for online orders, QR Codes are
    especially useful for in-person purchases.
 
@@ -887,7 +887,7 @@ created by the program above appears in the GUI from Bitcoin Core 0.9.
 
 If the spender declines to pay, the wallet program will not send any
 further messages to the receiver's server unless the spender clicks
-another [URI][bitcoin uri] pointing to that server.  If the spender does decide to pay,
+another URI pointing to that server.  If the spender does decide to pay,
 the wallet program will create at least one transaction paying each of
 the outputs in the PaymentDetails section. The wallet may broadcast
 the transaction or transactions, as Bitcoin Core 0.9 does, but it
@@ -939,7 +939,7 @@ Accept: application/bitcoin-paymentack
 ##### PaymentACK
 {% autocrossref %}
 
-The receiver's CGI program at the `payment_url` receives the [Payment][pp payment] and
+The receiver's CGI program at the `payment_url` receives the Payment message and
 decodes it using its Protocol Buffers code. The `transactions` are
 checked to see if they pay the output scripts the receiver requested in
 PaymentDetails and are then broadcast to the network (unless the network
@@ -960,7 +960,7 @@ Content-Transfer-Encoding: binary
 Then it sends another Protocol-Buffers-encoded message with one or two
 fields:
 
-* `payment`: (required) A copy of the the entire [Payment][pp payment] message (in
+* `payment`: (required) A copy of the the entire Payment message (in
   serialized form) which is being acknowledged.
 
 * `memo`: (optional) A plain UTF-8 text memo displayed to the spender
@@ -983,8 +983,8 @@ her attention elsewhere.
 
 {% autocrossref %}
 
-Unlike PaymentRequest, PaymentDetails, [Payment][pp payment], and PaymentACK, there is
-no specific [receipt][]{:#term-receipt}{:.term} object.  However, a cryptographically-verifyable
+Unlike PaymentRequest, PaymentDetails, [Payment][pp payment]{:.auto-link}, and PaymentACK, there is
+no specific [receipt][]{:#term-receipt}{:.term} object.  However, a cryptographically-verifiable
 receipt can be derived from a signed PaymentDetails and one or more confirmed
 transactions.
 
@@ -1105,7 +1105,7 @@ For example:
 
 * Alice opens her wallet program and sends some satoshis to that
   address. Her wallet program automatically chooses to spend those
-  satoshis from one of its [unspent outputs][utxo], an output corresponding to
+  satoshis from one of its unspent outputs, an output corresponding to
   the Bitcoin address mjSk1Ny9spzU2fouzYgLqGUD8U41iR35QN.
 
 * Bob discovers Alice paid too many satoshis. Being an honest fellow,
