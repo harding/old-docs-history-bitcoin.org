@@ -984,7 +984,7 @@ her attention elsewhere.
 {% autocrossref %}
 
 Unlike PaymentRequest, PaymentDetails, [Payment][pp payment]{:.auto-link}, and PaymentACK, there is
-no specific [receipt][]{:#term-receipt}{:.term} object.  However, a cryptographically-verifyable
+no specific [receipt][]{:#term-receipt}{:.term} object.  However, a cryptographically-verifiable
 receipt can be derived from a signed PaymentDetails and one or more confirmed
 transactions.
 

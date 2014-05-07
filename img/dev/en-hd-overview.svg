@@ -9,19 +9,19 @@
 <g id="graph1" class="graph" transform="scale(0.628492 0.628492) rotate(0) translate(4 244)">
 <title>extended</title>
 <polygon fill="white" stroke="white" points="-4,5 -4,-244 713,-244 713,5 -4,5"/>
-<text text-anchor="middle" x="354" y="-25.4" font-family="Times Roman,serif" font-size="14.00"> </text>
-<text text-anchor="middle" x="354" y="-8.4" font-family="Times Roman,serif" font-size="14.00">Normal Hierarchical Deterministic (HD) Key Derivation (BIP32)</text>
+<text text-anchor="middle" x="354" y="-25.4" font-family="Sans" font-size="14.00"> </text>
+<text text-anchor="middle" x="354" y="-8.4" font-family="Sans" font-size="14.00">Normal Hierarchical Deterministic (HD) Key Derivation (BIP32)</text>
 <g id="graph2" class="cluster"><title>cluster_parent</title>
 </g>
 <!-- parent_private_key -->
 <g id="node2" class="node"><title>parent_private_key</title>
 <polygon fill="none" stroke="black" stroke-width="1.75" points="278,-224 132,-224 132,-188 278,-188 278,-224"/>
-<text text-anchor="middle" x="205" y="-201.9" font-family="Times Roman,serif" font-size="14.00">Parent Private Key</text>
+<text text-anchor="middle" x="205" y="-201.9" font-family="Sans" font-size="14.00">Parent Private Key</text>
 </g>
 <!-- child_private_key -->
 <g id="node5" class="node"><title>child_private_key</title>
 <polygon fill="none" stroke="black" stroke-width="1.75" points="576,-224 442,-224 442,-188 576,-188 576,-224"/>
-<text text-anchor="middle" x="509" y="-201.9" font-family="Times Roman,serif" font-size="14.00">Child Private Key</text>
+<text text-anchor="middle" x="509" y="-201.9" font-family="Sans" font-size="14.00">Child Private Key</text>
 </g>
 <!-- parent_private_key&#45;&gt;child_private_key -->
 <g id="edge15" class="edge"><title>parent_private_key&#45;&gt;child_private_key</title>
@@ -31,7 +31,7 @@
 <!-- parent_chain_code -->
 <g id="node3" class="node"><title>parent_chain_code</title>
 <polygon fill="none" stroke="black" stroke-width="1.75" points="278,-177 132,-177 132,-141 278,-141 278,-177"/>
-<text text-anchor="middle" x="205" y="-154.9" font-family="Times Roman,serif" font-size="14.00">Parent Chain Code</text>
+<text text-anchor="middle" x="205" y="-154.9" font-family="Sans" font-size="14.00">Parent Chain Code</text>
 </g>
 <!-- hmac -->
 <g id="node9" class="node"><title>hmac</title>
@@ -40,7 +40,7 @@
 <polyline fill="none" stroke="black" stroke-width="1.75" points="301,-153 313,-141 "/>
 <polyline fill="none" stroke="black" stroke-width="1.75" points="407,-141 419,-153 "/>
 <polyline fill="none" stroke="black" stroke-width="1.75" points="419,-165 407,-177 "/>
-<text text-anchor="middle" x="360" y="-154.9" font-family="Times Roman,serif" font-size="14.00">One&#45;Way Hash</text>
+<text text-anchor="middle" x="360" y="-154.9" font-family="Sans" font-size="14.00">One&#45;Way Hash</text>
 </g>
 <!-- parent_chain_code&#45;&gt;hmac -->
 <g id="edge19" class="edge"><title>parent_chain_code&#45;&gt;hmac</title>
@@ -50,12 +50,12 @@
 <!-- parent_public_key -->
 <g id="node4" class="node"><title>parent_public_key</title>
 <polygon fill="none" stroke="black" stroke-width="1.75" points="273,-130 137,-130 137,-94 273,-94 273,-130"/>
-<text text-anchor="middle" x="205" y="-107.9" font-family="Times Roman,serif" font-size="14.00">Parent Public Key</text>
+<text text-anchor="middle" x="205" y="-107.9" font-family="Sans" font-size="14.00">Parent Public Key</text>
 </g>
 <!-- child_public_key -->
 <g id="node7" class="node"><title>child_public_key</title>
 <polygon fill="none" stroke="black" stroke-width="1.75" points="571,-130 447,-130 447,-94 571,-94 571,-130"/>
-<text text-anchor="middle" x="509" y="-107.9" font-family="Times Roman,serif" font-size="14.00">Child Public Key</text>
+<text text-anchor="middle" x="509" y="-107.9" font-family="Sans" font-size="14.00">Child Public Key</text>
 </g>
 <!-- parent_public_key&#45;&gt;child_public_key -->
 <g id="edge17" class="edge"><title>parent_public_key&#45;&gt;child_public_key</title>
@@ -64,9 +64,9 @@
 </g>
 <!-- rel2 -->
 <g id="node11" class="node"><title>rel2</title>
-<text text-anchor="middle" x="653" y="-171.9" font-family="Times Roman,serif" font-size="14.00">Derived</text>
-<text text-anchor="middle" x="653" y="-154.9" font-family="Times Roman,serif" font-size="14.00">Mathematical</text>
-<text text-anchor="middle" x="653" y="-137.9" font-family="Times Roman,serif" font-size="14.00">Relationship</text>
+<text text-anchor="middle" x="653" y="-171.9" font-family="Sans" font-size="14.00">Derived</text>
+<text text-anchor="middle" x="653" y="-154.9" font-family="Sans" font-size="14.00">Mathematical</text>
+<text text-anchor="middle" x="653" y="-137.9" font-family="Sans" font-size="14.00">Relationship</text>
 </g>
 <!-- child_private_key&#45;&gt;rel2 -->
 <g id="edge9" class="edge"><title>child_private_key&#45;&gt;rel2</title>
@@ -76,7 +76,7 @@
 <!-- child_chain_code -->
 <g id="node6" class="node"><title>child_chain_code</title>
 <polygon fill="none" stroke="black" stroke-width="1.75" points="576,-177 442,-177 442,-141 576,-141 576,-177"/>
-<text text-anchor="middle" x="509" y="-154.9" font-family="Times Roman,serif" font-size="14.00">Child Chain Code</text>
+<text text-anchor="middle" x="509" y="-154.9" font-family="Sans" font-size="14.00">Child Chain Code</text>
 </g>
 <!-- child_chain_code&#45;&gt;rel2 -->
 <!-- child_public_key&#45;&gt;rel2 -->
@@ -87,7 +87,7 @@
 <!-- i_norm -->
 <g id="node8" class="node"><title>i_norm</title>
 <polygon fill="none" stroke="black" stroke-width="1.75" points="262,-78 148,-78 148,-42 262,-42 262,-78"/>
-<text text-anchor="middle" x="205" y="-55.9" font-family="Times Roman,serif" font-size="14.00">Index Number</text>
+<text text-anchor="middle" x="205" y="-55.9" font-family="Sans" font-size="14.00">Index Number</text>
 </g>
 <!-- i_norm&#45;&gt;hmac -->
 <g id="edge21" class="edge"><title>i_norm&#45;&gt;hmac</title>
@@ -111,8 +111,8 @@
 </g>
 <!-- rel1 -->
 <g id="node10" class="node"><title>rel1</title>
-<text text-anchor="middle" x="55" y="-163.4" font-family="Times Roman,serif" font-size="14.00">Mathematical</text>
-<text text-anchor="middle" x="55" y="-146.4" font-family="Times Roman,serif" font-size="14.00">Relationship</text>
+<text text-anchor="middle" x="55" y="-163.4" font-family="Sans" font-size="14.00">Mathematical</text>
+<text text-anchor="middle" x="55" y="-146.4" font-family="Sans" font-size="14.00">Relationship</text>
 </g>
 <!-- rel1&#45;&gt;parent_private_key -->
 <g id="edge3" class="edge"><title>rel1&#45;&gt;parent_private_key</title>

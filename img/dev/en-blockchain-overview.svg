@@ -9,32 +9,32 @@
 <g id="graph1" class="graph" transform="scale(0.752351 0.752351) rotate(0) translate(4 289)">
 <title>blockchain</title>
 <polygon fill="white" stroke="white" points="-4,5 -4,-289 635,-289 635,5 -4,5"/>
-<text text-anchor="middle" x="315" y="-8.4" font-family="Times Roman,serif" font-size="14.00">Simplified Bitcoin Block Chain</text>
+<text text-anchor="middle" x="315" y="-8.4" font-family="Sans" font-size="14.00">Simplified Bitcoin Block Chain</text>
 <g id="graph2" class="cluster"><title>cluster_block0header</title>
 <polygon fill="none" stroke="black" stroke-width="1.75" points="34,-97 34,-277 186,-277 186,-97 34,-97"/>
-<text text-anchor="middle" x="110" y="-260.4" font-family="Times Roman,serif" font-size="14.00">Block 1</text>
-<text text-anchor="middle" x="110" y="-243.4" font-family="Times Roman,serif" font-size="14.00">Header</text>
+<text text-anchor="middle" x="110" y="-260.4" font-family="Sans" font-size="14.00">Block 1</text>
+<text text-anchor="middle" x="110" y="-243.4" font-family="Sans" font-size="14.00">Header</text>
 </g>
 <g id="graph3" class="cluster"><title>cluster_block1header</title>
 <polygon fill="none" stroke="black" stroke-width="1.75" points="252,-97 252,-277 404,-277 404,-97 252,-97"/>
-<text text-anchor="middle" x="328" y="-260.4" font-family="Times Roman,serif" font-size="14.00">Block 2</text>
-<text text-anchor="middle" x="328" y="-243.4" font-family="Times Roman,serif" font-size="14.00">Header</text>
+<text text-anchor="middle" x="328" y="-260.4" font-family="Sans" font-size="14.00">Block 2</text>
+<text text-anchor="middle" x="328" y="-243.4" font-family="Sans" font-size="14.00">Header</text>
 </g>
 <g id="graph4" class="cluster"><title>cluster_block2header</title>
 <polygon fill="none" stroke="black" stroke-width="1.75" points="470,-97 470,-277 622,-277 622,-97 470,-97"/>
-<text text-anchor="middle" x="546" y="-260.4" font-family="Times Roman,serif" font-size="14.00">Block 3</text>
-<text text-anchor="middle" x="546" y="-243.4" font-family="Times Roman,serif" font-size="14.00">Header</text>
+<text text-anchor="middle" x="546" y="-260.4" font-family="Sans" font-size="14.00">Block 3</text>
+<text text-anchor="middle" x="546" y="-243.4" font-family="Sans" font-size="14.00">Header</text>
 </g>
 <!-- _transactions0 -->
 <g id="node1" class="node"><title>_transactions0</title>
 <polygon fill="none" stroke="black" stroke-width="1.75" points="182,-83 38,-83 38,-41 182,-41 182,-83"/>
-<text text-anchor="middle" x="110" y="-66.4" font-family="Times Roman,serif" font-size="14.00">Block 1</text>
-<text text-anchor="middle" x="110" y="-49.4" font-family="Times Roman,serif" font-size="14.00">Transactions</text>
+<text text-anchor="middle" x="110" y="-66.4" font-family="Sans" font-size="14.00">Block 1</text>
+<text text-anchor="middle" x="110" y="-49.4" font-family="Sans" font-size="14.00">Transactions</text>
 </g>
 <!-- hashMerkleRoot0 -->
 <g id="node5" class="node"><title>hashMerkleRoot0</title>
 <polygon fill="none" stroke="black" stroke-width="1.75" points="159,-141 61,-141 61,-105 159,-105 159,-141"/>
-<text text-anchor="middle" x="110" y="-118.9" font-family="Times Roman,serif" font-size="14.00">Merkle Root</text>
+<text text-anchor="middle" x="110" y="-118.9" font-family="Sans" font-size="14.00">Merkle Root</text>
 </g>
 <!-- _transactions0&#45;&gt;hashMerkleRoot0 -->
 <g id="edge14" class="edge"><title>_transactions0&#45;&gt;hashMerkleRoot0</title>
@@ -44,16 +44,16 @@
 <!-- _transactions1 -->
 <g id="node6" class="node"><title>_transactions1</title>
 <polygon fill="none" stroke="black" stroke-width="1.75" points="400,-83 256,-83 256,-41 400,-41 400,-83"/>
-<text text-anchor="middle" x="328" y="-66.4" font-family="Times Roman,serif" font-size="14.00">Block 2</text>
-<text text-anchor="middle" x="328" y="-49.4" font-family="Times Roman,serif" font-size="14.00">Transactions</text>
+<text text-anchor="middle" x="328" y="-66.4" font-family="Sans" font-size="14.00">Block 2</text>
+<text text-anchor="middle" x="328" y="-49.4" font-family="Sans" font-size="14.00">Transactions</text>
 </g>
 <!-- _transactions0&#45;&gt;_transactions1 -->
 <!-- _blockHeader0 -->
 <!-- hashBlock0 -->
 <g id="node9" class="node"><title>hashBlock0</title>
 <polygon fill="none" stroke="black" stroke-width="1.75" points="395,-205 261,-205 261,-163 395,-163 395,-205"/>
-<text text-anchor="middle" x="328" y="-188.4" font-family="Times Roman,serif" font-size="14.00">Hash Of Previous</text>
-<text text-anchor="middle" x="328" y="-171.4" font-family="Times Roman,serif" font-size="14.00">Block Header</text>
+<text text-anchor="middle" x="328" y="-188.4" font-family="Sans" font-size="14.00">Hash Of Previous</text>
+<text text-anchor="middle" x="328" y="-171.4" font-family="Sans" font-size="14.00">Block Header</text>
 </g>
 <!-- _blockHeader0&#45;&gt;hashBlock0 -->
 <g id="edge7" class="edge"><title>_blockHeader0&#45;&gt;hashBlock0</title>
@@ -63,13 +63,13 @@
 <!-- hashBlock9 -->
 <g id="node4" class="node"><title>hashBlock9</title>
 <polygon fill="none" stroke="black" stroke-width="1.75" points="177,-205 43,-205 43,-163 177,-163 177,-205"/>
-<text text-anchor="middle" x="110" y="-188.4" font-family="Times Roman,serif" font-size="14.00">Hash Of Previous</text>
-<text text-anchor="middle" x="110" y="-171.4" font-family="Times Roman,serif" font-size="14.00">Block Header</text>
+<text text-anchor="middle" x="110" y="-188.4" font-family="Sans" font-size="14.00">Hash Of Previous</text>
+<text text-anchor="middle" x="110" y="-171.4" font-family="Sans" font-size="14.00">Block Header</text>
 </g>
 <!-- hashMerkleRoot1 -->
 <g id="node10" class="node"><title>hashMerkleRoot1</title>
 <polygon fill="none" stroke="black" stroke-width="1.75" points="377,-141 279,-141 279,-105 377,-105 377,-141"/>
-<text text-anchor="middle" x="328" y="-118.9" font-family="Times Roman,serif" font-size="14.00">Merkle Root</text>
+<text text-anchor="middle" x="328" y="-118.9" font-family="Sans" font-size="14.00">Merkle Root</text>
 </g>
 <!-- hashMerkleRoot0&#45;&gt;hashMerkleRoot1 -->
 <!-- _transactions1&#45;&gt;hashMerkleRoot1 -->
@@ -80,16 +80,16 @@
 <!-- _transactions2 -->
 <g id="node11" class="node"><title>_transactions2</title>
 <polygon fill="none" stroke="black" stroke-width="1.75" points="618,-83 474,-83 474,-41 618,-41 618,-83"/>
-<text text-anchor="middle" x="546" y="-66.4" font-family="Times Roman,serif" font-size="14.00">Block 3</text>
-<text text-anchor="middle" x="546" y="-49.4" font-family="Times Roman,serif" font-size="14.00">Transactions</text>
+<text text-anchor="middle" x="546" y="-66.4" font-family="Sans" font-size="14.00">Block 3</text>
+<text text-anchor="middle" x="546" y="-49.4" font-family="Sans" font-size="14.00">Transactions</text>
 </g>
 <!-- _transactions1&#45;&gt;_transactions2 -->
 <!-- _blockHeader1 -->
 <!-- hashBlock1 -->
 <g id="node15" class="node"><title>hashBlock1</title>
 <polygon fill="none" stroke="black" stroke-width="1.75" points="613,-205 479,-205 479,-163 613,-163 613,-205"/>
-<text text-anchor="middle" x="546" y="-188.4" font-family="Times Roman,serif" font-size="14.00">Hash Of Previous</text>
-<text text-anchor="middle" x="546" y="-171.4" font-family="Times Roman,serif" font-size="14.00">Block Header</text>
+<text text-anchor="middle" x="546" y="-188.4" font-family="Sans" font-size="14.00">Hash Of Previous</text>
+<text text-anchor="middle" x="546" y="-171.4" font-family="Sans" font-size="14.00">Block Header</text>
 </g>
 <!-- _blockHeader1&#45;&gt;hashBlock1 -->
 <g id="edge9" class="edge"><title>_blockHeader1&#45;&gt;hashBlock1</title>
@@ -99,7 +99,7 @@
 <!-- hashMerkleRoot2 -->
 <g id="node16" class="node"><title>hashMerkleRoot2</title>
 <polygon fill="none" stroke="black" stroke-width="1.75" points="595,-141 497,-141 497,-105 595,-105 595,-141"/>
-<text text-anchor="middle" x="546" y="-118.9" font-family="Times Roman,serif" font-size="14.00">Merkle Root</text>
+<text text-anchor="middle" x="546" y="-118.9" font-family="Sans" font-size="14.00">Merkle Root</text>
 </g>
 <!-- hashMerkleRoot1&#45;&gt;hashMerkleRoot2 -->
 <!-- _transactions2&#45;&gt;hashMerkleRoot2 -->

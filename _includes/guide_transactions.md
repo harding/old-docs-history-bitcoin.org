@@ -72,7 +72,7 @@ containing an address version number, the hash, and an error-detection
 checksum to catch typos. The address can be transmitted
 through any medium, including one-way mediums which prevent the spender
 from communicating with the receiver, and it can be further encoded
-into another format, such as a QR code containg a `bitcoin:`
+into another format, such as a QR code containing a `bitcoin:`
 URI.
 
 Once Alice has the address and decodes it back into a standard hash, she
