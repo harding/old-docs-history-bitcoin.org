@@ -15,7 +15,7 @@ title: "Developer Reference - Bitcoin"
 {:toc}
 
 </div></div>
-<!--#md#<div markdown="1" class="toccontent">#md#-->
+<div markdown="1" class="toccontent">
 
 {% include ref_block_chain.md %}
 {% include ref_transactions.md %}
@@ -35,7 +35,8 @@ title: "Developer Reference - Bitcoin"
 {% include ref_core_rpcs-hijklmn.md %}
 {% include ref_core_rpcs-opqrst.md %}
 {% include ref_core_rpcs-uvwxyz.md %}
-
-<!--#md#</div>#md#-->
 {% include references.md %}
+
+</div>
+
 <script>updateToc();</script>
