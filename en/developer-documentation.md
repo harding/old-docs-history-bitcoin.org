@@ -29,15 +29,20 @@ title: "Developer Documentation - Bitcoin"
     <div>
       <h2><img src="/img/ico_contract.svg" class="titleicon" alt="Icon">Contracts</h2>
       <p><a href="/en/developer-guide#contracts">Contracts Guide</a></p>
+      <p><a href="https://en.bitcoin.it/wiki/Contracts">Contracts Page</a> - Bitcoin Wiki</p>
+      <p><a href="https://bitcoinj.github.io/working-with-micropayments">Micropayment Channels</a> - bitcoinj</p>
     </div><div>
       <h2><img src="/img/ico_key.svg" class="titleicon" alt="Icon">Wallets</h2>
       <p><a href="/en/developer-guide#wallets">Wallets Guide</a></p>
+      <p><a href="https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki">BIP-0032</a> - HD Wallets</p>
+      <p><a href="https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki">BIP-0039</a> - Mnemonic Code</p>
     </div>
   </div>
   <div>
     <div>
       <h2><img src="/img/ico_bill.svg" class="titleicon" alt="Icon">Payment Processing</h2>
       <p><a href="/en/developer-guide#payment-processing">Payment Processing Guide</a></p>
+      <p><a href="https://github.com/bitcoin/bips/blob/master/bip-0070.mediawiki">BIP-0070</a> - Payment Protocol</p>
     </div><div>
       <h2><img src="/img/ico_conf.svg" class="titleicon" alt="Icon">Operating Modes</h2>
       <p><a href="/en/developer-guide#operating-modes">Operating Modes Guide</a></p>
@@ -47,9 +52,12 @@ title: "Developer Documentation - Bitcoin"
     <div>
       <h2><img src="/img/ico_network.svg" class="titleicon" alt="Icon">P2P Network</h2>
       <p><a href="/en/developer-guide#p2p-network">P2P Network Guide</a></p>
+      <p><a href="https://en.bitcoin.it/wiki/Protocol_specification">Protocol Specification</a> - Bitcoin Wiki</p>
     </div><div>
       <h2><img src="/img/ico_mining.svg" class="titleicon" alt="Icon">Mining</h2>
       <p><a href="/en/developer-guide#mining">Mining Guide</a></p>
+      <p><a href="https://github.com/bitcoin/bips/blob/master/bip-0022.mediawiki">BIP-0022</a> - getworktemplate Fundamentals</p>
+      <p><a href="https://github.com/bitcoin/bips/blob/master/bip-0023.mediawiki">BIP-0023</a> - getworktemplate Pooled Mining</p>
     </div>
   </div>
 </div>
