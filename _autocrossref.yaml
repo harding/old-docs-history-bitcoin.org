@@ -34,8 +34,10 @@ change address:
 change addresses: change address
 change output:
 change outputs: change output
-child extened key:
-child extened keys: child extended key
+child extended key:
+child extended keys: child extended key
+child key:
+child keys: child key
 child public key:
 child public keys: child public key
 coinbase: coinbase transaction
@@ -79,7 +81,6 @@ inputs: input
 input:
 intermediate certificate:
 intermediate certificates: intermediate certificate
-key fingerprint:
 key index:
 key pair:
 '`keypoolrefill`': rpc keypoolrefill
@@ -110,7 +111,6 @@ millibits:
 multisig:
 network:
 null data: 
-normal child key:
 '`op_checkmultisig`': op_checkmultisig
 '`op_checksig`': op_checksig
 op code:

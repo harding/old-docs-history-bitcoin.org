@@ -108,7 +108,7 @@ sum divided by a global constant used by all Bitcoin software (*G*):
 {% autocrossref %}
 
 This means that two or more independent programs which agree on a
-sequence of integers can create a series of unique child key pairs from
+sequence of integers can create a series of unique [child key][]{:#term-child-key}{:.term} pairs from
 a single parent key pair without any further communication.
 Moreover, the program which distributes new public keys for receiving
 payment can do so without any access to the private keys, allowing the
@@ -155,7 +155,7 @@ As illustrated above, HD key derivation takes four inputs<!--noref-->:
 * The [parent chain code][]{:#term-parent-chain-code}{:.term} is 256
   bits of seemingly-random data.
 
-* The index number is a 32-bit integer specified by the program.
+* The [index][key index]{:#term-key-index}{:.term} number is a 32-bit integer specified by the program.
 
 In the normal form shown in the above illustration, the parent chain
 code and the index number are fed into a one-way cryptographic hash
@@ -184,8 +184,8 @@ key][]{:#term-extended-key}{:.term}. An [extended private
 key][]{:#term-extended-private-key}{:.term} and its corresponding
 [extended public key][]{:#term-extended-public-key}{:.term} have the
 same chain code. The (top-level parent) [master private
-key][]{:#term-master-private-key}{:.term} and [master chain
-code][]{:#term-master-chain-code}{:.term} are derived from random data,
+key][]{:#term-master-private-key}{:.term} and master chain
+code are derived from random data,
 as illustrated below.
 
 ![Creating A Root Extended Key Pair](/img/dev/en-hd-root-keys.svg)
@@ -215,7 +215,7 @@ which makes them special.
 
 {% autocrossref %}
 
-Deriving child extended keys from parent extended keys is more nuanced
+Deriving [child extended keys][child extended key]{:#term-child-extended-key}{:.term} from parent extended keys is more nuanced
 than described earlier due to the presence of two extended private key
 derivation formulas. The normal formula, described above, combines
 together only the index number and the parent chain code to create the
