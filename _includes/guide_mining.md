@@ -44,7 +44,7 @@ coinbase field of the coinbase transaction.
 On the other hand, if a hash is found below the target threshold, the
 mining hardware returns the block header with the successful nonce to
 the mining software. The mining software combines the header with the
-block and sends the completed block to the network for addition to the
+block and sends the completed block to `bitcoind` to be broadcast to the network for addition to the
 block chain.
 
 {% endautocrossref %}
@@ -56,14 +56,14 @@ block chain.
 Pool miners follow a similar workflow, illustrated below, which allows
 mining pool operators to pay miners based on their share of the work
 done. The mining pool gets new transactions from the network using
-`bitcoind`. Using one of the method discussed later, the miner's mining
+`bitcoind`. Using one of the methods discussed later, each miner's mining
 software connects to the pool and requests the information it needs to
 construct block headers.
 
 ![Pooled Bitcoin Mining](/img/dev/en-pooled-mining-overview.svg)
 
 In pooled mining, the mining pool sets the target threshold a few orders
-of magnitude higher (less difficult) that the network
+of magnitude higher (less difficult) than the network
 difficulty. This causes the mining hardware to return many block headers
 which don't hash to a value eligible for inclusion on the block chain
 but which do hash below the pool's target, proving (on average) that the
@@ -167,7 +167,7 @@ need to construct block headers on their own:
 2. The parts of the Merkle tree which need to be re-hashed to
    create a new Merkle root when the coinbase transaction is
    updated with a new extra nonce. The other parts of the Merkle
-   tree, if any, are not sent, limiting the amount of data which needs
+   tree, if any, are not sent, effectively limiting the amount of data which needs
    to be sent to (at most) about a kilobyte at current transaction
    volume.
 

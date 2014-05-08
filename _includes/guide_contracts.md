@@ -10,7 +10,7 @@ agreements.
 Bitcoin contracts can often be crafted to minimize dependency on outside
 agents, such as the court system, which significantly decreases the risk
 of dealing with unknown entities in financial transactions. For example,
-Bob and Charlie might only know each other casually over the Internet;
+Alice and Bob might only know each other casually over the Internet;
 they would never open a checking account together---one of them could
 pass bad checks, leaving the other on the hook. But with Bitcoin
 contracts, they can nearly eliminate the risk from their relationship
@@ -105,7 +105,7 @@ not shown. `OP_0` is a workaround for an off-by-one error in the original
 implementation which must be preserved for compatibility.)
 
 When the transaction is broadcast to the network, each peer checks the
-input script against the P2SH output Charlie previously created,
+input script against the P2SH output Charlie previously paid,
 ensuring that the redeemScript matches the redeemScript hash previously
 provided. Then the redeemScript is evaluated, with the two signatures
 being used as input<!--noref--> data. Assuming the redeemScript
@@ -115,7 +115,7 @@ wallets as spendable balances.
 However, if Alice created and signed a transaction neither of them would
 agree to, such as spending all the satoshis to herself, Bob and Charlie
 can find a new arbitrator and sign a transaction spending the satoshis
-to another 2-of-3 multisig redeemScript hash, this one including public
+to another 2-of-3 multisig redeemScript hash, this one including a public
 key from that second arbitrator. This means that Bob and Charlie never
 need to worry about their arbitrator stealing their money.
 
@@ -142,41 +142,42 @@ him thousands of satoshis in transaction fees, so Alice suggests they use a
 Bob asks Alice for her public key and then creates two transactions.
 The first transaction pays 100 millibits to a P2SH output whose
 2-of-2 multisig redeemScript requires signatures from both Alice and Bob.
+This is the bond transaction.
 Broadcasting this transaction would let Alice hold the millibits
 hostage, so Bob keeps this transaction private for now and creates a
 second transaction.
 
 The second transaction spends all of the first transaction's millibits
 (minus a transaction fee) back to Bob after a 24 hour delay enforced
-by locktime. Bob can't sign the transaction by himself, so he gives
-the second transaction to Alice to sign, as shown in the
+by locktime. This is the refund transaction. Bob can't sign the refund transaction by himself, so he gives
+it to Alice to sign, as shown in the
 illustration below.
 
 ![Micropayment Channel Example](/img/dev/en-micropayment-channel.svg)
 
-Alice checks that the second transaction's locktime is 24 hours in the
+Alice checks that the refund transaction's locktime is 24 hours in the
 future, signs it, and gives a copy of it back to Bob. She then asks Bob
-for the first transaction and checks that the second transaction spends
-the output of the first transaction. She can now broadcast the first
+for the bond transaction and checks that the refund transaction spends
+the output of the bond transaction. She can now broadcast the bond
 transaction to the network to ensure Bob has to wait for the time lock
 to expire before further spending his millibits. Bob hasn't actually
 spent anything so far, except possibly a small transaction fee, and
-he'll be able to broadcast the second transaction in 24 hours for a
+he'll be able to broadcast the refund transaction in 24 hours for a
 full refund.
 
 Now, when Alice does some work worth 1 millibit, she asks Bob to create
-and sign a new version of the second transaction.  Version two of the
+and sign a new version of the refund transaction.  Version two of the
 transaction spends 1 millibit to Alice and the other 99 back to Bob; it does
 not have a locktime, so Alice can sign it and spend it whenever she
 wants.  (But she doesn't do that immediately.)
 
 Alice and Bob repeat these work-and-pay steps until Alice finishes for
 the day, or until the time lock is about to expire.  Alice signs the
-final version of the second transaction and broadcasts it, paying
+final version of the refund transaction and broadcasts it, paying
 herself and refunding any remaining balance to Bob.  The next day, when
 Alice starts work, they create a new micropayment channel.
 
-If Alice fails to broadcast a version of the second transaction before
+If Alice fails to broadcast a version of the refund transaction before
 its time lock expires, Bob can broadcast the first version and receive a
 full refund. This is one reason micropayment channels are best suited to
 small payments---if Alice's Internet service goes out for a few hours
@@ -185,7 +186,7 @@ near the time lock expiry, she could be cheated out of her payment.
 Transaction malleability, discussed above in the Payment Security section,
 is another reason to limit the value of micropayment channels.
 If someone uses transaction malleability to break the link between the
-two payments, Alice could hold Bob's 100 millibits hostage even if she
+two transactions, Alice could hold Bob's 100 millibits hostage even if she
 hadn't done any work.
 
 For larger payments, Bitcoin transaction fees are very low as a
@@ -269,7 +270,7 @@ else wants to make a purchase, likely from a different merchant. Then
 they combine their inputs the same way as before but set the outputs
 to the separate merchant addresses so nobody will be able to figure
 out solely from block chain history which one of them bought what from
-the merchant.
+the merchants.
 
 Since they would've had to pay a transaction fee to make their purchases
 anyway, AnonGirl and her co-spenders don't pay anything extra---but

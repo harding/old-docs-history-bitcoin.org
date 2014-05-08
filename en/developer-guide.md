@@ -18,7 +18,12 @@ title: "Developer Guide - Bitcoin"
 
 <div markdown="1" class="toccontent">
 
+<!-- includes should be separated by an empty line to prevent a
+paragraph at the end of one file from breaking the heading at the start
+of the following file. -->
+
 {% include guide_intro.md %}
+
 {% include guide_block_chain.md %}
 
 {% include guide_transactions.md %}

@@ -17,7 +17,7 @@
 [broadcast]: /en/developer-guide#transaction-broadcasting "Sending transactions or blocks to all other peers on the Bitcoin network (compare to privately transmitting to a single peer or partner"
 [broadcasts]: /en/developer-guide#transaction-broadcasting "Sending transactions or blocks to all other peers on the Bitcoin network (compare to privately transmitting to a single peer or partner"
 [broadcasting]: /en/developer-guide#transaction-broadcasting "Sending transactions or blocks to all other peers on the Bitcoin network (compare to privately transmitting to a single peer or partner)"
-[certificate chain]: /en/developer-guide#FIXME-term-certificate-chain "A chain of certificates connecting a individual's leaf certificate to the certificate authority's root certificate"
+[certificate chain]: /en/developer-guide#term-certificate-chain "A chain of certificates connecting a individual's leaf certificate to the certificate authority's root certificate"
 [chain code]: /en/developer-guide#term-chain-code "In HD wallets, 256 bits of entropy added to the master public and private keys to help them generate secure child keys; the chain code is usually derived from a seed along with the master private key"
 [change address]: /en/developer-guide#term-change-output "An output used by a spender to send back to himself some of the satoshis from the inputs"
 [change output]: /en/developer-guide#term-change-output "An output used by a spender to send back to himself some of the satoshis from the inputs"
@@ -207,6 +207,7 @@
 [RPC]: /en/developer-reference#remote-procedure-calls-rpcs
 [RPCs]: /en/developer-reference#remote-procedure-calls-rpcs
 [secp256k1]: http://www.secg.org/index.php?action=secg,docs_secg
+[section verifying payment]: /en/developer-guide#verifying-payment
 [bitcoin URI subsection]: /en/developer-guide#bitcoin-uri
 [SHA256]: https://en.wikipedia.org/wiki/SHA-2
 [Stratum mining protocol]: http://mining.bitcoin.cz/stratum-mining
