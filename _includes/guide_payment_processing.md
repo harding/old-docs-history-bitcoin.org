@@ -1113,7 +1113,7 @@ This leaves receivers only two correct ways to issue refunds:
 * If an address was copy-and-pasted or a basic `bitcoin:` URI was used,
   contact the spender directly and ask them to provide a refund address.
 
-* If a payment protocol payment request was used, send the refund to the output
+* If the payment protocol was used, send the refund to the output
   listed in the `refund_to` field of the Payment message.
 
 As discussed in the Payment section, `refund_to` addresses may come with
