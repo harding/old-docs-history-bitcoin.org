@@ -15,7 +15,7 @@ work verified by the peer-to-peer network to maintain a global consensus.
 
 ![Block Chain Overview](/img/dev/en-blockchain-overview.svg)
 
-The illustration above shows a simplified version of a three-block block chain.
+The illustration above shows a simplified version of a block chain.
 A [block][]{:#term-block}{:.term} of one or more new transactions 
 is collected into the transaction data part of a block.
 Copies of each transaction are hashed, and the hashes are then paired,

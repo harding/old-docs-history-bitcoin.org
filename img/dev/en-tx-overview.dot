@@ -1,12 +1,15 @@
 digraph blockchain {
 
-size=6.66;
+size=6.25;
 splines = "false";
 rankdir=LR;
 ranksep=0.1;
 //splines=ortho;
 
-node [ shape = box ];
+node [ penwidth=1.75, fontname="Sans", shape = box ];
+edge [ penwidth=1.75, fontname="Sans" ];
+graph [ penwidth=1.75, fontname="Sans" ];
+
 //edge [ style = invis, minlen = 1 ];
 //fixedsize
 nodesep = 0.25;
@@ -41,7 +44,7 @@ subgraph cluster_tx {
     left2 [style = invis ];
     middle1 [style = invis, label="", width=0, height=0 ];
     middle2 [style = invis, label="", width=0, height=0 ];
-    middle3 [style = invis, label="", width=0, height=0 ];
+    middle3 [style = invis, label="", width=0, height=1.05 ];
     middle4 [style = invis, label="", width=0, height=0 ];
     middle5 [style = invis, label="", width=0, height=0 ];
     middle6 [style = invis, label="", width=0, height=0 ];
@@ -59,7 +62,7 @@ subgraph cluster_tx {
     label = "A Basic Transaction With One Input & One Output"
 }
 
-prevout -> input [ style = "dashed", label = "Each input\nspends\nbitcoins\nfrom a\nprevious\noutput\n(prevout)" ];
+prevout -> input [ style = "dashed", label = "Each input\nspends\nsatoshis\nfrom a\nprevious\noutput\n(prevout)" ];
 output -> nextout [style="dashed", label = "Each output\nwaits as an\nUnspent\nTx Output\n(UTXO)\nuntil a\nlater input\nspends it"];
 tophelp0 -> version [ style = invis ];
 

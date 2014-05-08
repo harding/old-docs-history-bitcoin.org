@@ -18,7 +18,7 @@ what's new, and what might be coming before the end of 2014.
 
 The figure above illustrates payment processing using Bitcoin from a
 receiver's perspective, starting with a new order. The following
-subsections will each address the three common steps and the three
+subsections will each address<!--noref--> the three common steps and the three
 occasional or optional steps.
 
 It is worth mentioning that each of these steps can be outsourced by
@@ -383,7 +383,7 @@ spender clicking a `bitcoin:` URI or scanning a `bitcoin:` QR code.
 For the script to use the protocol buffer, you will need a copy of
 Google's Protocol Buffer compiler (`protoc`), which is available in most
 modern Linux package managers and [directly from Google.][protobuf] Non-Google
-protocol buffer compilers are available for a variety of other
+protocol buffer compilers are available for a variety of
 programming languages. You will also need a copy of the PaymentRequest
 [Protocol Buffer description][core paymentrequest.proto] from the Bitcoin Core source code.
 
@@ -538,7 +538,7 @@ x509.certificate.append(file("/etc/apache2/example.com-cert.der", "r").read())
 
 {% autocrossref %}
 
-`x509certificates`<!--noref--> (required for signed PaymentRequests) you must
+`x509certificates`:<!--noref--> (required for signed PaymentRequests) you must
 provide the public SSL key/certificate corresponding to the private SSL
 key you'll use to sign the PaymentRequest. The certificate must be in
 ASN.1/DER format.
@@ -609,7 +609,7 @@ each payment.
 
 {% highlight python %}
 ## Amount of the request
-amount = 10000000  ## In satoshis (=100 mBTC)
+amount = 10000000  ## In satoshis
 
 ## P2PH pubkey hash
 pubkey_hash = "2b14950b8d31620c6cc923c5408a701b1ec0a020"
@@ -696,7 +696,7 @@ details.memo = "Flowers & chocolates"
 
 {% autocrossref %}
 
-`memo` (optional) add a memo which will be displayed to the spender as
+`memo`: (optional) add a memo which will be displayed to the spender as
 plain UTF-8 text. Embedded HTML or other markup will not be processed.
 
 {% endautocrossref %}
@@ -707,7 +707,7 @@ details.merchant_data = "Invoice #123"
 
 {% autocrossref %}
 
-`merchant_data` (optional) add arbitrary data which should be sent back to the
+`merchant_data`: (optional) add arbitrary data which should be sent back to the
 receiver when the invoice is paid. You can use this to track your
 invoices, although you can more reliably track payments by generating a
 unique address for each payment and then tracking when it gets paid. 
@@ -1099,7 +1099,7 @@ For example:
   the Bitcoin address mjSk1Ny9spzU2fouzYgLqGUD8U41iR35QN.
 
 * Bob discovers Alice paid too many satoshis. Being an honest fellow,
-  Bob refunds the extra satoshis to the mjSk[...] address.
+  Bob refunds the extra satoshis to the mjSk... address.
 
 This seems like it should work, but Alice is using a centralized
 multi-user web wallet which doesn't give unique addresses to each user,
