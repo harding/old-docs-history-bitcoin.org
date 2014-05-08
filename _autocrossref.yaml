@@ -49,7 +49,6 @@ confirmed:
 confirmation:
 confirmations:
 confirmed transactions:
-'`decoderawtransaction`': rpc decoderawtransaction
 denomination:
 denominations: denomination
 DER format: der
@@ -69,9 +68,6 @@ extended public key:
 fiat:
 fork: accidental fork
 genesis block:
-'`getblock`': rpc getblock
-'`getblockhash`': rpc getblockhash
-'`getrawtransaction` RPC': rpc getrawtransaction
 hardened extended private key:
 HD protocol:
 header nonce:
@@ -83,10 +79,8 @@ intermediate certificate:
 intermediate certificates: intermediate certificate
 key index:
 key pair:
-'`keypoolrefill`': rpc keypoolrefill
 '`label`': label
 leaf certificate:
-'`listunspent` RPC': rpc listunspent
 locktime:
 long-term fork:
 mainnet:
@@ -227,3 +221,76 @@ BIP21:
 BIP32:
 BIP39:
 BIP70:
+
+## RPCs
+'`addmultisigaddress`': rpc addmultisigaddress
+'`addnode`': rpc addnode
+'`backupwallet`': rpc backupwallet
+'`createmultisig`': rpc createmultisig
+'`createrawtransaction`': rpc createrawtransaction
+'`decoderawtransaction`': rpc decoderawtransaction
+'`decodescript`': rpc decodescript
+'`dumpprivkey`': rpc dumpprivkey
+'`dumpwallet`': rpc dumpwallet
+'`getaccount`': rpc getaccount
+'`getaccountaddress`': rpc getaccountaddress
+'`getaddednodeinfo`': rpc getaddednodeinfo
+'`getaddressesbyaccount`': rpc getaddressesbyaccount
+'`getbalance`': rpc getbalance
+'`getbestblockhash`': rpc getbestblockhash
+'`getblock`': rpc getblock
+'`getblockcount`': rpc getblockcount
+'`getblockhash`': rpc getblockhash
+'`getblocktemplate`': rpc getblocktemplate
+'`getconnectioncount`': rpc getconnectioncount
+'`getdifficulty`': rpc getdifficulty
+'`getgenerate`': rpc getgenerate
+'`gethashespersec`': rpc gethashespersec
+'`getinfo`': rpc getinfo
+'`getmininginfo`': rpc getmininginfo
+'`getnettotals`': rpc getnettotals
+'`getnetworkhashps`': rpc getnetworkhashps
+'`getnewaddress`': rpc getnewaddress
+'`getpeerinfo`': rpc getpeerinfo
+'`getrawchangeaddress`': rpc getrawchangeaddress
+'`getrawmempool`': rpc getrawmempool
+'`getrawtransaction`': rpc getrawtransaction
+'`getreceivedbyaccount`': rpc getreceivedbyaccount
+'`getreceivedbyaddress`': rpc getreceivedbyaddress
+'`gettransaction`': rpc gettransaction
+'`gettxout`': rpc gettxout
+'`gettxoutsetinfo`': rpc gettxoutsetinfo
+'`getunconfirmedbalance`': rpc getunconfirmedbalance
+'`getwork`': rpc getwork
+'`help`': rpc help
+'`importprivkey`': rpc importprivkey
+'`importwallet`': rpc importwallet
+'`keypoolrefill`': rpc keypoolrefill
+'`listaccounts`': rpc listaccounts
+'`listaddressgroupings`': rpc listaddressgroupings
+'`listlockunspent`': rpc listlockunspent
+'`listreceivedbyaccount`': rpc listreceivedbyaccount
+'`listreceivedbyaddress`': rpc listreceivedbyaddress
+'`listsinceblock`': rpc listsinceblock
+'`listtransactions`': rpc listtransactions
+'`listunspent`': rpc listunspent
+'`lockunspent`': rpc lockunspent
+'`move`': rpc move
+'`ping`': rpc ping
+'`sendfrom`': rpc sendfrom
+'`sendmany`': rpc sendmany
+'`sendrawtransaction`': rpc sendrawtransaction
+'`sendtoaddress`': rpc sendtoaddress
+'`setaccount`': rpc setaccount
+'`setgenerate`': rpc setgenerate
+'`settxfee`': rpc settxfee
+'`signmessage`': rpc signmessage
+'`signrawtransaction`': rpc signrawtransaction
+'`stop`': rpc stop
+'`submitblock`': rpc submitblock
+'`validateaddress`': rpc validateaddress
+'`verifychain`': rpc verifychain
+'`verifymessage`': rpc verifymessage
+'`walletlock`': rpc walletlock
+'`walletpassphrase`': rpc walletpassphrase
+'`walletpassphrasechange`': rpc walletpassphrasechange
