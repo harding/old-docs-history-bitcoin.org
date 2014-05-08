@@ -26,7 +26,7 @@ An alternative approach detailed in the [original Bitcoin paper][bitcoinpdf] is 
 
 As described in the white paper, the Merkle root in the block header along with a Merkle branch can prove to the SPV client that the transaction in question is embedded in a block in the block chain. This does not guarantee validity of the transactions that are embedded. Instead it demonstrates the amount of work required to perform a double-spend attack. 
 
-The block's depth in the block chain corresponds to the cumulative difficulty that has been performed to build on top of that particular block. The SPV client knows the Merkle root and associated transaction information, and requests the respective Merkle branch from a full node. Once the Merkle branch has been retrieved, proving the existence of the transaction in the block, the SPV client can then look to block *depth* for the security of the transaction.
+The block's depth in the block chain corresponds to the cumulative difficulty that has been performed to build on top of that particular block. The SPV client knows the Merkle root and associated transaction information, and requests the respective Merkle branch from a full node. Once the Merkle branch has been retrieved, proving the existence of the transaction in the block, the SPV client can then look to block *depth* as a proxy for transaction validity and security. The cost of an attack on a user by a malicious miner who inserts an invalid transaction grows with the cumulative difficulty built on top of that block, since the malicious miner alone will be extending this forged chain. 
 
 {% endautocrossref %}
 
