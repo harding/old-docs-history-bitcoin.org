@@ -40,7 +40,7 @@ immediately.
   for testnet).
 
 * `bitcoin-cli` allows you to send RPC commands to `bitcoind` from the
-  command line.  For example, `bitcoin-cli getinfo`
+  command line.  For example, `bitcoin-cli help`
 
 All three programs get settings from `bitcoin.conf` in the `Bitcoin`
 application directiory:

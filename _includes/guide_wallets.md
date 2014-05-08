@@ -12,7 +12,7 @@ Bitcoin wallets at their core are a collection of private keys. These collection
 
 Private keys are what are used to unlock satoshis from a particular address. In Bitcoin, a private key in standard format is simply a 256-bit number, between the values:
 
-0x1 and 0xFFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFE BAAE DCE6 AF48 A03B BFD2 5E8C D036 4141, effectively representing the entire range of 2<sup>256</sup>-1 values. The range is governed by the secp256k1 ECDSA encryption standard used by Bitcoin. 
+0x1 and 0xFFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFE BAAE DCE6 AF48 A03B BFD2 5E8C D036 4141, representing nearly the entire range of 2<sup>256</sup>-1 values. The range is governed by the secp256k1 ECDSA encryption standard used by Bitcoin. 
 
 {% endautocrossref %}
 
@@ -26,13 +26,13 @@ In order to make copying of private keys less prone to error, [Wallet Import For
 
 2. Add a 0x80 byte in front of it for mainnet addresses or 0xef for testnet addresses.
 
-3. Perform a SHA-256 hash on the extended&nbsp;key.
+3. Perform a SHA-256 hash on the extended key.<!--noref-->
 
 4. Perform a SHA-256 hash on result of SHA-256 hash.
 
 5. Take the first 4 bytes of the second SHA-256 hash; this is the checksum.
 
-6. Add the 4 checksum bytes from point 5 at the end of the extended&nbsp;key from point 2.
+6. Add the 4 checksum bytes from point 5 at the end of the extended key<!--noref--> from point 2.
 
 7. Convert the result from a byte string into a Base58 string using Base58Check encoding.
 
@@ -236,7 +236,7 @@ key][]{:#term-hardened-extended-private-key}{:.term} is much less
 useful than a normal extended private key---however, it's more secure
 against multi-level key compromise. If an attacker gets a normal parent
 chain code, he can brute-force find all 2<sup>31</sup> normal chain
-codes deriving from it. If attacker also obtains a child, grandchild, or
+codes deriving from it. If the attacker also obtains a child, grandchild, or
 further-descended private key, he can use the chain code to generate all
 of the extended private keys descending from that private key.
 
@@ -321,7 +321,7 @@ For implementation details, please see BIP39.
 
 {% autocrossref %}
 
-Loose-Key wallets, also called "Just a Bunch Of Keys (JBOK)", are a deprecated form of wallet that originated from the Bitcoin Core client wallet. Bitcoin Core client wallet would create 100 private key/public key pairs automatically via a Pseudo-Random-Number Generator (PRNG) for use. Once all these keys are consumed or the RPC call `keypoolrefill` is run, another 100 key pairs would be created. This created considerable difficulty in backing up one’s keys, considering backups have to be run manually to save the newly generated private keys. If a new key pair set had been generated, used, then lost prior to a backup, the stored satoshis are likely lost forever. Many older-style mobile wallets followed a similar format, but only generated a new private key upon user demand.
+Loose-Key wallets, also called "Just a Bunch Of Keys (JBOK)", are a deprecated form of wallet that originated from the Bitcoin Core client wallet. The Bitcoin Core client wallet would create 100 private key/public key pairs automatically via a Pseudo-Random-Number Generator (PRNG) for later use. Once all these keys are consumed or the RPC call `keypoolrefill` is run, another 100 key pairs would be created. This created considerable difficulty in backing up one’s keys, considering backups have to be run manually to save the newly-generated private keys. If a new key pair set is generated, used, and then lost prior to a backup, the stored satoshis are likely lost forever. Many older-style mobile wallets followed a similar format, but only generated a new private key upon user demand.
 
 This wallet type is being actively phased out and discouraged from being used due to the backup hassle.
 
