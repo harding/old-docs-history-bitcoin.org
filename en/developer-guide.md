@@ -14,7 +14,7 @@ title: "Developer Guide - Bitcoin"
 * Table of contents
 {:toc}
 
-<ul><li><a href="/en/developer-documentation">Go back to Developer Documentation</a></li></ul>
+<ul><li><a href="/en/developer-documentation">Return To Overview</a></li></ul>
 
 </div></div>
 
