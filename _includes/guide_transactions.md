@@ -37,7 +37,7 @@ Bitcoin peers and miners which set of rules to use to validate it.  This
 lets developers create new rules for future transactions without
 invalidating previous transactions.
 
-The figure below helps illustrate the other transaction features by
+The figures below help illustrate the other transaction features by
 showing the workflow Alice uses to send Bob a transaction and which Bob
 later uses to spend that transaction. Both Alice and Bob will use the
 most common form of the standard Pay-To-Pubkey-Hash (P2PH) transaction
@@ -47,7 +47,7 @@ cryptographic key pair.
 
 ![Creating A P2PH Public Key Hash To Receive Payment](/img/dev/en-creating-p2ph-output.svg)
 
-Bob must generate a private/public [key pair][]{:#term-key-pair}{:.term} before Alice can create the
+Bob must first generate a private/public [key pair][]{:#term-key-pair}{:.term} before Alice can create the
 first transaction. Standard Bitcoin [private keys][private
 key]{:#term-private-key}{:.term} are 256 bits of random
 data. A copy of that data is deterministically transformed into a [public
@@ -67,7 +67,7 @@ different states of a public key and to help the text better match the
 space-constrained diagrams where "public-key hash" wouldn't fit. -harding -->
 
 Bob provides the [pubkey hash][]{:#term-pubkey-hash}{:.term} to Alice. Pubkey hashes are almost always
-sent encoded as Bitcoin [addresses][]{:#term-address}{:.term}, which are base58 encoded strings
+sent encoded as Bitcoin [addresses][]{:#term-address}{:.term}, which are base58-encoded strings
 containing an address version number, the hash, and an error-detection
 checksum to catch typos. The address can be transmitted
 through any medium, including one-way mediums which prevent the spender
@@ -134,7 +134,7 @@ transactions.
 {% autocrossref %}
 
 The validation procedure requires evaluation of the script.  In a P2PH
-script, the script is:
+output, the script is:
 
 {% endautocrossref %}
 
@@ -272,7 +272,7 @@ redeemScript, so P2SH scripts are as secure as P2PH pubkey hashes.
 Care must be taken to avoid non-standard output scripts. As of Bitcoin Core
 0.9, the standard script types are:
 
-**Pubkey hash (P2PH)**
+**Pubkey Hash (P2PH)**
 
 P2PH is the most common form of script used to send a transaction to one
 or multiple Bitcoin addresses.
@@ -286,7 +286,7 @@ scriptSig: <sig> <pubkey>
 
 {% autocrossref %}
 
-**Script hash (P2SH)**
+**Script Hash (P2SH)**
 
 P2SH is used to send a transaction to a script hash. Each of the standard
 scripts can be used inside a P2SH redeemScript, but in practice only the
@@ -303,7 +303,7 @@ scriptSig: <sig> [sig] [sig...] <redeemscript>
 
 **Multisig**
 
-Although P2SH is now generally used for multisig transactions, this script
+Although P2SH multisig is now generally used for multisig transactions, this base script
 can be used to require multiple signatures before a UTXO can be spent.
 
 In multisig scripts, called m-of-n, *m* is the *minimum* number of signatures
@@ -378,7 +378,7 @@ accept, broadcast, nor mine your transaction. When you try to broadcast
 your transaction to a peer running the default settings, you will
 receive an error.
 
-But if you create a non-standard redeemScript, hash it, and use the hash
+Unfortunately, if you create a non-standard redeemScript, hash it, and use the hash
 in a P2SH output, the network sees only the hash, so it will accept the
 output as valid no matter what the redeemScript says. When you go to
 spend that output, however, peers and miners using the default settings
@@ -390,7 +390,7 @@ As of Bitcoin Core 0.9, standard transactions must also meet the following
 conditions:
 
 * The transaction must be finalized: either its locktime must be in the
-  past (or equal to the current block height), or all of its sequence
+  past (or less than or equal to the current block height), or all of its sequence
   numbers must be 0xffffffff.
 
 * The transaction must be smaller than 100,000 bytes. That's around 200
@@ -407,8 +407,8 @@ conditions:
   OP codes which solely push data to the stack.
 
 * If any of the transaction's outputs spend less than a minimal value
-  (currently 546 satoshis---0.005 millibits), the transaction must pay
-  a minimum transaction fee (currently 0.1 millibits).
+  (currently 546 satoshis), the transaction must pay
+  a minimum transaction fee (currently 10,000 satoshis).
 
 {% endautocrossref %}
 
@@ -545,16 +545,16 @@ will accept.
 
 By default, miners reserve 50 KB of each block for [high-priority
 transactions][]{:#term-high-priority-transactions}{:.term} which spend satoshis that haven't been spent for a long
-time.  The remaining space in each block is allocated to transactions
+time.  The remaining space in each block is typically allocated to transactions
 based on their fee per byte, with higher-paying transactions being added
 in sequence until all of the available space is filled.
 
 As of Bitcoin Core 0.9, transactions which do not count as high-priority transactions
-need to pay a [minimum fee][]{:#term-minimum-fee}{:.term} of 10,000 satoshis (0.01 millibits) to be
+need to pay a [minimum fee][]{:#term-minimum-fee}{:.term} of 10,000 satoshis to be
 broadcast across the network. Any transaction paying the minimum fee
 should be prepared to wait a long time before there's enough spare space
-in a block to include it. Please see the [block chain section][block chain] about
-confirmations for why this could be important.
+in a block to include it. Please see the [verifying payment][section verifying payment]
+for why this could be important.
 
 Since each transaction spends Unspent Transaction Outputs (UTXOs) and
 because a UTXO can only be spent once, the full value of the included
@@ -605,7 +605,7 @@ hours, days, months, or years (but not any faster).
 So, for both privacy and security, we encourage you to build your
 applications to avoid public key reuse and, when possible, to discourage
 users from reusing addresses. If your application needs to provide a
-fixed URI to which payments should be sent, please see Bitcoin the
+fixed URI to which payments should be sent, please see the
 [`bitcoin:` URI section][bitcoin URI subsection] below.
 
 {% endautocrossref %}

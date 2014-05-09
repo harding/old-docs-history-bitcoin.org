@@ -36,15 +36,15 @@ in satoshis, necessitating a price conversion.
 
 Exchange rate data is widely available through HTTP-based APIs provided
 by currency exchanges. Several organizations also aggregate data from
-multiple exchanges to create index prices which are also available using
+multiple exchanges to create index prices, which are also available using
 HTTP-based APIs.
 
 Any applications which automatically calculate order totals using exchange
 rate data must take steps to ensure the price quoted reflects the
-current general market value of satoshis, or your applications could
+current general market value of satoshis, or the applications could
 accept too few satoshis for the product or service being sold.
-Alternatively, they could ask for too many satoshis, driving potential
-spenders away.
+Alternatively, they could ask for too many satoshis, driving away potential
+spenders.
 
 To minimize problems, your applications may want to collect data from at
 least two separate sources and compare them to see how much they differ.
@@ -64,7 +64,7 @@ order totals from fiat into satoshis.
 Because the exchange rate fluctuates over time, order totals pegged to
 fiat must expire to prevent spenders from delaying payment in the hope
 that satoshis will drop in price. Most widely-used payment processing
-systems currently expire their invoices after 10 minutes.
+systems currently expire their invoices after 10 to 20 minutes.
 
 Shorter expiration periods increase the chance the invoice will expire
 before payment is received, possibly necessitating manual intervention
@@ -108,17 +108,17 @@ payment requests is recommended.
    manually configures a URI handler.
 
 3. Most mobile wallets support scanning `bitcoin:` URIs encoded in a
-   QR code and almost all wallets can display them for
+   QR code, and almost all wallets can display them for
    accepting payment. While also handy for online orders, QR Codes are
    especially useful for in-person purchases.
 
 4. Recent wallet updates add support for the new payment protocol providing
-   increased security and authentication of a receiver's identity using X.509 certificates
-   as well as other important features like refunds.
+   increased security, authentication of a receiver's identity using X.509 certificates,
+   and other important features such as refunds.
 
-**Warning**: Special care must be taken to avoid the theft of incoming
+**Warning:** special care must be taken to avoid the theft of incoming
 payments. In particular, private keys should not be stored on web servers,
-and payment requests should be sent over HTTPS or using other secure methods
+and payment requests should be sent over HTTPS or other secure methods
 to prevent man-in-the-middle attacks from replacing your Bitcoin address
 with the attacker's address.
 
@@ -383,9 +383,9 @@ spender clicking a `bitcoin:` URI or scanning a `bitcoin:` QR code.
 For the script to use the protocol buffer, you will need a copy of
 Google's Protocol Buffer compiler (`protoc`), which is available in most
 modern Linux package managers and [directly from Google.][protobuf] Non-Google
-protocol buffer compilers are also available for a variety of other
+protocol buffer compilers are available for a variety of other
 programming languages. You will also need a copy of the PaymentRequest
-[Protocol Buffer description][core paymentrequest.proto] in the Bitcoin Core source code.
+[Protocol Buffer description][core paymentrequest.proto] from the Bitcoin Core source code.
 
 ###### Initialization Code
 
@@ -561,7 +561,7 @@ Mozilla root store.
 
 The certificates must be provided in a specific order---the same order
 used by Apache's `SSLCertificateFile` directive and other server
-software.   The figure below shows the signature<!--noref--> chain of the
+software.   The figure below shows the [certificate chain][]{:#term-certificate-chain}{:.term} of the
 www.bitcoin.org X.509 certificate and how each certificate (except the
 root certificate) would be loaded into the [X509Certificates][]{:#term-x509certificates}{:.term} protocol
 buffer message.
@@ -576,16 +576,6 @@ key to the [root
 certificate][]{:#term-root-certificate}{:.term} (the certificate authority) are attached separately, with each
 certificate in DER format bearing the signature<!--noref--> of the certificate that
 follows it all the way to (but not including) the root certificate.
-
-<!-- (Commenting out following paragraph; it doesn't seem necessary;
---    will remove in a later commit if nobody complains.)
--- If you accidentally include the root certificate, no known X.509
--- implementation will invalidate your [certificate chain][]{:#term-certificate-chain}{:.term}. However,
--- including the root certificate will waste space (PaymentRequests must be
--- less than 50 KB) and bandwidth for no good reason---if the spender's
--- software does not already have a copy of the root certificate, it will
--- never consider your certificate chain valid.
--->
 
 {% endautocrossref %}
 
@@ -667,7 +657,7 @@ serialized_script = hex_script.decode("hex")
 
 `script`: (required) You must specify the output script you want the spender to
 pay---any valid script is acceptable. In this example, we'll request
-payment to a P2SH output script.  
+payment to a P2PH output script.  
 
 First we get a pubkey hash. The hash above is the hash form of the
 address used in the URI examples throughout this section,
@@ -717,7 +707,7 @@ details.merchant_data = "Invoice #123"
 
 {% autocrossref %}
 
-`merchant_data` (optional) add arbitrary data which will be sent back to the
+`merchant_data` (optional) add arbitrary data which should be sent back to the
 receiver when the invoice is paid. You can use this to track your
 invoices, although you can more reliably track payments by generating a
 unique address for each payment and then tracking when it gets paid. 
@@ -747,7 +737,7 @@ details.time = int(time()) ## Current epoch (Unix) time
 ## Request expiration time
 details.expires = int(time()) + 60 * 10  ## 10 minutes from now
 
-## PaymentDetails complete; serialize it and store it in PaymentRequest
+## PaymentDetails is complete; serialize it and store it in PaymentRequest
 request.serialized_payment_details = details.SerializeToString()
 
 ## Serialized certificate chain
@@ -809,7 +799,7 @@ request.pki_data = x509.SerializeToString()
 
 {% autocrossref %}
 
-`pki_data` (required for signed PaymentRequests) serialize the certificate chain
+`pki_data`: (required for signed PaymentRequests) serialize the certificate chain
 [PKI data][pp PKI data]{:#term-pp-pki-data}{:.term} and store it in the
 PaymentRequest
 
@@ -988,7 +978,7 @@ no specific [receipt][]{:#term-receipt}{:.term} object.  However, a cryptographi
 receipt can be derived from a signed PaymentDetails and one or more confirmed
 transactions.
 
-The PaymentDetails indicates what output scripts should be paid
+A signed PaymentDetails indicates what output scripts should be paid
 (`script`), how much they should be paid (`amount`), and by when
 (`expires`). The Bitcoin block chain indicates whether those outputs
 were paid the requested amount and can provide a rough idea of when the
@@ -1036,11 +1026,11 @@ accident, so a double spend is still a real possibility.
 
 **2 confirmations**: The most recent block was chained to the block which 
 includes the transaction. As of March 2014, two block replacements were 
-exceedingly rare, and a two block replacement attack was unpractical without 
+exceedingly rare, and a two block replacement attack was impractical without 
 expensive mining equipment.
 
 **6 confirmations**: The network has spent about an hour working to protect 
-your transaction against double spends and the transaction is buried under six 
+the transaction against double spends and the transaction is buried under six 
 blocks. Even a reasonably lucky attacker would require a large percentage of 
 the total network hashing power to replace six blocks. Although this number is 
 somewhat arbitrary, software handling high-value transactions, or otherwise at 
@@ -1123,7 +1113,7 @@ This leaves receivers only two correct ways to issue refunds:
 * If an address was copy-and-pasted or a basic `bitcoin:` URI was used,
   contact the spender directly and ask them to provide a refund address.
 
-* If a payment request was used, send the refund to the output
+* If the payment protocol was used, send the refund to the output
   listed in the `refund_to` field of the Payment message.
 
 As discussed in the Payment section, `refund_to` addresses may come with
@@ -1179,8 +1169,7 @@ receiver has earned, spent, and saved.
 
 [Merge avoidance][]{:#term-merge-avoidance}{:.term} means trying to avoid spending unrelated outputs in the
 same transaction. For persons and businesses which want to keep their
-transaction data secret from other people and competitors to the
-greatest degree possible, it can be an important strategy.
+transaction data secret from other people, it can be an important strategy.
 
 A crude merge avoidance strategy is to try to always pay with the
 smallest output you have which is larger than the amount being

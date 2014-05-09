@@ -7,10 +7,6 @@ of all confirmed transactions. This system is used to protect against double spe
 and modification of previous transaction records, using proof of
 work verified by the peer-to-peer network to maintain a global consensus.
 
-This document provides detailed explanations about the functioning of
-this system along with security advice for risk assessment and tools for
-using block chain data.
-
 {% endautocrossref %}
 
 ### Block Chain Overview
@@ -19,9 +15,9 @@ using block chain data.
 
 ![Block Chain Overview](/img/dev/en-blockchain-overview.svg)
 
-The figure above shows a simplified version of a three-block block chain.
-A [block][]{:#term-block}{:.term} of new transactions, which can vary from one transaction to
-over a thousand, is collected into the transaction data part of a block.
+The illustration above shows a simplified version of a three-block block chain.
+A [block][]{:#term-block}{:.term} of one or more new transactions 
+is collected into the transaction data part of a block.
 Copies of each transaction are hashed, and the hashes are then paired,
 hashed, paired again, and hashed again until a single hash remains, the
 [Merkle root][]{:#term-merkle-root}{:.term} of a Merkle tree.
@@ -49,25 +45,20 @@ spend---an attempt to spend the same satoshis twice.
 Outputs are not the same as Bitcoin addresses. You can use the same
 address in multiple transactions, but you can only use each output once.
 Outputs are tied to [transaction identifiers (TXIDs)][txid]{:#term-txid}{:.term}, which are the hashes
-of complete transactions.
+of signed transactions.
 
 Because each output of a particular transaction can only be spent once,
 all transactions included in the block chain can be categorized as either
 [Unspent Transaction Outputs (UTXOs)][utxo]{:#term-utxo}{:.term} or spent transaction outputs. For a
 payment to be valid, it must only use UTXOs as inputs.
 
-Satoshis cannot be left in a UTXO after a transaction: they will be
-irretrievably lost. So any difference between the number of bitcoins in a
+Satoshis cannot be left in a UTXO after a transaction or they will be
+irretrievably lost, so any difference between the number of satoshis in a
 transaction's inputs and outputs is given as a [transaction fee][]{:#term-transaction-fee}{:.term} to 
 the Bitcoin [miner][]{:#term-miner}{:.term} who creates the block containing that transaction. 
-For example, in the figure above, each transaction spends 10,000 satoshis (0.01 millibits)
+For example, in the illustration above, each transaction spends 10,000 satoshis
 fewer than it receives from its combined inputs, effectively paying a 10,000
 satoshi transaction fee.
-
-The spenders propose a transaction fee with each transaction; miners
-decide whether the amount proposed is adequate, and only accept
-transactions that pass their threshold. Therefore, transactions with a
-higher proposed transaction fee are likely to be processed faster.
 
 {% endautocrossref %}
 
@@ -81,11 +72,10 @@ its creation to ensure that untrustworthy peers who want to modify past blocks h
 to work harder than trustworthy peers who only want to add new blocks to the
 block chain.
 
-The block chain magnifies the effect of this proof of work.
 Chaining blocks together makes it impossible to modify transactions included
 in any block without modifying all following blocks. As a
 result, the cost to modify a particular block increases with every new block
-added to the block chain.
+added to the block chain, magnifying the effect of the proof of work.
 
 The [proof of work][]{:#term-proof-of-work}{:.term} used in Bitcoin
 takes advantage of the apparently random nature of cryptographic hashes.
@@ -150,7 +140,7 @@ a block does not slow down hashing with extra I/O.
 {% autocrossref %}
 
 Any Bitcoin miner who successfully hashes a block header to a value
-below the target can add the entire block to the block chain.
+below the target threshold can add the entire block to the block chain.
 (Assuming the block is otherwise valid.) These blocks are commonly addressed
 by their [block height][]{:#term-block-height}{:.term}---the number of blocks between them and the first Bitcoin
 block (block 0, most commonly known as the [genesis block]{:#term-genesis-block}{:.term}). For example,
@@ -161,14 +151,14 @@ block 2016 is where difficulty could have been first adjusted.
 Multiple blocks can all have the same block height, as is common when
 two or more miners each produce a block at roughly the same time. This
 creates an apparent [fork][accidental fork]{:#term-accidental-fork}{:.term} in the block chain, as shown in the
-figure above.
+illustration above.
 
 When miners produce simultaneous blocks at the end of the block chain, each
 peer individually chooses which block to trust. (In the absence of
 other considerations, discussed below, peers usually trust the first
 block they see.)
 
-Eventually miners produce another block which attaches to only one of
+Eventually a miner produces another block which attaches to only one of
 the competing simultaneously-mined blocks. This makes that side of
 the fork longer than the other side. Assuming a fork only contains valid
 blocks, normal peers always follow the longest fork (the most difficult chain
@@ -182,8 +172,6 @@ transaction history.
 Since multiple blocks can have the same height during a block chain fork, block
 height should not be used as a globally unique identifier. Instead, blocks
 are usually referenced by the SHA256(SHA256()) hash of their header.
-Although this hash must be below the target threshold, leading to an increased
-(but still minuscule) chance of eventual hash collision.
 
 {% endautocrossref %}
 
@@ -196,9 +184,9 @@ transactions must be a coinbase transaction which should collect and
 spend the block reward and any transaction fees paid by transactions included in this block.
 
 The UTXO of a coinbase transaction has the special condition that
-it cannot be spent (used as an input) for at least 100 blocks. This helps
-prevent a miner from spending the transaction fees and block reward from a
-block that will later be orphaned (destroyed) after a block chain fork.
+it cannot be spent (used as an input) for at least 100 blocks. This temporarily
+prevents a miner from spending the transaction fees and block reward from a
+block that may later be orphaned (destroyed) after a block chain fork.
 
 Blocks are not required to include any non-coinbase transactions, but
 miners almost always do include additional transactions in order to
@@ -240,12 +228,12 @@ the Merkle tree allows clients to verify for
 themselves that a transaction was included in a block by obtaining the
 Merkle root from a block header and a list of the intermediate hashes
 from a full peer. The full peer does not need to be trusted: it is
-expensive to fake blocks and the intermediate hashes cannot be faked or
+expensive to fake block headers and the intermediate hashes cannot be faked or
 the verification will fail.
 
-For example, a peer who wants to verify transaction D was added to the
-block only needs a copy of the C, AB, and EEEE hashes in addition to the
-Merkle root; the peer doesn't need to know anything about any of the
+For example, to verify transaction D was added to the
+block, an SPV client only needs a copy of the C, AB, and EEEE hashes in addition to the
+Merkle root; the client doesn't need to know anything about any of the
 other transactions. If the five transactions in this block were all at
 the maximum size, downloading the entire block would require over
 500,000 bytes---but downloading three hashes plus the block header

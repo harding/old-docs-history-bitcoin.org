@@ -21,8 +21,8 @@ title: "Developer Documentation - Bitcoin"
       <p><a href="/en/developer-reference#block-chain"><b>Block Chain Reference</b></a></p>
     </div><div>
       <h2><img src="/img/ico_micro.svg" class="titleicon" alt="Icon">Transactions</h2>
-      <p><a href="/en/developer-guide#transactions"><b>Transaction Guide</b></a></p>
-      <p><a href="/en/developer-reference#transaction"><b>Transaction Reference</b></a></p>
+      <p><a href="/en/developer-guide#transactions"><b>Transactions Guide</b></a></p>
+      <p><a href="/en/developer-reference#transaction"><b>Transactions Reference</b></a></p>
     </div>
   </div>
   <div>
@@ -36,6 +36,7 @@ title: "Developer Documentation - Bitcoin"
     </div><div>
       <h2><img src="/img/ico_key.svg" class="titleicon" alt="Icon">Wallets</h2>
       <p><a href="/en/developer-guide#wallets"><b>Wallets Guide</b></a></p>
+      <p><a href="/en/developer-reference#wallets">Wallets Reference</a></p>
       <div>
         <p><a href="https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki">BIP32 - HD Wallets</a></p>
         <p><a href="https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki">BIP39 - Mnemonic Code</a></p>

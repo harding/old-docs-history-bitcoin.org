@@ -22,7 +22,7 @@ i_norm [ label = "Index Number" ];
 hmac [ label = "One-Way Hash", style = "diagonals" ];
 
 rel1 [ label = "Mathematical\nRelationship", shape = "none" ]
-rel2 [ label = "Same\nFundamental\nMathematical\nRelationship", shape = "none" ]
+rel2 [ label = "Derived\nMathematical\nRelationship", shape = "none" ]
 
 rel1 -> parent_private_key [ weight = 0, dir = "back" ];
 rel1 -> parent_chain_code [ style = "invis" ];
@@ -47,5 +47,5 @@ hmac -> child_public_key;
 hmac -> child_private_key;
 hmac -> child_chain_code;
 
-label = " \\nHeirarchical Deterministic (HD) Key Derivation (BIP32)"
+label = " \nNormal Hierarchical Deterministic (HD) Key Derivation (BIP32)"
 }
