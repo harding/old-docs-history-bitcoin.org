@@ -663,12 +663,6 @@ table td,table th{
 .toc div.scroll{
 	position:fixed;
 }
-.toc ul+ul{
-	padding-top:8px;
-}
-.toc ul+ul li{
-	background:url(/img/mini_ico_back.png) no-repeat 0 3px;
-}
 .toc ul,
 .toc li{
 	list-style:none;
@@ -712,6 +706,12 @@ table td,table th{
 	position:absolute;
 	font-weight:bold;
 	left:0px;
+}
+.toc ul+ul{
+	padding-top:8px;
+}
+.toc ul+ul li{
+	background:url(/img/mini_ico_back.png) no-repeat 0 3px;
 }
 .toc a,
 .toc a:link,
@@ -1663,6 +1663,9 @@ h2 .rssicon{
 	.toc ul li ul li a:hover:before,
 	.toc ul li ul li a.active:before{
 		content:"";
+	}
+	.toc ul+ul li{
+		background:none;
 	}
 	.toccontent{
 		width:auto;
