@@ -29,7 +29,7 @@ title: "Developer Documentation - Bitcoin"
     <div>
       <h2><img src="/img/ico_contract.svg" class="titleicon" alt="Icon">Contracts</h2>
       <p><a href="/en/developer-guide#contracts">Contracts Guide</a></p>
-      <div>
+      <div class="resourcesext">
         <p><a href="https://en.bitcoin.it/wiki/Contracts">More Contracts</a> - Wiki</p>
         <p><a href="https://bitcoinj.github.io/working-with-micropayments">Micropayment Channel Example</a> - bitcoinj</p>
       </div>
@@ -37,7 +37,7 @@ title: "Developer Documentation - Bitcoin"
       <h2><img src="/img/ico_key.svg" class="titleicon" alt="Icon">Wallets</h2>
       <p><a href="/en/developer-guide#wallets">Wallets Guide</a></p>
       <p><a href="/en/developer-reference#wallets">Wallets Reference</a></p>
-      <div>
+      <div class="resourcesext">
         <p><a href="https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki">HD Wallets</a> - BIP32</p>
         <p><a href="https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki">Mnemonic Code</a> - BIP39</p>
       </div>
@@ -47,7 +47,7 @@ title: "Developer Documentation - Bitcoin"
     <div>
       <h2><img src="/img/ico_bill.svg" class="titleicon" alt="Icon">Payment Processing</h2>
       <p><a href="/en/developer-guide#payment-processing">Payment Processing Guide</a></p>
-      <div>
+      <div class="resourcesext">
         <p><a href="https://github.com/bitcoin/bips/blob/master/bip-0070.mediawiki">Payment Protocol</a> - BIP70</p>
       </div>
     </div><div>
@@ -59,13 +59,13 @@ title: "Developer Documentation - Bitcoin"
     <div>
       <h2><img src="/img/ico_network.svg" class="titleicon" alt="Icon">P2P Network</h2>
       <p><a href="/en/developer-guide#p2p-network">P2P Network Guide</a></p>
-      <div>
+      <div class="resourcesext">
         <p><a href="https://en.bitcoin.it/wiki/Protocol_specification">Full Protocol Specification</a> - Wiki</p>
       </div>
     </div><div>
       <h2><img src="/img/ico_mining.svg" class="titleicon" alt="Icon">Mining</h2>
       <p><a href="/en/developer-guide#mining">Mining Guide</a></p>
-      <div>
+      <div class="resourcesext">
         <p><a href="https://github.com/bitcoin/bips/blob/master/bip-0022.mediawiki">getworktemplate Fundamentals</a> - BIP22</p>
         <p><a href="https://github.com/bitcoin/bips/blob/master/bip-0023.mediawiki">getworktemplate Pooled Mining</a> - BIP23</p>
       </div>
