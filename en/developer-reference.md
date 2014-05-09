@@ -14,6 +14,8 @@ title: "Developer Reference - Bitcoin"
 * Table of contents
 {:toc}
 
+<ul><li><a href="/en/developer-documentation">Go back to Developer Documentation</a></li></ul>
+
 </div></div>
 <div markdown="1" class="toccontent">
 
