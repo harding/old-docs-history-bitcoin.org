@@ -183,7 +183,7 @@ full refund. This is one reason micropayment channels are best suited to
 small payments---if Alice's Internet service goes out for a few hours
 near the time lock expiry, she could be cheated out of her payment.
 
-Transaction malleability, discussed above in the Payment Security section,
+Transaction malleability, discussed above in the Transactions section,
 is another reason to limit the value of micropayment channels.
 If someone uses transaction malleability to break the link between the
 two transactions, Alice could hold Bob's 100 millibits hostage even if she

@@ -553,7 +553,7 @@ As of Bitcoin Core 0.9, transactions which do not count as high-priority transac
 need to pay a [minimum fee][]{:#term-minimum-fee}{:.term} of 10,000 satoshis to be
 broadcast across the network. Any transaction paying the minimum fee
 should be prepared to wait a long time before there's enough spare space
-in a block to include it. Please see the [verifying payment][section verifying payment]
+in a block to include it. Please see the [verifying payment section][section verifying payment]
 for why this could be important.
 
 Since each transaction spends Unspent Transaction Outputs (UTXOs) and
@@ -565,7 +565,7 @@ so most transactions include a change output.
 [Change outputs][change output]{:#term-change-output}{:.term} are regular outputs which spend the surplus satoshis
 from the UTXOs back to the spender.  They can reuse the same P2PH pubkey hash
 or P2SH script hash as was used in the UTXO, but for the reasons
-described in the [next section](#avoiding-key-reuse), it is highly recommended that change
+described in the [next subsection](#avoiding-key-reuse), it is highly recommended that change
 outputs be sent to a new P2PH or P2SH address.
 
 {% endautocrossref %}

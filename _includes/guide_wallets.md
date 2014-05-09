@@ -30,9 +30,9 @@ In order to make copying of private keys less prone to error, [Wallet Import For
 
 4. Perform a SHA-256 hash on result of SHA-256 hash.
 
-5. Take the first 4 bytes of the second SHA-256 hash; this is the checksum.
+5. Take the first four bytes of the second SHA-256 hash; this is the checksum.
 
-6. Add the 4 checksum bytes from point 5 at the end of the extended key<!--noref--> from point 2.
+6. Add the four checksum bytes from point 5 at the end of the extended key<!--noref--> from point 2.
 
 7. Convert the result from a byte string into a Base58 string using Base58Check encoding.
 
@@ -50,7 +50,7 @@ Mini private key format is a method for encoding a private key in under 30 chara
 
 2. In order to determine if a mini private key is well-formatted, a question mark is added to the private key.
 
-3. The SHA256 hash calculated. If the first byte produced is a `00’, it is well-formatted. This key restriction acts as a typo-checking mechanism. A user brute forces the process using random numbers until a well-formatted mini private key is produced. 
+3. The SHA256 hash is calculated. If the first byte produced is a `00’, it is well-formatted. This key restriction acts as a typo-checking mechanism. A user brute forces the process using random numbers until a well-formatted mini private key is produced. 
 
 4. In order to derive the full private key, the user simply takes a single SHA256 hash of the original mini private key. This process is one-way: it is intractable to compute the mini private key format from the derived key.
 
@@ -321,7 +321,7 @@ For implementation details, please see BIP39.
 
 {% autocrossref %}
 
-Loose-Key wallets, also called "Just a Bunch Of Keys (JBOK)", are a deprecated form of wallet that originated from the Bitcoin Core client wallet. The Bitcoin Core client wallet would create 100 private key/public key pairs automatically via a Pseudo-Random-Number Generator (PRNG) for later use. Once all these keys are consumed or the RPC call `keypoolrefill` is run, another 100 key pairs would be created. This created considerable difficulty in backing up one’s keys, considering backups have to be run manually to save the newly-generated private keys. If a new key pair set is generated, used, and then lost prior to a backup, the stored satoshis are likely lost forever. Many older-style mobile wallets followed a similar format, but only generated a new private key upon user demand.
+Loose-Key wallets, also called "Just a Bunch Of Keys (JBOK)", are a deprecated form of wallet that originated from the Bitcoin Core client wallet. The Bitcoin Core client wallet would create 100 private key/public key pairs automatically via a Pseudo-Random-Number Generator (PRNG) for later use. Once all these keys are consumed or the RPC call `keypoolrefill` is run, another 100 key pairs would be created. This created considerable difficulty<!--noref--> in backing up one’s keys, considering backups have to be run manually to save the newly-generated private keys. If a new key pair set is generated, used, and then lost prior to a backup, the stored satoshis are likely lost forever. Many older-style mobile wallets followed a similar format, but only generated a new private key upon user demand.
 
 This wallet type is being actively phased out and discouraged from being used due to the backup hassle.
 
