@@ -1,6 +1,6 @@
 ## Block Chain
 
-The following subsections briefly document core blocks details.
+The following subsections briefly document core block details.
 
 ### Block Contents
 
@@ -72,16 +72,16 @@ The 80-byte block header contains the following six fields:
 
 3. The *Merkle root* is a hash derived from hashes of all the
    transactions included in this block. It ensures no transactions can
-   be modified in this block without changing the block header.
+   be modified in this block without changing the block header hash.
 
 4. The *[block time][]{:#term-block-time}{:.term}* is the approximate time when this block was created in
    Unix Epoch time format (number of seconds elapsed since
    1970-01-01T00:00 UTC). The time value must be greater than the
-   time of the previous block. No peer will accept a block with a
+   median time of the previous 11 blocks. No peer will accept a block with a
    time currently more than two hours in the future according to the
    peer's clock.
 
-5. *Bits* translates into the target threshold value -- the maximum allowed
+5. *Bits* translates into the target threshold value---the maximum allowed
    value for this block's hash. The bits value must match the network
    difficulty at the time the block was mined.
 
@@ -89,7 +89,7 @@ The 80-byte block header contains the following six fields:
    hash values for the header until they find a hash value less than or
    equal to the target threshold. If all values within the nonce's four
    bytes are tested, the time can be updated or the
-   coinbase transaction (described below) can be changed and the Merkle
+   coinbase transaction can be changed and the Merkle
    root updated.
 
 {% endautocrossref %}

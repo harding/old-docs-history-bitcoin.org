@@ -250,7 +250,7 @@ sum of the inputs and the sum of the outputs, so a raw transaction which
 accidentally leaves off a change output, for example, can have a
 transaction fee dozens or hundreds of times larger than the network
 norm.  If *true* is specified, that will be allowed.  If *false* (the
-default) the transaction will be rejected with an informative error
+default), the transaction will be rejected with an informative error
 message.
 
 {% endautocrossref %}
@@ -668,7 +668,7 @@ stored in the wallet or provided in the call.
 
 {% autocrossref %}
 
-*String; required:* the transaction to sign in raw transaction format
+*String; required:* the transaction to sign in rawtransaction format
 (hex).
 
 {% endautocrossref %}
