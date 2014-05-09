@@ -9,35 +9,35 @@
 <g id="graph1" class="graph" transform="scale(1 1) rotate(0) translate(4 216)">
 <title>extended</title>
 <polygon fill="white" stroke="white" points="-4,5 -4,-216 344,-216 344,5 -4,5"/>
-<text text-anchor="middle" x="169.5" y="-8.4" font-family="Times Roman,serif" font-size="14.00">Cross&#45;Generational Key Compromise</text>
+<text text-anchor="middle" x="169.5" y="-8.4" font-family="Sans" font-size="14.00">Cross&#45;Generational Key Compromise</text>
 <g id="graph2" class="cluster"><title>cluster_parent</title>
 <polygon fill="none" stroke="black" stroke-width="1.75" points="8,-33 8,-204 90,-204 90,-33 8,-33"/>
-<text text-anchor="middle" x="49" y="-187.4" font-family="Times Roman,serif" font-size="14.00">Parent</text>
+<text text-anchor="middle" x="49" y="-187.4" font-family="Sans" font-size="14.00">Parent</text>
 </g>
 <g id="graph3" class="cluster"><title>cluster_child</title>
 <polygon fill="none" stroke="black" stroke-width="1.75" points="124,-33 124,-204 206,-204 206,-33 124,-33"/>
-<text text-anchor="middle" x="165" y="-187.4" font-family="Times Roman,serif" font-size="14.00">Child</text>
+<text text-anchor="middle" x="165" y="-187.4" font-family="Sans" font-size="14.00">Child</text>
 </g>
 <g id="graph4" class="cluster"><title>cluster_grandchild</title>
 <polygon fill="none" stroke="black" stroke-width="1.75" points="240,-33 240,-204 331,-204 331,-33 240,-33"/>
-<text text-anchor="middle" x="285.5" y="-187.4" font-family="Times Roman,serif" font-size="14.00">Grandchild</text>
+<text text-anchor="middle" x="285.5" y="-187.4" font-family="Sans" font-size="14.00">Grandchild</text>
 </g>
 <!-- attacker_parent_private_key -->
 <!-- attacker_child_private_key -->
 <g id="node6" class="node"><title>attacker_child_private_key</title>
 <polygon fill="lightgrey" stroke="black" stroke-width="1.75" points="198,-171 132,-171 132,-135 198,-135 198,-171"/>
-<text text-anchor="middle" x="165" y="-148.9" font-family="Times Roman,serif" font-size="14.00">Private</text>
+<text text-anchor="middle" x="165" y="-148.9" font-family="Sans" font-size="14.00">Private</text>
 </g>
 <!-- attacker_parent_private_key&#45;&gt;attacker_child_private_key -->
 <!-- attacker_parent_chain_code -->
 <g id="node3" class="node"><title>attacker_parent_chain_code</title>
 <polygon fill="lightgrey" stroke="black" stroke-width="1.75" points="77,-124 21,-124 21,-88 77,-88 77,-124"/>
-<text text-anchor="middle" x="49" y="-101.9" font-family="Times Roman,serif" font-size="14.00">Chain</text>
+<text text-anchor="middle" x="49" y="-101.9" font-family="Sans" font-size="14.00">Chain</text>
 </g>
 <!-- attacker_child_chain_code -->
 <g id="node7" class="node"><title>attacker_child_chain_code</title>
 <polygon fill="none" stroke="black" stroke-width="1.75" points="193,-124 137,-124 137,-88 193,-88 193,-124"/>
-<text text-anchor="middle" x="165" y="-101.9" font-family="Times Roman,serif" font-size="14.00">Chain</text>
+<text text-anchor="middle" x="165" y="-101.9" font-family="Sans" font-size="14.00">Chain</text>
 </g>
 <!-- attacker_parent_chain_code&#45;&gt;attacker_child_chain_code -->
 <g id="edge7" class="edge"><title>attacker_parent_chain_code&#45;&gt;attacker_child_chain_code</title>
@@ -47,7 +47,7 @@
 <!-- attacker_child_public_key -->
 <g id="node8" class="node"><title>attacker_child_public_key</title>
 <polygon fill="none" stroke="black" stroke-width="1.75" points="193,-77 137,-77 137,-41 193,-41 193,-77"/>
-<text text-anchor="middle" x="165" y="-54.9" font-family="Times Roman,serif" font-size="14.00">Public</text>
+<text text-anchor="middle" x="165" y="-54.9" font-family="Sans" font-size="14.00">Public</text>
 </g>
 <!-- attacker_parent_chain_code&#45;&gt;attacker_child_public_key -->
 <!-- attacker_parent_public_key -->
@@ -55,7 +55,7 @@
 <!-- attacker_grandchild_private_key -->
 <g id="node10" class="node"><title>attacker_grandchild_private_key</title>
 <polygon fill="none" stroke="black" stroke-width="1.75" points="318,-171 252,-171 252,-135 318,-135 318,-171"/>
-<text text-anchor="middle" x="285" y="-148.9" font-family="Times Roman,serif" font-size="14.00">Private</text>
+<text text-anchor="middle" x="285" y="-148.9" font-family="Sans" font-size="14.00">Private</text>
 </g>
 <!-- attacker_child_private_key&#45;&gt;attacker_grandchild_private_key -->
 <g id="edge13" class="edge"><title>attacker_child_private_key&#45;&gt;attacker_grandchild_private_key</title>
@@ -70,7 +70,7 @@
 <!-- attacker_grandchild_chain_code -->
 <g id="node11" class="node"><title>attacker_grandchild_chain_code</title>
 <polygon fill="none" stroke="black" stroke-width="1.75" points="313,-124 257,-124 257,-88 313,-88 313,-124"/>
-<text text-anchor="middle" x="285" y="-101.9" font-family="Times Roman,serif" font-size="14.00">Chain</text>
+<text text-anchor="middle" x="285" y="-101.9" font-family="Sans" font-size="14.00">Chain</text>
 </g>
 <!-- attacker_child_chain_code&#45;&gt;attacker_grandchild_chain_code -->
 <g id="edge21" class="edge"><title>attacker_child_chain_code&#45;&gt;attacker_grandchild_chain_code</title>
@@ -80,7 +80,7 @@
 <!-- attacker_grandchild_public_key -->
 <g id="node12" class="node"><title>attacker_grandchild_public_key</title>
 <polygon fill="none" stroke="black" stroke-width="1.75" points="313,-77 257,-77 257,-41 313,-41 313,-77"/>
-<text text-anchor="middle" x="285" y="-54.9" font-family="Times Roman,serif" font-size="14.00">Public</text>
+<text text-anchor="middle" x="285" y="-54.9" font-family="Sans" font-size="14.00">Public</text>
 </g>
 <!-- attacker_child_chain_code&#45;&gt;attacker_grandchild_public_key -->
 <g id="edge19" class="edge"><title>attacker_child_chain_code&#45;&gt;attacker_grandchild_public_key</title>
