@@ -240,7 +240,7 @@ already unlocked will set a new unlock time that overrides the old one.
 *String; required:* the passphrase to unlock the encrypted wallet.
 {% endautocrossref %}
 
-**Argument #2: The Number Of Seconds To Leave The Wallet Unlock**
+**Argument #2: The Number Of Seconds To Leave The Wallet Unlocked**
 
 {% autocrossref %}
 *Number; required:* The number of seconds after which the decryption key

@@ -304,7 +304,7 @@ array simply stores the results.
 **Example**
 
 ~~~
-bitcoin-cli -testnet listaddressgroupings
+> bitcoin-cli -testnet listaddressgroupings
 ~~~
 
 Result (truncated):
@@ -644,7 +644,7 @@ used in the data set.
 
 {% autocrossref %}
 
-Get all transactions with at least since confirmations since a
+Get all transactions with at least six confirmations since a
 particular block:
 
 {% endautocrossref %}
@@ -982,7 +982,7 @@ Unlock one of the above outputs:
 
 
 ~~~
-bitcoin-cli -testnet lockunspent false '''
+> bitcoin-cli -testnet lockunspent false '''
 [ 
   { 
     "txid": "5a7d24cd665108c66b2d56146f244932edae4e2376b561b3d396d5ae017b9589",
@@ -1078,7 +1078,7 @@ comment "Example move":
 {% endautocrossref %}
 
 ~~~
-bitcoin-cli -testnet move "doc test" "test1" 0.1 6 "Example move"
+> bitcoin-cli -testnet move "doc test" "test1" 0.1 6 "Example move"
 ~~~
 
 Result:

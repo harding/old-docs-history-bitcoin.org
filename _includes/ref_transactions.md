@@ -8,8 +8,8 @@ The following subsections briefly document core transaction details.
 
 The op codes used in standard transactions are,
 
-* Various data pushing op codes from 0x00 to 0x4e (1--78). These haven't
-  been shown in the examples above, but they must be used to push
+* Various data pushing op codes from 0x00 to 0x4e (1--78). These aren't
+  typically shown in examples, but they must be used to push
   signatures and public keys onto the stack. See the link below this list
   for a description.
 

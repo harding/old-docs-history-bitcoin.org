@@ -79,7 +79,7 @@ two P2PH addresses and one full public key:
 {% endautocrossref %}
 
 ~~~
-> bitcoin-cli --testnet addmultisigaddress \
+> bitcoin-cli -testnet addmultisigaddress \
   2 \
   '''
     [ 
@@ -272,7 +272,7 @@ one full public key:
 {% endautocrossref %}
 
 ~~~
-> bitcoin-cli --testnet createmultisig 2 '''
+> bitcoin-cli -testnet createmultisig 2 '''
   [ 
     "mjbLRSidW1MY8oubvs4SMEnHNFXxCcoehQ", 
     "02ecd2d250a76d204011de6bc365a56033b9b3a149f679bc17205555d3c2b2854f", 
@@ -291,10 +291,10 @@ Result (redeemScript wrapped):
 {
   "address" : "2MyVxxgNBk5zHRPRY2iVjGRJHYZEp1pMCSq",
   "redeemScript" : "522103ede722780d27b05f0b1169efc90fa15a601a32\
-	    fc6c3295114500c586831b6aaf2102ecd2d250a76d20\
-	    4011de6bc365a56033b9b3a149f679bc17205555d3c2\
-	    b2854f21022d609d2f0d359e5bc0e5d0ea20ff9f5d33\
-	    96cb5b1906aa9c56a0e7b5edc0c5d553ae"
+                    fc6c3295114500c586831b6aaf2102ecd2d250a76d20\
+                    4011de6bc365a56033b9b3a149f679bc17205555d3c2\
+                    b2854f21022d609d2f0d359e5bc0e5d0ea20ff9f5d33\
+                    96cb5b1906aa9c56a0e7b5edc0c5d553ae"
 }
 ~~~
 
@@ -400,7 +400,11 @@ representing the transaction.
 
 **Argument: RawTransaction Hex**
 
+{% autocrossref %}
+
 *String; required:* a complete transaction in rawtransaction format hex.
+
+{% endautocrossref %}
 
 **Result: JSON Object**
 
@@ -926,7 +930,7 @@ msQyFNYHkFUo4PG3puJBbpesvRCyRQax7r
 #### getaddednodeinfo
 
 ~~~
-getaddednodeinfo <true|false> [ node ]
+getaddednodeinfo <true|false> [node]
 ~~~
 
 {% autocrossref %}
@@ -1271,7 +1275,7 @@ A block in raw hex:
 {% endautocrossref %}
 
 ~~~
-bitcoin-cli -testnet getblock \
+> bitcoin-cli -testnet getblock \
             000000000fe549a89848c76070d4132872cfb6efe5315d01d7ef77e4900f2d39 \
             false
 ~~~
@@ -1294,7 +1298,7 @@ Get the same block in JSON:
 {% endautocrossref %}
 
 ~~~
-bitcoin-cli -testnet getblock \
+> bitcoin-cli -testnet getblock \
             000000000fe549a89848c76070d4132872cfb6efe5315d01d7ef77e4900f2d39 \
             true
 ~~~
@@ -1343,7 +1347,7 @@ The current block count.
 **Example**
 
 ~~~
-bitcoin-cli -testnet getblockcount 
+> bitcoin-cli -testnet getblockcount 
 ~~~
 
 Result:
@@ -1801,7 +1805,7 @@ Return true if the server is set to generate blocks.
 **Example**
 
 ~~~
-bitcoin-cli -testnet getgenerate
+> bitcoin-cli -testnet getgenerate
 ~~~
 
 Result:
@@ -1837,7 +1841,7 @@ A number of hashes per second.
 **Example**
 
 ~~~
-bitcoin-cli -testnet gethashespersec                               
+> bitcoin-cli -testnet gethashespersec                               
 ~~~
 
 Result:
@@ -1969,7 +1973,7 @@ pool (*pooledtx*), and whether or not the node is on testnet.
 **Example**
 
 ~~~
-bitcoin-cli -testnet getmininginfo
+> bitcoin-cli -testnet getmininginfo
 ~~~
 
 Result:
@@ -2009,7 +2013,7 @@ and current time.
 {% autocrossref %}
 
 A JSON object describing the *totalbytesrecv*, *totalbytessent*, and
-total milliseconds of CPU time used (*timemillis*).
+total number of milliseconds elapsed since 1970-01-01T00:00 UTC.
 
 {% endautocrossref %}
 
@@ -2017,7 +2021,7 @@ total milliseconds of CPU time used (*timemillis*).
 {
   "totalbytesrecv": <number of bytes>,
   "totalbytessent": <number of bytes>,
-  "timemillis": <number of milliseconds>
+  "timemillis": <number of milliseconds since the Unix epoch>
 }
 ~~~
 
@@ -2090,7 +2094,7 @@ difficult change before block 227255.
 {% endautocrossref %}
 
 ~~~
-bitcoin-cli -testnet getnetworkhashps -1 227255
+> bitcoin-cli -testnet getnetworkhashps -1 227255
 ~~~
 
 Result:
@@ -2215,7 +2219,7 @@ version; *inbound* is whether or not the node connected to you first;
 **Example**
 
 ~~~
-bitcoin-cli -testnet getpeerinfo | head -n20
+> bitcoin-cli -testnet getpeerinfo | head -n20
 ~~~
 
 Result (only first object shown):
@@ -2267,7 +2271,7 @@ The address.
 **Example**
 
 ~~~
-bitcoin-cli -testnet getrawchangeaddress
+> bitcoin-cli -testnet getrawchangeaddress
 ~~~
 
 Result:
@@ -2338,16 +2342,16 @@ priority*, plus an array of unconfirmed txid's this transaction
 ~~~
 {
   "transactionid" : {
-    "size" :
-    "fee" :
-    "time" :
-    "height" :
-    "startingpriority" :
-    "currentpriority" :
+    "size" : <size in bytes>
+    "fee" : <fee in decimal bitcoins>
+    "time" : <epoch time>
+    "height" : <block height>
+    "startingpriority" : <priority number when first seen>
+    "currentpriority" : <current priority number>
     "depends" : [
         "<txid>",
-       ... ]
-  }, ...
+       [...] ]
+  }, [...]
 ]
 ~~~
 
@@ -2479,7 +2483,7 @@ Get the same transaction in JSON:
 {% endautocrossref %}
 
 ~~~
-bitcoin-cli -testnet getrawtransaction
+> bitcoin-cli -testnet getrawtransaction
             ef7c0cbf6ba5af68d2ea239bba709b26ff7b0b669839a63bb01c2cb8e8de481e \
             1
 ~~~
@@ -2625,7 +2629,7 @@ confirmations:
 {% endautocrossref %}
 
 ~~~
-bitcoin-cli -testnet getreceivedbyaccount "doc test" 6
+> bitcoin-cli -testnet getreceivedbyaccount "doc test" 6
 ~~~
 
 Result:
@@ -2686,7 +2690,7 @@ least six confirmations.
 {% endautocrossref %}
 
 ~~~
-bitcoin-cli -testnet getreceivedbyaddress mjSk1Ny9spzU2fouzYgLqGUD8U41iR35QN 6
+> bitcoin-cli -testnet getreceivedbyaddress mjSk1Ny9spzU2fouzYgLqGUD8U41iR35QN 6
 ~~~
 
 Result:
@@ -2764,7 +2768,7 @@ Last is the rawtransaction format *hex* of the transaction.
 **Example**
 
 ~~~
-bitcoin-cli -testnet gettransaction \
+> bitcoin-cli -testnet gettransaction \
             5a7d24cd665108c66b2d56146f244932edae4e2376b561b3d396d5ae017b9589
 ~~~
 
@@ -3079,7 +3083,7 @@ was accepted.
 Get work:
 
 ~~~
-bitcoin-cli -testnet getwork
+> bitcoin-cli -testnet getwork
 ~~~
 
 Result:
@@ -3109,7 +3113,7 @@ unlikely to hash to a value below the target threshold)
 {% endautocrossref %}
 
 ~~~
-bitcoin-cli -testnet getwork 000000026d49c668f433f5ed3e0c8357466\
+> bitcoin-cli -testnet getwork 000000026d49c668f433f5ed3e0c8357466\
             f0416818f7aa29bc8d8d8d158d63b000000007cf7260312d8d5b\
             fc098d066d60062c09776c9595521aeb6eb2c552f7174df0a536\
             158061b01968c000000000000008000000000000000000000000\
