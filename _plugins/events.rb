@@ -35,6 +35,7 @@ module Jekyll
       for m in data['results']
         # Skip meetups with incomplete data
         next if !m.has_key?('time') or ( !m['time'].is_a?(String) and !m['time'].is_a?(Integer) and !m['time'].is_a?(Float) )
+        next if !m.has_key?('utc_offset') or ( !m['utc_offset'].is_a?(String) and !m['utc_offset'].is_a?(Integer) and !m['utc_offset'].is_a?(Float) )
         next if !m.has_key?('group') or !m['group'].is_a?(Hash)
         next if !m['group'].has_key?('name') or ( !m['group']['name'].is_a?(String) and !m['group']['name'].is_a?(Integer) and !m['group']['name'].is_a?(Float) )
         next if !m.has_key?('venue') or !m['venue'].is_a?(Hash)
@@ -47,6 +48,7 @@ module Jekyll
         next if !m.has_key?('event_url') or ( !m['event_url'].is_a?(String) and !m['event_url'].is_a?(Integer) and !m['event_url'].is_a?(Float) )
         # Assign variables
         time = m['time'].to_s
+        utcoffset = m['utc_offset'].to_s
         title = m['group']['name'].to_s
         venue = m['venue']['name'].to_s
         address = m['venue']['address_1'].to_s
@@ -57,6 +59,7 @@ module Jekyll
         lon = m['venue']['lon'].to_s
         # Skip meetups with malformed data
         next if !/^[0-9]{1,15}$/.match(time)
+        next if !/^-?[0-9]{1,10}$/.match(utcoffset)
         next if !/^.{1,150}$/.match(title)
         next if !/^.{1,150}$/.match(venue)
         next if !/^.{1,150}$/.match(address)
@@ -67,15 +70,16 @@ module Jekyll
         next if !/^-?[0-9]{1,3}(\.[0-9]{1,15})?$/.match(lon) or ( lon.to_f < -180 and lon.to_f > 180 )
         next if lon.to_f == 0 and lat.to_f == 0
         # Format variables
-        time = Time.at(time.to_i/1000)
+        time = Time.at((time.to_i + utcoffset.to_i) / 1000)
+        time.utc
         date = time.year.to_s + '-' + time.month.to_s.rjust(2,'0') + '-' + time.day.to_s.rjust(2,'0')
         country = country.upcase
         geoloc = lat + ', ' + lon
         # Use address_2 and state when available
-        if m['venue'].has_key?('address_2') and ( m['venue']['address_2'].is_a?(String) and m['venue']['address_2'].is_a?(Integer) and m['venue']['address_2'].is_a?(Float) ) and /^.{1,150}$/.match(m['venue']['address_2'].to_s)
+        if m['venue'].has_key?('address_2') and ( m['venue']['address_2'].is_a?(String) or m['venue']['address_2'].is_a?(Integer) or m['venue']['address_2'].is_a?(Float) ) and /^.{1,150}$/.match(m['venue']['address_2'].to_s)
           address = address + ' ' + m['venue']['address_2'].to_s
         end
-        if m['venue'].has_key?('state') and ( m['venue']['state'].is_a?(String) and m['venue']['state'].is_a?(Integer) and m['venue']['state'].is_a?(Float) ) and /^.{1,150}$/.match(m['venue']['state'].to_s)
+        if m['venue'].has_key?('state') and ( m['venue']['state'].is_a?(String) or m['venue']['state'].is_a?(Integer) or m['venue']['state'].is_a?(Float) ) and /^.{1,150}$/.match(m['venue']['state'].to_s)
           city = city + ', ' + m['venue']['state'].to_s
         end
         # Populate meetups array
@@ -90,16 +94,11 @@ module Jekyll
       Dir.foreach('_events') do |file|
         # Skip events with malformed name
         next if file == '.' or file == '..'
-        date = file.split('-')
-        next if date.length < 4
-        next if !/^[0-9]{4}$/.match(date[0])
-        next if !/^[0-9]{2}$/.match(date[1])
-        next if !/^[0-9]{2}$/.match(date[2])
-        # Skip event if not in the future
-        next if Time.new.to_i > Time.new(date[0].to_i,date[1].to_i,date[2].to_i).to_i
         # Assign variables
         data = YAML.load_file('_events/'+file)
-        data['date'] = date[0] + '-' + date[1] + '-' + date[2]
+        # Skip event if it has started more than five days ago
+	date = data['date'].to_s.split('-')
+        next if Time.new.to_i > (Time.new(date[0].to_i,date[1].to_i,date[2].to_i).to_i + 432000)
         # Get geolocalisation data from Google Maps
         begin
           geoloc = JSON.parse(open("https://maps.googleapis.com/maps/api/geocode/json?address=" + CGI::escape(data['address'] + ', ' + data['city'] + ', ' + data['country']) + "&sensor=false","User-Agent"=>"Ruby/#{RUBY_VERSION}").read)

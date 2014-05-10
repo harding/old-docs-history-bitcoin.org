@@ -8,8 +8,13 @@ def prompt(*args)
     gets
 end
 
-lang = prompt "Language code: "
-lang = lang.gsub(/[^a-z]/,'')
+if ARGV.empty?
+  lang = prompt "Language code: "
+else
+  lang = ARGV[0]
+end
+
+lang = lang.gsub(/[^a-zA-Z_]/,'')
 
 if !File.exist?('_translations/' + lang + '.yml')
   print "Wrong language code. \n"
@@ -31,7 +36,7 @@ dirs.each do |dir|
     contents.gsub!(Regexp.new("{% case page.lang %}(((?!{% when ).)*?){% endcase %}", Regexp::MULTILINE),'\1')
     # Drop language in statements applied to many languages ( e.g. {% when 'ar' or 'fr' .. %} )
     contents.gsub!(Regexp.new("{% when '" + lang + "' or (.*?) %}"),'{% when \1 %}')
-    contents.gsub!(Regexp.new("{% when (.*?) or '" + lang + "' (.*?) %}"),'{% when \1 \2 %}')
+    contents.gsub!(Regexp.new("{% when (.*?) or '" + lang + "' (.*?)%}"),'{% when \1 \2%}')
     File.open(dir + '/' + file, 'w') do |file|
       file.write(contents)
     end

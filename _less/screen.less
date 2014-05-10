@@ -380,21 +380,17 @@ table td,table th{
 
 .footer{
 	position:relative;
-	top:-2px;
-	padding:20px 0 20px 40px;
+	padding:20px 0;
 	text-align:center;
 	max-width:940px;
 	font-size:94%;
 }
-.footer div{
-	padding-top:6px;
+.footermenu{
+	display:inline;
 }
-.footer div a{
+.footermenu a{
 	margin-right:15px;
 	white-space:nowrap;
-}
-.footer div span a{
-	margin-right:auto;
 }
 
 /*Styles specific to elements in pages*/
@@ -990,7 +986,10 @@ table td,table th{
 	margin-top:5px;
 }
 
-.floatimg{
+.pleftfloat{
+	overflow:hidden;
+}
+.pleftfloat img{
 	float:left;
 	margin-right:10px;
 }
@@ -1297,7 +1296,7 @@ h2 .rssicon{
 }
 .downloadbox div div{
 	display:block;
-	width:180px;
+	width:190px;
 	margin:10px 0;
 	text-align:left;
 }
@@ -1626,13 +1625,11 @@ h2 .rssicon{
 		border-radius:0;
 	}
 	.footer{
-		padding:20px 0 20px 5px;
-		background-color:transparent;
 		line-height:1.5em;
 	}
-	.footer div span{
+	.footermenu{
 		display:block;
-		margin-top:10px;
+		margin-bottom:20px;
 	}
 	.index{
 		padding:15px;
@@ -1825,9 +1822,6 @@ h2 .rssicon{
 	.mainlist>div:first-child,
 	.mainlist>div:first-child+div,
 	.mainlist>div:first-child+div+div{
-		text-align:left;
-	}
-	.start p{
 		text-align:left;
 	}
 	.start>div{

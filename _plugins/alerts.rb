@@ -11,7 +11,7 @@
 
 #If "alias" variable is set in one alert file, a short alias
 #file for the alert (like /android.html) is generated for
-#Bitcoin-Qt non-clickable alerts.
+#Bitcoin Core non-clickable alerts.
 
 require 'yaml'
 
@@ -37,6 +37,8 @@ module Jekyll
         end
         if self.data.has_key?('alias')
           site.pages << AlertPage.new(site, base, lang, srcdir, src, '', self.data['alias']+'.html', date)
+          #FIXME temporary workaround to redirect /heartbleed/ to the appropriate alert page.
+          site.pages << AlertPage.new(site, base, lang, srcdir, src, '', self.data['alias']+'/index.html', date)
         end
       end
     end

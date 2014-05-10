@@ -9,9 +9,6 @@ body{
 .body{
 	width:940px;
 }
-.footer{
-	width:800px;
-}
 .lang{
 	border-left:2px solid #f7f7f7;
 	border-right:2px solid #f7f7f7;
@@ -253,8 +250,9 @@ body{
 	display:expression((this.parentNode.childNodes[0]==this||this.parentNode.childNodes[1]==this||this.parentNode.childNodes[2]==this||this.parentNode.childNodes[3]==this)?'list-item':'');
 }
 
-.floatimg{
+.pleftfloat span{
 	position:relative;
+	float:left;
 }
 
 .previewrow h2{

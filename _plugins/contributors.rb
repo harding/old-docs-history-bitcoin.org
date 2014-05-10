@@ -1,4 +1,4 @@
-#contributors.rb fetches Bitcoin-Qt contributors list and set
+#contributors.rb fetches Bitcoin Core contributors list and set
 #site.contributors array. This is later used to display the
 #list of contributors on the "Development" page.
 
@@ -10,7 +10,19 @@ module Jekyll
 
   class CategoryGenerator < Generator
     def fetch_contributors
-      contributors = JSON.parse(open("https://api.github.com/repos/bitcoin/bitcoin/contributors","User-Agent"=>"Ruby/#{RUBY_VERSION}").read)
+      page = 1
+      contributors = []
+      while page < 10 do
+        begin
+          ar = JSON.parse(open("https://api.github.com/repos/bitcoin/bitcoin/contributors?page=#{page}&per_page=100","User-Agent"=>"Ruby/#{RUBY_VERSION}").read)
+        rescue
+          print 'GitHub API Call Failed!'
+          break
+        end
+        break if (ar.length == 0)
+        contributors.push(*ar)
+        page += 1
+      end
 
       contributors.map do |x|
         x['name'] = x['login'] unless x.has_key?('name')
