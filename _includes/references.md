@@ -183,7 +183,7 @@
 [DER]: https://en.wikipedia.org/wiki/Abstract_Syntax_Notation_One
 [devguide wallets]: /en/developer-guide#wallets
 [devref wallets]: /en/developer-reference#wallets
-[docs issue]: https://github.com/saivann/bitcoin.org/issues
+[docs issue]: https://github.com/bitcoin/bitcoin.org/issues
 [ECDSA]: https://en.wikipedia.org/wiki/Elliptic_Curve_DSA
 [Eloipool]: https://gitorious.org/bitcoin/eloipool
 [forum tech support]: https://bitcointalk.org/index.php?board=4.0
